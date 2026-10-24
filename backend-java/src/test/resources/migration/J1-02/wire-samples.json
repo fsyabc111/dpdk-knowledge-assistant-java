@@ -1,0 +1,90 @@
+{
+  "_comment": "J1-02 脱敏线上样本：字段名与形态对齐冻结 Python 源实现；凭据一律以占位符表示，不含真实 key/日志。",
+  "chatRequest": {
+    "model": "<MODEL_NAME_PLACEHOLDER>",
+    "messages": [
+      {"role": "system", "content": "…系统提示（脱敏）…"},
+      {"role": "user", "content": "什么是 DPDK 的 mbuf？"}
+    ],
+    "temperature": 0.2,
+    "max_tokens": 2048
+  },
+  "chatResponse": {
+    "choices": [
+      {"message": {"role": "assistant", "content": "mbuf 是 DPDK 的报文缓冲结构…（脱敏）"}}
+    ],
+    "usage": {"prompt_tokens": 120, "completion_tokens": 30, "total_tokens": 150}
+  },
+  "chatStreamRequest": {
+    "model": "<MODEL_NAME_PLACEHOLDER>",
+    "messages": [{"role": "user", "content": "hi"}],
+    "temperature": 0.2,
+    "max_tokens": 2048,
+    "stream": true,
+    "stream_options": {"include_usage": true}
+  },
+  "chatStreamFrames": [
+    "data: {\"choices\":[{\"delta\":{\"content\":\"你\"}}]}",
+    "data: {\"choices\":[{\"delta\":{\"content\":\"好\"}}]}",
+    "data: {\"choices\":[],\"usage\":{\"prompt_tokens\":40,\"completion_tokens\":5,\"total_tokens\":45}}",
+    "data: [DONE]"
+  ],
+  "chatStreamOptionsRejected": {
+    "status": 400,
+    "body": "{\"error\": {\"message\": \"unknown field stream_options\"}}"
+  },
+  "embeddingsRequest": {
+    "model": "<EMBEDDING_MODEL_PLACEHOLDER>",
+    "input": ["文本一（脱敏）", "文本二（脱敏）"]
+  },
+  "embeddingsResponse": {
+    "data": [
+      {"index": 0, "embedding": "[1024 个浮点数，脱敏为长度说明]"},
+      {"index": 1, "embedding": "[1024 个浮点数，脱敏为长度说明]"}
+    ],
+    "usage": {"prompt_tokens": 14, "total_tokens": 14}
+  },
+  "mcpInitializeRequest": {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "initialize",
+    "params": {
+      "protocolVersion": "2025-06-18",
+      "capabilities": {},
+      "clientInfo": {"name": "dpdk-assistant-java", "version": "0.1.0"}
+    }
+  },
+  "mcpInitializedNotification": {
+    "jsonrpc": "2.0",
+    "method": "notifications/initialized"
+  },
+  "mcpToolCallRequest": {
+    "jsonrpc": "2.0",
+    "id": 2,
+    "method": "tools/call",
+    "params": {
+      "name": "grade_plugin",
+      "arguments": {"protocol": "dns", "plugin_source": "<合成源码占位，不落样本>"}
+    }
+  },
+  "mcpToolCallResultStructured": {
+    "jsonrpc": "2.0",
+    "id": 2,
+    "result": {
+      "structuredContent": {"ok": true, "protocol": "dns", "score": 62},
+      "content": [{"type": "text", "text": "{\"ok\": false}"}]
+    }
+  },
+  "mcpToolCallResultTextJson": {
+    "jsonrpc": "2.0",
+    "id": 2,
+    "result": {
+      "content": [{"type": "text", "text": "{\"ok\": true, \"score\": 100}"}]
+    }
+  },
+  "mcpUnavailableReply": {
+    "ok": false,
+    "error": "harness_unavailable",
+    "detail": "评测服务不可达：<ExceptionType>"
+  }
+}
