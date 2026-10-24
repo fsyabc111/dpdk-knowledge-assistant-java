@@ -7,7 +7,16 @@
 - 当前源码目标：本仓库冻结Python副本；原目录仅来源，不同步变化；backend/前端原件未改。
 - 验证代码/证据提交：08158c6初版、c94f43d修复、099dca2最终v2数据、a207a4a最后CLI类型守卫；之后仅文档/状态/审查收口。用户已验收交付7c76c31；验收记录提交d96bf4c已推送到同名origin分支，本地/远程SHA一致，证据evidence/P0/push-verification.json；其后仅补发布记录。
 
-## J1-01 进行中（切片1已交付，提交 f84d2c9 已推送）
+## P1 收口进行中（2026-10-25 深夜）
+
+- 本地提交链（集成分支）：… → bb07ab7（J1-04 完成+接口登记，150/150）→ c919550（model/harness Spring 接线）→ P1 phase-report 初稿+规范轴结论。全量测试 150/150。
+- **推送受阻**：origin 推送自 bb07ab7 起连续失败（github.com:443 连接超时 75s+，api.github.com 可达、主站一次 200/67s——出口到 GitHub 严重劣化，非凭据/仓库问题）。本地提交全部保存，未伪称发布；恢复后立即推送并核对 SHA。远程仍停在 f48e01b。
+- 独立审查：规范轴通过（0 阻断 4 建议，evidence/P1/review-standards.md；建议①已随 c919550 解决，②已改 STATUS，③本节登记，④随 P2 接线关闭）；规格轴进行中（evidence/P1/review-spec.md 待产出）。
+- worker worktree 登记：.migration-artifacts/worktrees/{j1-02,j1-03}（worker/j1-02@9d3e3b7、worker/j1-03@251b65f 均已合并；worktree 本体保留至 P1 收口推送核验后清理）。
+- P1 独立测试 PG（55481）持续运行供 P2 使用；测试库动态建删。
+- 下一步：规格轴结论 → 阻断修复复验 → phase-report 终稿 → 推送核验 → 按预授权进 P2（J2-01 起派工）。
+
+## J1-01 切片1（历史记录，f84d2c9）
 
 - backend-java 可构建：JDK21.0.12.1 + Boot4.0.9 + Maven Wrapper 3.9.12；`./backend-java/mvnw -f backend-java/pom.xml -B verify` 26/26 通过（含三路径迁移集成测试）。
 - 三路径迁移链实测：空库B0015 / 合成0013→V0014+V0015（讲解回填+伪造反例）/ 等价0015空转 / 重复启动无变化 / 部分表拒绝；catalog 差分对 P0 oracle 真实结构清零。
