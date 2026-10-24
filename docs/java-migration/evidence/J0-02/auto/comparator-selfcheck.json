@@ -1,0 +1,111 @@
+{
+  "version": "p0-v1",
+  "python_self_comparison": "通过",
+  "cases": [
+    {
+      "case_id": "expired",
+      "status": "通过",
+      "assertion": "差分拒绝注入错误"
+    },
+    {
+      "case_id": "created_after_updated",
+      "status": "通过",
+      "assertion": "差分拒绝注入错误"
+    },
+    {
+      "case_id": "timezone_changed",
+      "status": "通过",
+      "assertion": "差分拒绝注入错误"
+    },
+    {
+      "case_id": "time_naive",
+      "status": "通过",
+      "assertion": "差分拒绝注入错误"
+    },
+    {
+      "case_id": "time_precision",
+      "status": "通过",
+      "assertion": "差分拒绝注入错误"
+    },
+    {
+      "case_id": "caller_request_identity",
+      "status": "通过",
+      "assertion": "差分拒绝注入错误"
+    },
+    {
+      "case_id": "task_identity_format",
+      "status": "通过",
+      "assertion": "差分拒绝注入错误"
+    },
+    {
+      "case_id": "http_status",
+      "status": "通过",
+      "assertion": "差分拒绝注入错误"
+    },
+    {
+      "case_id": "field_type",
+      "status": "通过",
+      "assertion": "差分拒绝注入错误"
+    },
+    {
+      "case_id": "null_missing",
+      "status": "通过",
+      "assertion": "差分拒绝注入错误"
+    },
+    {
+      "case_id": "array_order",
+      "status": "通过",
+      "assertion": "差分拒绝注入错误"
+    },
+    {
+      "case_id": "permission",
+      "status": "通过",
+      "assertion": "差分拒绝注入错误"
+    },
+    {
+      "case_id": "side_effect",
+      "status": "通过",
+      "assertion": "差分拒绝注入错误"
+    },
+    {
+      "case_id": "identity_link",
+      "status": "通过",
+      "assertion": "差分拒绝注入错误"
+    },
+    {
+      "case_id": "sse_sources_prefix",
+      "status": "通过",
+      "assertion": "差分拒绝注入错误"
+    },
+    {
+      "case_id": "sse_pending_terminal",
+      "status": "通过",
+      "assertion": "差分拒绝注入错误"
+    },
+    {
+      "case_id": "sse_missing_done",
+      "status": "通过",
+      "assertion": "差分拒绝注入错误"
+    },
+    {
+      "case_id": "sse_post_done",
+      "status": "通过",
+      "assertion": "差分拒绝注入错误"
+    },
+    {
+      "case_id": "sse_done_without_delimiter",
+      "status": "通过",
+      "assertion": "done JSON闭括号后、空行终止前截断不能成为完整终态"
+    },
+    {
+      "case_id": "sse_byte_fragmentation",
+      "status": "通过",
+      "assertion": "UTF8逐字节分块语义相同"
+    },
+    {
+      "case_id": "dangerous_targets",
+      "status": "通过",
+      "assertion": "7个危险URL在连接前拒绝"
+    }
+  ]
+}

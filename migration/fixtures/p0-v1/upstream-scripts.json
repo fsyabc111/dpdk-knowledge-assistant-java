@@ -1,0 +1,8 @@
+{
+  "version":"p0-v1",
+  "synthetic_only":true,
+  "llm":["tool_call_id","multi_chunk","bad_json","disconnect","429","timeout","usage_missing","usage_duplicate"],
+  "embedding":{"dimensions":1024,"vectors":"first three basis vectors; exact PG cosine ordering"},
+  "mcp":["finished","running","unknown","submitted_response_lost","connect_failure","restart_clears_ledger"],
+  "source_input":"runtime-generated random marker; never persisted in committed evidence"
+}

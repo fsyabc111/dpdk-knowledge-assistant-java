@@ -1,0 +1,414 @@
+{
+  "baseline": "80b29135faddd16d5e39fdbf0633291ea6a20489",
+  "runner_sha256": "7c151385d7b9ac879527c459b5c2bd283b12bb14ebc2141c389c7d61c3efa0f9",
+  "boundary_delays_seconds": {
+    "each_model_call": 0.01,
+    "retrieval": 0.01,
+    "mcp": 0.01
+  },
+  "results": [
+    {
+      "case_id": "kill-restart-accepted",
+      "status": "通过",
+      "worker_exit": -9,
+      "checks": {
+        "terminal_answered": true,
+        "inputs_deleted": true,
+        "chat_quota_not_recounted": true,
+        "replay_without_model_or_mcp": true,
+        "replay_without_quota": true,
+        "no_duplicate_grade": true,
+        "replayed_same_task": true
+      },
+      "recovery_execution_seconds": 0.07428804199662409,
+      "rto_boundary": "SIGKILL后重建进程环境；合成拨老updated_at绕过30秒grace；手动ensure_managed，未含300秒扫描等待",
+      "fault_marker": {
+        "stage": "accepted"
+      },
+      "recovery_mcp_events": [
+        {
+          "sequence": 1,
+          "tool": "get_task_status",
+          "job_id": "ab13db2a074c4c1485790682834787b0:dns:a2efddda26cca640"
+        },
+        {
+          "sequence": 2,
+          "tool": "grade_plugin",
+          "job_id": "ab13db2a074c4c1485790682834787b0:dns:a2efddda26cca640"
+        }
+      ],
+      "actual_submit_calls_across_processes": null,
+      "before": {
+        "tables": {
+          "users": 61,
+          "api_tokens": 60,
+          "assignments": 1,
+          "assistant_sessions": 1,
+          "assistant_messages": 1,
+          "rag_requests": 1,
+          "rag_task_inputs": 1,
+          "rag_task_jobs": 0,
+          "grading_submissions": 0,
+          "upstream_usage_records": 0
+        },
+        "states": {
+          "pending": 1
+        },
+        "usage": {
+          "chat": 1
+        },
+        "duplicate_task_job_grades": 0,
+        "boundary_calls": {},
+        "blocked_network_attempts": 0
+      },
+      "after": {
+        "tables": {
+          "users": 61,
+          "api_tokens": 60,
+          "assignments": 1,
+          "assistant_sessions": 1,
+          "assistant_messages": 2,
+          "rag_requests": 1,
+          "rag_task_inputs": 0,
+          "rag_task_jobs": 1,
+          "grading_submissions": 1,
+          "upstream_usage_records": 4
+        },
+        "states": {
+          "answered": 1
+        },
+        "usage": {
+          "chat": 1,
+          "grading": 1
+        },
+        "duplicate_task_job_grades": 0,
+        "boundary_calls": {
+          "model": 2,
+          "mcp:get_task_status": 1,
+          "mcp:grade_plugin": 1
+        },
+        "blocked_network_attempts": 0
+      },
+      "rpo": "已提交受理/已完成成绩和输入身份保持；未提交模型中间输出不保证"
+    },
+    {
+      "case_id": "kill-restart-before-terminal",
+      "status": "通过",
+      "worker_exit": -9,
+      "checks": {
+        "terminal_answered": true,
+        "inputs_deleted": true,
+        "chat_quota_not_recounted": true,
+        "replay_without_model_or_mcp": true,
+        "replay_without_quota": true,
+        "no_duplicate_grade": true,
+        "replayed_same_task": true,
+        "finished_job_not_resubmitted": true,
+        "grade_count_unchanged": true
+      },
+      "recovery_execution_seconds": 0.04357245799837983,
+      "rto_boundary": "SIGKILL后重建进程环境；合成拨老updated_at绕过30秒grace；手动ensure_managed，未含300秒扫描等待",
+      "fault_marker": {
+        "stage": "before_terminal"
+      },
+      "recovery_mcp_events": [],
+      "actual_submit_calls_across_processes": null,
+      "before": {
+        "tables": {
+          "users": 61,
+          "api_tokens": 60,
+          "assignments": 1,
+          "assistant_sessions": 2,
+          "assistant_messages": 3,
+          "rag_requests": 2,
+          "rag_task_inputs": 1,
+          "rag_task_jobs": 2,
+          "grading_submissions": 2,
+          "upstream_usage_records": 4
+        },
+        "states": {
+          "answered": 1,
+          "pending": 1
+        },
+        "usage": {
+          "chat": 2,
+          "grading": 2
+        },
+        "duplicate_task_job_grades": 0,
+        "boundary_calls": {
+          "model": 2,
+          "mcp:get_task_status": 1,
+          "mcp:grade_plugin": 1
+        },
+        "blocked_network_attempts": 0
+      },
+      "after": {
+        "tables": {
+          "users": 61,
+          "api_tokens": 60,
+          "assignments": 1,
+          "assistant_sessions": 2,
+          "assistant_messages": 4,
+          "rag_requests": 2,
+          "rag_task_inputs": 0,
+          "rag_task_jobs": 2,
+          "grading_submissions": 2,
+          "upstream_usage_records": 6
+        },
+        "states": {
+          "answered": 2
+        },
+        "usage": {
+          "chat": 2,
+          "grading": 2
+        },
+        "duplicate_task_job_grades": 0,
+        "boundary_calls": {
+          "model": 4,
+          "mcp:get_task_status": 1,
+          "mcp:grade_plugin": 1
+        },
+        "blocked_network_attempts": 0
+      },
+      "rpo": "已提交受理/已完成成绩和输入身份保持；未提交模型中间输出不保证"
+    },
+    {
+      "case_id": "kill-restart-submitted-unknown",
+      "status": "失败",
+      "worker_exit": -9,
+      "checks": {
+        "terminal_answered": true,
+        "inputs_deleted": true,
+        "chat_quota_not_recounted": true,
+        "replay_without_model_or_mcp": true,
+        "replay_without_quota": true,
+        "no_duplicate_grade": true,
+        "replayed_same_task": true,
+        "unknown_does_not_blindly_resubmit": false,
+        "resubmission_uses_same_job": true
+      },
+      "recovery_execution_seconds": 0.068981165997684,
+      "rto_boundary": "SIGKILL后重建进程环境；合成拨老updated_at绕过30秒grace；手动ensure_managed，未含300秒扫描等待",
+      "fault_marker": {
+        "stage": "mcp-submitted-before-response",
+        "job_id": "53a1a54795fb49949ab3c54d81399690:dns:c90f017858c848fa",
+        "grade_submit_calls": 1
+      },
+      "recovery_mcp_events": [
+        {
+          "sequence": 3,
+          "tool": "get_task_status",
+          "job_id": "53a1a54795fb49949ab3c54d81399690:dns:c90f017858c848fa"
+        },
+        {
+          "sequence": 4,
+          "tool": "grade_plugin",
+          "job_id": "53a1a54795fb49949ab3c54d81399690:dns:c90f017858c848fa"
+        }
+      ],
+      "actual_submit_calls_across_processes": 2,
+      "before": {
+        "tables": {
+          "users": 61,
+          "api_tokens": 60,
+          "assignments": 1,
+          "assistant_sessions": 3,
+          "assistant_messages": 5,
+          "rag_requests": 3,
+          "rag_task_inputs": 1,
+          "rag_task_jobs": 3,
+          "grading_submissions": 2,
+          "upstream_usage_records": 6
+        },
+        "states": {
+          "answered": 2,
+          "pending": 1
+        },
+        "usage": {
+          "chat": 3,
+          "grading": 3
+        },
+        "duplicate_task_job_grades": 0,
+        "boundary_calls": {
+          "model": 4,
+          "mcp:get_task_status": 1,
+          "mcp:grade_plugin": 1
+        },
+        "blocked_network_attempts": 0
+      },
+      "after": {
+        "tables": {
+          "users": 61,
+          "api_tokens": 60,
+          "assignments": 1,
+          "assistant_sessions": 3,
+          "assistant_messages": 6,
+          "rag_requests": 3,
+          "rag_task_inputs": 0,
+          "rag_task_jobs": 3,
+          "grading_submissions": 3,
+          "upstream_usage_records": 10
+        },
+        "states": {
+          "answered": 3
+        },
+        "usage": {
+          "chat": 3,
+          "grading": 3
+        },
+        "duplicate_task_job_grades": 0,
+        "boundary_calls": {
+          "model": 6,
+          "mcp:get_task_status": 2,
+          "mcp:grade_plugin": 2
+        },
+        "blocked_network_attempts": 0
+      },
+      "rpo": "已提交受理/已完成成绩和输入身份保持；未提交模型中间输出不保证"
+    },
+    {
+      "case_id": "subscriber-disconnect",
+      "status": "通过",
+      "checks": {
+        "start_received": true,
+        "disconnect_does_not_cancel": true,
+        "terminal_replay": true,
+        "inputs_deleted": true
+      },
+      "boundary": "真实task_service订阅生成器关闭；未验证TCP断线/浏览器/nginx"
+    },
+    {
+      "case_id": "actual-600-second-hard-deadline-virtual-clock",
+      "status": "通过",
+      "checks": {
+        "actual_configuration_600": true,
+        "alive_at_virtual_599": true,
+        "timeout_terminal_at_virtual_600_5": true,
+        "inputs_deleted": true,
+        "late_finish_blocked_by_frozen_guard": true,
+        "slot_released": true
+      },
+      "boundary": "冻结TaskService外层asyncio.wait_for，真实PG终态；仅推进loop.time，不改600配置；在真实finish前人为挂起线程，非真实600秒墙钟容量测试"
+    },
+    {
+      "case_id": "submitted-status-unknown",
+      "status": "失败",
+      "checks": {
+        "queried_status_first": true,
+        "same_job_identity": true,
+        "no_repeat_quota": true,
+        "zero_duplicate_grade": true,
+        "no_blind_resubmit": false
+      },
+      "boundary_call_delta": {
+        "model": 2,
+        "mcp:get_task_status": 1,
+        "mcp:grade_plugin": 1
+      },
+      "ordered_mcp_events": [
+        {
+          "sequence": 5,
+          "tool": "get_task_status",
+          "job_id": "15f83ec5f3324c92854cc97c74566df7:dns:a2efddda26cca640"
+        },
+        {
+          "sequence": 6,
+          "tool": "grade_plugin",
+          "job_id": "15f83ec5f3324c92854cc97c74566df7:dns:a2efddda26cca640"
+        }
+      ],
+      "same_job_grade_submit_count": 1,
+      "finding": "unknown经状态查询后再次grade_plugin，未确认旧执行归属/终止；违反拟冻结安全边界"
+    },
+    {
+      "case_id": "submitted-status-running",
+      "status": "通过",
+      "checks": {
+        "queried_status_first": true,
+        "same_job_identity": true,
+        "no_repeat_quota": true,
+        "zero_duplicate_grade": true
+      },
+      "boundary_call_delta": {
+        "model": 2,
+        "mcp:get_task_status": 1,
+        "mcp:grade_plugin": 1
+      },
+      "ordered_mcp_events": [
+        {
+          "sequence": 7,
+          "tool": "get_task_status",
+          "job_id": "b2ab160a2e2a4e229744299d093434c4:dns:a2efddda26cca640"
+        },
+        {
+          "sequence": 8,
+          "tool": "grade_plugin",
+          "job_id": "b2ab160a2e2a4e229744299d093434c4:dns:a2efddda26cca640"
+        }
+      ],
+      "same_job_grade_submit_count": 1,
+      "finding": "running以同job重新grade_plugin；仅证明调用身份相同，不证明真实harness幂等/加入既有执行"
+    },
+    {
+      "case_id": "submitted-status-finished",
+      "status": "通过",
+      "checks": {
+        "queried_status_first": true,
+        "same_job_identity": true,
+        "no_repeat_quota": true,
+        "zero_duplicate_grade": true,
+        "no_blind_resubmit": true
+      },
+      "boundary_call_delta": {
+        "model": 2,
+        "mcp:get_task_status": 1
+      },
+      "ordered_mcp_events": [
+        {
+          "sequence": 9,
+          "tool": "get_task_status",
+          "job_id": "58087c21b40b45e58b44d2c1ffd94953:dns:a2efddda26cca640"
+        }
+      ],
+      "same_job_grade_submit_count": 0,
+      "finding": "finished复用状态结果，不重新grade_plugin"
+    }
+  ],
+  "status": "存在冻结缺陷",
+  "after": {
+    "tables": {
+      "users": 61,
+      "api_tokens": 60,
+      "assignments": 1,
+      "assistant_sessions": 8,
+      "assistant_messages": 15,
+      "rag_requests": 8,
+      "rag_task_inputs": 0,
+      "rag_task_jobs": 6,
+      "grading_submissions": 6,
+      "upstream_usage_records": 25
+    },
+    "states": {
+      "system_error": 1,
+      "answered": 7
+    },
+    "usage": {
+      "chat": 8,
+      "grading": 6
+    },
+    "duplicate_task_job_grades": 0,
+    "boundary_calls": {
+      "model": 16,
+      "mcp:get_task_status": 5,
+      "mcp:grade_plugin": 4,
+      "retrieval": 2
+    },
+    "blocked_network_attempts": 0
+  },
+  "limits": [
+    "无真实harness/模型/embedding质量证明",
+    "不含生产恢复或多副本fencing",
+    "24小时TTL由功能oracle负责，本文件不覆盖",
+    "unknown不盲重试契约与当前源码冲突需用户决策"
+  ]
+}

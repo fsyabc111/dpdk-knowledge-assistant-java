@@ -1,0 +1,19 @@
+{
+  "difference_id":"COMP003",
+  "authorization":"用户已接受；由主Agent记录于DECISIONS U08/P0-D13",
+  "purpose":"批准的Java安全目标，与Python行为黄金分开保存",
+  "fixture_status":"specified; Java not implemented/not executed",
+  "python_baseline":{
+    "request_after_restart":"先查询job状态",
+    "finished":"复用结果并以同job成绩闸避免重复本地成绩",
+    "unknown":"冻结实现可再次以相同job_id提交grade_plugin；此行为由独立性能恢复证据记录",
+    "evaluation":"Python自对照通过只说明忠实记录；不能代表unknown重投满足安全目标"
+  },
+  "java_target_cases":[
+    {"case_id":"COMP003-running","precondition":{"ledger":"submitted","status_query":"running"},"action":"仅等待或查询；受任务硬墙约束","expected_new_grade_submissions":0},
+    {"case_id":"COMP003-unknown","precondition":{"ledger":"submitted","status_query":"unknown"},"action":"停止重投，保存system_error终态及failure_code","expected_new_grade_submissions":0,"expected_terminal":"system_error","expected_failure_code_present":true,"expected_submitted_ledger_retained":true,"expected_task_inputs":0},
+    {"case_id":"COMP003-query-failed","precondition":{"ledger":"submitted","status_query":"timeout/disconnect/invalid response"},"action":"停止重投，保存system_error终态及failure_code","expected_new_grade_submissions":0,"expected_terminal":"system_error","expected_failure_code_present":true,"expected_submitted_ledger_retained":true,"expected_task_inputs":0}
+  ],
+  "comparison_rule":"未来Java此三例按批准安全目标判定；不得直接用Python重投结果反向覆盖目标，也不得改写Python黄金掩盖有意差异",
+  "failure_code_exact_values":"待共享契约owner明确，不自行发明"
+}

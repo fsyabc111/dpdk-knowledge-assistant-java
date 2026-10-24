@@ -1,0 +1,73 @@
+{
+  "baseline": "80b29135faddd16d5e39fdbf0633291ea6a20489",
+  "contract": "p0-v1",
+  "python": "3.11.15 (main, Jul 23 2026, 14:34:23) [Clang 22.1.3 ]",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "cpu_model": "Apple M4",
+  "physical_memory_bytes": 17179869184,
+  "runner_sha256": "a0376d4d8af0539ccd9b7d4f0a969fd4677fa798f2093cae84c4b38ed3c6b440",
+  "machine": "arm64",
+  "logical_cpu_count": 10,
+  "packages": {
+    "fastapi": "0.115.6",
+    "starlette": "0.41.3",
+    "httpx": "0.28.1",
+    "psycopg": "3.3.4",
+    "psycopg-pool": "3.3.1",
+    "langgraph": "1.2.11",
+    "langchain-core": "1.6.0",
+    "bcrypt": "4.3.0"
+  },
+  "postgres_identity": {
+    "database": "p0_benchmark_oracle",
+    "role": "p0_oracle",
+    "host": "127.0.0.1",
+    "port": 55473,
+    "comment": "java-migration-p0-synthetic-80b29135",
+    "data_directory": "/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/p0/pgdata",
+    "version": "PostgreSQL 17.10 (Homebrew) on aarch64-apple-darwin25.4.0, compiled by Apple clang version 21.0.0 (clang-2100.0.123.102), 64-bit"
+  },
+  "postgres_settings": {
+    "max_connections": "100",
+    "max_worker_processes": "8",
+    "server_version": "17.10 (Homebrew)",
+    "shared_buffers": "16384",
+    "work_mem": "4096"
+  },
+  "vector_version": "0.8.4",
+  "schema": "0015_explain_purpose",
+  "parameters": {
+    "mode": "benchmark",
+    "rounds": 1,
+    "warmup": 0.0,
+    "measurement": 15.0,
+    "model_delay": 1,
+    "retrieval_delay": 0.05,
+    "mcp_delay": 0.2,
+    "label": "qualification",
+    "scenario": "accepted"
+  },
+  "boundary_delays_seconds": {
+    "each_model_call": 1,
+    "retrieval": 0.05,
+    "mcp": 0.2
+  },
+  "actual_call_chain": "httpx ASGI→FastAPI中间件/认证→chat/assignments路由→RagProductService/TaskService→真实AgentOrchestrator/LangGraph/tools→合成外部I/O→真实PG终态/消息/配额/成绩",
+  "measurement_boundary": "同进程ASGI；不含TCP/TLS/nginx/真实模型/真实embedding/真实检索/harness执行；真实startup/shutdown/300秒维护/10秒属主心跳运行，仅索引I/O预热由合成检索边界跳过；GC/线程池/PG池为真实实现",
+  "settings": {
+    "bcrypt_rounds": 12,
+    "rate_limit_chat_per_minute": 20,
+    "database_pool_max_size": 32,
+    "rag_max_active_requests": 20,
+    "rag_max_waiting_requests": 20,
+    "rag_queue_timeout_sec": 10.0,
+    "rag_task_max_seconds": 600.0,
+    "rag_task_input_ttl_hours": 24,
+    "rag_online_judge_enabled": false,
+    "rag_request_timeout_sec": 120.0,
+    "grading_daily_quota": 20
+  },
+  "account_daily_quota": 100000,
+  "synthetic_accounts": 60,
+  "upstream_quality": "live_not_authorized"
+}

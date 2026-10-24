@@ -1,0 +1,92 @@
+{
+  "version": "p0-v1",
+  "manifest": {
+    "manifest_path": "docs/java-migration/baseline-manifest.json",
+    "manifest_sha256": "29dc72e7f19c949f9d70b642e3e085a98bd26b1ca2a320fc0be43b5461d7e60c",
+    "frozen_git_commit": "80b29135faddd16d5e39fdbf0633291ea6a20489",
+    "original_source_head": "a47a1bc9d23c0a8e625a79ff7cfbd096dcb3071c",
+    "snapshot_semantics": "source HEAD + copied dirty/untracked files; never read original source root",
+    "files_checked": 378,
+    "intentional_mappings": [
+      {
+        "source_path": ".gitignore",
+        "copied_path": "docs/java-migration/reference/GITIGNORE.python"
+      },
+      {
+        "source_path": "AGENTS.md",
+        "copied_path": "docs/java-migration/reference/AGENTS.python.md"
+      },
+      {
+        "source_path": "README.md",
+        "copied_path": "docs/java-migration/reference/README.python.md"
+      }
+    ],
+    "failures": [],
+    "passed": true
+  },
+  "routes": {
+    "enumerated": 66,
+    "mapped": 66,
+    "coverage_percent": 100.0,
+    "missing": [],
+    "extra": [],
+    "duplicates": [],
+    "unowned": []
+  },
+  "tables": {
+    "enumerated": 29,
+    "mapped": 29,
+    "coverage_percent": 100.0,
+    "missing": [],
+    "extra": [],
+    "duplicates": [],
+    "unowned": []
+  },
+  "settings": {
+    "enumerated": 103,
+    "mapped": 103,
+    "coverage_percent": 100.0,
+    "missing": [],
+    "extra": [],
+    "duplicates": [],
+    "unowned": []
+  },
+  "models": {
+    "enumerated": 63,
+    "mapped": 63,
+    "coverage_percent": 100.0,
+    "missing": [],
+    "extra": [],
+    "duplicates": [],
+    "unowned": []
+  },
+  "unresolved_registrations": [],
+  "environment_template": {
+    "enumerated": 96,
+    "mapped": 96,
+    "unmapped": []
+  },
+  "route_semantics": {
+    "unmapped": [],
+    "checked": 66
+  },
+  "python_requirements": {
+    "enumerated": 19,
+    "mapped": 19,
+    "unmapped": [],
+    "extra": []
+  },
+  "import_roots": {
+    "enumerated": 17,
+    "mapped": 17,
+    "unmapped": [],
+    "extra": []
+  },
+  "knowledge_yaml": {
+    "enumerated": 4,
+    "mapped": 4,
+    "unmapped": []
+  },
+  "passed": true,
+  "failed_categories": []
+}

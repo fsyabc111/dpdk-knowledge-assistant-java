@@ -1,0 +1,379 @@
+{
+  "case_id": "p0-performance-queue-20-20",
+  "baseline": "80b29135faddd16d5e39fdbf0633291ea6a20489",
+  "status": "通过",
+  "checks": {
+    "20_active": true,
+    "20_waiting": true,
+    "one_immediate_queue_full": true,
+    "20_queue_timeouts": true,
+    "20_success": true,
+    "no_leaked_inputs": true,
+    "exactly_20_chat_counts": true,
+    "all_slots_released": true
+  },
+  "peak_active": 20,
+  "peak_waiting": 20,
+  "denominator": 41,
+  "expected_backpressure": 21,
+  "rejections_before_release": [
+    {
+      "http": 429,
+      "ms": 10033.622041999479,
+      "detail": "等待超时，请稍后重试"
+    },
+    {
+      "http": 429,
+      "ms": 10028.753167000104,
+      "detail": "等待超时，请稍后重试"
+    },
+    {
+      "http": 429,
+      "ms": 10033.763457999157,
+      "detail": "等待超时，请稍后重试"
+    },
+    {
+      "http": 429,
+      "ms": 10032.534250000026,
+      "detail": "等待超时，请稍后重试"
+    },
+    {
+      "http": 429,
+      "ms": 10031.956250000803,
+      "detail": "等待超时，请稍后重试"
+    },
+    {
+      "http": 429,
+      "ms": 10029.370959000516,
+      "detail": "等待超时，请稍后重试"
+    },
+    {
+      "http": 429,
+      "ms": 10031.189875000564,
+      "detail": "等待超时，请稍后重试"
+    },
+    {
+      "http": 429,
+      "ms": 10030.538333998265,
+      "detail": "等待超时，请稍后重试"
+    },
+    {
+      "http": 429,
+      "ms": 10029.921792000096,
+      "detail": "等待超时，请稍后重试"
+    },
+    {
+      "http": 429,
+      "ms": 10033.600916998694,
+      "detail": "等待超时，请稍后重试"
+    },
+    {
+      "http": 429,
+      "ms": 10033.173625000927,
+      "detail": "等待超时，请稍后重试"
+    },
+    {
+      "http": 429,
+      "ms": 10034.932165999635,
+      "detail": "等待超时，请稍后重试"
+    },
+    {
+      "http": 429,
+      "ms": 10035.298124999827,
+      "detail": "等待超时，请稍后重试"
+    },
+    {
+      "http": 429,
+      "ms": 10033.720250001352,
+      "detail": "等待超时，请稍后重试"
+    },
+    {
+      "http": 429,
+      "ms": 10033.990584001003,
+      "detail": "等待超时，请稍后重试"
+    },
+    {
+      "http": 429,
+      "ms": 10036.29345799709,
+      "detail": "等待超时，请稍后重试"
+    },
+    {
+      "http": 429,
+      "ms": 10035.371333000512,
+      "detail": "等待超时，请稍后重试"
+    },
+    {
+      "http": 429,
+      "ms": 10035.951750000095,
+      "detail": "等待超时，请稍后重试"
+    },
+    {
+      "http": 429,
+      "ms": 10035.571917000198,
+      "detail": "等待超时，请稍后重试"
+    },
+    {
+      "http": 429,
+      "ms": 32.89029200095683,
+      "detail": "服务繁忙，请稍后重试"
+    },
+    {
+      "http": 429,
+      "ms": 10033.970541997405,
+      "detail": "等待超时，请稍后重试"
+    }
+  ],
+  "requests": [
+    {
+      "http": 200,
+      "ms": 10144.087832999503,
+      "detail": null
+    },
+    {
+      "http": 200,
+      "ms": 10143.8428750007,
+      "detail": null
+    },
+    {
+      "http": 200,
+      "ms": 10144.010208001419,
+      "detail": null
+    },
+    {
+      "http": 200,
+      "ms": 10142.05341699926,
+      "detail": null
+    },
+    {
+      "http": 200,
+      "ms": 10142.02079199822,
+      "detail": null
+    },
+    {
+      "http": 200,
+      "ms": 10144.029125000088,
+      "detail": null
+    },
+    {
+      "http": 200,
+      "ms": 10141.264750000119,
+      "detail": null
+    },
+    {
+      "http": 200,
+      "ms": 10144.150665997586,
+      "detail": null
+    },
+    {
+      "http": 200,
+      "ms": 10142.34879200012,
+      "detail": null
+    },
+    {
+      "http": 200,
+      "ms": 10143.834083999536,
+      "detail": null
+    },
+    {
+      "http": 200,
+      "ms": 10139.693707998958,
+      "detail": null
+    },
+    {
+      "http": 200,
+      "ms": 10140.493584000069,
+      "detail": null
+    },
+    {
+      "http": 200,
+      "ms": 10142.805542000133,
+      "detail": null
+    },
+    {
+      "http": 200,
+      "ms": 10142.701125001622,
+      "detail": null
+    },
+    {
+      "http": 200,
+      "ms": 10142.597457997908,
+      "detail": null
+    },
+    {
+      "http": 429,
+      "ms": 10033.622041999479,
+      "detail": "等待超时，请稍后重试"
+    },
+    {
+      "http": 200,
+      "ms": 10142.215957999724,
+      "detail": null
+    },
+    {
+      "http": 200,
+      "ms": 10143.372624999756,
+      "detail": null
+    },
+    {
+      "http": 429,
+      "ms": 10028.753167000104,
+      "detail": "等待超时，请稍后重试"
+    },
+    {
+      "http": 429,
+      "ms": 10033.763457999157,
+      "detail": "等待超时，请稍后重试"
+    },
+    {
+      "http": 200,
+      "ms": 10141.566709000472,
+      "detail": null
+    },
+    {
+      "http": 429,
+      "ms": 10032.534250000026,
+      "detail": "等待超时，请稍后重试"
+    },
+    {
+      "http": 429,
+      "ms": 10031.956250000803,
+      "detail": "等待超时，请稍后重试"
+    },
+    {
+      "http": 429,
+      "ms": 10029.370959000516,
+      "detail": "等待超时，请稍后重试"
+    },
+    {
+      "http": 200,
+      "ms": 10142.60433399977,
+      "detail": null
+    },
+    {
+      "http": 200,
+      "ms": 10140.591624996887,
+      "detail": null
+    },
+    {
+      "http": 429,
+      "ms": 10031.189875000564,
+      "detail": "等待超时，请稍后重试"
+    },
+    {
+      "http": 429,
+      "ms": 10030.538333998265,
+      "detail": "等待超时，请稍后重试"
+    },
+    {
+      "http": 429,
+      "ms": 10029.921792000096,
+      "detail": "等待超时，请稍后重试"
+    },
+    {
+      "http": 429,
+      "ms": 10033.600916998694,
+      "detail": "等待超时，请稍后重试"
+    },
+    {
+      "http": 429,
+      "ms": 10033.173625000927,
+      "detail": "等待超时，请稍后重试"
+    },
+    {
+      "http": 429,
+      "ms": 10034.932165999635,
+      "detail": "等待超时，请稍后重试"
+    },
+    {
+      "http": 429,
+      "ms": 10035.298124999827,
+      "detail": "等待超时，请稍后重试"
+    },
+    {
+      "http": 429,
+      "ms": 10033.720250001352,
+      "detail": "等待超时，请稍后重试"
+    },
+    {
+      "http": 429,
+      "ms": 10033.990584001003,
+      "detail": "等待超时，请稍后重试"
+    },
+    {
+      "http": 429,
+      "ms": 10036.29345799709,
+      "detail": "等待超时，请稍后重试"
+    },
+    {
+      "http": 429,
+      "ms": 10035.371333000512,
+      "detail": "等待超时，请稍后重试"
+    },
+    {
+      "http": 429,
+      "ms": 10035.951750000095,
+      "detail": "等待超时，请稍后重试"
+    },
+    {
+      "http": 429,
+      "ms": 10035.571917000198,
+      "detail": "等待超时，请稍后重试"
+    },
+    {
+      "http": 429,
+      "ms": 32.89029200095683,
+      "detail": "服务繁忙，请稍后重试"
+    },
+    {
+      "http": 429,
+      "ms": 10033.970541997405,
+      "detail": "等待超时，请稍后重试"
+    }
+  ],
+  "before": {
+    "tables": {
+      "users": 61,
+      "api_tokens": 60,
+      "assignments": 1,
+      "assistant_sessions": 0,
+      "assistant_messages": 0,
+      "rag_requests": 0,
+      "rag_task_inputs": 0,
+      "rag_task_jobs": 0,
+      "grading_submissions": 0,
+      "upstream_usage_records": 0
+    },
+    "states": {},
+    "usage": {},
+    "duplicate_task_job_grades": 0,
+    "boundary_calls": {},
+    "blocked_network_attempts": 0
+  },
+  "after": {
+    "tables": {
+      "users": 61,
+      "api_tokens": 60,
+      "assignments": 1,
+      "assistant_sessions": 20,
+      "assistant_messages": 40,
+      "rag_requests": 20,
+      "rag_task_inputs": 0,
+      "rag_task_jobs": 0,
+      "grading_submissions": 0,
+      "upstream_usage_records": 40
+    },
+    "states": {
+      "answered": 20
+    },
+    "usage": {
+      "chat": 20
+    },
+    "duplicate_task_job_grades": 0,
+    "boundary_calls": {
+      "model": 40,
+      "retrieval": 20
+    },
+    "blocked_network_attempts": 0
+  },
+  "actual_queue_timeout_seconds": 10.0
+}

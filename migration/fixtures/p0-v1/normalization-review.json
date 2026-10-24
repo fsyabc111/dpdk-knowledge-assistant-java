@@ -1,0 +1,799 @@
+{
+  "version": "p0-v1",
+  "owner_review": "已审阅：仅列出实际被归一化的字段路径；时间逐值/UTC/精度/时序校验；未作数组重排",
+  "user_acceptance": "未验收",
+  "paths": [
+    {
+      "path": "$.observations[0].body.token",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[1].body.token",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[2].body.token",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[3].body.token",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[4].body.token",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[5].body.token",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[6].body.token",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[7].body.token",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[15].body.items[0].id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[43].body.requests[0].id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[44].request.path_parameters.request_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[44].body.reset_token",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[47].body.requests[0].id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[48].request.path_parameters.request_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[50].body.id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[51].request.path_parameters.assignment_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[51].body.id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[52].request.path_parameters.assignment_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[52].body.id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[53].request.path_parameters.assignment_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[53].body.submission_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[54].request.path_parameters.assignment_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[54].body.assignment.id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[55].request.path_parameters.assignment_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[56].request.path_parameters.assignment_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[56].request.path_parameters.submission_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[56].body.session_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[56].body.task_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[57].request.path_parameters.assignment_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[57].body.id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[58].request.path_parameters.assignment_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[58].body.id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[59].body.id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[60].request.path_parameters.knowledge_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[60].body.id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[61].request.path_parameters.knowledge_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[62].request.path_parameters.issue_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[62].body.id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[62].body.request_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[62].body.elapsed_ms",
+      "kind": "duration",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[63].request.path_parameters.issue_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[63].body.id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[63].body.request_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[63].body.elapsed_ms",
+      "kind": "duration",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[64].request.input.message_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[64].body.issue_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[65].request.path_parameters.issue_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[66].body.session_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[66].body.message_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[66].body.task_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[67].body[0].data.session_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[67].body[0].data.task_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[67].body[6].data.session_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[67].body[6].data.message_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[67].body[6].data.task_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[68].body.sessions[0].id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[68].body.sessions[1].id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[68].body.sessions[2].id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[68].body.sessions[3].id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[68].body.sessions[4].id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[69].request.path_parameters.session_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[69].body.session_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[69].body.messages[0].id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[70].request.params.session_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[71].request.path_parameters.task_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[71].body.task_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[71].body.session_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[71].body.message_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[71].body.elapsed_ms",
+      "kind": "duration",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[72].request.path_parameters.task_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[72].body[0].data.session_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[72].body[0].data.task_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[72].body[6].data.session_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[72].body[6].data.message_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[72].body[6].data.task_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[73].request.path_parameters.task_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[73].body.task_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[73].body.session_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[73].body.message_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[73].body.elapsed_ms",
+      "kind": "duration",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[74].request.path_parameters.session_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[76].request.path_parameters.session_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[83].request.path_parameters.assignment_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[85].request.path_parameters.assignment_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[87].request.path_parameters.assignment_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[91].request.path_parameters.session_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[92].request.path_parameters.session_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[99].request.path_parameters.issue_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[102].request.path_parameters.knowledge_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[108].request.path_parameters.task_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[110].request.path_parameters.task_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[118].request.path_parameters.assignment_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[119].request.path_parameters.assignment_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[120].request.path_parameters.issue_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[121].request.path_parameters.issue_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[122].request.path_parameters.knowledge_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[123].request.path_parameters.knowledge_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[142].request.path_parameters.assignment_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[144].request.path_parameters.assignment_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[144].request.path_parameters.submission_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[146].request.path_parameters.assignment_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[147].request.path_parameters.assignment_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[148].request.path_parameters.assignment_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[166].request.path_parameters.issue_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[170].request.path_parameters.task_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[172].request.path_parameters.session_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[173].request.path_parameters.task_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[174].request.path_parameters.assignment_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[176].request.path_parameters.issue_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[181].body.session_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[181].body.message_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[181].body.task_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[182].body.session_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[182].body.message_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.observations[182].body.task_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[0].task_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[0].session_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[0].message_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[1].task_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[1].session_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[1].message_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[1].stored_message_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[1].stored_session_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[2].task_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[2].session_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[2].message_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[2].stored_message_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[2].stored_session_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[3].task_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[3].request_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[3].session_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[3].message_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[3].stored_message_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[3].stored_session_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[4].task_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[4].request_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[4].session_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[4].message_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[4].stored_message_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[4].stored_session_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[5].task_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[5].request_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[5].session_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[6].task_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[6].session_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[6].message_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[6].stored_message_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[6].stored_session_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[7].task_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[7].request_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[7].session_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[7].message_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[7].stored_message_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    },
+    {
+      "path": "$.state.associations[7].stored_session_id",
+      "kind": "generated_identity",
+      "reason": "生成实体按全trace双射；调用方request_id保留；耗时非负整数"
+    }
+  ],
+  "rules": [
+    {
+      "pattern": ".*\\.(session_id|task_id|message_id|issue_id|request_id|submission_id|assignment_id|knowledge_id|stored_message_id|stored_session_id)$",
+      "kind": "identity",
+      "reason": "运行期生成身份，保留跨响应/表/帧关联"
+    },
+    {
+      "pattern": ".*\\.(sessions|messages|users|entries|items|assignments|requests|rows)\\[\\d+\\]\\.id$",
+      "kind": "identity",
+      "reason": "明确声明的实体列表主键"
+    },
+    {
+      "pattern": ".*\\.body(?:\\.[A-Za-z_]+(?:\\[\\d+\\])?)*\\.(id|reset_token|token)$",
+      "kind": "identity",
+      "reason": "明确实体响应主键或合成令牌"
+    },
+    {
+      "pattern": ".*\\.elapsed_ms$",
+      "kind": "duration",
+      "reason": "耗时非确定性，必须保持非负整数"
+    }
+  ]
+}

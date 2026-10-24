@@ -1,0 +1,31 @@
+{
+  "version": "p0-v1",
+  "freeze_status": "final-freeze-awaits-J0-02-and-user-P0-acceptance",
+  "deterministic": {
+    "mandatory_case_pass_percent": 100,
+    "unexplained_difference_count": 0,
+    "route_table_settings_model_mapping_percent": 100
+  },
+  "fixed_vector_retrieval": {
+    "dimensions": 1024,
+    "model_embedding_calls": "forbidden in P0",
+    "ranking_order_and_ties": "pending J0-02 fixture; no new sorting tie policy invented",
+    "float_tolerance": "pending J0-02 evidence and final freeze"
+  },
+  "synthetic_capacity": {
+    "student_population_max": 60,
+    "peak_question_concurrency": 10,
+    "queue_boundary": "measure active/waiting/beyond-boundary separately; configured defaults are not acceptance thresholds",
+    "p95_ms": null,
+    "error_rate": null,
+    "cpu_rss_limit": null,
+    "recovery_rto_ms": null,
+    "recovery_rpo": "pending synthetic crash/transaction evidence",
+    "status": "pending_measurement_from_J0-02"
+  },
+  "real_quality": {
+    "status": "live_not_authorized",
+    "procedure": "freeze corpus/questions/model/parameters/repetitions/budget/judging, separately approve Python live baseline, then freeze allowed deltas before Java live comparison",
+    "numeric_thresholds": null
+  }
+}

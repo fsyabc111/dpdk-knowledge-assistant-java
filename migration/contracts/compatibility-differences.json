@@ -1,0 +1,222 @@
+{
+  "version": "p0-v1",
+  "policy": "保留冻结源码作为 oracle；禁止修 Python 或将安全要求伪称当前行为。待决差异由主 Agent 汇总给用户，P1 合成骨架可继续。",
+  "differences": [
+    {
+      "id": "COMP-001",
+      "topic": "任务恢复没有 fencing",
+      "source": [
+        {
+          "path": "backend/app/services/rag_issue_service.py",
+          "line": 238
+        },
+        {
+          "path": "backend/app/services/task_service.py",
+          "line": 452
+        }
+      ],
+      "baseline_behavior": "claim 以 pending/updated_at 陈旧条件拨新时间，心跳按 task_id 更新；没有 owner token/epoch 且终态写入不验证租约世代。进程暂停超过 grace 时不能承诺跨副本互斥或外部 exactly-once。",
+      "disposition": "preserve_baseline_single_replica",
+      "blocked_scope": "多副本部署/扩容（本轮非目标）；J3-01 不得宣称 fencing 已实现",
+      "owner_task": "J3-01"
+    },
+    {
+      "id": "COMP-002",
+      "topic": "正式作业提交没有业务幂等键",
+      "source": [
+        {
+          "path": "backend/app/api/assignments.py",
+          "line": 317
+        },
+        {
+          "path": "backend/app/services/harness_grading.py",
+          "line": 24
+        }
+      ],
+      "baseline_behavior": "submit 独立扣 grading 配额、同步 MCP、写独立成绩行；不接受 request_id/job_id 业务幂等键。重复请求可能重复评测/扣配额/落成绩，超时不能推断未执行。",
+      "disposition": "preserve_explicit_scope",
+      "blocked_scope": "J2-04 自动重试/新增 exactly-once 承诺；新增能力须另立授权和验收",
+      "owner_task": "J2-04"
+    },
+    {
+      "id": "COMP-003",
+      "topic": "聊天评测恢复在 running/unknown 时同 job_id 业务重投",
+      "source": [
+        {
+          "path": "backend/app/agent/tools.py",
+          "line": 99
+        },
+        {
+          "path": "backend/app/agent/tools.py",
+          "line": 117
+        },
+        {
+          "path": "backend/app/agent/tools.py",
+          "line": 456
+        },
+        {
+          "path": "backend/app/agent/tools.py",
+          "line": 493
+        },
+        {
+          "path": "backend/app/agent/mcp_client.py",
+          "line": 34
+        }
+      ],
+      "baseline_behavior": "_harness_job_status 对失败/异常/超时返回 None；_resume_grading_job 仅 finished+dict result 或本地 finished 可 replay。submitted 且 running/unknown/None 返回 replayed=None，随后 grade_plugin 主流程再提交同一 job_id。源码注释依赖 harness 同 job_id 加入既有执行/幂等重投，但外部 harness 未复制、未验证。单次 MCP call_tool 提交后不传输重试不能覆盖这一业务层第二次调用。",
+      "disposition": "pending_harness_evidence_or_user_approved_difference",
+      "recommendation": "Python oracle 如实保留；未证明 harness 同 job_id 幂等前，Java 对 unknown 不自动重新提交。若需维持重投，先用获授权 harness 合同/实证解释；采用安全阻断属于有意兼容差异，由主 Agent 提请用户确认。",
+      "blocked_scope": "J3-02 恢复接线冻结/真实评测放行；不阻断 P1 合成模型/MCP适配",
+      "owner_task": "J3-02",
+      "dynamic_evidence": "pending J0-02 / performance synthetic recovery result"
+    },
+    {
+      "id": "COMP-004",
+      "topic": "schema 版本标记不足以判定结构",
+      "source": [
+        {
+          "path": "backend/alembic/versions/0001_baseline.py",
+          "line": 25
+        },
+        {
+          "path": "backend/app/storage/postgres_schema.sql",
+          "line": 191
+        },
+        {
+          "path": "backend/app/storage/rag_schema.sql",
+          "line": 24
+        }
+      ],
+      "baseline_behavior": "0001 upgrade 仅 pass；基础由 init_db 建立。当前模板已有0014/0015字段，先init_db再标0013不代表历史结构。LI DDL由外部库动态生成，static表覆盖不是完整catalog实证。",
+      "disposition": "block_baseline_registration_until_full_catalog_match",
+      "blocked_scope": "J1-01 Java baseline 登记；P5旧库迁入（独立授权）",
+      "owner_task": "J1-01"
+    },
+    {
+      "id": "COMP-005",
+      "topic": "正式 submit 的 .so 与 chat 的 .so 处理不同",
+      "source": [
+        {
+          "path": "backend/app/api/assignments.py",
+          "line": 272
+        },
+        {
+          "path": "backend/app/api/chat.py",
+          "line": 88
+        }
+      ],
+      "baseline_behavior": "chat .so 保留原件摘要但 source=None；正式 submit .so 与 .c 均以 UTF-8 replacement 解码文本后交 source 型 MCP。接受扩展名不证明二进制能被评测。",
+      "disposition": "preserve_oracle_record_product_limitation",
+      "blocked_scope": "不得宣称 .so 二进制真实评测可用；J2-04 fixture需覆盖；若改为拒绝或新增binary评测，须用户批准范围",
+      "owner_task": "J2-04"
+    },
+    {
+      "id": "COMP-006",
+      "topic": "日配额失败计数并非所有路径都回滚",
+      "source": [
+        {
+          "path": "backend/app/core/rate_limit.py",
+          "line": 56
+        },
+        {
+          "path": "backend/app/core/rate_limit.py",
+          "line": 73
+        },
+        {
+          "path": "backend/app/services/rag_issue_service.py",
+          "line": 84
+        }
+      ],
+      "baseline_behavior": "check_and_count_daily 先在独立事务递增，再在外面检查超额，故拒绝仍可推进计数；chat begin_admitted 和 task reserve_grading_job 在 caller tx 内 count/check，异常则整笔回滚。quota=0 不记计数。",
+      "disposition": "preserve_path_specific_behavior",
+      "blocked_scope": "J2-05/J2-04/J4-02 不得把所有 quota 实现成同一个独立提交或全部回滚的简化函数",
+      "owner_task": "J2-05"
+    },
+    {
+      "id": "COMP-007",
+      "topic": "不同管理面静态应急主体树范围不同",
+      "source": [
+        {
+          "path": "backend/app/api/admin.py",
+          "line": 42
+        },
+        {
+          "path": "backend/app/api/grading.py",
+          "line": 46
+        },
+        {
+          "path": "backend/app/api/rag.py",
+          "line": 33
+        }
+      ],
+      "baseline_behavior": "admin/grading/usage 等部分入口视静态主体不限树；rag scope 仅 leader 不限，admin仍按创建学生关系收窄。source回读只require_auth，无session owner检查。",
+      "disposition": "preserve_endpoint_specific_authorization",
+      "blocked_scope": "不得全局统一扩大/收紧权限；更改必须单独批准兼容差异",
+      "owner_task": "J4-02"
+    },
+    {
+      "id": "COMP-008",
+      "topic": "SSE恢复是有界日志与整段终态重放",
+      "source": [
+        {
+          "path": "backend/app/services/task_service.py",
+          "line": 37
+        },
+        {
+          "path": "backend/app/services/task_service.py",
+          "line": 244
+        },
+        {
+          "path": "backend/app/services/task_service.py",
+          "line": 304
+        }
+      ],
+      "baseline_behavior": "进度最多500，丢最旧；订阅队列无界；终态按DB整段重建；没有Last-Event-ID逐帧游标保证。task events GET可触发pending重驱动，不是纯读。",
+      "disposition": "preserve_explicit_limitations_measure_capacity",
+      "blocked_scope": "不得宣称逐帧 exactly-once /无限慢订阅者资源安全；容量阈值由J0-02合成实测后定",
+      "owner_task": "J3-01"
+    },
+    {
+      "id": "COMP-009",
+      "topic": "FastAPI文档及内部监控是实际路由面",
+      "source": [
+        {
+          "path": "backend/app/main.py",
+          "line": 20
+        },
+        {
+          "path": "backend/app/main.py",
+          "line": 26
+        }
+      ],
+      "baseline_behavior": "默认文档/openapi/redirect GET+HEAD、/metrics 与隐藏/maintenance端点存在；nginx仅/api反代不等于应用没有这些路由。CORS OPTIONS属middleware。",
+      "disposition": "preserve_inventory_classify_exposure",
+      "blocked_scope": "J4-03若关闭/改变框架文档面需登记；不得将未枚举端点默认为不存在",
+      "owner_task": "J4-03"
+    },
+    {
+      "id": "COMP-010",
+      "topic": "首次回答与持久终态重放的引用元数据/next_steps不同",
+      "source": [
+        {
+          "path": "backend/app/services/rag_issue_service.py",
+          "line": 383
+        },
+        {
+          "path": "backend/app/services/rag_product_service.py",
+          "line": 217
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 32
+        }
+      ],
+      "baseline_behavior": "finish的evidence_json只保存chunk_id/source_path/section；chat_response_from_row以score=0构造Citation，title走schema缺省空串，next_steps固定[]。首次回答可含title/排序score/后续建议，因此不能要求first==replay完整JSON或SSE sources完全一致。主Agent合成oracle已回传此现象；静态链确认。",
+      "disposition": "preserve_path_specific_oracle_pending_user_approved_improvement",
+      "recommendation": "J0-02首次与重放各自冻结、跨语言分别比较；如Java统一改善持久化字段，则先批准有意兼容差异。",
+      "blocked_scope": "J3-03重放契约需说明；不阻断P1合成骨架",
+      "owner_task": "J3-03",
+      "dynamic_evidence": "主Agent已回传oracle-python.log发现；最终关联J0-02合成fixture路径"
+    }
+  ]
+}

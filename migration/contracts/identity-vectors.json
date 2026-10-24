@@ -1,0 +1,128 @@
+{
+  "version": "p0-v1",
+  "status": "reference-vectors-only; compare with J0-02 oracle before final freeze",
+  "python_strip_codepoints": [
+    "U+0009",
+    "U+000A",
+    "U+000B",
+    "U+000C",
+    "U+000D",
+    "U+001C",
+    "U+001D",
+    "U+001E",
+    "U+001F",
+    "U+0020",
+    "U+0085",
+    "U+00A0",
+    "U+1680",
+    "U+2000",
+    "U+2001",
+    "U+2002",
+    "U+2003",
+    "U+2004",
+    "U+2005",
+    "U+2006",
+    "U+2007",
+    "U+2008",
+    "U+2009",
+    "U+200A",
+    "U+2028",
+    "U+2029",
+    "U+202F",
+    "U+205F",
+    "U+3000"
+  ],
+  "input_identity": [
+    {
+      "id": "plain",
+      "question": "DPDK",
+      "attachment": null,
+      "identity_json": "[\"DPDK\",null,null]",
+      "identity_utf8_hex": "5b224450444b222c6e756c6c2c6e756c6c5d",
+      "input_hash": "41bd1c96e1b7a5a92b26dc8ae267735895bef8033ed6218adc38116ae20bb9b3"
+    },
+    {
+      "id": "nfc-strip",
+      "question": "\u001c é ",
+      "attachment": null,
+      "identity_json": "[\"é\",null,null]",
+      "identity_utf8_hex": "5b22c3a9222c6e756c6c2c6e756c6c5d",
+      "input_hash": "8e05b2d1e8c6954d1e9f4da4b2d4aa2cf7a7dba8a98317fcf33c20269b68ace2"
+    },
+    {
+      "id": "json-escape",
+      "question": " 引号\" \\ 换行\n",
+      "attachment": null,
+      "identity_json": "[\"引号\\\" \\\\ 换行\",null,null]",
+      "identity_utf8_hex": "5b22e5bc95e58fb75c22205c5c20e68da2e8a18c222c6e756c6c2c6e756c6c5d",
+      "input_hash": "2d40ff5fbfcd80af59b382c5e9e82cacab1102442d3740fa360fba917bc4a3dc"
+    },
+    {
+      "id": "emoji",
+      "question": "🧪 DPDK",
+      "attachment": null,
+      "identity_json": "[\"🧪 DPDK\",null,null]",
+      "identity_utf8_hex": "5b22f09fa7aa204450444b222c6e756c6c2c6e756c6c5d",
+      "input_hash": "02e637df6d14df255df5308eec7ccb8d0933dfe576b613f5ab33c122e6f9155a"
+    },
+    {
+      "id": "nul",
+      "question": "a\u0000b",
+      "attachment": null,
+      "identity_json": "[\"a\\u0000b\",null,null]",
+      "identity_utf8_hex": "5b22615c753030303062222c6e756c6c2c6e756c6c5d",
+      "input_hash": "b3aa1b7d18a33f1a28111f61ce888a985493b946680f90b6fa4cd3b02f67c8e0"
+    },
+    {
+      "id": "empty-attachment",
+      "question": "DPDK",
+      "attachment": {
+        "filename": " é.c ",
+        "bytes_hex": ""
+      },
+      "identity_json": "[\"DPDK\",\"é.c\",\"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\"]",
+      "identity_utf8_hex": "5b224450444b222c22c3a92e63222c2265336230633434323938666331633134396166626634633839393666623932343237616534316534363439623933346361343935393931623738353262383535225d",
+      "input_hash": "38f32bd3c7c433e86bc4b9838f208be4a50d371a0467629f103e5cdded79fef8",
+      "raw_content_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "execution_source": "",
+      "execution_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "id": "raw-invalid-utf8",
+      "question": "DPDK",
+      "attachment": {
+        "filename": "test.c",
+        "bytes_hex": "ff0a"
+      },
+      "identity_json": "[\"DPDK\",\"test.c\",\"e4688624e5f1ad0629505e6768e3bb36244f2f3e33e751215afa820334a76ed3\"]",
+      "identity_utf8_hex": "5b224450444b222c22746573742e63222c2265343638383632346535663161643036323935303565363736386533626233363234346632663365333365373531323135616661383230333334613736656433225d",
+      "input_hash": "8733cf667e1aac2024ca7127d48bd8e41aa92238edc20b850049a81cf3970693",
+      "raw_content_hash": "e4688624e5f1ad0629505e6768e3bb36244f2f3e33e751215afa820334a76ed3",
+      "execution_source": "�\n",
+      "execution_hash": "8d75cfafa290dea108e554948eae67ba5c418cad73059f9452ff6fc652d5c869"
+    },
+    {
+      "id": "source-replacement",
+      "question": "DPDK",
+      "attachment": {
+        "filename": "test.c",
+        "bytes_hex": "efbfbd0a"
+      },
+      "identity_json": "[\"DPDK\",\"test.c\",\"8d75cfafa290dea108e554948eae67ba5c418cad73059f9452ff6fc652d5c869\"]",
+      "identity_utf8_hex": "5b224450444b222c22746573742e63222c2238643735636661666132393064656131303865353534393438656165363762613563343138636164373330353966393435326666366663363532643563383639225d",
+      "input_hash": "430306dd5af688069d8c3ee04c26408e15e49f2c294e376ca2d3d7635ab209d8",
+      "raw_content_hash": "8d75cfafa290dea108e554948eae67ba5c418cad73059f9452ff6fc652d5c869",
+      "execution_source": "�\n",
+      "execution_hash": "8d75cfafa290dea108e554948eae67ba5c418cad73059f9452ff6fc652d5c869"
+    }
+  ],
+  "index_configuration": {
+    "serialized": "{\"api_base\": \"http://127.0.0.1:1/v1\", \"chunker\": \"bounded-lines-v2\", \"dimensions\": 1024, \"model\": \"\\u5408\\u6210-model\"}",
+    "utf8_hex": "7b226170695f62617365223a2022687474703a2f2f3132372e302e302e313a312f7631222c20226368756e6b6572223a2022626f756e6465642d6c696e65732d7632222c202264696d656e73696f6e73223a20313032342c20226d6f64656c223a20225c75353430385c75363231302d6d6f64656c227d"
+  },
+  "explain_identity": {
+    "submission_id": "grade_synthetic_001",
+    "session_id": "explain-grade_synthetic_001",
+    "request_id": "2bb5bfe5-0f7a-5b25-b9e5-de590f9046d3"
+  }
+}

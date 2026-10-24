@@ -1,0 +1,500 @@
+{
+  "version": "p0-v1",
+  "status": "P1-consumable design; Java not implemented",
+  "shared_interface_owner": "J1-01 integrator; feature owner provides semantics",
+  "ports": [
+    {
+      "id": "platform.TransactionRunner",
+      "owner_task": "J1-01",
+      "java_target": "io.dpdk.assistant.contracts.platform.TransactionRunner",
+      "signature": "<T> T required(Function<DbTx,T> work)",
+      "semantics": "DbTx 为同一 PG connection/transaction；参与者不独立提交、不 REQUIRES_NEW；异常整笔 rollback；不得跨模型/MCP/network await。",
+      "consumers": [
+        "J2-01",
+        "J2-04",
+        "J2-05",
+        "J3-01",
+        "J4-01"
+      ],
+      "sources": [
+        {
+          "path": "backend/app/storage/postgres.py",
+          "line": 97,
+          "end_line": 104,
+          "symbol": "connect"
+        }
+      ]
+    },
+    {
+      "id": "platform.ClockPort",
+      "owner_task": "J1-01",
+      "java_target": "io.dpdk.assistant.contracts.platform.ClockPort",
+      "signature": "Instant nowUtc(); long monotonicNanos(); String nextSessionIso();",
+      "semantics": "UTC 墙钟用于持久化/期限；单调时钟用于预算；会话时间另有进程内严格递增微秒保护，不可用两种时钟互换。",
+      "consumers": [
+        "J2-01",
+        "J2-03",
+        "J2-05",
+        "J3-01"
+      ],
+      "sources": [
+        {
+          "path": "backend/app/services/session_service.py",
+          "line": 23,
+          "end_line": 30,
+          "symbol": "now_iso"
+        }
+      ]
+    },
+    {
+      "id": "identity.PrincipalResolver",
+      "owner_task": "J2-01",
+      "java_target": "io.dpdk.assistant.contracts.identity.PrincipalResolver",
+      "signature": "Principal resolve(RequestHeaders headers, AuthSettings settings)",
+      "data_fields": {
+        "Principal": [
+          "subject:string",
+          "roles:list<string>",
+          "dailyQuota:int (0=unlimited)",
+          "mustChangePassword:boolean"
+        ]
+      },
+      "semantics": "local/token/account 三模式；静态 token 优先；401 带 WWW-Authenticate；只保持 Python 四字段 wire 行为。",
+      "consumers": [
+        "J1-04",
+        "J2-02",
+        "J2-03",
+        "J2-04",
+        "J2-05",
+        "J3-01",
+        "J4-02"
+      ],
+      "sources": [
+        {
+          "path": "backend/app/core/auth.py",
+          "line": 58,
+          "end_line": 64,
+          "symbol": "extract_bearer_token"
+        },
+        {
+          "path": "backend/app/core/auth.py",
+          "line": 67,
+          "end_line": 91,
+          "symbol": "require_auth"
+        }
+      ]
+    },
+    {
+      "id": "identity.AccountWriteGuard",
+      "owner_task": "J2-01",
+      "java_target": "io.dpdk.assistant.contracts.identity.AccountWriteGuard",
+      "signature": "boolean lockEnabled(DbTx tx, String subject)",
+      "semantics": "业务写入事务内 UPDATE users enabled=enabled RETURNING 锁账号，停用/删除与受理/记分按提交顺序裁决；静态无 users 行例外，但同名已停账号不可绕过。",
+      "consumers": [
+        "J3-01",
+        "J2-04"
+      ],
+      "sources": [
+        {
+          "path": "backend/app/services/user_service.py",
+          "line": 39,
+          "end_line": 56,
+          "symbol": "lock_enabled_account"
+        }
+      ]
+    },
+    {
+      "id": "session.SessionPort",
+      "owner_task": "J2-05",
+      "java_target": "io.dpdk.assistant.contracts.session.SessionPort",
+      "signature": "SessionId ensureOwned(Optional<String> requestedId,String title,String subject); void appendUser(DbTx tx,MessageInput input); void touch(DbTx tx,String sessionId,String iso); void discardEmpty(String sessionId,String subject);",
+      "semantics": "ensureOwned 在 Python 是受理前独立提交的会话操作；原子受理内 append/touch 参与 caller tx；首发唯一键败方只补偿清理空会话，不删除赢家有消息的会话；release 绑定首次后保持。",
+      "consumers": [
+        "J1-04",
+        "J3-01",
+        "J3-03",
+        "J3-04"
+      ],
+      "sources": [
+        {
+          "path": "backend/app/services/session_service.py",
+          "line": 48,
+          "end_line": 70,
+          "symbol": "_ensure_session_sync"
+        },
+        {
+          "path": "backend/app/services/session_service.py",
+          "line": 108,
+          "end_line": 116,
+          "symbol": "_discard_empty_session_sync"
+        }
+      ]
+    },
+    {
+      "id": "usage.QuotaParticipant",
+      "owner_task": "J2-05",
+      "java_target": "io.dpdk.assistant.contracts.usage.QuotaParticipant",
+      "signature": "void countAndCheck(DbTx tx,String subject,LocalDate utcDay,String kind,int quota)",
+      "semantics": "quota=0 不记日计数；chat 原子受理与 request 唯一键同提交，超额抛出回滚。普通 check_and_count_daily 是独立事务先递增后检查，其失败计数现状须保留/登记差异，不能误称所有配额都回滚。",
+      "consumers": [
+        "J3-01",
+        "J2-04",
+        "J3-02",
+        "J4-02"
+      ],
+      "sources": [
+        {
+          "path": "backend/app/core/rate_limit.py",
+          "line": 56,
+          "end_line": 60,
+          "symbol": "check_and_count_daily"
+        },
+        {
+          "path": "backend/app/core/rate_limit.py",
+          "line": 77,
+          "end_line": 87,
+          "symbol": "increment_daily_in_conn"
+        },
+        {
+          "path": "backend/app/core/rate_limit.py",
+          "line": 92,
+          "end_line": 95,
+          "symbol": "count_kind_in_conn"
+        }
+      ]
+    },
+    {
+      "id": "task.AdmissionPort",
+      "owner_task": "J3-01",
+      "java_target": "io.dpdk.assistant.contracts.task.AdmissionPort",
+      "signature": "Probe probe(RequestIdentity identity,String subject,Optional<String> sessionId); AdmissionResult admit(AdmissionInput input);",
+      "data_fields": {
+        "RequestIdentity": [
+          "requestId:string",
+          "inputHash:string",
+          "initialRequest:boolean",
+          "purpose:chat|explain"
+        ],
+        "AdmissionInput": [
+          "identity",
+          "subject",
+          "sessionId",
+          "redactedQuestion",
+          "context",
+          "model",
+          "rawTemporaryInput",
+          "dailyQuota"
+        ]
+      },
+      "semantics": "probe miss/in_progress/terminal/replay；hash/用户不匹配409。admit 原子账号锁+唯一请求+临时输入+用户消息+session touch+chat quota；冲突返回 attach/replay。无模型/外部调用在此事务内。",
+      "consumers": [
+        "J3-03",
+        "J3-04"
+      ],
+      "sources": [
+        {
+          "path": "backend/app/services/rag_issue_service.py",
+          "line": 73,
+          "end_line": 115,
+          "symbol": "begin_admitted"
+        },
+        {
+          "path": "backend/app/services/rag_issue_service.py",
+          "line": 117,
+          "end_line": 158,
+          "symbol": "probe"
+        }
+      ]
+    },
+    {
+      "id": "task.LifecyclePort",
+      "owner_task": "J3-01",
+      "java_target": "io.dpdk.assistant.contracts.task.LifecyclePort",
+      "signature": "Optional<TaskRow> getOwned(String taskId,String subject); TaskRow cancel(String taskId,String subject); boolean claimRecovery(String taskId,Instant staleCutoff); void heartbeat(Collection<String> ownedIds);",
+      "semantics": "owner 缺失/越权404；cancel pending 条件更新+取消占位消息+输入清理同事务；claim 只更新时间条件，无 fencing token。单副本范围；心跳不是 exactly-once 保证。",
+      "consumers": [
+        "J3-02",
+        "J3-03",
+        "J3-04"
+      ],
+      "sources": [
+        {
+          "path": "backend/app/services/rag_issue_service.py",
+          "line": 172,
+          "end_line": 178,
+          "symbol": "get_task"
+        },
+        {
+          "path": "backend/app/services/rag_issue_service.py",
+          "line": 189,
+          "end_line": 223,
+          "symbol": "cancel_task"
+        },
+        {
+          "path": "backend/app/services/rag_issue_service.py",
+          "line": 238,
+          "end_line": 250,
+          "symbol": "claim_recovery"
+        },
+        {
+          "path": "backend/app/services/task_service.py",
+          "line": 452,
+          "end_line": 468,
+          "symbol": "heartbeat_owned"
+        }
+      ]
+    },
+    {
+      "id": "task.AnswerCompletion",
+      "owner_task": "J3-01",
+      "java_target": "io.dpdk.assistant.contracts.task.AnswerCompletion",
+      "signature": "CompletedAnswer finish(AnswerCompletion input)",
+      "data_fields": {
+        "AnswerCompletion": [
+          "taskId",
+          "sessionId",
+          "answer",
+          "orderedCitations",
+          "verdict",
+          "reason",
+          "releaseId",
+          "elapsedMs"
+        ]
+      },
+      "semantics": "pending→终态条件更新、assistant message、ranked citations、issue(若需要)、session touch、删除临时输入同一事务；重复终态拒绝。返回前持久化成功，不能先发送成功 done 后补写。",
+      "consumers": [
+        "J3-03"
+      ],
+      "sources": [
+        {
+          "path": "backend/app/services/rag_issue_service.py",
+          "line": 383,
+          "end_line": 420,
+          "symbol": "finish"
+        }
+      ]
+    },
+    {
+      "id": "grading.TaskGradeParticipant",
+      "owner_task": "J2-04",
+      "java_target": "io.dpdk.assistant.contracts.grading.TaskGradeParticipant",
+      "signature": "TaskGradeResult recordTaskGrade(TaskGradeInput input) // persisted|legacy_unlinked|cancelled",
+      "semantics": "由 grading transaction 锁 enabled user、pending task 和 job；成绩 insert 与 submission_done 同提交；task_job_id 部分唯一索引防重复；0014以前已标完成无关联成绩返回 legacy_unlinked 不猜测补写。不能复制 task/session/usage 仓储。",
+      "consumers": [
+        "J3-02"
+      ],
+      "sources": [
+        {
+          "path": "backend/app/services/grading_service.py",
+          "line": 111,
+          "end_line": 147,
+          "symbol": "_record_task_job_submission_sync"
+        }
+      ]
+    },
+    {
+      "id": "grading.FormalSubmissionPort",
+      "owner_task": "J2-04",
+      "java_target": "io.dpdk.assistant.contracts.grading.FormalSubmissionPort",
+      "signature": "SubmitReceipt submit(String assignmentId,Principal actor,SubmittedSource source)",
+      "semantics": "接受作业快照+截止/协议检查→独立 grading quota→MCP(事务外)→事务内 enabled lock+成绩写入 accepted_assignment→读取 best。同步接口，没有业务幂等键，不承诺 exactly-once/自动恢复。",
+      "consumers": [
+        "J2-03"
+      ],
+      "sources": [
+        {
+          "path": "backend/app/api/assignments.py",
+          "line": 318,
+          "end_line": 388,
+          "symbol": "submit_assignment"
+        }
+      ]
+    },
+    {
+      "id": "model.ChatAndEmbeddingPort",
+      "owner_task": "J1-02",
+      "java_target": "io.dpdk.assistant.contracts.model.ChatModelPort/EmbeddingPort",
+      "signature": "ChatResult complete(ChatInput input); Publisher<ModelDelta> stream(ChatInput input); List<Vector1024> embed(EmbeddingInput input);",
+      "semantics": "不变模型/参数/超时与重试分类；usage 未提供用 null/unknown；流读边界≠SSE边界；独立上游并发门。P0 仅本地替身，无真实调用。",
+      "consumers": [
+        "J1-03",
+        "J1-04",
+        "J3-02",
+        "J4-01"
+      ],
+      "sources": [
+        {
+          "path": "backend/app/core/llm_client.py",
+          "line": 27,
+          "end_line": 41,
+          "symbol": "is_retriable_llm_error"
+        },
+        {
+          "path": "backend/app/core/llm_client.py",
+          "line": 44,
+          "end_line": 46,
+          "symbol": "llm_retry_delay_seconds"
+        }
+      ]
+    },
+    {
+      "id": "model.HarnessPort",
+      "owner_task": "J1-02",
+      "java_target": "io.dpdk.assistant.contracts.model.HarnessPort",
+      "signature": "HarnessReply call(String tool,Map<String,Object> args,Deadline deadline); // submissionPhase: NOT_SUBMITTED|SUBMITTED|UNKNOWN",
+      "semantics": "单次传输建连/initialize可重试2次；call_tool开始后失败不重试。业务恢复同job_id重投为 COMP-003 待决；不能以SDK retry冒充业务幂等已证。",
+      "consumers": [
+        "J2-04",
+        "J3-02"
+      ],
+      "sources": [
+        {
+          "path": "backend/app/agent/mcp_client.py",
+          "line": 34,
+          "end_line": 46,
+          "symbol": "_call_once"
+        },
+        {
+          "path": "backend/app/agent/mcp_client.py",
+          "line": 48,
+          "end_line": 70,
+          "symbol": "call_tool"
+        },
+        {
+          "path": "backend/app/agent/mcp_client.py",
+          "line": 73,
+          "end_line": 95,
+          "symbol": "_parse_result"
+        }
+      ]
+    },
+    {
+      "id": "retrieval.ReleaseReader",
+      "owner_task": "J1-03",
+      "java_target": "io.dpdk.assistant.contracts.retrieval.ReleaseReader",
+      "signature": "ReleaseSnapshot pin(String releaseId); SearchResult searchPinned(ReleaseSnapshot snapshot,SearchInput input); Optional<SourceChunk> historical(String engine,String chunkId);",
+      "semantics": "唯一 LI 数据面；固定 release 后候选/重排/引用身份不漂移；legacy knowledge_chunks 仅历史来源回读；1024维固定向量合成测试，不调用embedding。",
+      "consumers": [
+        "J1-04",
+        "J3-02",
+        "J3-03",
+        "J4-02"
+      ],
+      "sources": [
+        {
+          "path": "backend/app/services/llama_index_service.py",
+          "line": 74,
+          "end_line": 76,
+          "symbol": "get_llama_index_source"
+        },
+        {
+          "path": "backend/app/services/llama_index_service.py",
+          "line": 126,
+          "end_line": 152,
+          "symbol": "_new_pgvector_store"
+        }
+      ]
+    },
+    {
+      "id": "index.ConfigurationFingerprint",
+      "owner_task": "J0-01",
+      "java_target": "io.dpdk.assistant.contracts.index.ConfigurationFingerprint",
+      "signature": "String pythonCompatibleConfiguration(EmbeddingConfig config)",
+      "semantics": "json sort_keys=true 默认ensure_ascii/空格，四字段与 dimensions=1024/chunker=bounded-lines-v2；identity-and-data.md精确定义。只读检索与 ingest 共享同一实现。",
+      "consumers": [
+        "J1-03",
+        "J4-01"
+      ],
+      "sources": [
+        {
+          "path": "backend/app/services/rag_index_service.py",
+          "line": 35,
+          "end_line": 38,
+          "symbol": "index_configuration"
+        }
+      ]
+    },
+    {
+      "id": "index.PublishPort",
+      "owner_task": "J4-01",
+      "java_target": "io.dpdk.assistant.contracts.index.PublishPort",
+      "signature": "PublishReceipt publish(String expectedActive,PreparedIndex index); void rollbackChecked(String releaseId);",
+      "semantics": "embedding 事务外；CAS active 指针+物理changed nodes+release记录+成员一笔事务；CAS失败不得覆盖。rollback 需config/declared/members/physical核对。",
+      "consumers": [
+        "J4-02",
+        "J4-03"
+      ],
+      "sources": [
+        {
+          "path": "backend/app/services/rag_index_service.py",
+          "line": 133,
+          "end_line": 151,
+          "symbol": "_publish"
+        },
+        {
+          "path": "backend/app/services/rag_index_service.py",
+          "line": 154,
+          "end_line": 188,
+          "symbol": "ingest_release"
+        },
+        {
+          "path": "backend/app/services/rag_index_service.py",
+          "line": 191,
+          "end_line": 205,
+          "symbol": "rollback_release"
+        }
+      ]
+    },
+    {
+      "id": "chat.CitationBinder",
+      "owner_task": "J3-03",
+      "java_target": "io.dpdk.assistant.contracts.chat.CitationBinder",
+      "signature": "List<Citation> bindInOrder(List<RetrievedChunk> chunks)",
+      "semantics": "不按文件去重，顺序=模型证据编号，score Python round 4位；engine由li_前缀判断，保存rank。",
+      "consumers": [
+        "J1-04",
+        "J3-02",
+        "J2-05"
+      ],
+      "sources": [
+        {
+          "path": "backend/app/services/citation_service.py",
+          "line": 8,
+          "end_line": 16,
+          "symbol": "citations_from_chunks"
+        }
+      ]
+    },
+    {
+      "id": "chat.EventStreamPort",
+      "owner_task": "J3-01",
+      "java_target": "io.dpdk.assistant.contracts.chat.EventStreamPort",
+      "signature": "Publisher<SseEvent> subscribeOwned(String taskId,String subject);",
+      "semantics": "事件名/字段见http-and-sse；断线仅移除订阅者，不取消task；terminal重建不依赖内存日志。",
+      "consumers": [
+        "J3-03",
+        "J3-04"
+      ],
+      "sources": [
+        {
+          "path": "backend/app/services/task_service.py",
+          "line": 208,
+          "end_line": 221,
+          "symbol": "response_frames"
+        },
+        {
+          "path": "backend/app/services/task_service.py",
+          "line": 244,
+          "end_line": 277,
+          "symbol": "subscribe"
+        },
+        {
+          "path": "backend/app/services/task_service.py",
+          "line": 304,
+          "end_line": 338,
+          "symbol": "task_events"
+        }
+      ]
+    }
+  ]
+}

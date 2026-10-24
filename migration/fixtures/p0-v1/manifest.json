@@ -1,0 +1,27 @@
+{
+  "fixture_id": "p0-v1",
+  "status": "frozen-for-python-differential; user acceptance pending",
+  "baseline_id": "80b29135faddd16d5e39fdbf0633291ea6a20489",
+  "contract_version": "p0-v1",
+  "golden_provenance": "仅由冻结Python在专用p0_python_oracle采集；p0_candidate_oracle是第二独立库Python自对照，尚无Java",
+  "clock": {
+    "start": "2026-10-24T04:00:00+00:00",
+    "logical_step_microseconds": 1,
+    "postgres_session_timezone": "UTC",
+    "duration_clock": "原始monotonic，不归零"
+  },
+  "data": "纯合成账号/作业/release/历史引用/失败任务；运行时源码标记不进fixture",
+  "files": {
+    "python-golden.json": "c041d83636b31684aeef9f1497925a0ebdc3112b9a7ea781f1fd92093b943edf",
+    "route-case-map.json": "fa795a1654e51004f35031dc0a1b8d1a5ab63ff9a4329a1089a3d2c761d2e668",
+    "normalization-review.json": "4e3158b0f426e41106a3ea93cdcf567323d9f480af9819da9103e8dacce81da6",
+    "upstream-scripts.json": "cf1b5b25765401bfdc3c503c621ddeee86ad8146808be2e14252e81498095997",
+    "knowledge.yml": "f306b85b98942b7695337e5c1fe3613d282c917f3521216eb7be71e770e4259d"
+  },
+  "verification_command": ".migration-artifacts/p0/venv/bin/python -m migration.oracle.verify --candidate .migration-artifacts/p0/candidate-trace.json",
+  "performance_thresholds": "pending_measurement_and_user_confirmation",
+  "live_quality": "live_not_authorized",
+  "freeze_revision": 2,
+  "previous_draft_golden_sha256": "e80aba0a4305828c06f120e73503bd079af34c59193dbdf3aae721f670a6761a",
+  "freeze_correction": "主Agent审查要求：对象key稳定排序；仅从同一Python trace重冻；原草稿保存在.migration-artifacts/p0/fixture-draft-before-stable-key-order/"
+}

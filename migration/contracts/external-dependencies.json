@@ -1,0 +1,977 @@
+{
+  "version": "p0-v1",
+  "python_requirements": [
+    {
+      "path": "backend/requirements.txt",
+      "line": 1,
+      "requirement": "fastapi==0.115.6",
+      "java_target": "Spring MVC compatibility controller",
+      "availability": "not_verified",
+      "scope": "Python oracle reference; Java candidate not installed/validated"
+    },
+    {
+      "path": "backend/requirements.txt",
+      "line": 2,
+      "requirement": "uvicorn[standard]==0.34.0",
+      "java_target": "embedded Servlet container / bounded executor",
+      "availability": "not_verified",
+      "scope": "Python oracle reference; Java candidate not installed/validated"
+    },
+    {
+      "path": "backend/requirements.txt",
+      "line": 3,
+      "requirement": "pydantic==2.10.4",
+      "java_target": "explicit DTO and validation adapter",
+      "availability": "not_verified",
+      "scope": "Python oracle reference; Java candidate not installed/validated"
+    },
+    {
+      "path": "backend/requirements.txt",
+      "line": 4,
+      "requirement": "pydantic-settings==2.7.1",
+      "java_target": "explicit typed configuration + fail-closed loader",
+      "availability": "not_verified",
+      "scope": "Python oracle reference; Java candidate not installed/validated"
+    },
+    {
+      "path": "backend/requirements.txt",
+      "line": 5,
+      "requirement": "httpx==0.28.1",
+      "java_target": "bounded Java HTTP client",
+      "availability": "not_verified",
+      "scope": "Python oracle reference; Java candidate not installed/validated"
+    },
+    {
+      "path": "backend/requirements.txt",
+      "line": 6,
+      "requirement": "PyYAML==6.0.2",
+      "java_target": "YAML reader with frozen chunker behavior",
+      "availability": "not_verified",
+      "scope": "Python oracle reference; Java candidate not installed/validated"
+    },
+    {
+      "path": "backend/requirements.txt",
+      "line": 7,
+      "requirement": "python-dotenv==1.0.1",
+      "java_target": "P0 oracle only; Java does not inherit backend/.env",
+      "availability": "not_verified",
+      "scope": "Python oracle reference; Java candidate not installed/validated"
+    },
+    {
+      "path": "backend/requirements.txt",
+      "line": 8,
+      "requirement": "llama-index-core==0.11.23",
+      "java_target": "explicit retrieval/index implementation",
+      "availability": "not_verified",
+      "scope": "Python oracle reference; Java candidate not installed/validated"
+    },
+    {
+      "path": "backend/requirements.txt",
+      "line": 9,
+      "requirement": "llama-index-llms-openai-like==0.2.0",
+      "java_target": "Spring AI or explicit provider adapter",
+      "availability": "not_verified",
+      "scope": "Python oracle reference; Java candidate not installed/validated"
+    },
+    {
+      "path": "backend/requirements.txt",
+      "line": 10,
+      "requirement": "llama-index-vector-stores-postgres==0.2.6",
+      "java_target": "Spring JDBC pgvector LI schema adapter",
+      "availability": "not_verified",
+      "scope": "Python oracle reference; Java candidate not installed/validated"
+    },
+    {
+      "path": "backend/requirements.txt",
+      "line": 11,
+      "requirement": "psycopg[binary]==3.3.4",
+      "java_target": "PostgreSQL JDBC",
+      "availability": "not_verified",
+      "scope": "Python oracle reference; Java candidate not installed/validated"
+    },
+    {
+      "path": "backend/requirements.txt",
+      "line": 12,
+      "requirement": "psycopg-pool==3.3.1",
+      "java_target": "bounded Java datasource pool",
+      "availability": "not_verified",
+      "scope": "Python oracle reference; Java candidate not installed/validated"
+    },
+    {
+      "path": "backend/requirements.txt",
+      "line": 13,
+      "requirement": "prometheus-fastapi-instrumentator==7.0.2",
+      "java_target": "Micrometer metric compatibility mapping",
+      "availability": "not_verified",
+      "scope": "Python oracle reference; Java candidate not installed/validated"
+    },
+    {
+      "path": "backend/requirements.txt",
+      "line": 14,
+      "requirement": "alembic==1.19.1",
+      "java_target": "single migration owner / candidate Flyway",
+      "availability": "not_verified",
+      "scope": "Python oracle reference; Java candidate not installed/validated"
+    },
+    {
+      "path": "backend/requirements.txt",
+      "line": 16,
+      "requirement": "bcrypt==4.3.0",
+      "java_target": "bcrypt compatible Java implementation",
+      "availability": "not_verified",
+      "scope": "Python oracle reference; Java candidate not installed/validated"
+    },
+    {
+      "path": "backend/requirements.txt",
+      "line": 21,
+      "requirement": "langgraph==1.2.11",
+      "java_target": "explicit Agent orchestration state machine",
+      "availability": "not_verified",
+      "scope": "Python oracle reference; Java candidate not installed/validated"
+    },
+    {
+      "path": "backend/requirements.txt",
+      "line": 22,
+      "requirement": "langchain-openai==1.1.9",
+      "java_target": "Spring AI/external model adapter",
+      "availability": "not_verified",
+      "scope": "Python oracle reference; Java candidate not installed/validated"
+    },
+    {
+      "path": "backend/requirements.txt",
+      "line": 23,
+      "requirement": "mcp==1.12.4",
+      "java_target": "MCP adapter, submission-aware retry",
+      "availability": "not_verified",
+      "scope": "Python oracle reference; Java candidate not installed/validated"
+    },
+    {
+      "path": "backend/requirements.txt",
+      "line": 25,
+      "requirement": "python-multipart==0.0.32",
+      "java_target": "multipart upload compatibility adapter",
+      "availability": "not_verified",
+      "scope": "Python oracle reference; Java candidate not installed/validated"
+    }
+  ],
+  "import_roots": [
+    {
+      "name": "alembic",
+      "sources": [
+        {
+          "path": "backend/alembic/env.py",
+          "line": 11,
+          "end_line": 11
+        },
+        {
+          "path": "backend/alembic/versions/0001_baseline.py",
+          "line": 17,
+          "end_line": 17
+        },
+        {
+          "path": "backend/alembic/versions/0002_users_api_tokens.py",
+          "line": 13,
+          "end_line": 13
+        },
+        {
+          "path": "backend/alembic/versions/0003_login_hardening.py",
+          "line": 15,
+          "end_line": 15
+        },
+        {
+          "path": "backend/alembic/versions/0004_grading_submissions.py",
+          "line": 19,
+          "end_line": 19
+        },
+        {
+          "path": "backend/alembic/versions/0005_user_hierarchy.py",
+          "line": 14,
+          "end_line": 14
+        },
+        {
+          "path": "backend/alembic/versions/0006_user_delete_audit.py",
+          "line": 21,
+          "end_line": 21
+        },
+        {
+          "path": "backend/alembic/versions/0007_assignments.py",
+          "line": 22,
+          "end_line": 22
+        },
+        {
+          "path": "backend/alembic/versions/0008_rag_product.py",
+          "line": 2,
+          "end_line": 2
+        },
+        {
+          "path": "backend/alembic/versions/0009_li_hnsw_index.py",
+          "line": 15,
+          "end_line": 15
+        },
+        {
+          "path": "backend/alembic/versions/0010_li_fts_zhparser.py",
+          "line": 25,
+          "end_line": 25
+        },
+        {
+          "path": "backend/alembic/versions/0011_usage_records.py",
+          "line": 16,
+          "end_line": 16
+        },
+        {
+          "path": "backend/alembic/versions/0012_request_identity_session_release.py",
+          "line": 7,
+          "end_line": 7
+        },
+        {
+          "path": "backend/alembic/versions/0013_task_recovery.py",
+          "line": 14,
+          "end_line": 14
+        },
+        {
+          "path": "backend/alembic/versions/0014_grading_task_job_id.py",
+          "line": 3,
+          "end_line": 3
+        },
+        {
+          "path": "backend/alembic/versions/0015_explain_purpose.py",
+          "line": 6,
+          "end_line": 6
+        }
+      ],
+      "java_target": "J1-01 dependency mapping; see python_requirements and feature port owners",
+      "availability": "not_verified"
+    },
+    {
+      "name": "bcrypt",
+      "sources": [
+        {
+          "path": "backend/app/services/user_service.py",
+          "line": 31,
+          "end_line": 31
+        }
+      ],
+      "java_target": "J1-01 dependency mapping; see python_requirements and feature port owners",
+      "availability": "not_verified"
+    },
+    {
+      "name": "fastapi",
+      "sources": [
+        {
+          "path": "backend/app/agent/tools.py",
+          "line": 22,
+          "end_line": 22
+        },
+        {
+          "path": "backend/app/api/admin.py",
+          "line": 11,
+          "end_line": 11
+        },
+        {
+          "path": "backend/app/api/assignments.py",
+          "line": 25,
+          "end_line": 25
+        },
+        {
+          "path": "backend/app/api/assignments.py",
+          "line": 26,
+          "end_line": 26
+        },
+        {
+          "path": "backend/app/api/auth.py",
+          "line": 15,
+          "end_line": 15
+        },
+        {
+          "path": "backend/app/api/chat.py",
+          "line": 9,
+          "end_line": 9
+        },
+        {
+          "path": "backend/app/api/chat.py",
+          "line": 10,
+          "end_line": 10
+        },
+        {
+          "path": "backend/app/api/grading.py",
+          "line": 11,
+          "end_line": 11
+        },
+        {
+          "path": "backend/app/api/rag.py",
+          "line": 10,
+          "end_line": 10
+        },
+        {
+          "path": "backend/app/api/sources.py",
+          "line": 3,
+          "end_line": 3
+        },
+        {
+          "path": "backend/app/api/tasks.py",
+          "line": 13,
+          "end_line": 13
+        },
+        {
+          "path": "backend/app/api/tasks.py",
+          "line": 14,
+          "end_line": 14
+        },
+        {
+          "path": "backend/app/api/templates.py",
+          "line": 1,
+          "end_line": 1
+        },
+        {
+          "path": "backend/app/api/usage.py",
+          "line": 12,
+          "end_line": 12
+        },
+        {
+          "path": "backend/app/core/auth.py",
+          "line": 21,
+          "end_line": 21
+        },
+        {
+          "path": "backend/app/core/rate_limit.py",
+          "line": 23,
+          "end_line": 23
+        },
+        {
+          "path": "backend/app/main.py",
+          "line": 5,
+          "end_line": 5
+        },
+        {
+          "path": "backend/app/main.py",
+          "line": 6,
+          "end_line": 6
+        },
+        {
+          "path": "backend/app/services/harness_grading.py",
+          "line": 14,
+          "end_line": 14
+        },
+        {
+          "path": "backend/app/services/rag_issue_service.py",
+          "line": 126,
+          "end_line": 126
+        },
+        {
+          "path": "backend/app/services/rag_issue_service.py",
+          "line": 163,
+          "end_line": 163
+        },
+        {
+          "path": "backend/app/services/rag_issue_service.py",
+          "line": 443,
+          "end_line": 443
+        },
+        {
+          "path": "backend/app/services/rag_issue_service.py",
+          "line": 69,
+          "end_line": 69
+        },
+        {
+          "path": "backend/app/services/rag_issue_service.py",
+          "line": 91,
+          "end_line": 91
+        },
+        {
+          "path": "backend/app/services/rag_product_service.py",
+          "line": 13,
+          "end_line": 13
+        },
+        {
+          "path": "backend/app/services/task_service.py",
+          "line": 26,
+          "end_line": 26
+        }
+      ],
+      "java_target": "J1-01 dependency mapping; see python_requirements and feature port owners",
+      "availability": "not_verified"
+    },
+    {
+      "name": "httpx",
+      "sources": [
+        {
+          "path": "backend/app/core/llm_client.py",
+          "line": 10,
+          "end_line": 10
+        }
+      ],
+      "java_target": "J1-01 dependency mapping; see python_requirements and feature port owners",
+      "availability": "not_verified"
+    },
+    {
+      "name": "langchain_core",
+      "sources": [
+        {
+          "path": "backend/app/agent/context.py",
+          "line": 32,
+          "end_line": 32
+        },
+        {
+          "path": "backend/app/agent/graph.py",
+          "line": 24,
+          "end_line": 24
+        },
+        {
+          "path": "backend/app/agent/service.py",
+          "line": 19,
+          "end_line": 19
+        },
+        {
+          "path": "backend/app/agent/tools.py",
+          "line": 23,
+          "end_line": 23
+        }
+      ],
+      "java_target": "J1-01 dependency mapping; see python_requirements and feature port owners",
+      "availability": "not_verified"
+    },
+    {
+      "name": "langchain_openai",
+      "sources": [
+        {
+          "path": "backend/app/agent/service.py",
+          "line": 68,
+          "end_line": 68
+        }
+      ],
+      "java_target": "J1-01 dependency mapping; see python_requirements and feature port owners",
+      "availability": "not_verified"
+    },
+    {
+      "name": "langgraph",
+      "sources": [
+        {
+          "path": "backend/app/agent/graph.py",
+          "line": 25,
+          "end_line": 25
+        },
+        {
+          "path": "backend/app/agent/graph.py",
+          "line": 26,
+          "end_line": 26
+        }
+      ],
+      "java_target": "J1-01 dependency mapping; see python_requirements and feature port owners",
+      "availability": "not_verified"
+    },
+    {
+      "name": "llama_index",
+      "sources": [
+        {
+          "path": "backend/app/rag/providers.py",
+          "line": 95,
+          "end_line": 95
+        },
+        {
+          "path": "backend/app/rag/providers.py",
+          "line": 96,
+          "end_line": 96
+        },
+        {
+          "path": "backend/app/rag/providers.py",
+          "line": 240,
+          "end_line": 240
+        },
+        {
+          "path": "backend/app/services/llama_index_service.py",
+          "line": 127,
+          "end_line": 127
+        },
+        {
+          "path": "backend/app/services/llama_index_service.py",
+          "line": 186,
+          "end_line": 186
+        },
+        {
+          "path": "backend/app/services/llama_index_service.py",
+          "line": 187,
+          "end_line": 187
+        },
+        {
+          "path": "backend/app/services/llama_index_service.py",
+          "line": 216,
+          "end_line": 216
+        },
+        {
+          "path": "backend/app/services/llama_index_service.py",
+          "line": 217,
+          "end_line": 217
+        },
+        {
+          "path": "backend/app/services/llama_index_service.py",
+          "line": 234,
+          "end_line": 234
+        },
+        {
+          "path": "backend/app/services/llama_index_service.py",
+          "line": 235,
+          "end_line": 235
+        },
+        {
+          "path": "backend/app/services/llama_index_service.py",
+          "line": 96,
+          "end_line": 96
+        }
+      ],
+      "java_target": "J1-01 dependency mapping; see python_requirements and feature port owners",
+      "availability": "not_verified"
+    },
+    {
+      "name": "mcp",
+      "sources": [
+        {
+          "path": "backend/app/agent/mcp_client.py",
+          "line": 20,
+          "end_line": 20
+        },
+        {
+          "path": "backend/app/agent/mcp_client.py",
+          "line": 21,
+          "end_line": 21
+        }
+      ],
+      "java_target": "J1-01 dependency mapping; see python_requirements and feature port owners",
+      "availability": "not_verified"
+    },
+    {
+      "name": "prometheus_client",
+      "sources": [
+        {
+          "path": "backend/app/core/metrics.py",
+          "line": 13,
+          "end_line": 13
+        }
+      ],
+      "java_target": "J1-01 dependency mapping; see python_requirements and feature port owners",
+      "availability": "not_verified"
+    },
+    {
+      "name": "prometheus_fastapi_instrumentator",
+      "sources": [
+        {
+          "path": "backend/app/main.py",
+          "line": 7,
+          "end_line": 7
+        }
+      ],
+      "java_target": "J1-01 dependency mapping; see python_requirements and feature port owners",
+      "availability": "not_verified"
+    },
+    {
+      "name": "psycopg",
+      "sources": [
+        {
+          "path": "backend/app/storage/postgres.py",
+          "line": 31,
+          "end_line": 31
+        },
+        {
+          "path": "backend/app/storage/postgres.py",
+          "line": 32,
+          "end_line": 32
+        }
+      ],
+      "java_target": "J1-01 dependency mapping; see python_requirements and feature port owners",
+      "availability": "not_verified"
+    },
+    {
+      "name": "psycopg_pool",
+      "sources": [
+        {
+          "path": "backend/app/storage/postgres.py",
+          "line": 47,
+          "end_line": 47
+        }
+      ],
+      "java_target": "J1-01 dependency mapping; see python_requirements and feature port owners",
+      "availability": "not_verified"
+    },
+    {
+      "name": "pydantic",
+      "sources": [
+        {
+          "path": "backend/app/api/assignments.py",
+          "line": 27,
+          "end_line": 27
+        },
+        {
+          "path": "backend/app/api/chat.py",
+          "line": 11,
+          "end_line": 11
+        },
+        {
+          "path": "backend/app/api/rag.py",
+          "line": 11,
+          "end_line": 11
+        },
+        {
+          "path": "backend/app/config.py",
+          "line": 6,
+          "end_line": 6
+        },
+        {
+          "path": "backend/app/rag/providers.py",
+          "line": 241,
+          "end_line": 241
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 11,
+          "end_line": 11
+        },
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 3,
+          "end_line": 3
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 5,
+          "end_line": 5
+        },
+        {
+          "path": "backend/app/schemas/grading.py",
+          "line": 8,
+          "end_line": 8
+        },
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 3,
+          "end_line": 3
+        }
+      ],
+      "java_target": "J1-01 dependency mapping; see python_requirements and feature port owners",
+      "availability": "not_verified"
+    },
+    {
+      "name": "pydantic_settings",
+      "sources": [
+        {
+          "path": "backend/app/config.py",
+          "line": 7,
+          "end_line": 7
+        }
+      ],
+      "java_target": "J1-01 dependency mapping; see python_requirements and feature port owners",
+      "availability": "not_verified"
+    },
+    {
+      "name": "sqlalchemy",
+      "sources": [
+        {
+          "path": "backend/alembic/env.py",
+          "line": 12,
+          "end_line": 12
+        },
+        {
+          "path": "backend/alembic/versions/0012_request_identity_session_release.py",
+          "line": 6,
+          "end_line": 6
+        },
+        {
+          "path": "backend/alembic/versions/0015_explain_purpose.py",
+          "line": 5,
+          "end_line": 5
+        }
+      ],
+      "java_target": "J1-01 dependency mapping; see python_requirements and feature port owners",
+      "availability": "not_verified"
+    },
+    {
+      "name": "yaml",
+      "sources": [
+        {
+          "path": "backend/app/services/knowledge_sources.py",
+          "line": 12,
+          "end_line": 12
+        }
+      ],
+      "java_target": "J1-01 dependency mapping; see python_requirements and feature port owners",
+      "availability": "not_verified"
+    }
+  ],
+  "systems": [
+    {
+      "id": "postgresql",
+      "contract": "PostgreSQL production dialect, table metadata, transaction/lock/unique semantics",
+      "owner_task": "J1-01",
+      "configuration_name": "database_url",
+      "availability": "not_verified",
+      "restriction": "P0 only dedicated synthetic PG; deployed DB never inspected"
+    },
+    {
+      "id": "pgvector",
+      "contract": "vector extension + 1024-dimensional LI table, cosine/HNSW compatibility",
+      "owner_task": "J1-03",
+      "configuration_name": "llama_index_table",
+      "availability": "not_verified",
+      "restriction": "P0 synthetic only; real index not verified"
+    },
+    {
+      "id": "zhparser",
+      "contract": "optional zh FTS regconfig, explicit image/extension/tokenization",
+      "owner_task": "J1-03",
+      "configuration_name": "llama_index_fts_config",
+      "availability": "not_verified",
+      "restriction": "P0 simple does not prove zh available; no implicit fallback"
+    },
+    {
+      "id": "llm-provider",
+      "contract": "OpenAI-compatible chat/tool calling and usage/stream protocol",
+      "owner_task": "J1-02",
+      "configuration_name": "llm_api_base",
+      "availability": "not_verified",
+      "restriction": "real model not authorized"
+    },
+    {
+      "id": "embedding-provider",
+      "contract": "OpenAI-compatible 1024-dimensional embedding",
+      "owner_task": "J1-02",
+      "configuration_name": "embedding_api_base",
+      "availability": "not_verified",
+      "restriction": "real embedding not authorized"
+    },
+    {
+      "id": "teaching-harness",
+      "contract": "external Python MCP service and isolated C-plugin evaluator",
+      "owner_task": "J1-02",
+      "configuration_name": "harness_mcp_url",
+      "availability": "not_verified",
+      "restriction": "external repository/version/job-id contract not copied or verified"
+    },
+    {
+      "id": "dpdk-repository",
+      "contract": "external read-only DPDK source and teacher reference implementation",
+      "owner_task": "J3-02",
+      "configuration_name": "dpdk_repo_path",
+      "availability": "not_verified",
+      "restriction": "original root not read; not copied in full"
+    },
+    {
+      "id": "knowledge-sources",
+      "contract": "YAML sources/root/include/name、双占位符展开、目录树realpath边界与固定文本后缀；无exclude配置入口",
+      "owner_task": "J4-01",
+      "configuration_name": "knowledge_config",
+      "availability": "not_verified",
+      "restriction": "fixtures use synthetic sources; copied drafts not automatically indexed"
+    },
+    {
+      "id": "react-client",
+      "contract": "existing REST/SSE/CSV consumer",
+      "owner_task": "J3-03",
+      "configuration_name": "frontend_origins",
+      "availability": "not_verified",
+      "restriction": "not rebuilt or changed by J0-01"
+    },
+    {
+      "id": "https-proxy-certs",
+      "contract": "nginx /api-only, internal metrics, HTTPS SSE proxy settings",
+      "owner_task": "J4-03",
+      "configuration_name": "maintenance_api_key",
+      "availability": "not_verified",
+      "restriction": "old deploy scripts/compose not executed; no production reachability claim"
+    },
+    {
+      "id": "host-filesystem",
+      "contract": "repository-relative paths, temporary logs, raw task-input retention exclusion",
+      "owner_task": "J4-03",
+      "configuration_name": "assistant_project_path",
+      "availability": "not_verified",
+      "restriction": "new isolated paths only; external mount not inspected"
+    }
+  ],
+  "knowledge_yaml_keys": [
+    {
+      "name": "include",
+      "owner_task": "J4-01",
+      "java_target": "io.dpdk.assistant.index.SourceConfiguration.include",
+      "sources": [
+        {
+          "name": "include",
+          "path": "backend/data/knowledge_sources.yml",
+          "line": 10
+        },
+        {
+          "name": "include",
+          "path": "backend/data/knowledge_sources.yml",
+          "line": 26
+        },
+        {
+          "name": "include",
+          "path": "backend/data/knowledge_sources.yml",
+          "line": 34
+        },
+        {
+          "name": "include",
+          "path": "backend/data/knowledge_sources.yml",
+          "line": 47
+        },
+        {
+          "name": "include",
+          "path": "backend/data/knowledge_sources.yml",
+          "line": 55
+        },
+        {
+          "name": "include",
+          "path": "backend/data/knowledge_sources.yml",
+          "line": 63
+        },
+        {
+          "name": "include",
+          "path": "backend/data/knowledge_sources.yml",
+          "line": 71
+        },
+        {
+          "name": "include",
+          "path": "backend/data/knowledge_sources.yml",
+          "line": 79
+        },
+        {
+          "name": "include",
+          "path": "backend/data/knowledge_sources.yml",
+          "line": 87
+        },
+        {
+          "name": "include",
+          "path": "backend/data/knowledge_sources.yml",
+          "line": 95
+        }
+      ],
+      "semantics": "load_config/iter_files按现状展开DPDK_REPO_PATH/ASSISTANT_PROJECT_PATH；root/include realpath限制；相对KNOWLEDGE_CONFIG按cwd，迁移不静默猜外部目录"
+    },
+    {
+      "name": "name",
+      "owner_task": "J4-01",
+      "java_target": "io.dpdk.assistant.index.SourceConfiguration.name",
+      "sources": [
+        {
+          "name": "name",
+          "path": "backend/data/knowledge_sources.yml",
+          "line": 8
+        },
+        {
+          "name": "name",
+          "path": "backend/data/knowledge_sources.yml",
+          "line": 24
+        },
+        {
+          "name": "name",
+          "path": "backend/data/knowledge_sources.yml",
+          "line": 32
+        },
+        {
+          "name": "name",
+          "path": "backend/data/knowledge_sources.yml",
+          "line": 45
+        },
+        {
+          "name": "name",
+          "path": "backend/data/knowledge_sources.yml",
+          "line": 53
+        },
+        {
+          "name": "name",
+          "path": "backend/data/knowledge_sources.yml",
+          "line": 61
+        },
+        {
+          "name": "name",
+          "path": "backend/data/knowledge_sources.yml",
+          "line": 69
+        },
+        {
+          "name": "name",
+          "path": "backend/data/knowledge_sources.yml",
+          "line": 77
+        },
+        {
+          "name": "name",
+          "path": "backend/data/knowledge_sources.yml",
+          "line": 85
+        },
+        {
+          "name": "name",
+          "path": "backend/data/knowledge_sources.yml",
+          "line": 93
+        }
+      ],
+      "semantics": "load_config/iter_files按现状展开DPDK_REPO_PATH/ASSISTANT_PROJECT_PATH；root/include realpath限制；相对KNOWLEDGE_CONFIG按cwd，迁移不静默猜外部目录"
+    },
+    {
+      "name": "root",
+      "owner_task": "J4-01",
+      "java_target": "io.dpdk.assistant.index.SourceConfiguration.root",
+      "sources": [
+        {
+          "name": "root",
+          "path": "backend/data/knowledge_sources.yml",
+          "line": 9
+        },
+        {
+          "name": "root",
+          "path": "backend/data/knowledge_sources.yml",
+          "line": 25
+        },
+        {
+          "name": "root",
+          "path": "backend/data/knowledge_sources.yml",
+          "line": 33
+        },
+        {
+          "name": "root",
+          "path": "backend/data/knowledge_sources.yml",
+          "line": 46
+        },
+        {
+          "name": "root",
+          "path": "backend/data/knowledge_sources.yml",
+          "line": 54
+        },
+        {
+          "name": "root",
+          "path": "backend/data/knowledge_sources.yml",
+          "line": 62
+        },
+        {
+          "name": "root",
+          "path": "backend/data/knowledge_sources.yml",
+          "line": 70
+        },
+        {
+          "name": "root",
+          "path": "backend/data/knowledge_sources.yml",
+          "line": 78
+        },
+        {
+          "name": "root",
+          "path": "backend/data/knowledge_sources.yml",
+          "line": 86
+        },
+        {
+          "name": "root",
+          "path": "backend/data/knowledge_sources.yml",
+          "line": 94
+        }
+      ],
+      "semantics": "load_config/iter_files按现状展开DPDK_REPO_PATH/ASSISTANT_PROJECT_PATH；root/include realpath限制；相对KNOWLEDGE_CONFIG按cwd，迁移不静默猜外部目录"
+    },
+    {
+      "name": "sources",
+      "owner_task": "J4-01",
+      "java_target": "io.dpdk.assistant.index.SourceConfiguration.sources",
+      "sources": [
+        {
+          "name": "sources",
+          "path": "backend/data/knowledge_sources.yml",
+          "line": 4
+        }
+      ],
+      "semantics": "load_config/iter_files按现状展开DPDK_REPO_PATH/ASSISTANT_PROJECT_PATH；root/include realpath限制；相对KNOWLEDGE_CONFIG按cwd，迁移不静默猜外部目录"
+    }
+  ]
+}

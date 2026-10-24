@@ -1,0 +1,11 @@
+{
+  "python_two_database_self_comparison": "通过",
+  "observations": 184,
+  "broken_http_status_exit": 1,
+  "broken_http_status_output": {
+    "status": "difference",
+    "detail": "$.observations[0].status: 值不同"
+  },
+  "frozen_overwrite_exit": 1,
+  "frozen_overwrite_rejected": true
+}
