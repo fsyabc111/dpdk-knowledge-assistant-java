@@ -1,0 +1,246 @@
+{
+  "spec_version": "j1-03-v1",
+  "note": "J1-03 合成 PG 快照唯一事实源：Java 集成测试按此灌库；Python oracle 按此生成逐阶段 golden。向量均为 1024 维单点/多点稀疏向量，分量只取二进制精确值（1.0/0.5），保证 float32 与 double 位级一致。",
+  "table_configured": "li_knowledge_v1",
+  "fts_config": "simple",
+  "embedding_config": {
+    "model": "text-embedding-v4",
+    "api_base": "",
+    "dimensions": 1024,
+    "chunker": "bounded-lines-v2"
+  },
+  "nodes": [
+    {
+      "node_id": "li_a1",
+      "text": "typedef struct session_entry {\n    uint32_t session_flags;\n} session_entry_t;\n流表 session entry definition",
+      "metadata": {
+        "source_path": "src/session.h",
+        "section": "session_entry",
+        "title": "session_entry",
+        "ordinal": 0,
+        "source_key": "proj/src/session.h"
+      },
+      "nonzero": [[0, 1.0]]
+    },
+    {
+      "node_id": "li_a2",
+      "text": "cert_extractor 提取证书 ja3 fingerprint sni extension\nstatic int cert_extract(const unsigned char *buf)",
+      "metadata": {
+        "source_path": "tls/cert_extractor.c",
+        "section": "extract",
+        "title": "证书提取",
+        "ordinal": 0,
+        "source_key": "proj/tls/cert_extractor.c"
+      },
+      "nonzero": [[2, 1.0]]
+    },
+    {
+      "node_id": "li_a3",
+      "text": "parse_qname 解析 dns 查询域名 dns_header_t\nint parse_qname(const dns_header_t *header)",
+      "metadata": {
+        "source_path": "src/engine_dns.cpp",
+        "section": "parse_qname",
+        "title": "parse_qname",
+        "ordinal": 0,
+        "source_key": "proj/src/engine_dns.cpp"
+      },
+      "nonzero": [[1, 1.0]]
+    },
+    {
+      "node_id": "li_a4",
+      "text": "capture packet pipeline capture_dpdk rx queue start",
+      "metadata": {
+        "source_path": "src/capture.c",
+        "section": "rx",
+        "title": "rx",
+        "ordinal": 0,
+        "source_key": "proj/src/capture.c"
+      },
+      "nonzero": [[3, 1.0]]
+    },
+    {
+      "node_id": "li_a5",
+      "text": "capture packet pipeline capture_dpdk rx queue start",
+      "metadata": {
+        "source_path": "src/capture.c",
+        "section": "rx",
+        "title": "rx",
+        "ordinal": 0,
+        "source_key": "proj/src/capture.c"
+      },
+      "nonzero": [[3, 1.0]]
+    },
+    {
+      "node_id": "li_a6",
+      "text": "cafe network parser handles percent tokens stream",
+      "metadata": {
+        "source_path": "misc/a_b.c",
+        "section": "util",
+        "title": "util",
+        "ordinal": 0,
+        "source_key": "proj/misc/a_b.c"
+      },
+      "nonzero": [[4, 1.0]]
+    },
+    {
+      "node_id": "li_a7",
+      "text": "axb parser fallback route",
+      "metadata": {
+        "source_path": "misc/axb.c",
+        "section": "util",
+        "title": "util",
+        "ordinal": 0,
+        "source_key": "proj/misc/axb.c"
+      },
+      "nonzero": [[4, 1.0]]
+    },
+    {
+      "node_id": "li_b1",
+      "text": "smtp state machine commands engine_smtp process",
+      "metadata": {
+        "source_path": "src/engine_smtp.c",
+        "section": "process",
+        "title": "smtp",
+        "ordinal": 0,
+        "source_key": "proj/src/engine_smtp.c"
+      },
+      "nonzero": [[1, 1.0]]
+    },
+    {
+      "node_id": "li_b2",
+      "text": "smtp light data channel cafe variant",
+      "metadata": {
+        "source_path": "src/engine_smtp_light.c",
+        "section": "light",
+        "title": "smtp-light",
+        "ordinal": 0,
+        "source_key": "proj/src/engine_smtp_light.c"
+      },
+      "nonzero": [[5, 1.0]]
+    }
+  ],
+  "releases": {
+    "rel-alpha": {
+      "configuration": "expected-fingerprint",
+      "node_ids": ["li_a1", "li_a2", "li_a3", "li_a4", "li_a5", "li_a6", "li_a7", "li_ghost"]
+    },
+    "rel-beta": {
+      "configuration": "expected-fingerprint",
+      "node_ids": ["li_a1", "li_b1", "li_b2"]
+    },
+    "rel-mismatch": {
+      "configuration": "{\"model\": \"other-model\"}",
+      "node_ids": ["li_a1"]
+    }
+  },
+  "active_release": "rel-alpha",
+  "legacy": {
+    "documents": [
+      {
+        "id": "doc-1",
+        "source_path": "legacy/old_engine.c",
+        "source_type": "code",
+        "title": "旧引擎文档",
+        "content_hash": "hash-1",
+        "git_commit": null,
+        "indexed_at": "2026-01-01T00:00:00+00:00"
+      }
+    ],
+    "chunks": [
+      {
+        "id": "kc_legacy_1",
+        "document_id": "doc-1",
+        "source_path": "legacy/old_engine.c",
+        "section": "legacy_section",
+        "content": "旧引擎历史片段，仅用于历史引用回读",
+        "metadata_json": {"origin": "legacy"}
+      }
+    ]
+  },
+  "cases": [
+    {
+      "id": "q1-chinese-filename-topic",
+      "release": "rel-alpha",
+      "query": "session.h 流表结构定义",
+      "limit": 4,
+      "query_vector": [[0, 1.0]]
+    },
+    {
+      "id": "q2-filename-ascii",
+      "release": "rel-alpha",
+      "query": "engine_dns.cpp 怎么解析",
+      "limit": 6,
+      "query_vector": [[1, 1.0]]
+    },
+    {
+      "id": "q3-specific-topic",
+      "release": "rel-alpha",
+      "query": "证书 怎么提取",
+      "limit": 6,
+      "query_vector": [[2, 1.0]]
+    },
+    {
+      "id": "q4a-nfc-cafe",
+      "release": "rel-alpha",
+      "query": "café",
+      "limit": 6,
+      "query_vector": null
+    },
+    {
+      "id": "q4b-nfd-cafe",
+      "release": "rel-alpha",
+      "query": "café",
+      "limit": 6,
+      "query_vector": null
+    },
+    {
+      "id": "q5-underscore-path",
+      "release": "rel-alpha",
+      "query": "a_b.c 解析",
+      "limit": 6,
+      "query_vector": null
+    },
+    {
+      "id": "q6-empty-query",
+      "release": "rel-alpha",
+      "query": "",
+      "limit": 6,
+      "query_vector": null
+    },
+    {
+      "id": "q7-zero-evidence",
+      "release": "rel-alpha",
+      "query": "zzzz qqqq",
+      "limit": 6,
+      "query_vector": null
+    },
+    {
+      "id": "q8-semantic-all-ties",
+      "release": "rel-alpha",
+      "query": "zzzz qqqq",
+      "limit": 6,
+      "query_vector": [[9, 1.0]]
+    },
+    {
+      "id": "q9-beta-isolation",
+      "release": "rel-beta",
+      "query": "smtp state machine",
+      "limit": 3,
+      "query_vector": [[5, 1.0]]
+    },
+    {
+      "id": "q10-config-mismatch",
+      "release": "rel-mismatch",
+      "query": "session.h 流表结构定义",
+      "limit": 4,
+      "query_vector": [[0, 1.0]]
+    },
+    {
+      "id": "q11-missing-release",
+      "release": "rel-nonexistent",
+      "query": "session.h 流表结构定义",
+      "limit": 4,
+      "query_vector": [[0, 1.0]]
+    }
+  ]
+}
