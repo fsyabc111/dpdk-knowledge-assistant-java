@@ -28,6 +28,16 @@
 - 固定向量容差：仅 raw score 绝对误差 ≤1e-12（U09）；顺序/引用 round4/业务得分精确。
   J1-03 实测差值为 0。
 
+## P1 规格审查备案（review-spec.md 建议 S1-S6，2026-10-25）
+
+- S1（已登记为有意差异）：`ModelFailureClassifier` 对异常 cause 链**每层**消息做标记词匹配；
+  Python `is_retriable_llm_error` 只查最深层 cause。实际影响几乎不可达（需浅层消息恰含标记词
+  而深层不含），方向为放宽（多判可重试）。保留现状，J2-04/J3 消费方按"可能多一次重试"理解。
+- S2：负值 Retry-After 头按 0 处理（Python httpx 同样忽略负等待）。
+- S3：全角空格分词行为以 Java 实现为准（Python 分词器对 U+3000 的处理在冻结源同位）。
+- S4：cause 链遍历深度无上限（Python 递归同样无上限）；S5：`explain-` 空尾后缀按非讲解处理（与源一致）。
+- S6（待办）：后续 Spring 接线消费模型端口时补 cache_hit/replay 记账路径（P2 集成时关闭）。
+
 ## 消费指引（P1 内）
 
 - J1-04/P2 消费模型端口：经 `io.dpdk.assistant.model.ModelClients` / `harness.HarnessClients` 入口。
