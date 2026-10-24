@@ -8,7 +8,7 @@
 - 明确不授权：P1 及后续阶段、原项目/部署/业务库写入、真实模型/embedding/评测、main 合并/部署/删除恢复资产。
 - 当前实施阶段：P0工程交付完成，自动/范围内合成验证及两轴独立审查通过；P0已由用户验收通过，下一阶段无授权。
 - 功能 oracle：本仓库冻结 Python 副本；初始 HEAD `80b29135faddd16d5e39fdbf0633291ea6a20489`，源来源 manifest 见 COPY_REPORT。不持续吸收原目录变化。
-- Git：干净 main 基线核验后创建 `codex/p0-baseline-oracle`；origin 与用户指定仓库相符；U10授权推送到同名远程分支，核验结果见最终交付记录。
+- Git：干净 main 基线核验后创建 `codex/p0-baseline-oracle`；origin 与用户指定仓库相符；已按U10推送同名远程分支，验收内容提交d96bf4c的本地/远程SHA一致；记录见evidence/P0/push-verification.json。
 - 当前 Java 构建：不存在，P0 不实现 Java；历史 Python 结果不计本轮验证。
 - 所有权：本阶段worker均已收口并交回窗口，当前由主Agent负责公共集成；STATUS/MAIN/DECISIONS仍主Agent单写。当前无在跑worker/应用/PG，数据与恢复资产保留。
 - 数据库迁移单一 owner：主 Agent（后续 J1-01 集成窗口）；P0 仅设计和合成验证，不写 Java DDL/业务实现。
@@ -62,4 +62,4 @@
 
 ## 下一动作
 
-完成已授权分支推送和本地/远程SHA一致核验；直接放行P1后才执行J1-01。P1消费入口migration/contracts/P1_HANDOFF.md。所有P1-P5任务继续planned。
+开发分支已推送并核验；等待用户直接放行P1后才执行J1-01。P1消费入口migration/contracts/P1_HANDOFF.md。所有P1-P5任务继续planned。

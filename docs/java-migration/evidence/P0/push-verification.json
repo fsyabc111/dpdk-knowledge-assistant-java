@@ -1,0 +1,14 @@
+{
+  "phase": "P0",
+  "user_acceptance": "U10",
+  "verified_at": "2026-10-25T00:05:57.873710+08:00",
+  "remote": "https://github.com/fsyabc111/dpdk-knowledge-assistant-java.git",
+  "branch": "codex/p0-baseline-oracle",
+  "accepted_delivery_commit": "7c76c31f5d80da2b4e76c469d22131d7532e6f25",
+  "verified_content_commit": "d96bf4c4dbc249d6a8cb365f9fa5db556ca18240",
+  "remote_branch_commit": "d96bf4c4dbc249d6a8cb365f9fa5db556ca18240",
+  "local_remote_equal": true,
+  "worktree_clean_before_receipt": true,
+  "remote_main_observed": "80b29135faddd16d5e39fdbf0633291ea6a20489",
+  "scope": "仅推送开发分支；未合并main、部署或放行P1；后续发布记录提交以当前Git HEAD为准"
+}
