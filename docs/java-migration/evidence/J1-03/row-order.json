@@ -1,0 +1,50 @@
+{
+ "q1-chinese-filename-topic": [
+  "li_a1",
+  "li_a2",
+  "li_a3",
+  "li_a4",
+  "li_a5",
+  "li_a6",
+  "li_a7"
+ ],
+ "q2-filename-ascii": [
+  "li_a1",
+  "li_a2",
+  "li_a3",
+  "li_a4",
+  "li_a5",
+  "li_a6",
+  "li_a7"
+ ],
+ "q3-specific-topic": [
+  "li_a1",
+  "li_a2",
+  "li_a3",
+  "li_a4",
+  "li_a5",
+  "li_a6",
+  "li_a7"
+ ],
+ "q4b-nfd-cafe": [
+  "li_a6"
+ ],
+ "q5-underscore-path": [
+  "li_a3",
+  "li_a6"
+ ],
+ "q8-semantic-all-ties": [
+  "li_a1",
+  "li_a2",
+  "li_a3",
+  "li_a4",
+  "li_a5",
+  "li_a6",
+  "li_a7"
+ ],
+ "q9-beta-isolation": [
+  "li_a1",
+  "li_b1",
+  "li_b2"
+ ]
+}

@@ -1,0 +1,61 @@
+[
+ {
+  "obj": {
+   "model": "text-embedding-v4",
+   "api_base": "",
+   "dimensions": 1024,
+   "chunker": "bounded-lines-v2"
+  },
+  "ensure_ascii": true,
+  "expected": "{\"model\": \"text-embedding-v4\", \"api_base\": \"\", \"dimensions\": 1024, \"chunker\": \"bounded-lines-v2\"}"
+ },
+ {
+  "obj": {
+   "api_base": "http://host/中文",
+   "chunker": "bounded-lines-v2",
+   "dimensions": 1024,
+   "model": "模型\"x\"\\"
+  },
+  "ensure_ascii": true,
+  "expected": "{\"api_base\": \"http://host/\\u4e2d\\u6587\", \"chunker\": \"bounded-lines-v2\", \"dimensions\": 1024, \"model\": \"\\u6a21\\u578b\\\"x\\\"\\\\\"}"
+ },
+ {
+  "obj": {
+   "b": 1,
+   "a": "x",
+   "c": [
+    1,
+    2.5,
+    "z"
+   ],
+   "d": true,
+   "e": null,
+   "f": 1e-07,
+   "g": 2.0,
+   "h": 1e+16
+  },
+  "ensure_ascii": true,
+  "expected": "{\"b\": 1, \"a\": \"x\", \"c\": [1, 2.5, \"z\"], \"d\": true, \"e\": null, \"f\": 1e-07, \"g\": 2.0, \"h\": 1e+16}"
+ },
+ {
+  "obj": {
+   "t": "line\nbreak\ttab\u0001del",
+   "k": "café"
+  },
+  "ensure_ascii": true,
+  "expected": "{\"t\": \"line\\nbreak\\ttab\\u0001del\\u007f\", \"k\": \"caf\\u00e9\"}"
+ },
+ {
+  "obj": {
+   "a": "中文保持",
+   "b": "q"
+  },
+  "ensure_ascii": false,
+  "expected": "{\"a\": \"中文保持\", \"b\": \"q\"}"
+ },
+ {
+  "obj": {},
+  "ensure_ascii": true,
+  "expected": "{}"
+ }
+]
