@@ -1,0 +1,153 @@
+{
+  "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+  "assistant_commit": "a8d0fbec7667a0580a8c6b7fde838d1b7aa0012d",
+  "source_branch": "master",
+  "assistant_branch": "main",
+  "source_status": "?? ai_chat_assistant/\n",
+  "assistant_status_at_baseline": "?? knowledge_work/\n",
+  "baseline_note": "rev 2 重采（2026-09-18）。pilot_snapshot_hashes 在用户授权对首批做三项定点修订之后重新采集，因此它只保护此后的一致性：能发现基线之后的改动，不能证明基线之前无改动。首批 rev 1→rev 2 的变化本身是经用户决定的修订，不是越权改动。本批主仓库 HEAD 等于固定提交，18 个来源文件工作树字节与固定提交相同。 末次重采在首批 rev 2 产物全部落盘之后进行，避免把校验产物自身的写入误报成越权改动；该保护只能发现重采之后的改动。",
+  "pilot_rev_at_baseline": 2,
+  "sources": [
+    {
+      "path": "session/session.h",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/session/session.h",
+      "lines": 774
+    },
+    {
+      "path": "session/session.c",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/session/session.c",
+      "lines": 581
+    },
+    {
+      "path": "session/README.md",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/session/README.md",
+      "lines": 127
+    },
+    {
+      "path": "main.c",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/main.c",
+      "lines": 3198
+    },
+    {
+      "path": "plugin/engine.h",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/engine.h",
+      "lines": 275
+    },
+    {
+      "path": "plugin/engine_registry.c",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/engine_registry.c",
+      "lines": 435
+    },
+    {
+      "path": "plugin/plugins/engine_dns.cpp",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/plugins/engine_dns.cpp",
+      "lines": 1132
+    },
+    {
+      "path": "plugin/plugins/dns_ext.h",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/plugins/dns_ext.h",
+      "lines": 11
+    },
+    {
+      "path": "plugin/plugins/Makefile",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/plugins/Makefile",
+      "lines": 228
+    },
+    {
+      "path": "plugin/plugins/domain_intel.c",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/plugins/domain_intel.c",
+      "lines": 465
+    },
+    {
+      "path": "plugin/plugins/domain_intel.h",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/plugins/domain_intel.h",
+      "lines": 40
+    },
+    {
+      "path": "plugin/plugins/ch_event.h",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/plugins/ch_event.h",
+      "lines": 562
+    },
+    {
+      "path": "plugin/plugins/ch_event.c",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/plugins/ch_event.c",
+      "lines": 322
+    },
+    {
+      "path": "plugin/plugins/README.md",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/plugins/README.md",
+      "lines": 402
+    },
+    {
+      "path": "docs/system_design.md",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/docs/system_design.md",
+      "lines": 1561
+    },
+    {
+      "path": "docs/codebase_reference.md",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/docs/codebase_reference.md",
+      "lines": 1050
+    },
+    {
+      "path": "plugin/README.md",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/README.md",
+      "lines": 264
+    },
+    {
+      "path": "plugin/plugins/engine_tls_infra.cpp",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/plugins/engine_tls_infra.cpp",
+      "lines": 822
+    }
+  ],
+  "scan_roots": [
+    "/Users/fsy/code/dpdk/Flask_network_new/app.py",
+    "/Users/fsy/code/dpdk/Flask_network_new/app_config.py",
+    "/Users/fsy/code/dpdk/Flask_network_new/app_smart.py",
+    "/Users/fsy/code/dpdk/Flask_network_new/core",
+    "/Users/fsy/code/dpdk/Flask_network_new/services",
+    "/Users/fsy/code/dpdk/README.md",
+    "/Users/fsy/code/dpdk/ai_chat_assistant/knowledge",
+    "/Users/fsy/code/dpdk/api_server",
+    "/Users/fsy/code/dpdk/api_server/README.md",
+    "/Users/fsy/code/dpdk/capture",
+    "/Users/fsy/code/dpdk/capture/README.md",
+    "/Users/fsy/code/dpdk/capture_dpdk.c",
+    "/Users/fsy/code/dpdk/docs",
+    "/Users/fsy/code/dpdk/http_server.c",
+    "/Users/fsy/code/dpdk/http_server.h",
+    "/Users/fsy/code/dpdk/log.c",
+    "/Users/fsy/code/dpdk/log.h",
+    "/Users/fsy/code/dpdk/logger",
+    "/Users/fsy/code/dpdk/main.c",
+    "/Users/fsy/code/dpdk/plugin",
+    "/Users/fsy/code/dpdk/plugin/PLUGIN_SYSTEM.md",
+    "/Users/fsy/code/dpdk/plugin/README.md",
+    "/Users/fsy/code/dpdk/plugin/plugins/README.md",
+    "/Users/fsy/code/dpdk/session",
+    "/Users/fsy/code/dpdk/session/README.md",
+    "/Users/fsy/code/dpdk/stats",
+    "/Users/fsy/code/dpdk/stats/README.md"
+  ],
+  "scan_entry_count": 27,
+  "candidate_file_count": 211,
+  "knowledge_config": "/Users/fsy/code/dpdk/ai_chat_assistant/backend/data/knowledge_sources.yml",
+  "batch02_under_scan_roots": false,
+  "pilot_snapshot_hashes": {
+    "README.md": "bbd2f60aa7168c318474a19845aa8b09227e935a3310b5ba720cdccf14a95bd3",
+    "checks/check_documents.py": "9bc985a2725022b0a4de81e36ca8554a8b1e284001abd6b8c84ef0edff08d8bb",
+    "checks/chunk_preview.json": "4e6de21b50cddd69df4048637d043e7443cb1cd7553482e4b4d0c08ecd137f90",
+    "checks/source_baseline.json": "5b820cc87a2e3f726522f9550273ccaff249abdbd460fea8d24923f5b77e6a06",
+    "checks/validation.md": "1eef448518a36da488f9333a88d1ede9e36ff1864d514a50581561507aac95d7",
+    "checks/validation_result.json": "9dd6773cad9c12bfa8542806b628a93ef86a78dff29780d4eaa869efd4a81ffe",
+    "delivery.md": "1085ea9470b5cd81d5af32753014da0ebf81b4f1dfb102ddf8134f5c01807469",
+    "drafts/packet_flow.md": "7b8edf22426c3426f4e0d8212f456b2c88a63b41d93cc83262cf4789a88f0a54",
+    "drafts/plugin_lifecycle.md": "b27589775f045e1e8eb1ec9750b1e63e66ff15a6a42fbeeb15e017b1d509c4df",
+    "evidence/packet_flow.md": "909e37f04b91b937d727d15c2aa3cb63aea08dab3e561cdce30663710cda8392",
+    "evidence/plugin_lifecycle.md": "5d86fd7e4ae482d85bb17e22017843599d7aa25592e4c2b54a246c56e34f5507",
+    "inventory.md": "77a34538089742777a954b4682d0923ee22f5e0b452bdba751435771535f7af2",
+    "manifest.json": "5ae5237f076c3a5ab4354e4065f7f415e5402d4ae9c0f64d520e01cfc166a8d8",
+    "reviews/independent_review_20260918.md": "d144611520d680a0558baa91572a533591fe2981d2f38411a8ea3eae4bfdc1eb",
+    "reviews/review_checklist.md": "eed289704dfdd5f6e8a6acd7e2f86bab3a1be89ba5fe3dcc8c9bc42e2bec88e6",
+    "reviews/self_review.md": "8efc012b1814c964e11c62527f4fbb3ffc38b97a9be4abb23d60e98a70ef8694"
+  }
+}

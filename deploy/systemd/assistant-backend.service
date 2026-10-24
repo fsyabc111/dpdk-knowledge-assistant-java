@@ -1,0 +1,23 @@
+# Non-container fallback: run the backend under systemd.
+# Prereqs outside this unit: PostgreSQL + pgvector running locally, and an
+# nginx (or equivalent) TLS reverse proxy in front of 127.0.0.1:8090.
+# Install: sudo cp deploy/systemd/assistant-backend.service /etc/systemd/system/
+#          sudo systemctl daemon-reload && sudo systemctl enable --now assistant-backend
+[Unit]
+Description=DPDK Knowledge Assistant backend
+After=network-online.target postgresql.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+# Adjust WorkingDirectory/EnvironmentFile/ExecStart to the actual checkout path.
+WorkingDirectory=/opt/dpdk/ai_chat_assistant/backend
+EnvironmentFile=/opt/dpdk/ai_chat_assistant/backend/.env
+ExecStart=/opt/dpdk/ai_chat_assistant/backend/.venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8090
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

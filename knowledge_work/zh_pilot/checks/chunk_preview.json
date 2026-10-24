@@ -1,0 +1,119 @@
+{
+  "status": "passed",
+  "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+  "source_files": 22,
+  "facts": 28,
+  "local_links": 116,
+  "knowledge_config": "/Users/fsy/code/dpdk/ai_chat_assistant/backend/data/knowledge_sources.yml",
+  "scan_entry_count": 27,
+  "candidate_file_count": 211,
+  "scan_roots_unchanged": true,
+  "source_drift": [],
+  "errors": [],
+  "warnings": [],
+  "semantic_review": "静态定位检查不能证明事实正确；语义自审见 reviews/self_review.md，仍待人工审核",
+  "documents": [
+    {
+      "document_path": "drafts/plugin_lifecycle.md",
+      "chinese_chars": 1513,
+      "chunks": [
+        {
+          "ordinal": 1,
+          "section": "插件接口与生命周期：从加载到处理报文",
+          "chars": 111,
+          "content": "# 插件接口与生命周期：从加载到处理报文\n\n本项目通过操作表与注册中心调度协议插件。理解生命周期时，应分别检查加载成功、进入处理链、返回值控制和资源清理；这四步并非同一个状态。本篇解释已提交源码的行为，不提供完整插件答案。"
+        },
+        {
+          "ordinal": 2,
+          "section": "适用版本与阅读目标",
+          "chars": 274,
+          "content": "## 适用版本与阅读目标\n\n本文面向懂 C 和网络基础、初识项目的学生，依据 DPDK 仓库 `20f882691ac03998e0e148e0a66041227cd3f751`。状态：**待人工审核**。本文只做静态源码核查，没有编译、抓包或测试插件。\n\n读完应能沿源码说明一个插件为何被加载、何时获得报文、何时退出处理链。这里讲的是本项目的引擎接口，不是所有 DPDK 应用的通用插件规范。逐项依据见[插件事实表](../evidence/plugin_lifecycle.md)，与抓包的衔接见[报文主流程](packet_flow.md)。"
+        },
+        {
+          "ordinal": 3,
+          "section": "先区分接口、实例与会话",
+          "chars": 390,
+          "content": "## 先区分接口、实例与会话\n\n`engine_ops_t` 是操作表，保存名称、协议 ID、优先级和函数指针；`engine_ctx_t` 保存某个引擎条目的私有数据指针与统计。`engine_registry_t` 则管理条目数组、按优先级排列的链和动态库句柄列表。接口定义不等于已创建实例：注册过程会分配 entry，并在 entry 内保存独立的 ctx。\n\n会话 `session_entry_t` 由会话模块管理；`parsed_packet_t` 是本次报文的解析结果。插件收到这两个指针，并不因此拥有报文缓冲区。通用 C 原则是：保存一个指针不会复制其指向的数据。本项目还需要检查对应数据实际在哪里释放。\n\n来源：`plugin/engine.h` 的结构体与 `engine_registry_register`；事实 PL-001、PL-002、PL-009。"
+        },
+        {
+          "ordinal": 4,
+          "section": "从加载到进入处理链",
+          "chars": 795,
+          "content": "## 从加载到进入处理链\n\n```mermaid\nflowchart LR\n    A[加载动态库] --> B[取得 engine_get_ops]\n    B --> C[检查名称与容量]\n    C --> D[创建 entry 并调用可选 init]\n    D --> E[成功后插入优先级链并登记句柄]\n    E --> F[engine_process 调度]\n    F --> G[显式卸载或注册中心销毁]\n```\n\n这张图描述成功路径。`engine_registry_load_plugin` 调用 `dlopen`、查找导出函数 `engine_get_ops`，再取得操作表。重复名称、容量不足或初始化失败会返回错误。init 非空时必须返回 `ENGINE_OK` 才继续注册。\n\ninit 失败分支释放 entry 和动态库句柄，**没有调用 cleanup**；所以不能依赖注册中心替失败的 init 回收所有部分初始化资源。另一个分支不同：init 成功后若分配句柄记录失败，代码会撤销注册并调用 cleanup。失败位置决定清理行为。\n\n启动时 `load_plugins_to_registry` 遍历固定列表，跳过不存在的文件；`--no-plugins` 会跳过此加载函数。注册中心条目没有统一的 enabled 字段，因此排错时应检查是否实际注册，不能假定另有通用启用开关。还要限定 `--no-plugins` 的作用范围：该标志在 `main.c` 中只被这一个启动加载函数读取，运行时插件控制入口不检查它——所以它关闭的是启动期加载，不是后续热加载能力。\n\n来源：`plugin/engine_registry.c` 的加载函数、`main.c` 的加载入口与运行时控制入口；事实 PL-003、PL-004、PL-005、PL-013。"
+        },
+        {
+          "ordinal": 5,
+          "section": "can_handle、process 与返回值",
+          "chars": 584,
+          "content": "## can_handle、process 与返回值\n\n`insert_to_chain` 按 priority 从小到大插入，同值条目排在已有同值之后。每次 `engine_process` 从链头遍历，先增加当前条目的 `packets_processed`，再检查 can_handle：函数指针非空且返回 true，才调用 process。计数增加不代表 process 已执行。\n\n本版本调度处没有先检查 process 指针是否为空；实现插件时应提供与接口匹配的回调，不能把注册成功理解为所有函数指针已获完整校验。\n\n| process 返回值 | 当前调度器的行为 |\n| --- | --- |\n| `ENGINE_HANDLED` | 增加匹配计数，停止本次链，向调用方返回 `ENGINE_OK` |\n| `ENGINE_ERROR` | 增加错误计数，停止本次链并返回错误 |\n| 其他值 | 继续后续引擎；`ENGINE_CONTINUE` 表达这一意图 |\n\n头文件定义了 `ENGINE_SKIP`，但调度器没有给它独立分支。不要把未识别的返回值当成已验证的扩展协议。\n\n来源：`plugin/engine_registry.c` 的 `insert_to_chain`、`engine_process`；事实 PL-006、PL-007。"
+        },
+        {
+          "ordinal": 6,
+          "section": "多实例、热加载与清理边界",
+          "chars": 726,
+          "content": "## 多实例、热加载与清理边界\n\n单线程入口创建全局注册中心；DPDK 流水线为每个 worker 创建注册中心和会话表。独立 ctx 不等于动态库的所有全局变量也独立，更不能据此宣布所有插件线程安全。\n\n运行时 load 会收集当前注册中心、检查已加载状态，再逐个加载；中途失败会尝试卸载此前已加载的实例。它不是一次跨 worker 的原子提交。注册/卸载使用写锁，处理链持有读锁；这些锁不能证明插件内部共享数据没有竞争。\n\n显式 `engine_registry_unload_plugin` 移出条目、调用 cleanup、关闭动态库并释放句柄记录。`engine_registry_destroy` 则调用各 entry 的 cleanup 并释放条目和注册中心，但函数体未遍历 plugin_list 关闭动态库，两种清理不能画等号。还有第三种：`engine_registry_unregister` 同样移出条目、调用 cleanup 并释放 entry，但**既不关闭动态库，也不摘除 plugin_list 节点**。判断某个引擎被移走后还剩什么，要先确认走的是这三条路径中的哪一条。\n\n会话模块在过期清扫或销毁时释放会话及所列扩展指针。报文 payload 指向原抓包数据：单线程回调返回后进入 release，worker 处理完后释放 mbuf。跨报文状态应按明确的所有权规则保存，不能长期持有未经复制的 payload。\n\n来源：`main.c`、`plugin/engine_registry.c`、`session/session.c`、抓包 release；事实 PL-008、PL-009、PL-010、PL-012。"
+        },
+        {
+          "ordinal": 7,
+          "section": "阅读顺序与自查问题",
+          "chars": 369,
+          "content": "## 阅读顺序与自查问题\n\n建议依次读 `engine.h` → 加载与插链 → `engine_process` → main 的调用点 → 卸载与会话清理。遇到“加载成功但没有进入 process”，按事实 PL-004、PL-006、PL-007、PL-011 核对：目标注册中心是否有该插件；main 是否得到会话；前序引擎是否已 HANDLED/ERROR；can_handle 是否存在并返回 true。\n\n自查：为什么 packets_processed 增长而 process 未运行？初始化失败是否一定调用 cleanup？worker 各有 ctx 是否证明整个插件线程安全？这些是读码练习，不是独立验收题。\n\n本文未验证实际热加载并发、插件私有资源完整回收或硬件运行效果；相关风险见证据包，不将静态阅读写成运行保证。"
+        }
+      ]
+    },
+    {
+      "document_path": "drafts/packet_flow.md",
+      "chinese_chars": 1609,
+      "chunks": [
+        {
+          "ordinal": 1,
+          "section": "报文处理主流程：从抓包到会话、插件与统计",
+          "chars": 125,
+          "content": "# 报文处理主流程：从抓包到会话、插件与统计\n\n本项目有单线程回调和 DPDK worker 两条报文路径。理解处理流程，既要找出数据经过哪些模块，也要核对会话统计与插件调用的先后，以及谁释放原始缓冲区。本篇用主线与对照说明，避免把两条路径混成一条。"
+        },
+        {
+          "ordinal": 2,
+          "section": "适用版本与阅读目标",
+          "chars": 249,
+          "content": "## 适用版本与阅读目标\n\n本文面向懂 C 和网络基础、初识项目的学生，依据 DPDK 仓库 `20f882691ac03998e0e148e0a66041227cd3f751`，状态为**待人工审核**。以单线程回调路径讲清对象与调用顺序，再对照 DPDK worker 路径；未执行编译或抓包。\n\n项目里“收到报文”“形成会话”“插件处理”“统计提交”是不同动作。正文不推断实际吞吐、网卡能力或数据最终落盘保证。逐项依据见[报文事实表](../evidence/packet_flow.md)。"
+        },
+        {
+          "ordinal": 3,
+          "section": "从构建入口确认抓包实现",
+          "chars": 442,
+          "content": "## 从构建入口确认抓包实现\n\n根 Makefile 将 `main.o` 与 `capture/libcapture.a` 等模块链接为 `traffic_monitor`。`capture/Makefile` 以自身目录的 `capture.c` 为基础，按构建选项加入 `capture_dpdk.c` 和 `capture_pcap.c`。所以本条构建链的 DPDK 后端是 `capture/capture_dpdk.c`，不是根目录同名副本；这不代表其他构建入口绝不会用后者。\n\n运行时 `capture_create` 按配置取得后端操作表。AUTO 分支在编译支持范围内先检查 DPDK，再检查 PCAP；显式指定后端的分支不可用时返回失败，并非任意启动失败都会自动切换。是否能打开设备还要经过后端初始化与 open，不能把“选择了操作表”理解为硬件已经可用。\n\n来源：两级 Makefile、`capture/capture.c`；事实 PF-001、PF-002。"
+        },
+        {
+          "ordinal": 4,
+          "section": "单线程回调的实际顺序",
+          "chars": 858,
+          "content": "## 单线程回调的实际顺序\n\n```mermaid\nflowchart TD\n    A[capture_loop 调 capture_recv] --> B[packet_handler 计数并 parse_packet]\n    B --> C{解析成功?}\n    C -->|否| S[返回 0 继续收包]\n    C -->|是| T{protocol 是 TCP 或 UDP?}\n    T -->|是| D[查找或创建会话并更新]\n    D --> E[有会话及存储引擎时提交统计]\n    E --> F[有会话及注册中心时调插件]\n    F --> G[回调尾部按时间条件做统计、刷盘、会话清扫]\n    T -->|否| G\n    G --> W{g_running?}\n    W -->|是| S\n    W -->|否| X[返回 1 停止 capture_loop]\n    S --> R[capture_release_packet]\n    X --> R\n```\n\n`capture_loop` 单次收到包后调用 `packet_handler`，回调返回再 release。回调先增加全局包数与捕获字节数，再解析；解析失败返回 0，表示继续抓后续包。因此包数增长不能证明解析成功。图里的两级判定不要合并：只有解析失败才提前返回；解析成功但不是 TCP/UDP 时，跳过的只是会话与插件那一段，回调尾部的时间条件检查照常执行。\n\n`capture_packet_t` 包含原始字节指针及 caplen；`parse_packet` 填写协议、端口等字段，并让 payload 指向原缓冲区内相应偏移。它没有复制一份完整负载，也不是完整协议合法性验证器；返回成功不能推导为任意报文都安全、完整且可识别。\n\n来源：`main.c` 的 `parse_packet`/`packet_handler`、`capture_loop`；事实 PF-003、PF-004、PF-005。"
+        },
+        {
+          "ordinal": 5,
+          "section": "会话、插件与统计如何连接",
+          "chars": 537,
+          "content": "## 会话、插件与统计如何连接\n\n回调只对 TCP/UDP 进入 lookup/create/update，IPv4 与 IPv6 使用各自接口；创建失败或没有会话时，不会进入该路径的插件调用。IPv4 lookup 使用规范化键，跳过过期条目；update 刷新 last_seen 并累加方向统计。会话状态与本次 parsed_packet 不是同一个对象。\n\n一个容易读错的顺序是：**单线程路径先将会话转为记录并提交统计，之后才调用 engine_process**。该 submit 函数更新内存虚拟集合，不能把提交成功等同于外部数据库落盘。`session_to_record` 在这里按传输层填写 TCP/UDP 名称，不足以证明所有插件识别结果已进入这份记录。\n\n回调中的 engine_process 返回值没有被用于直接终止抓包；插件链内部停止与 capture_loop 停止是两层行为。插件接口的详细返回值见[插件生命周期](plugin_lifecycle.md)。\n\n来源：`main.c` 的会话与插件段、`session/session.c`、`stats/storage_engine.c`；事实 PF-006、PF-007、PF-008。"
+        },
+        {
+          "ordinal": 6,
+          "section": "周期工作与数据生命周期",
+          "chars": 420,
+          "content": "## 周期工作与数据生命周期\n\n单线程回调尾部按时间间隔提交系统/协议统计、检查每小时 flush 与每 30 秒会话清扫。这些检查依赖控制流到达相应代码；解析失败会提前返回，不能描述成一个始终独立运行的精确定时器。反之，非 TCP/UDP 的报文仍会走到这里。\n\n过期清扫先调用已注册的过期回调，再释放会话。销毁会话管理器也会释放会话，但不能假定它执行完全相同的回调流程。\n\n单线程释放接口先调用后端 release，再清空 capture_packet 的数据指针。DPDK release 释放 mbuf；PCAP release 不手动释放，数据由 libpcap 管理。局部的 parsed.payload 不会因 capture_packet 清零而自动清零，学生仍不能跨处理周期保存借用的原始地址。\n\n来源：`main.c` 回调尾部、会话清扫/销毁、两个后端 release；事实 PF-009、PF-010、PF-011。"
+        },
+        {
+          "ordinal": 7,
+          "section": "DPDK worker 路径的区别",
+          "chars": 794,
+          "content": "## DPDK worker 路径的区别\n\nmain 在 DPDK 后端分支启动 worker 与存储 lcore。worker 函数体直接轮询各自 NIC queue，解析后使用自己的会话表和引擎链；函数头“从 ring 取包”的注释已不能概括这一实现。\n\n| 比较项 | 单线程回调 | DPDK worker |\n| --- | --- | --- |\n| 收包入口 | `capture_loop` / `capture_recv` | `capture_dpdk_recv_raw` |\n| 会话、注册中心 | 全局实例 | 每 worker 独立实例 |\n| 会话统计提交时机 | 插件调用之前 | 插件调用之后构造任务，存储 lcore 消费 |\n| 原包释放 | 回调返回后经 release | worker 中 `rte_pktmbuf_free` |\n\nworker 将会话转换为 storage_task 中的记录，随后释放原包；ring 满时回收任务，不保证每次统计任务都入队。无包时也会进入分摊式过期清扫。不能据此扩写为所有副作用都走同一个 ring、全系统无锁或同一吞吐保证。 还有一处容易踩的差别：两条路径的报文时间戳不在同一时钟域——worker 的 `timestamp_sec` 取自 `CLOCK_MONOTONIC`（usec 因 memset 为 0），单线程 DPDK 后端取 `time(NULL)`，PCAP 后端取 libpcap 包头时间戳；而会话的 `create_time/last_seen` 与过期判断始终用 `time(NULL)`。跨阶段做时间减法前先确认取的是哪一个。\n\n来源：`main.c` 的启动、worker、storage 函数与两个后端的取时点；事实 PF-012、PF-013、PF-014、PF-015。"
+        },
+        {
+          "ordinal": 8,
+          "section": "阅读顺序与自查问题",
+          "chars": 304,
+          "content": "## 阅读顺序与自查问题\n\n从 Makefile → main 分支 → capture_loop/worker → parse_packet → 会话 → 插件 → 统计 → release 逐段阅读。先确认自己研究的是哪条路径，再对照日志。\n\n自查：计数为何可能包含解析失败的包？单线程统计记录为什么不一定含刚刚产生的插件信息？保存 payload 地址后为何不能在下一次回调随意读取？这些练习基于 PF-004、PF-007、PF-011，不是独立评测集。\n\n本批没有验证复杂报文、RSS 实际分流、多段 mbuf、并发共享状态或落盘可靠性。要回答这些问题，需要另行设计测试，不能从现有流程图推导结论。"
+        }
+      ]
+    }
+  ]
+}

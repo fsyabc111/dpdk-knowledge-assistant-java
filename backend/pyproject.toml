@@ -1,0 +1,33 @@
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# live_eval_runner.py（tests/agent/）与 rag_eval_runner.py（tests/rag_eval/）是
+# CLI/pytest 双形态评测脚本，文件名不带 test_ 前缀，显式纳入收集
+python_files = ["test_*.py", "*_test.py", "live_eval_runner.py", "rag_eval_runner.py"]
+addopts = "--strict-markers"
+asyncio_mode = "auto"
+markers = [
+    "live: requires real LLM/embedding network access or an ingested knowledge base",
+    "postgres: requires a running PostgreSQL + pgvector service",
+]
+
+[tool.coverage.run]
+source = ["app"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 120
+src = ["backend"]
+
+[tool.ruff.lint]
+# 保守起步：E/W（格式）、F（明显错误）、I（import 排序）、B（bugbear）。
+# UP（pyupgrade 风格现代化）存量有 ~390 处，留待后续分批处理，避免巨型 diff。
+select = ["E", "F", "W", "I", "B"]
+# E501 行宽暂不强制；E402 是测试脚本 sys.path 引导的固有形态。
+ignore = ["E501", "E402"]
+
+[tool.ruff.lint.flake8-bugbear]
+# FastAPI 依赖注入惯用法：def route(x = Depends(...))
+extend-immutable-calls = ["fastapi.Depends", "fastapi.Query", "fastapi.Path"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["app"]

@@ -1,0 +1,166 @@
+{
+  "checked_at": "2026-10-24T21:38:16+08:00",
+  "checks": {
+    "baseline_files_sha256": 378,
+    "executable_modes_preserved": true,
+    "source_files_and_git_status_unchanged": true,
+    "task_count": 22,
+    "task_definition_status_index_consistent": true,
+    "declared_milestone_schedule_acyclic": true,
+    "authored_local_links_checked": 14,
+    "broken_authored_links": [],
+    "git_absent_and_outside_parent_repository": true,
+    "symlinks_absent": true,
+    "credential_and_runtime_paths_absent": true,
+    "high_confidence_secret_pattern_findings": [],
+    "java_implementation_not_started": true,
+    "baseline_paths_accidentally_ignored": []
+  },
+  "task_cards": {
+    "J0-01": [
+      "foundation-slices.md"
+    ],
+    "J1-01": [
+      "foundation-slices.md"
+    ],
+    "J4-03": [
+      "foundation-slices.md"
+    ],
+    "J5-04": [
+      "foundation-slices.md"
+    ],
+    "J2-01": [
+      "business-slices.md"
+    ],
+    "J2-02": [
+      "business-slices.md"
+    ],
+    "J2-03": [
+      "business-slices.md"
+    ],
+    "J2-04": [
+      "business-slices.md"
+    ],
+    "J2-05": [
+      "business-slices.md"
+    ],
+    "J3-04": [
+      "business-slices.md"
+    ],
+    "J4-02": [
+      "business-slices.md"
+    ],
+    "J1-02": [
+      "ai-slices.md"
+    ],
+    "J1-03": [
+      "ai-slices.md"
+    ],
+    "J1-04": [
+      "ai-slices.md"
+    ],
+    "J3-01": [
+      "ai-slices.md"
+    ],
+    "J3-02": [
+      "ai-slices.md"
+    ],
+    "J3-03": [
+      "ai-slices.md"
+    ],
+    "J4-01": [
+      "ai-slices.md"
+    ],
+    "J0-02": [
+      "acceptance.md"
+    ],
+    "J5-01": [
+      "acceptance.md"
+    ],
+    "J5-02": [
+      "acceptance.md"
+    ],
+    "J5-03": [
+      "acceptance.md"
+    ]
+  },
+  "declared_schedule_dependencies": {
+    "J0-01.initial": [],
+    "J0-02": [
+      "J0-01.initial"
+    ],
+    "J0-01.final": [
+      "J0-02"
+    ],
+    "J1-01": [
+      "J0-01.final"
+    ],
+    "J1-02": [
+      "J1-01"
+    ],
+    "J1-03": [
+      "J1-01"
+    ],
+    "J1-04": [
+      "J1-02",
+      "J1-03"
+    ],
+    "J2-01": [
+      "J1-04"
+    ],
+    "J2-02": [
+      "J2-01"
+    ],
+    "J2-03": [
+      "J2-02"
+    ],
+    "J2-05": [
+      "J2-02"
+    ],
+    "J2-04": [
+      "J2-03",
+      "J2-05"
+    ],
+    "J3-01": [
+      "J2-04"
+    ],
+    "J3-02": [
+      "J2-04"
+    ],
+    "J3-03": [
+      "J3-01",
+      "J3-02"
+    ],
+    "J3-04": [
+      "J3-03"
+    ],
+    "J4-01": [
+      "J3-04"
+    ],
+    "J4-02": [
+      "J3-04"
+    ],
+    "J4-03": [
+      "J4-01",
+      "J4-02"
+    ],
+    "J5-01": [
+      "J4-03"
+    ],
+    "J5-02": [
+      "J5-01"
+    ],
+    "J5-03": [
+      "J5-02"
+    ],
+    "J5-04": [
+      "J5-03"
+    ]
+  },
+  "limits": [
+    "Static planning and copy verification only; no application tests or services executed.",
+    "Schedule graph represents frozen-interface parallel work; final integration gates remain in PLAN and task cards.",
+    "Secret pattern scan is bounded and is not a guarantee that all secrets can be detected.",
+    "Original Python documentation links are preserved as baseline and not revalidated as new Java documentation."
+  ]
+}

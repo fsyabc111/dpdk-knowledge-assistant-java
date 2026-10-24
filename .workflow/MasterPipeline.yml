@@ -1,0 +1,75 @@
+# Gitee Go 主干流水线：push 到 main 时触发。
+# 阶段：lint -> 后端测试（含覆盖率门禁） -> 前端测试与构建 -> 依赖漏洞扫描（不阻塞）。
+# 注意：Docker 镜像构建验证不在本流水线内（build@docker 需镜像仓库凭据），
+# 发布前在本机/部署机执行 `docker compose build` 验证，见 docs/runbook.md。
+version: '1.0'
+name: master-pipeline
+displayName: Master 分支流水线
+
+triggers:
+  push:
+    branches:
+      precise:
+        - main
+
+stages:
+  - stage: lint
+    displayName: Lint（ruff）
+    strategy: fast
+    trigger: auto
+    steps:
+      - step: build@python
+        name: ruff_lint
+        displayName: Ruff 静态检查
+        pythonVersion: '3.11'
+        commands:
+          # lint 只需 ruff 本身，不装整份 dev 依赖，十几秒完成。
+          # pip 在该容器装到用户目录（不在 PATH），故用 python -m 调用。
+          - pip install ruff==0.16.3 -i https://mirrors.aliyun.com/pypi/simple/
+          - cd backend && python -m ruff check .
+
+  - stage: backend-test
+    displayName: 后端测试（SQLite 无网络子集）
+    strategy: fast
+    trigger: auto
+    steps:
+      - step: build@python
+        name: pytest
+        displayName: pytest + 覆盖率
+        pythonVersion: '3.11'
+        commands:
+          - pip install -r backend/requirements.lock -r backend/requirements-dev.txt -i https://mirrors.aliyun.com/pypi/simple/
+          - cd backend && python -m pytest -m "not live and not postgres" --cov=app --cov-report=term-missing --cov-fail-under=60
+
+  - stage: frontend
+    displayName: 前端测试与构建
+    strategy: fast
+    trigger: auto
+    steps:
+      - step: build@nodejs
+        name: frontend_build
+        displayName: vitest + vite build
+        # vite 7 要求 Node ^20.19 || >=22.12；nodeVersion 必须是插件下拉列表中的
+        # 完整版本号（写 "20" 不会初始化 Node 环境）
+        nodeVersion: '20.19.0'
+        commands:
+          - set -e
+          - cd frontend && npm ci --registry=https://registry.npmmirror.com
+          - npm test
+          - npm run build
+
+  - stage: dep-audit
+    displayName: 依赖漏洞扫描（告警不阻塞）
+    strategy: naturally
+    trigger: auto
+    steps:
+      - step: build@python
+        name: pip_audit
+        displayName: pip-audit
+        pythonVersion: '3.11'
+        commands:
+          - pip install pip-audit==2.10.1 -i https://mirrors.aliyun.com/pypi/simple/
+          # 首版只做可见告警：发现漏洞时打印报告但不使流水线失败。
+          # 注：pip-audit 需在类 Linux 环境运行（lock 内含 uvloop 等 Linux-only 包，
+          # 其在 Windows 上无法构建）；CI 构建环境为 CentOS，无此问题。
+          - python -m pip_audit -r backend/requirements.lock || echo "PIP-AUDIT: vulnerabilities found (non-blocking, see log above)"

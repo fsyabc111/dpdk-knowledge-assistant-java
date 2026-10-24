@@ -1,0 +1,22 @@
+tasks:
+  - id: plugin-intro
+    title: 协议插件入门
+    audience: student
+    goals:
+      - 理解 engine_ops_t 的基本接口
+      - 理解 can_handle 和 process 的职责边界
+      - 能阅读 engine_template.c 并说明每个回调的作用
+    recommended_sources:
+      - plugin/README.md
+      - plugin/engine.h
+      - plugin/plugins/engine_template.c
+  - id: protocol-feature-design
+    title: 协议特征设计
+    audience: student
+    goals:
+      - 能说明端口、payload、握手字段和多包行为的区别
+      - 能区分确定性解析和概率型识别
+    recommended_sources:
+      - docs/shadowsocks_protocol_plugin_design.md
+      - plugin/plugins/engine_tunnel.c
+

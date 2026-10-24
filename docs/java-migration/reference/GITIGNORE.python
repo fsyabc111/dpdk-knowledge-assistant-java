@@ -1,0 +1,54 @@
+.DS_Store
+
+# secrets
+.env
+backend/.env
+deploy/external_disk.json
+
+# python
+backend/.venv/
+backend/__pycache__/
+backend/**/__pycache__/
+backend/data/*.db
+backend/data/*.db-*
+backend/data/backups/
+
+# frontend
+frontend/node_modules/
+frontend/dist/
+
+# local indexes
+data/*.db
+data/*.db-*
+backend/data/chroma/
+backend/data/indexes/
+
+# local logs
+.logs/
+
+# portable PostgreSQL runtime (Windows)
+.runtime/
+
+# test artifacts
+# live 评测基线含模型输出摘要（答案前 200 字符），属本地漂移对照数据，不入库
+backend/data/live_eval_baseline.json
+# RAG 检索评估基线（本地漂移对照数据，不入库；*.阶段存档 为历史基线存档）
+backend/data/rag_eval_baseline.json
+backend/data/rag_eval_baseline.*.json
+# 验收 run 结果含模型输出，属本地资产不入库
+backend/data/product_acceptance/
+backend/answer_quality_report.txt
+backend/.coverage
+backend/coverage.xml
+.pytest_cache/
+backend/.pytest_cache/
+frontend/coverage/
+
+# 本地自签名 TLS 证书（含私钥），不入库
+deploy/certs/
+
+# teaching_harness 独立仓库（E:\teaching_harness，D15 唯一事实来源），防止再把快照拷进本仓库
+teaching_harness/
+
+# 会话交接提示词仅本地使用，不进版本库
+session_handoff_prompt.md

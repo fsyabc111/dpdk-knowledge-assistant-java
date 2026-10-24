@@ -1,0 +1,91 @@
+{
+  "status": "passed",
+  "batch": "zh_batch03",
+  "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+  "assistant_commit": "a8d0fbec7667a0580a8c6b7fde838d1b7aa0012d",
+  "source_files": 22,
+  "facts": 22,
+  "own_fact_ids_registered": 22,
+  "local_links": 125,
+  "knowledge_config": "/Users/fsy/code/dpdk/ai_chat_assistant/backend/data/knowledge_sources.yml",
+  "scan_entry_count": 27,
+  "candidate_file_count": 211,
+  "scan_roots_unchanged": true,
+  "candidate_count_matches_baseline": true,
+  "worktree_drift": [],
+  "errors": [],
+  "warnings": [
+    "drafts/tls_module_boundaries.md 中文字数 2249 超出任务书建议区间 1400-1900，须在交付说明中登记原因与是否拆分"
+  ],
+  "semantic_review": "静态定位检查不能证明事实正确；编写者自审见 reviews/self_review.md，独立 Agent 静态审核见 reviews/independent_review_20260919.md（意见已落实到 rev 2）；仍待人工审核",
+  "not_checked": "未执行编译、抓包、插件加载、数据库、索引、真实模型与 RAG 对照",
+  "documents": [
+    {
+      "document_path": "drafts/tls_module_boundaries.md",
+      "chinese_chars": 2249,
+      "cross_document_fact_refs": [],
+      "chunks": [
+        {
+          "ordinal": 1,
+          "section": "TLS、HTTPS、SNI 与证书：模块职责和可观测边界",
+          "chars": 149,
+          "content": "# TLS、HTTPS、SNI 与证书：模块职责和可观测边界\n\n本簇五个插件里有一个 `ops.name` 就叫 `TLS`，但它不是解析握手的那个。本篇只回答两件事：一条 443 报文按什么顺序经过它们、每条通路在这版代码里**能拿到什么、拿不到什么**。不提供可通过作业的实现，也没有抓包结果。"
+        },
+        {
+          "ordinal": 2,
+          "section": "适用版本与阅读目标",
+          "chars": 369,
+          "content": "## 适用版本与阅读目标\n\n面向懂 C 和网络基础、初识本项目的学生，依据 DPDK 仓库 `20f882691ac03998e0e148e0a66041227cd3f751`（分支 master），状态：**待人工审核**。结论全部来自静态回读；未编译、未加载、未构造报文。逐条依据见[事实表](../evidence/tls_module_boundaries.md)。范围止于这五个插件与 `main.c` 的证书通路；JA3 算法、密码学语义与下游消费不在本篇。返回值语义见首批[插件生命周期](../../zh_pilot/drafts/plugin_lifecycle.md)，扩展槽规则见第二批[会话过期与回收](../../zh_batch02/drafts/session_expiry_and_release.md)。"
+        },
+        {
+          "ordinal": 3,
+          "section": "核心对象和术语",
+          "chars": 606,
+          "content": "## 核心对象和术语\n\n五个插件各在文件末尾写死一张 ops 表，导出同名 `engine_get_ops` 供 `dlsym` 取用（只有 `engine_tls_infra.cpp` 显式写 `extern \"C\"`）；括号内是 protocol_id 与 priority：`HTTPS_Identifier`(2, 20)、`TLS_Parser`(3, 30)、`Certificate_Extractor`(4, 40)、`JA3_Fingerprint`(5, 50)，以及定义在 `engine_tls_infra.cpp`、名为 `TLS` 的那个(443, 180)。五者 `get_stats`/`reset_stats` 均空。认插件看 priority 与文件，别按 `name` 猜职责。\n\n会话状态本簇有两种放法：`TLS_Parser` 把自定的 `tls_session_state_t` 放进**候选槽** `EXT_FIELD_TLS`，不调 `session_set_ext_data`，故不占 `ext_data` 单值槽，分配失败也不影响主流程；`TLS` 插件正相反，用单值槽 `EXT_FIELD_TLS_INFRA`，接管与释放规则见 SF-007。\n\n来源：五个文件的 ops 表、`session/session.h`；事实 TLS-001、TLS-014。"
+        },
+        {
+          "ordinal": 4,
+          "section": "模块职责矩阵",
+          "chars": 1109,
+          "content": "## 模块职责矩阵\n\n链上顺序由 `insert_to_chain` 按 priority 升序决定，与 `main.c` 加载列表的书写顺序无关。本簇的执行序是 HTTPS_Identifier(20) → TLS_Parser(30) → Certificate(40) → JA3(50) → TLS(180)，中间还夹着 DNS（其值见第二批 DN-002）；本簇外还有 priority 更小的插件在前（其 ops 不在本批来源内）。当前列表恰好与 priority 同序，但别把\"列表看起来就是顺序\"当成机制：只改一处时以 priority 为准。流水线模式另为每个 worker 各加载一份。\n\n`can_handle` 分两类。**四类只看记录特征、不以端口为必要条件**：`payload[0] == 0x16` 且握手类型字节为 0x01（HTTPS、JA3）、0x01 或 0x02（TLS_Parser）、0x0b（证书）；HTTPS 也传 `dst_port`，但该条件被短路（TLS-006）。**第五类有端口门控**：`TLS` 要求 TCP 且有负载，443/853 直接放行，否则还要看首字节像不像 TLS 记录头。所以非 443 端口的 TLS 流量照样可能进前四类（`TLS` 不是）。\n\n本簇**无人返回 `ENGINE_HANDLED`**：四个恒返 CONTINUE，`TLS` 前置不满足时返 `ENGINE_SKIP`、否则也返 CONTINUE。所以一个 ClientHello 会被 HTTPS、TLS_Parser、JA3 依次处理，不会第一个就截断链。\n\n还有一处实现重复：`TLS` 插件自带一套 ClientHello 解析与按方向重组（每方向 32768 字节、单包最多 4 条记录；流表按 60 秒修剪，淘汰条件是空闲超 300 秒、或条目数过 2 万**且该方向缓冲已空**——注释称 2 万为上限，但缓冲非空的流不被淘汰），只链自己那个 `.cpp`；而 `tls_parser.c` 被 `engine_https/tls/ja3/tunnel/quic` 五个 `.so` 各编一份、`engine_site_ranking.so` 编其目标文件，主程序不链接它。于是同一进程至少两套解析实现，同一份源码的状态在每个副本里互不共享。\n\n来源：`main.c`、`plugin/engine_registry.c`、五个插件、`plugin/plugins/Makefile`；事实 TLS-002、TLS-003、TLS-004、TLS-019。"
+        },
+        {
+          "ordinal": 5,
+          "section": "一条 443 报文的执行顺序",
+          "chars": 670,
+          "content": "## 一条 443 报文的执行顺序\n\n下图仅**单线程路径**；worker 里同一条链照跑，但没有节点 I 的旁路。\n\n```mermaid\nflowchart TD\n    A[\"parse_packet 填 payload\"] --> B[\"engine_process 按 priority 遍历\"]\n    B --> C[\"HTTPS_Identifier：0x16+0x01 且像 TLS 记录\"]\n    C --> D[\"TLS_Parser：0x16 + 0x01/0x02\"]\n    D --> E[\"Certificate：0x16 + 0x0b\"]\n    E --> F[\"JA3：0x16 + 0x01\"]\n    F --> G[\"TLS：端口 443/853 或像记录头\"]\n    G --> H[\"均 return CONTINUE，链继续\"]\n    H --> I[\"单线程另有证书重组旁路，不经注册中心\"]\n```\n\n统计口径有反差：注册中心的 `packets_matched` 只在 HANDLED 时增加，本簇却无人返 HANDLED；`TLS` 插件发事件时**自己**给它加一，其余四个只加私有计数（`tls_count` 等），五者 `get_stats` 为空、私有计数无导出路径，且 `https_count` 在解析前就加。看\"命中数\"要先确认是哪个。\n\n来源：五个插件的 process 与计数点、`plugin/engine_registry.c`；事实 TLS-005。"
+        },
+        {
+          "ordinal": 6,
+          "section": "证书数据的两条通路与会话状态",
+          "chars": 828,
+          "content": "## 证书数据的两条通路与会话状态\n\n证书有两条入口。**链上通路**是 `can_handle` 看到单包内 `payload[5] == 0x0b`。**旁路**在 `main.c` 的单线程回调里：协议为 6、`payload` 非空、`src_port == 443` 且两个全局句柄非空才进入；包被追加进会话上的 `tls_stream_buf`（容量 65536），扫描完整的 0x16 记录，只对 0x0b 调 `cert_engine_process_stream`；溢出时把已积累长度归零重来，另有两道\"非 0x16 跳过\"：空缓冲起步时与溢出后。\n\n两入口共用 `cert_engine_extract`，只用标签区分 Direct 与 Reassembled；链上入口**忽略提取结果**恒返 CONTINUE（注释称证书跨段属正常），旁路入口原样返回。\n\n旁路只在单线程可达：两个句柄唯一赋值点在 `init_engine()`，而它只在 `main()` 的非 DPDK 分支被调，调用点也都在 `packet_handler` 内。这**不等于**\"worker 不产出证书记录\"——`engine_cert.so` 仍加载进每个 worker 的注册中心按链调度，只是没有跨包重组。\n\n一次提取写三处：DER 落盘到相对路径 `capture_logs/certificates`（init 时建目录）、字段与路径经 `mongo_insert_certificate` **同步**写 MongoDB、再写一条插件日志事件；不经 ch_event 事件环。被调方何时真正落库、失败与阻塞语义本批未核（见待确认清单）。\n\n来源：`main.c` 的证书段与 `init_engine`、`cert_plugin.c`、`cert_extractor.c`；事实 TLS-008、TLS-009、TLS-010、TLS-012。"
+        },
+        {
+          "ordinal": 7,
+          "section": "可观测边界：能拿到什么",
+          "chars": 1140,
+          "content": "## 可观测边界：能拿到什么\n\n**完整数据是硬前提**：`tls_parser.c` 要求捕获长度已含整条记录与完整 ClientHello 体，JA3 只要求后者。所以 ClientHello 跨段或被截断时，HTTPS、TLS_Parser、JA3 三条都解析失败、不发事件——跨段能力只有证书旁路与 `TLS` 插件那两套重组。\n\n字段口径逐条看。版本分三种口径：ClientHello 带 `supported_versions` 时取最高的非 GREASE 版本，它是**客户端声明的最大支持版本**、不等于协商结果，不带则回退记录层 legacy 版本；ServerHello 从同一扩展读到**服务端选定版本**。JA3 只用记录层版本（不查该扩展），再按版本、套件、扩展、曲线与点格式原始顺序拼接取 MD5，未见 GREASE 过滤。证书只取链上**第一张**：跳过 3 字节链总长后只读一段 DER，字段只有 issuer/subject/有效期（OpenSSL `d2i_X509`，解析不出则为空），**未提取 SAN 或其他扩展**。TLS 事件的套件字段**只有一个值**（客户端首选或服务端选定）且 `count` 恒为 1，未收录 ID 得到 `CIPHER_0x` 加十六进制的占位名——别把占位当名称。\n\n三处上限会静默截断：套件最多留 128 个（数量记截断后的）、扩展最多记 64 个、SNI 缓冲 256 字节（可用 255 字符）；扩展遍历与 SNI 提取共用同一趟循环且在 64 个时停止，所以 `server_name` 排在第 64 个之后就取不到。**解析成功不等于字段完整**：`is_valid` 为真时 SNI 仍可能为空。\n\n`TLS` 插件只可能报出 ECH 与 DoT，前提是该方向已重组出完整 ClientHello 记录（跨段能力见 TLS-007）；条件是带 ECH 扩展、端口 853、或 ALPN 出现 dot，两者同中只报 ECH，未命中不发事件，同一会话每种类型只发一次。事件里 `is_doh` 与 `is_dns_tunnel` **硬编码为 0**，`session.h` 对应位域与 emitted 标志也没有写入点——这是**代码未实现**，不是加密导致不可得；只有握手之后的密文才属密码学边界。\n\n来源：`tls_parser.c`、`tls_parser.h`、`ja3_fingerprint.c`、`cert_extractor.c`、`engine_tls_infra.cpp`；事实 TLS-007、TLS-011、TLS-015、TLS-016、TLS-017、TLS-018。"
+        },
+        {
+          "ordinal": 8,
+          "section": "边界、异常与常见误解",
+          "chars": 640,
+          "content": "## 边界、异常与常见误解\n\n`is_https_traffic` 的端口条件冗余：返回式 `(is_https_port && is_tls) || is_tls` 化简后只剩 `is_tls`，`dst_port` 是不是 443 不改变结果；它另要求记录版本在 0x0300–0x0304 内、长度非 0 且不超过 16384。按代码形状下\"443 门控\"结论会被这条纠正。\n\n旁路构造的临时 `parsed_packet_t` 只填七个字段，**未填 `ip_version` 与 IPv6 地址**，而下游靠 `ip_version` 选地址族：该通路的 IPv6 会话证书会落到 IPv4 分支、取全零地址——`cert_plugin.c` 的注释恰好警告过这一后果。是否有意取舍，代码中无说明，列入待确认。\n\nJA3 与 `tls_parser.c` 在同一处 Session ID 跳变上检查集合不同：前者只验证剩余够 1 字节读长度，未验证 `1 + session_id_length` 是否仍在声明长度内，后者验证了。这只到\"条件不同\"为止；是否构成越界读、影响哪些输入属单独的代码评审批次，本篇不判断、不写\"存在漏洞\"。\n\n来源：`https_identifier.c`、`main.c` 的证书段、`cert_plugin.c`、`ja3_fingerprint.c`、`tls_parser.c`；事实 TLS-006、TLS-013、TLS-020。"
+        },
+        {
+          "ordinal": 9,
+          "section": "与已有说明的差异",
+          "chars": 347,
+          "content": "## 与已有说明的差异\n\n`docs/system_design.md` 的优先级表**每行数值都与实现不符**：它记 100/110/120/130/50，实现是 20/30/40/50/120/180；其中\"TLS 120\"恰等于实现的 DNS、\"DNS 50\"等于实现的 JA3。\"沿用旧编号致整表错位\"只是解释、本批未证实（生成脚本里没有优先级列），但引用该表必须逐行重核。同一文档把 HTTP 源文件写成 `engine_http.c + http_plugin.c`，而 `engine_http.so` 的源列表里没有它。本篇只登记，不修订旧文档。\n\n来源：`docs/system_design.md`、`plugin/plugins/Makefile`；事实 TLS-021。"
+        },
+        {
+          "ordinal": 10,
+          "section": "阅读顺序与自查问题",
+          "chars": 465,
+          "content": "## 阅读顺序与自查问题\n\n建议顺序：五个 ops 表 → 五个 `can_handle` → `tls_parser.c` 的长度门控 → `cert_plugin.c` 两个入口 → `main.c` 证书段 → `engine_tls_infra.cpp` 命中与发送条件。\n\n排查\"为什么没出 SNI／证书／JA3\"按这条链走（事实 TLS-022）：链上是否轮到该插件（priority，及前面有无 HANDLED——本簇没有）→ 它的 `can_handle` 属端口门控还是记录特征 → 捕获长度是否满足完整记录与完整 ClientHello 体 → 是否被扩展或套件上限截断 → 看的是哪条通路（证书有链上与旁路两条，旁路只在单线程）。\n\n自查：为什么非 443 端口也可能出 TLS 事件？为什么一次握手可能出两条 TLS 事件、第二条 SNI 为空？为什么 `is_doh` 恒为 0？这些是读码练习，不构成独立验收。本篇未验证任何解析结果、上限的实际影响与两条写入通路的成败。\n\n来源：事实 TLS-022。"
+        }
+      ]
+    }
+  ]
+}

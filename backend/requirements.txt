@@ -1,0 +1,25 @@
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.10.4
+pydantic-settings==2.7.1
+httpx==0.28.1
+PyYAML==6.0.2
+python-dotenv==1.0.1
+llama-index-core==0.11.23
+llama-index-llms-openai-like==0.2.0
+llama-index-vector-stores-postgres==0.2.6
+psycopg[binary]==3.3.4
+psycopg-pool==3.3.1
+prometheus-fastapi-instrumentator==7.0.2
+alembic==1.19.1
+# M6 账号体系：密码哈希（bcrypt 4.x 无已知 CVE，pip-audit 通过）
+bcrypt==4.3.0
+# M1 agent 层（LangGraph 编排 + DashScope OpenAI 兼容 tool calling + MCP client）。
+# 版本上限受现有 pin 约束：llama-index-llms-openai 钉住 openai<2，
+# pydantic 钉在 2.10.4 —— langchain-openai>=1.1.10 要 openai>=2.20，
+# mcp>=1.13 要 pydantic>=2.11，故取这两个兼容版本（三者均需 Python>=3.10，项目为 3.11）。
+langgraph==1.2.11
+langchain-openai==1.1.9
+mcp==1.12.4
+# multipart 表单解析（/api/chat 附件上传，M1 agent 层）。
+python-multipart==0.0.32

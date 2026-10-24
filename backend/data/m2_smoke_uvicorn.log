@@ -1,0 +1,13 @@
+INFO:     Started server process [43916]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8099 (Press CTRL+C to quit)
+INFO:     127.0.0.1:52358 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52371 - "POST /api/chat/stream HTTP/1.1" 422 Unprocessable Entity
+None of PyTorch, TensorFlow >= 2.0, or Flax have been found. Models won't be available and only tokenizers, configuration and file/data utilities can be used.
+INFO:     127.0.0.1:63754 - "POST /api/chat/stream HTTP/1.1" 200 OK
+{"time": "2026-08-24T23:31:24+0800", "level": "INFO", "logger": "assistant", "event": "chat_trace", "request_id": "trace_db729da16b40", "total_ms": 8536.18, "stages_ms": {}, "metadata": {"question_length": 13, "pipeline": "langgraph_agent", "model_provider": "langchain_openai", "rag_engine": "legacy", "history_turns": 0, "summary_used": false, "summary_failed": false, "memory_truncated": false, "history_chars": 0}, "fallback_reason": ""}
+INFO:     127.0.0.1:63817 - "POST /api/chat/stream HTTP/1.1" 200 OK
+{"time": "2026-08-24T23:31:48+0800", "level": "INFO", "logger": "assistant", "event": "chat_trace", "request_id": "trace_f38caf4eed63", "total_ms": 14276.6, "stages_ms": {}, "metadata": {"question_length": 10, "pipeline": "langgraph_agent", "model_provider": "langchain_openai", "rag_engine": "legacy", "history_turns": 0, "summary_used": false, "summary_failed": false, "memory_truncated": false, "history_chars": 0, "tools_used": ["plugin_template"], "tool_rounds": 1}, "fallback_reason": ""}
+INFO:     127.0.0.1:63871 - "POST /api/chat/stream HTTP/1.1" 200 OK
+{"time": "2026-08-24T23:32:23+0800", "level": "INFO", "logger": "assistant", "event": "chat_trace", "request_id": "trace_934c7424f4b5", "total_ms": 12438.85, "stages_ms": {}, "metadata": {"question_length": 13, "pipeline": "langgraph_agent", "model_provider": "langchain_openai", "rag_engine": "legacy", "history_turns": 0, "summary_used": false, "summary_failed": false, "memory_truncated": false, "history_chars": 0, "tools_used": ["list_cases"], "tool_rounds": 1}, "fallback_reason": ""}

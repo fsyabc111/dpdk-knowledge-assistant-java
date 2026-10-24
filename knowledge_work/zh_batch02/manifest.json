@@ -1,0 +1,1494 @@
+{
+  "batch": "zh_batch02",
+  "revision": 2,
+  "status": "待人工审核",
+  "source_repo": "/Users/fsy/code/dpdk",
+  "assistant_repo": "/Users/fsy/code/dpdk/ai_chat_assistant",
+  "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+  "assistant_commit": "a8d0fbec7667a0580a8c6b7fde838d1b7aa0012d",
+  "inherited_source_commit_reason": "沿用首批 manifest 的主项目提交以保持系列一致；本批执行时主仓库 HEAD 恰为该提交，且 18 个来源文件工作树字节与固定提交全部相同。",
+  "source_files": [
+    {
+      "path": "session/session.h",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/session/session.h",
+      "lines": 774
+    },
+    {
+      "path": "session/session.c",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/session/session.c",
+      "lines": 581
+    },
+    {
+      "path": "session/README.md",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/session/README.md",
+      "lines": 127
+    },
+    {
+      "path": "main.c",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/main.c",
+      "lines": 3198
+    },
+    {
+      "path": "plugin/engine.h",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/engine.h",
+      "lines": 275
+    },
+    {
+      "path": "plugin/engine_registry.c",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/engine_registry.c",
+      "lines": 435
+    },
+    {
+      "path": "plugin/plugins/engine_dns.cpp",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/plugins/engine_dns.cpp",
+      "lines": 1132
+    },
+    {
+      "path": "plugin/plugins/dns_ext.h",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/plugins/dns_ext.h",
+      "lines": 11
+    },
+    {
+      "path": "plugin/plugins/Makefile",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/plugins/Makefile",
+      "lines": 228
+    },
+    {
+      "path": "plugin/plugins/domain_intel.c",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/plugins/domain_intel.c",
+      "lines": 465
+    },
+    {
+      "path": "plugin/plugins/domain_intel.h",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/plugins/domain_intel.h",
+      "lines": 40
+    },
+    {
+      "path": "plugin/plugins/ch_event.h",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/plugins/ch_event.h",
+      "lines": 562
+    },
+    {
+      "path": "plugin/plugins/ch_event.c",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/plugins/ch_event.c",
+      "lines": 322
+    },
+    {
+      "path": "plugin/plugins/README.md",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/plugins/README.md",
+      "lines": 402
+    },
+    {
+      "path": "docs/system_design.md",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/docs/system_design.md",
+      "lines": 1561
+    },
+    {
+      "path": "docs/codebase_reference.md",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/docs/codebase_reference.md",
+      "lines": 1050
+    },
+    {
+      "path": "plugin/README.md",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/README.md",
+      "lines": 264
+    },
+    {
+      "path": "plugin/plugins/engine_tls_infra.cpp",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/plugins/engine_tls_infra.cpp",
+      "lines": 822
+    }
+  ],
+  "documents": [
+    {
+      "document_id": "c0dc5df8-5c43-408c-a29b-eacec79de05e",
+      "revision": 2,
+      "topic": "会话键与读写路径：一条流怎样被登记和计数",
+      "document_path": "drafts/session_key_and_lookup.md",
+      "evidence_path": "evidence/session_key_and_lookup.md",
+      "status": "待人工审核",
+      "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+      "split_from": {
+        "document_id": "72b484a5-1fad-42a2-9767-62237414d1bf",
+        "from_document": "drafts/session_lifecycle.md",
+        "former_revision": 1
+      },
+      "revision_note": "rev 2：按用户决定把原两篇各拆两篇以控制单篇长度；事实内容与源码依据未变，仅重新编号并归入新章节。",
+      "facts": [
+        {
+          "id": "SL-001",
+          "section": "核心对象和术语",
+          "claim": "三类对象所有者不同：parsed_packet 在单线程是回调栈上局部量；session_entry 由 manager malloc 并挂哈希桶链表；engine_ctx 内嵌在引擎条目内。会话条目同时保存规范化 key 与创建者的原始五元组。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "main.c",
+              "start_line": 1241,
+              "end_line": 1246,
+              "symbol": "packet_handler"
+            },
+            {
+              "path": "plugin/engine.h",
+              "start_line": 83,
+              "end_line": 86,
+              "symbol": "engine_ctx"
+            },
+            {
+              "path": "session/session.h",
+              "start_line": 18,
+              "end_line": 25,
+              "symbol": "session_key"
+            },
+            {
+              "path": "session/session.h",
+              "start_line": 105,
+              "end_line": 120,
+              "symbol": "src_ip"
+            }
+          ],
+          "reasoning": "结构定义与调用点共同支持；指针参数不转移所有权。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "首批 PL-001/PL-002 只说参数是指针；本篇补出 parsed 的栈生命周期与“键归一、方向保留”的双字段设计。",
+          "previous_fact_id": "SL-001"
+        },
+        {
+          "id": "SL-002",
+          "section": "会话键与双向归一",
+          "claim": "IPv4 归一把两个 uint32 直接比大小、地址相等才比端口；IPv6 用 16 字节 memcmp 字典序；key_equal 先比 ip_version、端口、协议，因此 IPv4 与 IPv6 会话不会互相命中。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "session/session.c",
+              "start_line": 58,
+              "end_line": 79,
+              "symbol": "src_ip < dst_ip"
+            },
+            {
+              "path": "session/session.c",
+              "start_line": 82,
+              "end_line": 101,
+              "symbol": "memcmp"
+            },
+            {
+              "path": "session/session.c",
+              "start_line": 104,
+              "end_line": 117,
+              "symbol": "ip_version"
+            }
+          ],
+          "reasoning": "两个 normalize 函数与 key_equal 逐行对读；未运行任何报文。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "session/README.md 只说“自动规范化确保双向流量映射到同一会话”，未说明大小比较口径与跨版本隔离。",
+          "previous_fact_id": "SL-002"
+        },
+        {
+          "id": "SL-003",
+          "section": "会话键与双向归一",
+          "claim": "packets_ab 的参照物是创建该会话的那个报文方向：session_create 保存原始 src/dst，session_update 拿当前源地址与会话原始源地址比较来决定加 ab 还是 ba。键本身不记录谁是客户端。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "session/session.c",
+              "start_line": 238,
+              "end_line": 246,
+              "symbol": "entry->src_ip"
+            },
+            {
+              "path": "session/session.c",
+              "start_line": 256,
+              "end_line": 272,
+              "symbol": "packets_ab"
+            }
+          ],
+          "reasoning": "从 create 的赋值读到 update 的比较，逐句对应。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "与“键已规范化所以方向天然正确”的常见推断相反。",
+          "previous_fact_id": "SL-003"
+        },
+        {
+          "id": "SL-004",
+          "section": "查询、创建与更新的实际调用",
+          "claim": "main 只在 protocol 为 6 或 17 时进入 lookup→（为空则）create→update；IPv6 与 IPv4 是并行实现的三份函数，地址比较与哈希混合方式不同。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "main.c",
+              "start_line": 1271,
+              "end_line": 1300,
+              "symbol": "session_lookup_v6"
+            },
+            {
+              "path": "session/session.c",
+              "start_line": 278,
+              "end_line": 301,
+              "symbol": "normalize_key_v6"
+            },
+            {
+              "path": "session/session.c",
+              "start_line": 29,
+              "end_line": 55,
+              "symbol": "ip_version"
+            }
+          ],
+          "reasoning": "调用点与两套实现逐一对照；未把接口形状相同当作实现相同。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "session/README.md 的使用示例只演示 IPv4，容易被读成唯一路径。",
+          "previous_fact_id": "SL-004"
+        },
+        {
+          "id": "SL-005",
+          "section": "查询、创建与更新的实际调用",
+          "claim": "session_create 不查重、不检查会话数上限，直接 malloc、填键、头插进桶并 session_count++；session_update 只刷新 last_seen 并按原始地址二选一累加包数与字节数。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "session/session.c",
+              "start_line": 229,
+              "end_line": 254,
+              "symbol": "session_count++"
+            },
+            {
+              "path": "session/session.c",
+              "start_line": 256,
+              "end_line": 272,
+              "symbol": "last_seen = time(NULL)"
+            }
+          ],
+          "reasoning": "函数体无容量与重复判断；结论限于本版本这两个函数。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "与“会话层会去重并限容量”的推测相反。",
+          "previous_fact_id": "SL-005"
+        },
+        {
+          "id": "SL-006",
+          "section": "计数与字段口径",
+          "claim": "session_update 的字节数形参名为 pkt_len，main 两条路径传入的实参都是 caplen，即整帧捕获长度（含各层头，截断时为截断后长度），不是负载长度。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "session/session.c",
+              "start_line": 256,
+              "end_line": 258,
+              "symbol": "pkt_len"
+            },
+            {
+              "path": "main.c",
+              "start_line": 1286,
+              "end_line": 1299,
+              "symbol": "caplen"
+            },
+            {
+              "path": "main.c",
+              "start_line": 1899,
+              "end_line": 1914,
+              "symbol": "cap_pkt.caplen"
+            }
+          ],
+          "reasoning": "只看调用实参，不看形参命名。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "session/README.md 的“双向流量统计”未定义字节口径。",
+          "previous_fact_id": "SL-006"
+        },
+        {
+          "id": "SL-007",
+          "section": "边界、异常与常见误解",
+          "claim": "接口防御不一致：session_lookup 与 session_create 不校验传入 manager 是否为空，而 session_manager_destroy、两个 flush 函数与 session_get_count 都先判空。session.c 还定义了一个静态地址比较辅助函数 ip_addr_cmp，本文件内没有调用点。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "session/session.c",
+              "start_line": 203,
+              "end_line": 212,
+              "symbol": "mgr->table_size"
+            },
+            {
+              "path": "session/session.c",
+              "start_line": 17,
+              "end_line": 26,
+              "symbol": "ip_addr_cmp"
+            }
+          ],
+          "reasoning": "判空逐函数核对；未使用的静态函数不作为实现依据。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "提醒“符号存在不等于结论成立”，该函数容易被误当成键规范化的公共底层实现。",
+          "previous_fact_id": "SL-019"
+        },
+        {
+          "id": "SL-008",
+          "section": "阅读顺序与自查问题",
+          "claim": "“同一流出现多个会话”有三条互不相同的证据链：桶内已过期但未被清扫的老条目、短包让端口保持 0 从而多流共用同一个端口 0 的键、以及同一五元组的包被分到不同 worker 队列。三者定位方法不同，RSS 实际分流本批未验证。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "session/session.c",
+              "start_line": 215,
+              "end_line": 226,
+              "symbol": "last_seen"
+            },
+            {
+              "path": "main.c",
+              "start_line": 1078,
+              "end_line": 1082,
+              "symbol": "protocol == 6"
+            },
+            {
+              "path": "main.c",
+              "start_line": 3132,
+              "end_line": 3141,
+              "symbol": "queue_id"
+            }
+          ],
+          "reasoning": "三条链路各自的代码位置已定位；第三条只证明“每 worker 绑一个队列”，不证明哈希对称性。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "首批 PF-012 明确保留 RSS 分流未验证；本篇把它列为待查方向而不是结论。",
+          "previous_fact_id": "SL-021"
+        }
+      ]
+    },
+    {
+      "document_id": "02f5cd0f-d2e8-4aec-8367-2b3d67b1fcfd",
+      "revision": 2,
+      "topic": "会话过期与回收：两种清扫、回调与扩展释放",
+      "document_path": "drafts/session_expiry_and_release.md",
+      "evidence_path": "evidence/session_expiry_and_release.md",
+      "status": "待人工审核",
+      "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+      "split_from": {
+        "document_id": "72b484a5-1fad-42a2-9767-62237414d1bf",
+        "from_document": "drafts/session_lifecycle.md",
+        "former_revision": 1
+      },
+      "revision_note": "rev 2：按用户决定把原两篇各拆两篇以控制单篇长度；事实内容与源码依据未变，仅重新编号并归入新章节。",
+      "facts": [
+        {
+          "id": "SF-001",
+          "section": "过期：查到、跳过与真正清理",
+          "claim": "session_lookup 命中已过期条目时只把游标推到 entry->next 继续找，不脱链也不释放：链表更靠后的同键活跃项会被返回，只有过期项时返回空，随后 main 会 create 新会话，使同一键下老新条目并存。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "session/session.c",
+              "start_line": 213,
+              "end_line": 226,
+              "symbol": "entry->next"
+            },
+            {
+              "path": "session/session.c",
+              "start_line": 229,
+              "end_line": 254,
+              "symbol": "hash_table[hash] = entry"
+            }
+          ],
+          "reasoning": "lookup 的 continue 分支与 create 的头插分支对照。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "首批 PF-006 只写“IPv4 lookup 跳过过期项”；本篇补出新老并存的后果。",
+          "previous_fact_id": "SL-007"
+        },
+        {
+          "id": "SF-002",
+          "section": "过期：查到、跳过与真正清理",
+          "claim": "过期判据是整秒的 now - last_seen >= timeout，now 与 last_seen 都取 time(NULL)；timeout 是 manager 创建时传入的单一值，本版本没有按 TCP/UDP 或按协议区分超时的实现。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "session/session.c",
+              "start_line": 215,
+              "end_line": 221,
+              "symbol": "mgr->timeout"
+            },
+            {
+              "path": "session/session.h",
+              "start_line": 151,
+              "end_line": 156,
+              "symbol": "timeout"
+            },
+            {
+              "path": "main.c",
+              "start_line": 2920,
+              "end_line": 2923,
+              "symbol": "session_timeout"
+            }
+          ],
+          "reasoning": "三个入口的过期表达式写法一致；默认值取自 config 初始化表。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "session/README.md 建议“TCP 通常 300 秒，UDP 通常 60 秒”，而实现只有一个共用超时，默认 60 秒。",
+          "previous_fact_id": "SL-008"
+        },
+        {
+          "id": "SF-003",
+          "section": "过期：查到、跳过与真正清理",
+          "claim": "真正释放会话只有 session_flush_expired 全表清扫与 session_flush_expired_amortized 游标限额清扫两个入口；本版本 session.h 未声明按键删除单个会话的接口。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "session/session.c",
+              "start_line": 457,
+              "end_line": 459,
+              "symbol": "session_flush_expired"
+            },
+            {
+              "path": "session/session.h",
+              "start_line": 763,
+              "end_line": 768,
+              "symbol": "session_flush_expired_amortized"
+            }
+          ],
+          "reasoning": "按接口清单逐项核对，不以“通常会有 delete”补齐能力。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "session/README.md 的“维护操作”只列全量清扫与计数。",
+          "previous_fact_id": "SL-009"
+        },
+        {
+          "id": "SF-004",
+          "section": "单线程清扫与 worker 分摊清扫",
+          "claim": "单线程在回调尾部按 now - g_last_session_flush >= 30 触发全量清扫；该 now 在回调开头采集，与统计、每小时 flush 共用同一时刻；解析失败的提前返回会整轮跳过；capture_loop 结束后 main 再补一次全量清扫。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "main.c",
+              "start_line": 1531,
+              "end_line": 1539,
+              "symbol": "session_flush_expired"
+            },
+            {
+              "path": "main.c",
+              "start_line": 1244,
+              "end_line": 1247,
+              "symbol": "time(NULL)"
+            },
+            {
+              "path": "main.c",
+              "start_line": 1257,
+              "end_line": 1262,
+              "symbol": "return 0"
+            },
+            {
+              "path": "main.c",
+              "start_line": 3182,
+              "end_line": 3186,
+              "symbol": "session_flush_expired"
+            }
+          ],
+          "reasoning": "控制流逐分支核对；不把它描述成独立定时器。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "首批 PF-009 记录同一触发条件；本篇补出收尾那次额外清扫与共享的 now 取值点。",
+          "previous_fact_id": "SL-010"
+        },
+        {
+          "id": "SF-005",
+          "section": "单线程清扫与 worker 分摊清扫",
+          "claim": "worker 的 flush_cursor 是 worker 函数局部变量，每轮 poll 末尾（含 nb_rx 为 0 直接跳转的分支）调用 amortized 版；单轮最多扫 SWEEP_BUCKET_SCAN_CAP 个桶，每释放一条会话检查一次是否超出 SWEEP_TIME_BUDGET_US，超时则游标停在本桶下次续扫。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "main.c",
+              "start_line": 1845,
+              "end_line": 1856,
+              "symbol": "flush_cursor"
+            },
+            {
+              "path": "main.c",
+              "start_line": 107,
+              "end_line": 114,
+              "symbol": "SWEEP_BUCKET_SCAN_CAP"
+            },
+            {
+              "path": "main.c",
+              "start_line": 1957,
+              "end_line": 1963,
+              "symbol": "session_flush_expired_amortized"
+            },
+            {
+              "path": "session/session.c",
+              "start_line": 530,
+              "end_line": 536,
+              "symbol": "bucket_scan_cap"
+            }
+          ],
+          "reasoning": "两个上限的宏定义、调用点与函数体内实现三处对照；未测量实际效果。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "session/README.md 建议的 30-60 秒清理频率描述的是全量清扫，不适用于 worker 路径。",
+          "previous_fact_id": "SL-011"
+        },
+        {
+          "id": "SF-006",
+          "section": "单线程清扫与 worker 分摊清扫",
+          "claim": "两种清扫对每条过期会话的动作顺序一致：先调用已注册的过期回调（此时会话内容仍完整），再 session_free_candidates，然后依次释放 ext_data、tunnel_signal、geo_summary、tls_stream_buf，最后 free 条目并把 session_count 减一。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "session/session.c",
+              "start_line": 468,
+              "end_line": 486,
+              "symbol": "g_session_expire_callback"
+            },
+            {
+              "path": "session/session.c",
+              "start_line": 534,
+              "end_line": 549,
+              "symbol": "g_session_expire_callback"
+            }
+          ],
+          "reasoning": "两段实现逐行对照，确认释放集合与顺序相同。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "首批 PF-010 只对照“全量清扫 vs 销毁”；本篇补出“全量 vs 分摊”的一致性。",
+          "previous_fact_id": "SL-012"
+        },
+        {
+          "id": "SF-007",
+          "section": "扩展槽、所有权与释放范围",
+          "claim": "session_set_ext_data 无条件接管槽位：旧指针与新指针不同则先把候选数组中指向它的项清空、再 free 旧对象，然后写入 ext_type/ext_data 并置 ext_locked；该函数自身不检查 ext_locked。会因锁定而拒绝的是 session_confirm_candidate。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "session/session.c",
+              "start_line": 354,
+              "end_line": 375,
+              "symbol": "ext_locked = 1"
+            },
+            {
+              "path": "session/session.c",
+              "start_line": 428,
+              "end_line": 444,
+              "symbol": "session->ext_locked && session->ext_type != type"
+            }
+          ],
+          "reasoning": "两个函数的锁定语义分开读，不合并成“扩展槽有锁保护”。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "session/README.md 写“扩展字段由调用者分配，会话销毁时自动释放”，未覆盖“覆盖写入即释放旧对象”。",
+          "previous_fact_id": "SL-013"
+        },
+        {
+          "id": "SF-008",
+          "section": "扩展槽、所有权与释放范围",
+          "claim": "候选数组固定 SESSION_MAX_CANDIDATES 为 4 项：装满时 session_ensure_candidate 返回空、session_set_candidate_data 返回负值；覆盖写入同样先 free 旧值；session_free_candidates 会跳过 data 等于 ext_data 的候选项，因为随后 ext_data 会被单独释放。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "session/session.h",
+              "start_line": 87,
+              "end_line": 95,
+              "symbol": "SESSION_MAX_CANDIDATES"
+            },
+            {
+              "path": "session/session.c",
+              "start_line": 120,
+              "end_line": 143,
+              "symbol": "create_if_missing"
+            },
+            {
+              "path": "session/session.c",
+              "start_line": 145,
+              "end_line": 155,
+              "symbol": "c->data != session->ext_data"
+            },
+            {
+              "path": "session/session.c",
+              "start_line": 414,
+              "end_line": 426,
+              "symbol": "free(c->data)"
+            }
+          ],
+          "reasoning": "容量、覆盖与释放三处对照；把跳过释放读成防二次释放而非漏写。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "首批未覆盖候选通道。",
+          "previous_fact_id": "SL-014"
+        },
+        {
+          "id": "SF-009",
+          "section": "扩展槽、所有权与释放范围",
+          "claim": "tls_stream_buf 是独立于 ext_data 的专用槽：main 直接对 session->tls_stream_buf 赋值，不经过任何 setter，但释放由会话模块在过期与销毁两处统一处理。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "main.c",
+              "start_line": 1393,
+              "end_line": 1399,
+              "symbol": "tls_stream_buf"
+            },
+            {
+              "path": "session/session.c",
+              "start_line": 178,
+              "end_line": 197,
+              "symbol": "tls_stream_buf"
+            }
+          ],
+          "reasoning": "写入点与释放点分别定位；不外推为通用扩展机制。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "说明存在绕过 setter 的字段，不能假设所有跨包状态都走 ext_data。",
+          "previous_fact_id": "SL-015"
+        },
+        {
+          "id": "SF-010",
+          "section": "线程与关闭边界",
+          "claim": "session.c 不含任何锁或原子操作；其无锁前提写在分摊清扫函数上方注释里，即“会话表 per-worker、由本 worker 线程独占”。这是项目约定而非实现保证，不能由存在哈希表或每 worker 独立实例推出绝对线程安全。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "session/session.c",
+              "start_line": 497,
+              "end_line": 515,
+              "symbol": "per-worker"
+            },
+            {
+              "path": "main.c",
+              "start_line": 1607,
+              "end_line": 1616,
+              "symbol": "g_worker_sessions"
+            },
+            {
+              "path": "main.c",
+              "start_line": 1884,
+              "end_line": 1886,
+              "symbol": "无锁"
+            }
+          ],
+          "reasoning": "以文件内无锁原语与两处注释共同支撑；未做并发压测。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "首批 PL-008 已有同类限定；本篇给出约定原文所在的具体位置。",
+          "previous_fact_id": "SL-016"
+        },
+        {
+          "id": "SF-011",
+          "section": "线程与关闭边界",
+          "claim": "过期回调是进程级的单个函数指针加一个 user_data，被所有 manager 共用，注册与注销函数本身不加锁；main 在存储初始化时把它接到画像/裁决处理函数，并在关闭流程中注销。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "session/session.c",
+              "start_line": 10,
+              "end_line": 11,
+              "symbol": "g_session_expire_callback"
+            },
+            {
+              "path": "main.c",
+              "start_line": 2526,
+              "end_line": 2527,
+              "symbol": "session_set_expire_callback"
+            },
+            {
+              "path": "main.c",
+              "start_line": 2629,
+              "end_line": 2631,
+              "symbol": "session_set_expire_callback"
+            }
+          ],
+          "reasoning": "全局变量的作用域从声明与两处调用点确认。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "首批未记录回调的作用域，容易让人以为是每个 manager 各挂一个。",
+          "previous_fact_id": "SL-017"
+        },
+        {
+          "id": "SF-012",
+          "section": "线程与关闭边界",
+          "claim": "session_manager_destroy 释放同一组指针但不调用过期回调。关闭路径因此不同：流水线模式先等待所有 lcore 退出，再对各 worker 会话表直接 destroy，中间没有最终清扫，表内存活的会话不会进入画像/裁决补记；单线程模式先做一次全量清扫（这一步会跑回调）再销毁。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "session/session.c",
+              "start_line": 178,
+              "end_line": 197,
+              "symbol": "session_manager_destroy"
+            },
+            {
+              "path": "main.c",
+              "start_line": 2603,
+              "end_line": 2615,
+              "symbol": "session_manager_destroy"
+            },
+            {
+              "path": "main.c",
+              "start_line": 2666,
+              "end_line": 2672,
+              "symbol": "session_manager_destroy"
+            },
+            {
+              "path": "main.c",
+              "start_line": 2240,
+              "end_line": 2242,
+              "symbol": "rte_eal_mp_wait_lcore"
+            }
+          ],
+          "reasoning": "销毁函数与两条关闭路径逐段对照；不外推为“进程一定泄漏”或“数据一定丢失”。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "首批 PF-010 只说“不调用同样的过期回调”；本篇补出关闭时的可观察后果。",
+          "previous_fact_id": "SL-018"
+        },
+        {
+          "id": "SF-013",
+          "section": "线程与关闭边界",
+          "claim": "两条路径的时间基准不同：worker 自己算的 now 来自 clock_gettime 的 CLOCK_MONOTONIC，并被写入报文时间戳；而会话的 create_time/last_seen 与全部过期判断都用 time(NULL)。同名字段不在同一时钟域。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "main.c",
+              "start_line": 1860,
+              "end_line": 1876,
+              "symbol": "CLOCK_MONOTONIC"
+            },
+            {
+              "path": "session/session.c",
+              "start_line": 245,
+              "end_line": 246,
+              "symbol": "time(NULL)"
+            }
+          ],
+          "reasoning": "只陈述取值来源；不推断误差大小，也不判断是否为缺陷。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "首批 PF-012 记录 worker 收包入口，未涉及时间戳的时钟域差异。",
+          "previous_fact_id": "SL-020"
+        }
+      ]
+    },
+    {
+      "document_id": "fe144186-5b2a-4f4f-8992-3f0759cc628d",
+      "revision": 2,
+      "topic": "DNS 判据与解析：从 UDP 53 到域名还原",
+      "document_path": "drafts/dns_detection_and_parsing.md",
+      "evidence_path": "evidence/dns_detection_and_parsing.md",
+      "status": "待人工审核",
+      "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+      "split_from": {
+        "document_id": "7d76a54a-2824-41d9-82d1-c8cefd6166d4",
+        "from_document": "drafts/dns_implementation.md",
+        "former_revision": 1
+      },
+      "revision_note": "rev 2：按用户决定把原两篇各拆两篇以控制单篇长度；事实内容与源码依据未变，仅重新编号并归入新章节。",
+      "facts": [
+        {
+          "id": "DN-001",
+          "section": "核心对象和术语",
+          "claim": "dns_ext_data_t 的真实定义在 session/session.h，plugin/plugins/dns_ext.h 只是向后兼容的转发头；插件私有数据 dns_engine_data_t 挂在 ctx->private_data 上，内含按客户端地址分层的缓存与一把 std::mutex。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "plugin/plugins/dns_ext.h",
+              "start_line": 1,
+              "end_line": 11,
+              "symbol": "backward compatibility"
+            },
+            {
+              "path": "session/session.h",
+              "start_line": 564,
+              "end_line": 595,
+              "symbol": "dns_ext_data_t"
+            },
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 77,
+              "end_line": 89,
+              "symbol": "dns_engine_data"
+            },
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 946,
+              "end_line": 956,
+              "symbol": "private_data"
+            }
+          ],
+          "reasoning": "按 include 与定义位置核对，不按文件名猜定义所在。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "plugin/README.md 的目录树把 DNS 写成 engine_dns.c 且标注“待实现”，与本版本不符。",
+          "previous_fact_id": "DNS-001"
+        },
+        {
+          "id": "DN-002",
+          "section": "插件接入与调度位置",
+          "claim": "插件在文件末尾准备静态 ops 表：name 为 DNS、protocol_id 为 53、priority 为 120，init/can_handle/process/cleanup 齐备而 get_stats 与 reset_stats 为空，并通过 extern \"C\" 的 engine_get_ops 导出。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 1118,
+              "end_line": 1132,
+              "symbol": "dns_engine_ops"
+            }
+          ],
+          "reasoning": "结构体初始化列表逐项读。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "docs/system_design.md 的插件表把 DNS 优先级记为 50，实际为 120。",
+          "previous_fact_id": "DNS-003"
+        },
+        {
+          "id": "DN-003",
+          "section": "插件接入与调度位置",
+          "claim": "装载方是 main 的固定插件列表，先按文件存在性判断再交给 engine_registry_load_plugin 走 dlopen 与 engine_get_ops；构建规则把 engine_dns.cpp、domain_intel.c 与事件对象一起用 g++ 以 c++17、fPIC 链接成 engine_dns.so。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "main.c",
+              "start_line": 2396,
+              "end_line": 2396,
+              "symbol": "engine_dns.so"
+            },
+            {
+              "path": "plugin/engine_registry.c",
+              "start_line": 281,
+              "end_line": 290,
+              "symbol": "dlopen"
+            },
+            {
+              "path": "plugin/plugins/Makefile",
+              "start_line": 139,
+              "end_line": 140,
+              "symbol": "engine_dns.cpp"
+            },
+            {
+              "path": "plugin/plugins/Makefile",
+              "start_line": 4,
+              "end_line": 6,
+              "symbol": "CXXFLAGS"
+            }
+          ],
+          "reasoning": "构建规则与加载入口对照；未执行 make，也不推断其他构建入口。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "docs/codebase_reference.md 未记该库的 C++ 构建依赖，学生容易按 .c 插件模板去找文件。",
+          "previous_fact_id": "DNS-004"
+        },
+        {
+          "id": "DN-004",
+          "section": "插件接入与调度位置",
+          "claim": "进入本插件前有两道与插件无关的门：main 两条路径都要求会话与注册中心非空才调 engine_process；调度器在链上先给条目的 packets_processed 加一再判断 can_handle。因此计数上涨不代表插件代码被执行。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "main.c",
+              "start_line": 1371,
+              "end_line": 1371,
+              "symbol": "session && g_engine_registry"
+            },
+            {
+              "path": "main.c",
+              "start_line": 1919,
+              "end_line": 1921,
+              "symbol": "my_engine"
+            },
+            {
+              "path": "plugin/engine_registry.c",
+              "start_line": 200,
+              "end_line": 208,
+              "symbol": "packets_processed"
+            }
+          ],
+          "reasoning": "与首批 PL-006/PL-011 同一位置二次复核。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "与首批一致，本篇仅补其在 DNS 排错上的含义。",
+          "previous_fact_id": "DNS-005"
+        },
+        {
+          "id": "DN-005",
+          "section": "can_handle：本版本只认 UDP 53",
+          "claim": "判据是一行合取：protocol 等于 17 且源端口或目的端口之一等于 53；它不读 payload、不读会话、不检查负载长度。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 979,
+              "end_line": 982,
+              "symbol": "protocol == 17"
+            }
+          ],
+          "reasoning": "函数体仅此一条返回式。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "与“插件会按负载特征识别 DNS”的通识预期不同。",
+          "previous_fact_id": "DNS-006"
+        },
+        {
+          "id": "DN-006",
+          "section": "can_handle：本版本只认 UDP 53",
+          "claim": "由判据可直接界定：端口 53 上的 TCP 报文与其他端口上的 DNS 负载都不进入本插件；上报结构里的 transport_proto 字段注释允许 TCP 与 UDP，但插件写入处是常量 UDP，故该字段不能用于区分承载方式。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 981,
+              "end_line": 981,
+              "symbol": "dst_port == 53"
+            },
+            {
+              "path": "plugin/plugins/ch_event.h",
+              "start_line": 188,
+              "end_line": 190,
+              "symbol": "transport_proto"
+            },
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 887,
+              "end_line": 887,
+              "symbol": "transport_proto"
+            }
+          ],
+          "reasoning": "找不到 TCP 分支即明确写不支持，不用 DNS 通识补齐。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "docs/system_design.md 只写“DNS 请求/响应解析”，未限定承载方式。",
+          "previous_fact_id": "DNS-007"
+        },
+        {
+          "id": "DN-007",
+          "section": "can_handle：本版本只认 UDP 53",
+          "claim": "加密 DNS 不在本插件路径内，但也不是无人标记：session/session.h 为 TLS Infra 定义了带 is_doh/is_dot/is_ech 标志的扩展结构，engine_tls_infra.cpp 在自己的会话扩展上按 hit_dot 置 is_dot，并同样经 session_set_ext_data 占用槽位。该插件的判据与检测完整性本批未核验。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "session/session.h",
+              "start_line": 635,
+              "end_line": 646,
+              "symbol": "is_doh"
+            },
+            {
+              "path": "plugin/plugins/engine_tls_infra.cpp",
+              "start_line": 232,
+              "end_line": 240,
+              "symbol": "is_dot"
+            },
+            {
+              "path": "plugin/plugins/engine_tls_infra.cpp",
+              "start_line": 202,
+              "end_line": 214,
+              "symbol": "EXT_FIELD_TLS_INFRA"
+            }
+          ],
+          "reasoning": "只证明“存在另一条 TLS 侧标记路径”，不外推其检测条件、准确率或是否覆盖全部加密 DNS。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "把“加密 DNS 归其他模块、未核验”的空档换成可定位的入口；既有文档没有给出这个衔接。",
+          "previous_fact_id": "DNS-024"
+        },
+        {
+          "id": "DN-008",
+          "section": "process 的解析流程",
+          "claim": "process 先做四道门卫：私有数据、会话、报文与 payload 均非空，且 payload_len 不小于 12，任一不满足返回 ENGINE_SKIP；随后从负载偏移 2 读两字节 flags，用最高位判断请求还是响应。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 984,
+              "end_line": 999,
+              "symbol": "payload_len < 12"
+            },
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 1005,
+              "end_line": 1006,
+              "symbol": "DNS_FLAG_RESPONSE"
+            }
+          ],
+          "reasoning": "按返回式定位每条跳过路径。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "首批未覆盖插件内部门卫。",
+          "previous_fact_id": "DNS-008"
+        },
+        {
+          "id": "DN-009",
+          "section": "process 的解析流程",
+          "claim": "客户端与解析器不是从当前报文方向推的，而是由会话保存的端口固定：会话目的端口为 53 且源端口不为 53 则源端是客户端；反之目的端是客户端；两端都是 53 按源端为客户端；两端都不是 53 时格式化失败并返回 ENGINE_SKIP。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 436,
+              "end_line": 463,
+              "symbol": "session->dst_port == 53"
+            },
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 1009,
+              "end_line": 1017,
+              "symbol": "dns_format_session_roles"
+            }
+          ],
+          "reasoning": "角色判定的四个分支逐一读；函数上方注释也说明不再按当前包交换方向。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "说明角色归属受“哪个报文先建会话”影响，与事实 SL-003 同源；首批无此项。",
+          "previous_fact_id": "DNS-009"
+        },
+        {
+          "id": "DN-010",
+          "section": "process 的解析流程",
+          "claim": "问题区名从固定偏移 12 开始，名字之后还要求剩余至少 4 字节放类型与类；请求分支额外要求操作码字段为 0，响应分支不检查操作码；两步预解析都在取或建会话扩展之前完成。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 573,
+              "end_line": 585,
+              "symbol": "DNS_FLAG_OPCODE"
+            },
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 605,
+              "end_line": 615,
+              "symbol": "DNS_FLAG_RESPONSE"
+            },
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 1020,
+              "end_line": 1027,
+              "symbol": "dns_get_or_create_ext"
+            }
+          ],
+          "reasoning": "两个预解析函数的拒绝条件对照读，注意二者不对称。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "与插件头部“完整 RFC 1035 校验”的设计说明相比，实际拒绝条件更具体，此处以实现为准。",
+          "previous_fact_id": "DNS-010"
+        },
+        {
+          "id": "DN-011",
+          "section": "域名还原与长度、指针边界",
+          "claim": "还原函数按“0 结束、高位为 1 是指针、其余是普通标签”三分支处理：递归深度超过 10 判失败；指针分支要求后一字节在界内且目标偏移小于包长，跟随后加二并跳出当前循环，链式压缩靠递归展开，深度上限是该函数里唯一的环路保护。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 294,
+              "end_line": 297,
+              "symbol": "depth > 10"
+            },
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 309,
+              "end_line": 333,
+              "symbol": "pointerOffset"
+            }
+          ],
+          "reasoning": "环路保护来自深度计数这一事实由两处边界共同支持；未构造压缩指针报文验证。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "头部注释称“支持压缩指针递归解析与基础合法性校验”，本篇把该说法收窄到具体上限与跳出行为。",
+          "previous_fact_id": "DNS-011"
+        },
+        {
+          "id": "DN-012",
+          "section": "域名还原与长度、指针边界",
+          "claim": "普通标签要求长度不超过 63 且不越界，字符只放行字母数字与连字符，以 xn-- 开头的标签放宽到可打印 ASCII；名字整体要求长度不超过 253、必须至少含一个点或是单点根域，含不可打印字符判失败，非 UTF-8 返回另一个错误码。因此只有单个标签的主机名会被判失败。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 336,
+              "end_line": 340,
+              "symbol": "labelLen > 63"
+            },
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 384,
+              "end_line": 404,
+              "symbol": "has_dot"
+            }
+          ],
+          "reasoning": "三段全局检查逐条读；单标签被拒是可验证的行为后果。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "DNS 通识不禁止单标签主机名；此处是实现选择，不能按通识写成“支持”。",
+          "previous_fact_id": "DNS-012"
+        },
+        {
+          "id": "DN-013",
+          "section": "阅读顺序与自查问题",
+          "claim": "“某类 DNS 报文为什么未被识别”的排除顺序为：main 是否给出非空会话 → parse_packet 是否把 protocol 填成 17 且端口填成 53（短包会让端口保持 0）→ can_handle 端口判据 → payload 长度与 QR、操作码组合 → 问题区还原是否因无点、非法字符或深度超限失败。每一步对应一个具体返回路径。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "main.c",
+              "start_line": 1271,
+              "end_line": 1272,
+              "symbol": "parsed.protocol"
+            },
+            {
+              "path": "main.c",
+              "start_line": 1078,
+              "end_line": 1082,
+              "symbol": "l4_off + 14"
+            },
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 979,
+              "end_line": 982,
+              "symbol": "can_handle"
+            },
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 399,
+              "end_line": 411,
+              "symbol": "is_valid_utf8"
+            }
+          ],
+          "reasoning": "把插件排错链落到已有事实与首批事实之上，不新增未验证判据。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "既有文档没有这条按返回值定位的排查顺序。",
+          "previous_fact_id": "DNS-023"
+        }
+      ]
+    },
+    {
+      "document_id": "44cb3c06-e83c-406d-9aa2-ae760ff6b845",
+      "revision": 2,
+      "topic": "DNS 结果与返回值：结果落在哪里、失败怎么返回",
+      "document_path": "drafts/dns_results_and_returns.md",
+      "evidence_path": "evidence/dns_results_and_returns.md",
+      "status": "待人工审核",
+      "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+      "split_from": {
+        "document_id": "7d76a54a-2824-41d9-82d1-c8cefd6166d4",
+        "from_document": "drafts/dns_implementation.md",
+        "former_revision": 1
+      },
+      "revision_note": "rev 2：按用户决定把原两篇各拆两篇以控制单篇长度；事实内容与源码依据未变，仅重新编号并归入新章节。",
+      "facts": [
+        {
+          "id": "DR-001",
+          "section": "核心对象和术语",
+          "claim": "缓存属于引擎条目上下文，而 DPDK 流水线为每个 worker 单独创建注册中心并各自加载插件，因此该缓存是每 worker 一份，不是全局视图。本文另区分“识别”“解析成功”“已计入”三个状态，三者不等价。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "main.c",
+              "start_line": 1618,
+              "end_line": 1626,
+              "symbol": "engine_registry_create"
+            },
+            {
+              "path": "plugin/engine.h",
+              "start_line": 83,
+              "end_line": 86,
+              "symbol": "engine_ctx"
+            },
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 632,
+              "end_line": 647,
+              "symbol": "dns_ext_data_t"
+            }
+          ],
+          "reasoning": "由“每 worker 一个 registry”与“私有数据挂在 ctx 上”两步推出；未验证同一 .so 的静态全局是否共享。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "首批 PL-008 提示独立 ctx 不等于全局变量独立；本篇给出 DNS 侧的具体归属。",
+          "previous_fact_id": "DNS-002"
+        },
+        {
+          "id": "DR-002",
+          "section": "答案区遍历与解码范围",
+          "claim": "答案区从问题区之后（还原返回的偏移再加 4）开始，按头部 ancount 次循环，每轮先要求剩余至少 10 字节、再要求 rdlen 不越界，任一不满足跳出；真正解码出内容的类型只有 A（rdlen 为 4）、AAAA（rdlen 为 16）、CNAME 与 NS，其他类型只入类型与 TTL 列表。授权区与附加区未单独遍历，EDNS0 选项不解码。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 730,
+              "end_line": 732,
+              "symbol": "offset += 4"
+            },
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 804,
+              "end_line": 815,
+              "symbol": "ancount"
+            },
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 823,
+              "end_line": 845,
+              "symbol": "type == 28"
+            }
+          ],
+          "reasoning": "按分支枚举被解码的类型；未出现的类型明确写为未处理。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "docs/codebase_reference.md 记为“A/AAAA/CNAME”，漏了 NS。",
+          "previous_fact_id": "DNS-013"
+        },
+        {
+          "id": "DR-003",
+          "section": "结果保存在哪里",
+          "claim": "会话扩展：先检查槽内对象的魔数决定复用还是新建，新建走 session_set_ext_data，因而会释放该会话上原属其他插件的对象；答案最多写 DNS_MAX_ANSWERS 即 8 条，超出静默丢弃；每次处理响应前 answer_count 被清零，扩展里只保留最后一次响应的摘要。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 632,
+              "end_line": 647,
+              "symbol": "DNS_EXT_MAGIC"
+            },
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 651,
+              "end_line": 665,
+              "symbol": "DNS_MAX_ANSWERS"
+            },
+            {
+              "path": "session/session.h",
+              "start_line": 552,
+              "end_line": 552,
+              "symbol": "DNS_MAX_ANSWERS"
+            },
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 786,
+              "end_line": 789,
+              "symbol": "answer_count = 0"
+            }
+          ],
+          "reasoning": "复用条件、上限与清零点三处对照；后果限于会话扩展本身。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "首批 PL-009 只说会话释放扩展；本篇给出插件侧写入与覆盖的实际路径。",
+          "previous_fact_id": "DNS-014"
+        },
+        {
+          "id": "DR-004",
+          "section": "结果保存在哪里",
+          "claim": "插件缓存受三个上限约束：条目最后更新超过 CACHE_TIMEOUT（30 秒）即被清、全局不超过 2 万条、单客户端不超过 512 条；清理在处理函数的首尾各调用一次，平常每 5 秒才真正扫一遍，除非已超硬上限。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 60,
+              "end_line": 62,
+              "symbol": "DNS_CACHE_MAX_RECORDS_PER_CLIENT"
+            },
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 145,
+              "end_line": 146,
+              "symbol": "last_cleanup_time"
+            },
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 988,
+              "end_line": 989,
+              "symbol": "dns_cache_cleanup"
+            }
+          ],
+          "reasoning": "阈值、触发频率与调用点三处对照；不推断内存占用或命中率。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "头部注释只说“主动清理过期缓存”，未给边界数值。",
+          "previous_fact_id": "DNS-015"
+        },
+        {
+          "id": "DR-005",
+          "section": "结果保存在哪里",
+          "claim": "事件通道仅在 rcode 为 0 时组装并交给 ch_event_enqueue；该函数在 DPDK 下从内存池取槽入事件环，取不到或环满即归还槽并累加丢弃计数后返回，单线程下因环未初始化而退化为同步写。rcode 非 0 时函数在发事件前提前返回，但会话扩展此前已被这条失败响应覆盖。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 865,
+              "end_line": 879,
+              "symbol": "rcode != 0"
+            },
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 881,
+              "end_line": 898,
+              "symbol": "ch_event_enqueue"
+            },
+            {
+              "path": "plugin/plugins/ch_event.c",
+              "start_line": 295,
+              "end_line": 322,
+              "symbol": "s_dropped"
+            },
+            {
+              "path": "plugin/plugins/ch_event.h",
+              "start_line": 12,
+              "end_line": 15,
+              "symbol": "fallback"
+            }
+          ],
+          "reasoning": "两条调用路径与提前返回点都读；不把“入队成功”当作落库。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "首批 PF-007 只界定会话统计 submit 的内存语义；本篇给出插件事件通路的同等边界。",
+          "previous_fact_id": "DNS-016"
+        },
+        {
+          "id": "DR-006",
+          "section": "结果保存在哪里",
+          "claim": "另有两条旁路：在置“已计入”标志之前写一条插件日志决策事件；请求分支把客户端、解析器、当前报文的端口对与域名交给 domain_intel 做威胁与重点关注域名匹配。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 900,
+              "end_line": 917,
+              "symbol": "engine_log_event"
+            },
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 1039,
+              "end_line": 1044,
+              "symbol": "domain_intel_process_dns"
+            },
+            {
+              "path": "plugin/plugins/domain_intel.c",
+              "start_line": 439,
+              "end_line": 445,
+              "symbol": "domain_intel_process_dns"
+            }
+          ],
+          "reasoning": "两条旁路的调用条件分别从 if 分支确认；不声称它们与主事件通道同源。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "既有文档未描述插件事务之外的这两条输出。",
+          "previous_fact_id": "DNS-017"
+        },
+        {
+          "id": "DR-007",
+          "section": "返回值：跳过、失败与成功",
+          "claim": "该实现从不返回 ENGINE_HANDLED 或 ENGINE_ERROR：所有门卫与预解析失败返回 ENGINE_SKIP，成功路径自增 ctx 的 packets_matched 后返回 ENGINE_CONTINUE。注册中心只对 HANDLED 与 ERROR 有分支，SKIP 与 CONTINUE 同样落入“继续下一个引擎”，二者可观察差别只在插件自己的匹配计数。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 1083,
+              "end_line": 1085,
+              "symbol": "ENGINE_CONTINUE"
+            },
+            {
+              "path": "plugin/engine_registry.c",
+              "start_line": 210,
+              "end_line": 219,
+              "symbol": "ENGINE_HANDLED"
+            },
+            {
+              "path": "plugin/engine.h",
+              "start_line": 26,
+              "end_line": 32,
+              "symbol": "ENGINE_SKIP"
+            }
+          ],
+          "reasoning": "把插件返回值集合与调度器分支合读；不把 SKIP 说成有独立语义。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "首批 PL-007 记录 SKIP 无独立分支；本篇补出它在 DNS 里作为统一失败返回码的用法。",
+          "previous_fact_id": "DNS-018"
+        },
+        {
+          "id": "DR-008",
+          "section": "返回值：跳过、失败与成功",
+          "claim": "响应去重实际只依赖 ext->counted：置位后同一会话上的后续响应会在更新缓存与发事件之前整体返回；该标志在登记另一个待处理请求时清零。会话扩展为空时这条去重被跳过，每个响应都照常处理；rcode 非 0 的响应不置该标志。辅助函数 dns_ext_same_pending_request 在该文件内定义了 pending 三元组比较，但响应路径不调用它——按当前检索，该文件里它没有调用点。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 762,
+              "end_line": 765,
+              "symbol": "ext->counted"
+            },
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 246,
+              "end_line": 257,
+              "symbol": "counted = 0"
+            },
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 238,
+              "end_line": 244,
+              "symbol": "dns_ext_same_pending_request"
+            }
+          ],
+          "reasoning": "三条置位/清零/跳过路径对照；并对 pending 匹配函数做了调用点检索，确认“定义了不等于在用”。未验证真实重传与乱序场景。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "源码注释说明严格待处理匹配在当前阶段未启用；本篇按当前行为描述，不写成设计意图。",
+          "previous_fact_id": "DNS-019"
+        },
+        {
+          "id": "DR-009",
+          "section": "共享状态与实现缺口",
+          "claim": "init 用 new 分配私有数据后紧跟空指针判断；按 C++ 通用行为默认 new 失败抛异常而非返回空，故该分支是否可达存疑——这是通用语言判断，不是本项目已验证结论。init 还调用 domain_intel_init，该模块用文件级静态规则表、一把互斥锁和一个引用计数管理共享状态；cleanup 对称地先做引用计数递减再 delete。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 946,
+              "end_line": 949,
+              "symbol": "dns_plugin_init"
+            },
+            {
+              "path": "plugin/plugins/domain_intel.c",
+              "start_line": 30,
+              "end_line": 36,
+              "symbol": "g_domain_intel_refcount"
+            },
+            {
+              "path": "plugin/plugins/domain_intel.c",
+              "start_line": 318,
+              "end_line": 322,
+              "symbol": "pthread_mutex_lock"
+            },
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 1087,
+              "end_line": 1089,
+              "symbol": "domain_intel_cleanup"
+            }
+          ],
+          "reasoning": "共享状态的存在由声明与加锁直接证明；引用计数的并发正确性未做运行验证。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "首批 PL-008 只提示“独立 ctx 不证明全局变量独立”；本篇给出一个具体例证。",
+          "previous_fact_id": "DNS-020"
+        },
+        {
+          "id": "DR-010",
+          "section": "共享状态与实现缺口",
+          "claim": "答案循环里的还原失败是跳出而非报错：某条记录失败后其余记录不再处理，但已解析出的部分仍会写进会话扩展与事件。在该文件的实现里找不到按事务标识跨会话配对、UDP 分片重组、SOA/MX/TXT/SRV/PTR 解析与 qdcount 校验的代码路径。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 804,
+              "end_line": 815,
+              "symbol": "break"
+            },
+            {
+              "path": "plugin/plugins/engine_dns.cpp",
+              "start_line": 591,
+              "end_line": 594,
+              "symbol": "ancount"
+            }
+          ],
+          "reasoning": "按“找不到即限定为未实现”的原则列举，范围限定在本版本该文件；已核对全仓仅存在一份 engine_dns.cpp（find 与 git ls-files 一致），不以其他未提交副本作依据。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "通识层面 DNS 解析器通常支持这些类型；本文区分项目行为与通用知识。",
+          "previous_fact_id": "DNS-021"
+        },
+        {
+          "id": "DR-011",
+          "section": "与已有说明的差异",
+          "claim": "与已有说明的差异：docs/system_design.md 的插件表记 DNS 优先级 50 而实现为 120；docs/codebase_reference.md 记该插件解析“A/AAAA/CNAME”，未列 NS；plugin/README.md 与 plugin/plugins/README.md 仍写成 engine_dns.c 并称“待实现”或只列四条要点。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "docs/system_design.md",
+              "start_line": 1479,
+              "end_line": 1479,
+              "symbol": "engine_dns.cpp"
+            },
+            {
+              "path": "docs/codebase_reference.md",
+              "start_line": 520,
+              "end_line": 520,
+              "symbol": "engine_dns.cpp"
+            },
+            {
+              "path": "plugin/README.md",
+              "start_line": 246,
+              "end_line": 246,
+              "symbol": "engine_dns.c"
+            },
+            {
+              "path": "plugin/plugins/README.md",
+              "start_line": 307,
+              "end_line": 307,
+              "symbol": "engine_dns.c"
+            }
+          ],
+          "reasoning": "四处的原文与代码数值逐条比对；本批不修改这些既有文档。",
+          "status": "已核对（编写者静态自审；rev 2 拆分后仍待人工审核）",
+          "difference": "本篇是新增导读，不修订旧说明；差异仅登记。",
+          "previous_fact_id": "DNS-022"
+        }
+      ]
+    }
+  ],
+  "reviewer": null,
+  "model_identifier": "未提供精确运行标识",
+  "token_usage": null,
+  "cost": null,
+  "usage_note": "未调用应用 LLM/embedding；本会话用量不可得，不计作零。",
+  "index_status": "未入库",
+  "verification": "静态检查与编写者自审；另见 zh_pilot/reviews/independent_review_20260918.md 对首批的独立审核",
+  "revision_note": "rev 2（2026-09-18）：按用户验收决定拆为四篇（SL/SF/DN/DR 四个前缀，合计仍为 45 项事实）；事实依据与结论未改，四篇均待人工审核。"
+}

@@ -1,0 +1,339 @@
+event: status
+data: {"stage": "memory"}
+
+event: start
+data: {"session_id": "sess_e4dd6711ed06", "request_id": "trace_934c7424f4b5"}
+
+event: status
+data: {"stage": "agent"}
+
+event: tool_start
+data: {"tool": "list_cases", "label": "正在查询 DNS 的用例…"}
+
+event: tool_end
+data: {"tool": "list_cases", "ok": true, "summary": "9 个用例"}
+
+event: delta
+data: {"delta": "DNS"}
+
+event: delta
+data: {"delta": " 协议共有 **"}
+
+event: delta
+data: {"delta": "9 个评测"}
+
+event: delta
+data: {"delta": "用例**，按"}
+
+event: delta
+data: {"delta": "类别分布如下：\n\n"}
+
+event: delta
+data: {"delta": "|"}
+
+event: delta
+data: {"delta": " 类别 | "}
+
+event: delta
+data: {"delta": "用例名"}
+
+event: delta
+data: {"delta": " | 说明 |"}
+
+event: delta
+data: {"delta": "\n|------"}
+
+event: delta
+data: {"delta": "|--------|------"}
+
+event: delta
+data: {"delta": "|\n| **"}
+
+event: delta
+data: {"delta": "POSITIVE**（"}
+
+event: delta
+data: {"delta": "正常"}
+
+event: delta
+data: {"delta": "流量） | `"}
+
+event: delta
+data: {"delta": "dns"}
+
+event: delta
+data: {"delta": "_basic_query` |"}
+
+event: delta
+data: {"delta": " 基本"}
+
+event: delta
+data: {"delta": " DNS 查询 |"}
+
+event: delta
+data: {"delta": "\n| |"}
+
+event: delta
+data: {"delta": " `dns_cname"}
+
+event: delta
+data: {"delta": "_chain"}
+
+event: delta
+data: {"delta": "` | CNAME"}
+
+event: delta
+data: {"delta": " 链解析"}
+
+event: delta
+data: {"delta": " |\n| |"}
+
+event: delta
+data: {"delta": " `dns_ipv6"}
+
+event: delta
+data: {"delta": "` | IPv6"}
+
+event: delta
+data: {"delta": " (AAAA) "}
+
+event: delta
+data: {"delta": "记录 |\n|"}
+
+event: delta
+data: {"delta": " | `dns_n"}
+
+event: delta
+data: {"delta": "xdomain` |"}
+
+event: delta
+data: {"delta": " NXDOMAIN 响应"}
+
+event: delta
+data: {"delta": " |\n| **"}
+
+event: delta
+data: {"delta": "EDGE**（边界"}
+
+event: delta
+data: {"delta": "情况） | `"}
+
+event: delta
+data: {"delta": "dns"}
+
+event: delta
+data: {"delta": "_edge_minimal`"}
+
+event: delta
+data: {"delta": " | 最小报文"}
+
+event: delta
+data: {"delta": " |\n| |"}
+
+event: delta
+data: {"delta": " `dns_reverse`"}
+
+event: delta
+data: {"delta": " | 反向查询"}
+
+event: delta
+data: {"delta": " (PTR) |"}
+
+event: delta
+data: {"delta": "\n| **STATE"}
+
+event: delta
+data: {"delta": "**（状态/"}
+
+event: delta
+data: {"delta": "多包） |"}
+
+event: delta
+data: {"delta": " `dns"}
+
+event: delta
+data: {"delta": "_interleaved`"}
+
+event: delta
+data: {"delta": " | 交错/"}
+
+event: delta
+data: {"delta": "多会话 |\n"}
+
+event: delta
+data: {"delta": "| **"}
+
+event: delta
+data: {"delta": "MALFORMED**"}
+
+event: delta
+data: {"delta": "（畸形包"}
+
+event: delta
+data: {"delta": "） | `dns"}
+
+event: delta
+data: {"delta": "_malformed`"}
+
+event: delta
+data: {"delta": " | 畸形 DNS"}
+
+event: delta
+data: {"delta": " 报文 |\n"}
+
+event: delta
+data: {"delta": "| **NEGATIVE"}
+
+event: delta
+data: {"delta": "**（非 DNS"}
+
+event: delta
+data: {"delta": " 流量） |"}
+
+event: delta
+data: {"delta": " `dns_negative`"}
+
+event: delta
+data: {"delta": " | 非 DNS"}
+
+event: delta
+data: {"delta": " 协议"}
+
+event: delta
+data: {"delta": "流量 |\n\n简单"}
+
+event: delta
+data: {"delta": "总结一下"}
+
+event: delta
+data: {"delta": "：\n- **"}
+
+event: delta
+data: {"delta": "POSITIVE（"}
+
+event: delta
+data: {"delta": "4 个）**"}
+
+event: delta
+data: {"delta": "：正常的"}
+
+event: delta
+data: {"delta": " DNS 查询/"}
+
+event: delta
+data: {"delta": "响应场景，你的"}
+
+event: delta
+data: {"delta": "插件需要正确识别"}
+
+event: delta
+data: {"delta": "并解析。\n"}
+
+event: delta
+data: {"delta": "- **EDGE（"}
+
+event: delta
+data: {"delta": "2 个）**"}
+
+event: delta
+data: {"delta": "：边界情况，"}
+
+event: delta
+data: {"delta": "比如极"}
+
+event: delta
+data: {"delta": "短报文或反向"}
+
+event: delta
+data: {"delta": "查询，考验解析"}
+
+event: delta
+data: {"delta": "的鲁棒性"}
+
+event: delta
+data: {"delta": "。\n- **"}
+
+event: delta
+data: {"delta": "STATE（1 "}
+
+event: delta
+data: {"delta": "个）**：涉及"}
+
+event: delta
+data: {"delta": "多包/交错"}
+
+event: delta
+data: {"delta": "会话"}
+
+event: delta
+data: {"delta": "的状态跟踪。\n"}
+
+event: delta
+data: {"delta": "-"}
+
+event: delta
+data: {"delta": " **MALFORMED"}
+
+event: delta
+data: {"delta": "（1 个"}
+
+event: delta
+data: {"delta": "）**：畸形报文"}
+
+event: delta
+data: {"delta": "，插件"}
+
+event: delta
+data: {"delta": "应能安全处理"}
+
+event: delta
+data: {"delta": "而不"}
+
+event: delta
+data: {"delta": "崩溃。\n-"}
+
+event: delta
+data: {"delta": " **NEGATIVE（"}
+
+event: delta
+data: {"delta": "1 个）**"}
+
+event: delta
+data: {"delta": "：根本不是"}
+
+event: delta
+data: {"delta": " DNS 的流量"}
+
+event: delta
+data: {"delta": "，插件应"}
+
+event: delta
+data: {"delta": "正确排除。\n\n"}
+
+event: delta
+data: {"delta": "需要"}
+
+event: delta
+data: {"delta": "我帮你生成 DNS"}
+
+event: delta
+data: {"delta": " 插件"}
+
+event: delta
+data: {"delta": "的起手骨架代码"}
+
+event: delta
+data: {"delta": "，还是"}
+
+event: delta
+data: {"delta": "想了解某个具体用例"}
+
+event: delta
+data: {"delta": "的更多"}
+
+event: delta
+data: {"delta": "细节？"}
+
+event: done
+data: {"session_id": "sess_e4dd6711ed06", "message_id": "msg_921d7ee911ba", "confidence": "low", "next_steps": ["阅读引用来源", "继续追问接口细节或协议特征"], "debug_trace": null}
+

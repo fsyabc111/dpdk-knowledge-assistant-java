@@ -1,0 +1,194 @@
+{
+  "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+  "assistant_commit": "a8d0fbec7667a0580a8c6b7fde838d1b7aa0012d",
+  "source_branch": "master",
+  "assistant_branch": "main",
+  "source_status": "?? ai_chat_assistant/\n",
+  "assistant_status_at_baseline": "?? knowledge_work/\n",
+  "baseline_note": "采集于本批快照导出与两篇前批验收之后。pilot/batch02 哈希只能发现重采之后的改动；前批文件在本批开工前已由用户验收定稿，本批不修改它们。主仓库 HEAD 等于本批固定提交，22 个来源文件工作树字节与固定提交相同。",
+  "sources": [
+    {
+      "path": "main.c",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/main.c",
+      "lines": 3198
+    },
+    {
+      "path": "plugin/engine.h",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/engine.h",
+      "lines": 275
+    },
+    {
+      "path": "plugin/engine_registry.c",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/engine_registry.c",
+      "lines": 435
+    },
+    {
+      "path": "plugin/plugins/tls_plugin.c",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/plugins/tls_plugin.c",
+      "lines": 198
+    },
+    {
+      "path": "plugin/plugins/tls_parser.c",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/plugins/tls_parser.c",
+      "lines": 492
+    },
+    {
+      "path": "plugin/plugins/tls_parser.h",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/plugins/tls_parser.h",
+      "lines": 83
+    },
+    {
+      "path": "plugin/plugins/https_plugin.c",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/plugins/https_plugin.c",
+      "lines": 100
+    },
+    {
+      "path": "plugin/plugins/https_identifier.c",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/plugins/https_identifier.c",
+      "lines": 64
+    },
+    {
+      "path": "plugin/plugins/https_identifier.h",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/plugins/https_identifier.h",
+      "lines": 23
+    },
+    {
+      "path": "plugin/plugins/cert_plugin.c",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/plugins/cert_plugin.c",
+      "lines": 137
+    },
+    {
+      "path": "plugin/plugins/cert_extractor.c",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/plugins/cert_extractor.c",
+      "lines": 256
+    },
+    {
+      "path": "plugin/plugins/cert_extractor.h",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/plugins/cert_extractor.h",
+      "lines": 46
+    },
+    {
+      "path": "plugin/plugins/ja3_plugin.c",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/plugins/ja3_plugin.c",
+      "lines": 98
+    },
+    {
+      "path": "plugin/plugins/ja3_fingerprint.c",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/plugins/ja3_fingerprint.c",
+      "lines": 238
+    },
+    {
+      "path": "plugin/plugins/ja3_fingerprint.h",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/plugins/ja3_fingerprint.h",
+      "lines": 31
+    },
+    {
+      "path": "plugin/plugins/engine_tls_infra.cpp",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/plugins/engine_tls_infra.cpp",
+      "lines": 822
+    },
+    {
+      "path": "plugin/plugins/Makefile",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/plugins/Makefile",
+      "lines": 228
+    },
+    {
+      "path": "session/session.h",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/session/session.h",
+      "lines": 774
+    },
+    {
+      "path": "plugin/plugins/ch_event.h",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/plugins/ch_event.h",
+      "lines": 562
+    },
+    {
+      "path": "plugin/plugins/ch_event.c",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/plugins/ch_event.c",
+      "lines": 322
+    },
+    {
+      "path": "docs/system_design.md",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/docs/system_design.md",
+      "lines": 1561
+    },
+    {
+      "path": "Makefile",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/Makefile",
+      "lines": 220
+    }
+  ],
+  "scan_roots": [
+    "/Users/fsy/code/dpdk/Flask_network_new/app.py",
+    "/Users/fsy/code/dpdk/Flask_network_new/app_config.py",
+    "/Users/fsy/code/dpdk/Flask_network_new/app_smart.py",
+    "/Users/fsy/code/dpdk/Flask_network_new/core",
+    "/Users/fsy/code/dpdk/Flask_network_new/services",
+    "/Users/fsy/code/dpdk/README.md",
+    "/Users/fsy/code/dpdk/ai_chat_assistant/knowledge",
+    "/Users/fsy/code/dpdk/api_server",
+    "/Users/fsy/code/dpdk/api_server/README.md",
+    "/Users/fsy/code/dpdk/capture",
+    "/Users/fsy/code/dpdk/capture/README.md",
+    "/Users/fsy/code/dpdk/capture_dpdk.c",
+    "/Users/fsy/code/dpdk/docs",
+    "/Users/fsy/code/dpdk/http_server.c",
+    "/Users/fsy/code/dpdk/http_server.h",
+    "/Users/fsy/code/dpdk/log.c",
+    "/Users/fsy/code/dpdk/log.h",
+    "/Users/fsy/code/dpdk/logger",
+    "/Users/fsy/code/dpdk/main.c",
+    "/Users/fsy/code/dpdk/plugin",
+    "/Users/fsy/code/dpdk/plugin/PLUGIN_SYSTEM.md",
+    "/Users/fsy/code/dpdk/plugin/README.md",
+    "/Users/fsy/code/dpdk/plugin/plugins/README.md",
+    "/Users/fsy/code/dpdk/session",
+    "/Users/fsy/code/dpdk/session/README.md",
+    "/Users/fsy/code/dpdk/stats",
+    "/Users/fsy/code/dpdk/stats/README.md"
+  ],
+  "scan_entry_count": 27,
+  "candidate_file_count": 211,
+  "knowledge_config": "/Users/fsy/code/dpdk/ai_chat_assistant/backend/data/knowledge_sources.yml",
+  "batch03_under_scan_roots": false,
+  "pilot_snapshot_hashes": {
+    "README.md": "bbd2f60aa7168c318474a19845aa8b09227e935a3310b5ba720cdccf14a95bd3",
+    "checks/check_documents.py": "9bc985a2725022b0a4de81e36ca8554a8b1e284001abd6b8c84ef0edff08d8bb",
+    "checks/chunk_preview.json": "4e6de21b50cddd69df4048637d043e7443cb1cd7553482e4b4d0c08ecd137f90",
+    "checks/source_baseline.json": "5b820cc87a2e3f726522f9550273ccaff249abdbd460fea8d24923f5b77e6a06",
+    "checks/validation.md": "1eef448518a36da488f9333a88d1ede9e36ff1864d514a50581561507aac95d7",
+    "checks/validation_result.json": "9dd6773cad9c12bfa8542806b628a93ef86a78dff29780d4eaa869efd4a81ffe",
+    "delivery.md": "1085ea9470b5cd81d5af32753014da0ebf81b4f1dfb102ddf8134f5c01807469",
+    "drafts/packet_flow.md": "7b8edf22426c3426f4e0d8212f456b2c88a63b41d93cc83262cf4789a88f0a54",
+    "drafts/plugin_lifecycle.md": "b27589775f045e1e8eb1ec9750b1e63e66ff15a6a42fbeeb15e017b1d509c4df",
+    "evidence/packet_flow.md": "909e37f04b91b937d727d15c2aa3cb63aea08dab3e561cdce30663710cda8392",
+    "evidence/plugin_lifecycle.md": "5d86fd7e4ae482d85bb17e22017843599d7aa25592e4c2b54a246c56e34f5507",
+    "inventory.md": "77a34538089742777a954b4682d0923ee22f5e0b452bdba751435771535f7af2",
+    "manifest.json": "5ae5237f076c3a5ab4354e4065f7f415e5402d4ae9c0f64d520e01cfc166a8d8",
+    "reviews/independent_review_20260918.md": "d144611520d680a0558baa91572a533591fe2981d2f38411a8ea3eae4bfdc1eb",
+    "reviews/review_checklist.md": "eed289704dfdd5f6e8a6acd7e2f86bab3a1be89ba5fe3dcc8c9bc42e2bec88e6",
+    "reviews/self_review.md": "8efc012b1814c964e11c62527f4fbb3ffc38b97a9be4abb23d60e98a70ef8694"
+  },
+  "batch02_snapshot_hashes": {
+    "README.md": "d782940026647f69fda0d6a5ef3f2fefd99aea217f26e46e711a3cf5f6914115",
+    "checks/build_evidence.py": "01f856771fe720fdc978a496c38f7f9854e165c31cb3cea14a4bbeb6ba08ef6d",
+    "checks/check_documents.py": "97382c1bee00bf17ab22297d81a69a6767c961ab10a4901a6753289321c5c6a4",
+    "checks/chunk_preview.json": "23b556a75cd8faea03a5d9b2cca88717aa758e1705f69762141e1a734dcce080",
+    "checks/source_baseline.json": "cc2477686df1e4e3aaf5de23de74df6310a1331d0af4813ef5b3c334110403b8",
+    "checks/validation.md": "b4f446e8dda957b908e99d4fc57c4ba895d3dee23b1cbc36a5befbb500a1b9a2",
+    "checks/validation_result.json": "6043510aa7a1e0fd281edc15cc72db6423360e966fc0abc6f7e6409b9f887cd1",
+    "delivery.md": "3f2ad30f55122f15b0729443f2ebb11784471a0c86b7b697851e162f93e2e26e",
+    "drafts/dns_detection_and_parsing.md": "f34aea440f6159cb14394d5dc23441a5a172de50b81f87f20cde4b995df03e72",
+    "drafts/dns_results_and_returns.md": "1c68d3ddba039c2ef6d96a0e3e62e56509cceb731e91e08ddb429a6c7490be3a",
+    "drafts/session_expiry_and_release.md": "e3373d1aa382ce6dabf1e8b87a89932709052ec0240bf9aaf2aa00264036c95e",
+    "drafts/session_key_and_lookup.md": "784d894e6f4c0c3d174d25f6e473b5992c447015cb2ca3f2aa900886adff2cfb",
+    "evidence/dns_detection_and_parsing.md": "dec90fdfdf851f20d22584d47b43d221ad0accbf9a19bc4c42062d1d2b1eb2a7",
+    "evidence/dns_results_and_returns.md": "04e9ce348bfa520816b54b4ae69c0d2dd22ccc68d7fd3efc114c1e54e28b476c",
+    "evidence/session_expiry_and_release.md": "825809b445af228dd591c1ee3eb33b0c401516319e953c7c3e37042ed34ab65f",
+    "evidence/session_key_and_lookup.md": "179cd6a3073d456ebf8255e3e0fa71f28b4c005dff70ce3274107746964f7189",
+    "inventory.md": "8b53775f01eb64789eccee2fdfbe46fc35ca42fded18b2ac4c66212cecbfb23c",
+    "manifest.json": "a12a82ce3e3cc89d75eecdc9a361469952a43ee83b6311386af30ef6f05cd708",
+    "reviews/review_checklist.md": "028337f139e3c7f15a1a6c847be33663c5469245a03edfca2a4ee2b0472ff027",
+    "reviews/self_review.md": "f545654c553bef5f893d095d4412288eb07fdb5952d148d1a380f1007f774ac3"
+  }
+}

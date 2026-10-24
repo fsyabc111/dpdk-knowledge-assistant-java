@@ -1,0 +1,606 @@
+event: status
+data: {"stage": "memory"}
+
+event: start
+data: {"session_id": "sess_d5c052cb6860", "request_id": "trace_f38caf4eed63"}
+
+event: status
+data: {"stage": "agent"}
+
+event: tool_start
+data: {"tool": "plugin_template", "label": "正在生成 DNS 插件骨架…"}
+
+event: tool_end
+data: {"tool": "plugin_template", "ok": true, "summary": "已生成骨架"}
+
+event: delta
+data: {"delta": "这是 **DNS"}
+
+event: delta
+data: {"delta": " "}
+
+event: delta
+data: {"delta": "协议检测插件**"}
+
+event: delta
+data: {"delta": "的学习用"}
+
+event: delta
+data: {"delta": "骨架代码，保留了"}
+
+event: delta
+data: {"delta": " TODO"}
+
+event: delta
+data: {"delta": " 供你自行"}
+
+event: delta
+data: {"delta": "完成"}
+
+event: delta
+data: {"delta": "，**不是作业"}
+
+event: delta
+data: {"delta": "答案"}
+
+event: delta
+data: {"delta": "**哦。\n\n"}
+
+event: delta
+data: {"delta": "---\n\n##"}
+
+event: delta
+data: {"delta": " 📄 DNS"}
+
+event: delta
+data: {"delta": " 插件"}
+
+event: delta
+data: {"delta": "骨架\n\n```c"}
+
+event: delta
+data: {"delta": "\n#include <stdbool"}
+
+event: delta
+data: {"delta": ".h>\n#include"}
+
+event: delta
+data: {"delta": " <stdint.h>"}
+
+event: delta
+data: {"delta": "\n#include <stdlib"}
+
+event: delta
+data: {"delta": ".h>\n#include"}
+
+event: delta
+data: {"delta": " \"../engine.h\""}
+
+event: delta
+data: {"delta": "\n\nstatic int dns"}
+
+event: delta
+data: {"delta": "_init(engine_ctx_t"}
+
+event: delta
+data: {"delta": " *ctx)\n"}
+
+event: delta
+data: {"delta": "{\n    ctx"}
+
+event: delta
+data: {"delta": "->private_data ="}
+
+event: delta
+data: {"delta": " NULL;\n   "}
+
+event: delta
+data: {"delta": " return ENGINE_OK;"}
+
+event: delta
+data: {"delta": "\n}\n\nstatic"}
+
+event: delta
+data: {"delta": " bool dns_can_handle"}
+
+event: delta
+data: {"delta": "(engine_ctx_t *"}
+
+event: delta
+data: {"delta": "ctx,\n                               "}
+
+event: delta
+data: {"delta": " const session_entry_t"}
+
+event: delta
+data: {"delta": " *session,\n"}
+
+event: delta
+data: {"delta": "                                const parsed_packet"}
+
+event: delta
+data: {"delta": "_t *pkt)"}
+
+event: delta
+data: {"delta": "\n{\n   "}
+
+event: delta
+data: {"delta": " (void)ctx"}
+
+event: delta
+data: {"delta": ";\n    ("}
+
+event: delta
+data: {"delta": "void)session;"}
+
+event: delta
+data: {"delta": "\n    if (!"}
+
+event: delta
+data: {"delta": "pkt || !pkt"}
+
+event: delta
+data: {"delta": "->payload || pkt"}
+
+event: delta
+data: {"delta": "->payload_len =="}
+
+event: delta
+data: {"delta": " 0) return"}
+
+event: delta
+data: {"delta": " false;\n\n   "}
+
+event: delta
+data: {"delta": " /* TODO: "}
+
+event: delta
+data: {"delta": "只做快速筛选，"}
+
+event: delta
+data: {"delta": "例如协议号、"}
+
+event: delta
+data: {"delta": "端口、payload "}
+
+event: delta
+data: {"delta": "前几个字节。"}
+
+event: delta
+data: {"delta": " */\n    return"}
+
+event: delta
+data: {"delta": " false;\n}"}
+
+event: delta
+data: {"delta": "\n\nstatic int dns"}
+
+event: delta
+data: {"delta": "_process(engine_ctx_t"}
+
+event: delta
+data: {"delta": " *ctx,\n"}
+
+event: delta
+data: {"delta": "                            session_entry_t"}
+
+event: delta
+data: {"delta": " *session,\n"}
+
+event: delta
+data: {"delta": "                            const parsed_packet"}
+
+event: delta
+data: {"delta": "_t *pkt)"}
+
+event: delta
+data: {"delta": "\n{\n   "}
+
+event: delta
+data: {"delta": " (void)ctx"}
+
+event: delta
+data: {"delta": ";\n    ("}
+
+event: delta
+data: {"delta": "void)session;"}
+
+event: delta
+data: {"delta": "\n    if (!"}
+
+event: delta
+data: {"delta": "pkt || !pkt"}
+
+event: delta
+data: {"delta": "->payload || pkt"}
+
+event: delta
+data: {"delta": "->payload_len =="}
+
+event: delta
+data: {"delta": " 0) return"}
+
+event: delta
+data: {"delta": " ENGINE_CONTINUE;\n\n"}
+
+event: delta
+data: {"delta": "    /* TODO:"}
+
+event: delta
+data: {"delta": " 在这里解析 dns"}
+
+event: delta
+data: {"delta": " 的关键特征。"}
+
+event: delta
+data: {"delta": "\n     * "}
+
+event: delta
+data: {"delta": "注意边界检查，"}
+
+event: delta
+data: {"delta": "不要在热路径做"}
+
+event: delta
+data: {"delta": "同步 I/O "}
+
+event: delta
+data: {"delta": "或复杂阻塞操作"}
+
+event: delta
+data: {"delta": "。\n     */"}
+
+event: delta
+data: {"delta": "\n\n    return ENGINE"}
+
+event: delta
+data: {"delta": "_CONTINUE;\n}"}
+
+event: delta
+data: {"delta": "\n\nstatic void dns"}
+
+event: delta
+data: {"delta": "_cleanup(engine_ctx_t"}
+
+event: delta
+data: {"delta": " *ctx)\n"}
+
+event: delta
+data: {"delta": "{\n    if"}
+
+event: delta
+data: {"delta": " (ctx) ctx"}
+
+event: delta
+data: {"delta": "->private_data ="}
+
+event: delta
+data: {"delta": " NULL;\n}"}
+
+event: delta
+data: {"delta": "\n\nstatic const engine"}
+
+event: delta
+data: {"delta": "_ops_t dns_ops"}
+
+event: delta
+data: {"delta": " = {\n   "}
+
+event: delta
+data: {"delta": " .name = \""}
+
+event: delta
+data: {"delta": "dns\",\n   "}
+
+event: delta
+data: {"delta": " .protocol_id ="}
+
+event: delta
+data: {"delta": " 0,     "}
+
+event: delta
+data: {"delta": " /* TODO: "}
+
+event: delta
+data: {"delta": "按课程要求填写"}
+
+event: delta
+data: {"delta": " */\n    ."}
+
+event: delta
+data: {"delta": "priority = 2"}
+
+event: delta
+data: {"delta": "00,      "}
+
+event: delta
+data: {"delta": " /* TODO: "}
+
+event: delta
+data: {"delta": "根据插件链顺序"}
+
+event: delta
+data: {"delta": "调整 */\n   "}
+
+event: delta
+data: {"delta": " .init = dns"}
+
+event: delta
+data: {"delta": "_init,\n   "}
+
+event: delta
+data: {"delta": " .can_handle ="}
+
+event: delta
+data: {"delta": " dns_can_handle,"}
+
+event: delta
+data: {"delta": "\n    .process"}
+
+event: delta
+data: {"delta": " = dns_process,"}
+
+event: delta
+data: {"delta": "\n    .cleanup"}
+
+event: delta
+data: {"delta": " = dns_cleanup,"}
+
+event: delta
+data: {"delta": "\n    .get"}
+
+event: delta
+data: {"delta": "_stats = NULL,"}
+
+event: delta
+data: {"delta": "\n    .reset"}
+
+event: delta
+data: {"delta": "_stats = NULL,"}
+
+event: delta
+data: {"delta": "\n};\n\nconst"}
+
+event: delta
+data: {"delta": " engine_ops_t*"}
+
+event: delta
+data: {"delta": " engine_get_ops(void"}
+
+event: delta
+data: {"delta": ")\n{\n"}
+
+event: delta
+data: {"delta": "    return &dns"}
+
+event: delta
+data: {"delta": "_ops;\n}"}
+
+event: delta
+data: {"delta": "\n```\n\n---"}
+
+event: delta
+data: {"delta": "\n\n## ✅ "}
+
+event: delta
+data: {"delta": "完成时的"}
+
+event: delta
+data: {"delta": "自查清单\n\n|"}
+
+event: delta
+data: {"delta": " #"}
+
+event: delta
+data: {"delta": " | 检查项"}
+
+event: delta
+data: {"delta": " |\n|---"}
+
+event: delta
+data: {"delta": "|--------|\n"}
+
+event: delta
+data: {"delta": "| 1 |"}
+
+event: delta
+data: {"delta": " `can_handle`"}
+
+event: delta
+data: {"delta": " 只做**"}
+
+event: delta
+data: {"delta": "轻量筛选**（"}
+
+event: delta
+data: {"delta": "端口"}
+
+event: delta
+data: {"delta": "、协议号、"}
+
+event: delta
+data: {"delta": "前几字节），"}
+
+event: delta
+data: {"delta": "不做完整解析 |"}
+
+event: delta
+data: {"delta": "\n| 2"}
+
+event: delta
+data: {"delta": " | `process`"}
+
+event: delta
+data: {"delta": " 读取 payload "}
+
+event: delta
+data: {"delta": "前**必须检查"}
+
+event: delta
+data: {"delta": " `payload_len`"}
+
+event: delta
+data: {"delta": "**，防止越"}
+
+event: delta
+data: {"delta": "界 |\n"}
+
+event: delta
+data: {"delta": "| 3 |"}
+
+event: delta
+data: {"delta": " 不在热路径"}
+
+event: delta
+data: {"delta": "做同步 I/O"}
+
+event: delta
+data: {"delta": "、长时间锁等待"}
+
+event: delta
+data: {"delta": "或大量 malloc |"}
+
+event: delta
+data: {"delta": "\n| 4"}
+
+event: delta
+data: {"delta": " | 根据是否需要"}
+
+event: delta
+data: {"delta": "后续插件继续观察"}
+
+event: delta
+data: {"delta": "，谨慎选择 `"}
+
+event: delta
+data: {"delta": "ENGINE_HANDLED`"}
+
+event: delta
+data: {"delta": " 或 `ENGINE"}
+
+event: delta
+data: {"delta": "_CONTINUE` |\n"}
+
+event: delta
+data: {"delta": "| 5 |"}
+
+event: delta
+data: {"delta": " 优先阅读 `"}
+
+event: delta
+data: {"delta": "plugin/plugins/engine_template"}
+
+event: delta
+data: {"delta": ".c`"}
+
+event: delta
+data: {"delta": " 和一个相近协议"}
+
+event: delta
+data: {"delta": "插件作为参考 |"}
+
+event: delta
+data: {"delta": "\n\n---\n\n##"}
+
+event: delta
+data: {"delta": " 📚 推荐参考"}
+
+event: delta
+data: {"delta": "文件\n\n-"}
+
+event: delta
+data: {"delta": " `plugin/engine.h"}
+
+event: delta
+data: {"delta": "` — 引擎"}
+
+event: delta
+data: {"delta": "接口定义\n-"}
+
+event: delta
+data: {"delta": " `plugin/plugins/engine"}
+
+event: delta
+data: {"delta": "_template.c` —"}
+
+event: delta
+data: {"delta": " 通用模板\n"}
+
+event: delta
+data: {"delta": "- `plugin/"}
+
+event: delta
+data: {"delta": "README.md` —"}
+
+event: delta
+data: {"delta": " 插件开发说明"}
+
+event: delta
+data: {"delta": "\n\n---\n\n"}
+
+event: delta
+data: {"delta": "💡 **提示"}
+
+event: delta
+data: {"delta": "**"}
+
+event: delta
+data: {"delta": "：DNS 协议"}
+
+event: delta
+data: {"delta": "基于"}
+
+event: delta
+data: {"delta": " UDP/TCP "}
+
+event: delta
+data: {"delta": "53 端口"}
+
+event: delta
+data: {"delta": "，报文结构包含"}
+
+event: delta
+data: {"delta": " Header（12"}
+
+event: delta
+data: {"delta": " 字节固定）"}
+
+event: delta
+data: {"delta": "+"}
+
+event: delta
+data: {"delta": " Question + Answer "}
+
+event: delta
+data: {"delta": "等部分"}
+
+event: delta
+data: {"delta": "。建议先熟悉"}
+
+event: delta
+data: {"delta": " DNS 报文格式"}
+
+event: delta
+data: {"delta": "，再逐步填充"}
+
+event: delta
+data: {"delta": " TODO"}
+
+event: delta
+data: {"delta": "。\n\n写好后"}
+
+event: delta
+data: {"delta": "可以把"}
+
+event: delta
+data: {"delta": "代码发给我，"}
+
+event: delta
+data: {"delta": "我帮你跑评测"}
+
+event: delta
+data: {"delta": "看结果！"}
+
+event: done
+data: {"session_id": "sess_d5c052cb6860", "message_id": "msg_440b82643a58", "confidence": "low", "next_steps": ["阅读引用来源", "继续追问接口细节或协议特征"], "debug_trace": null}
+

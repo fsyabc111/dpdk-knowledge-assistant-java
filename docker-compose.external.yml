@@ -1,0 +1,25 @@
+# 外接盘实例叠加配置；必须与 docker-compose.yml 一起使用。
+# !override 避免把回环端口追加到原有的全接口端口上；要求 Compose >= 2.24.4。
+x-external-logging: &external-logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+services:
+  postgres:
+    image: dpdk-assistant-ext-postgres:pg17-zhparser
+    logging: *external-logging
+  backend:
+    image: dpdk-assistant-ext-backend:prepared
+    logging: *external-logging
+  harness:
+    image: dpdk-assistant-ext-harness:prepared
+    logging: *external-logging
+  frontend:
+    image: dpdk-assistant-ext-frontend:prepared
+    logging: *external-logging
+    ports: !override
+      - "127.0.0.1:443:443"
+      - "127.0.0.1:80:80"
+

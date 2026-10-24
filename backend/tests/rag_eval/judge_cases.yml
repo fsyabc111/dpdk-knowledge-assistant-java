@@ -1,0 +1,151 @@
+# N08 judge 验收题集（scripts/rag_judge_eval.py 的唯一事实来源）
+#
+# 与 tests/rag_eval/queries.yml 的关系：queries.yml 评检索召回，本题集评
+# validate_answer 的「证据校验」语义——问题/答案/证据都内嵌在题集里，
+# 不依赖真实索引与生成链路。
+#
+# 字段说明：
+#   name           用例唯一标识（--case 按它筛选）
+#   mode           deterministic | judge
+#                  deterministic：judge_enabled=False + model=None，与在线现状
+#                    （RAG_ONLINE_JUDGE_ENABLED=false）同构，结果确定、可进默认集断言；
+#                  judge：judge_enabled=True + 真实模型，只供 scripts/rag_judge_eval.py
+#                    离线验收跑，expected 是人工标注口径，mismatch 只报告不失败。
+#   question       原始问题
+#   answer         候选答案正文（[n] 引用按 evidence.chunks 位置编号）
+#   evidence       {chunks: [{ref, source, content}], tools: [{tool, result}]}
+#                  形状与 _candidate 装配的送审证据一致；deterministic 例只需
+#                  chunks/tools 的有无与条数，judge 例的 content 是核验依据
+#   expect_status  期望 verdict.status：answered/partial/needs_clarification/
+#                  unanswered/not_applicable/system_error
+#   expect_reason  可选：期望 verdict.reason（缺省只断言 status）
+#
+# 判定哲学：deterministic 例是**硬断言**——四个判据（empty_answer /
+# invalid_citation / no_evidence / missing_citation）与全过 supported 各一
+# 例，由 tests/test_s3e_offline_judge.py 读文件驱动断言；judge 例是**标注**
+# ——真实模型判定存在抖动，脚本对账出 mismatch 清单供人工复核。
+
+cases:
+  # ------------------------------------------------------------------
+  # deterministic：离线口径四判据 + 全过 supported（不进模型）
+  # ------------------------------------------------------------------
+  - name: det_empty_answer
+    mode: deterministic
+    question: "DNS 协议检测怎么解析域名？"
+    answer: "   "
+    evidence: {chunks: [{ref: 1, source: "engine_dns.cpp", content: "qname 标签编码"}], tools: []}
+    expect_status: unanswered
+    expect_reason: empty_answer
+
+  - name: det_invalid_citation
+    mode: deterministic
+    question: "DNS 协议检测怎么解析域名？"
+    answer: "qname 按标签序列编码 [3]。"
+    evidence: {chunks: [{ref: 1, source: "engine_dns.cpp", content: "qname 标签编码"}], tools: []}
+    expect_status: unanswered
+    expect_reason: invalid_citation
+
+  - name: det_no_evidence
+    mode: deterministic
+    question: "DNS 协议检测怎么解析域名？"
+    answer: "qname 按标签序列编码。"
+    evidence: {chunks: [], tools: []}
+    expect_status: unanswered
+    expect_reason: no_evidence
+
+  - name: det_missing_citation
+    mode: deterministic
+    question: "DNS 协议检测怎么解析域名？"
+    answer: "qname 按标签序列编码。"
+    evidence: {chunks: [{ref: 1, source: "engine_dns.cpp", content: "qname 标签编码"}], tools: []}
+    expect_status: unanswered
+    expect_reason: missing_citation
+
+  - name: det_supported
+    mode: deterministic
+    question: "DNS 协议检测怎么解析域名？"
+    answer: "qname 按标签序列编码 [1]。"
+    evidence: {chunks: [{ref: 1, source: "engine_dns.cpp", content: "qname 标签编码"}], tools: []}
+    expect_status: answered
+    expect_reason: supported
+
+  # ------------------------------------------------------------------
+  # judge：模型核验标注例（只供 scripts/rag_judge_eval.py 离线跑）
+  # ------------------------------------------------------------------
+  - name: judge_supported
+    mode: judge
+    question: "DNS 协议检测怎么解析域名？"
+    answer: "engine_dns.cpp 用状态机逐字节读 qname 标签，每段以长度字节开头 [1]。"
+    evidence:
+      chunks:
+        - ref: 1
+          source: "engine_dns.cpp"
+          content: "DNS 检测插件用状态机逐字节解析 qname：每个标签以 1 字节长度开头，后跟标签字节，0 长度表示域名结束。"
+      tools: []
+    expect_status: answered
+    expect_reason: supported
+
+  - name: judge_insufficient_evidence
+    mode: judge
+    question: "QUIC 协议怎么检测版本协商？"
+    # 证据只有 DNS 内容，答案却断言 QUIC 细节——核验员应判证据不足。
+    answer: "engine_quic.c 在 Initial 包里比对版本号字段，不匹配则回退 [1]。"
+    evidence:
+      chunks:
+        - ref: 1
+          source: "engine_dns.cpp"
+          content: "DNS 检测插件用状态机逐字节解析 qname：每个标签以 1 字节长度开头。"
+      tools: []
+    expect_status: unanswered
+    expect_reason: insufficient_evidence
+
+  - name: judge_conflicting_evidence
+    mode: judge
+    question: "DNS 的 qname 是怎么编码的？"
+    # 答案与证据直接冲突：证据说逐字节状态机，答案说一次性正则。
+    answer: "engine_dns.cpp 用一条正则表达式一次性匹配整个域名字符串 [1]。"
+    evidence:
+      chunks:
+        - ref: 1
+          source: "engine_dns.cpp"
+          content: "DNS 检测插件不使用正则：它用状态机逐字节解析 qname，每个标签以 1 字节长度开头。"
+      tools: []
+    expect_status: unanswered
+    expect_reason: conflicting_evidence
+
+  - name: judge_partial
+    mode: judge
+    question: "HTTP 和 HTTPS 插件分别怎么处理请求？"
+    # 证据只覆盖 HTTP；答案讲对了一半并明示 HTTPS 部分资料不足。
+    answer: "http_plugin.c 在 can_handle 里先匹配 GET/POST 等请求方法关键字再进入解析 [1]。HTTPS 部分现有资料没有覆盖，无法可靠回答。"
+    evidence:
+      chunks:
+        - ref: 1
+          source: "http_plugin.c"
+          content: "http_plugin.c 的 can_handle 先匹配 GET/POST/HEAD 等请求方法关键字，命中后交给请求行与头部解析。"
+      tools: []
+    expect_status: partial
+    expect_reason: insufficient_evidence
+
+  - name: judge_needs_clarification
+    mode: judge
+    question: "那个配置怎么改？"
+    # 问题没有指明哪个配置；答案泛泛而谈没有项目事实——期望核验员要澄清。
+    answer: "可以把对应的参数改掉再重启服务。"
+    evidence:
+      chunks:
+        - ref: 1
+          source: "session.h"
+          content: "session.h 定义流表结构 session_entry_t，含五元组与协议状态字段。"
+      tools: []
+    expect_status: needs_clarification
+    expect_reason: clarification
+
+  - name: judge_not_applicable
+    mode: judge
+    question: "你好"
+    # 寒暄不含项目事实：核验员应判 not_applicable，而不是要求引用。
+    answer: "你好，我是 DPDK 项目知识助手，可以问我协议检测、插件接口或代码结构的问题。"
+    evidence: {chunks: [], tools: []}
+    expect_status: not_applicable
+    expect_reason: non_knowledge

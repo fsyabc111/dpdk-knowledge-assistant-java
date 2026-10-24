@@ -1,0 +1,29 @@
+{
+  "status": "passed",
+  "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+  "source_files": 22,
+  "facts": 28,
+  "local_links": 116,
+  "knowledge_config": "/Users/fsy/code/dpdk/ai_chat_assistant/backend/data/knowledge_sources.yml",
+  "scan_entry_count": 27,
+  "candidate_file_count": 211,
+  "scan_roots_unchanged": true,
+  "source_drift": [],
+  "errors": [],
+  "warnings": [],
+  "semantic_review": "静态定位检查不能证明事实正确；语义自审见 reviews/self_review.md，仍待人工审核",
+  "documents": [
+    {
+      "path": "drafts/plugin_lifecycle.md",
+      "chinese_chars": 1513,
+      "chunks": 7,
+      "max_chunk_chars": 795
+    },
+    {
+      "path": "drafts/packet_flow.md",
+      "chinese_chars": 1609,
+      "chunks": 8,
+      "max_chunk_chars": 858
+    }
+  ]
+}

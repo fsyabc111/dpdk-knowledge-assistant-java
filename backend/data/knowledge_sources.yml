@@ -1,0 +1,100 @@
+# DPDK Knowledge Assistant — Knowledge Sources
+# 注意: include 只支持 精确文件路径 或 目录路径（递归包含所有文本文件）
+#        不支持 glob 通配符，不支持 exclude
+sources:
+  # =========================================================
+  # 1. 项目文档 — 架构设计、变更日志、使用指南
+  # =========================================================
+  - name: docs
+    root: ${DPDK_REPO_PATH}
+    include:
+      - README.md
+      - docs/
+      - plugin/README.md
+      - plugin/PLUGIN_SYSTEM.md
+      - plugin/plugins/README.md
+      - api_server/README.md
+      - capture/README.md
+      - session/README.md
+      - stats/README.md
+
+  # =========================================================
+  # 2. 手工知识库 — FAQ、实验任务、协议笔记
+  # =========================================================
+  - name: knowledge_base
+    root: ${ASSISTANT_PROJECT_PATH}
+    include:
+      - knowledge/
+
+  # =========================================================
+  # 3. 根级核心源码 — 主循环、抓包、HTTP 管理、日志
+  # =========================================================
+  - name: core_root
+    root: ${DPDK_REPO_PATH}
+    include:
+      - main.c
+      - capture_dpdk.c
+      - http_server.c
+      - http_server.h
+      - log.c
+      - log.h
+
+  # =========================================================
+  # 4. capture/ 子系统 — 抓包抽象层与 DPDK/pcap 实现
+  # =========================================================
+  - name: capture_subsystem
+    root: ${DPDK_REPO_PATH}
+    include:
+      - capture/
+
+  # =========================================================
+  # 5. session/ 子系统 — 流表管理与协议扩展
+  # =========================================================
+  - name: session_subsystem
+    root: ${DPDK_REPO_PATH}
+    include:
+      - session/
+
+  # =========================================================
+  # 6. stats/ 子系统 — 统计、存储引擎、判分、情报、IP 画像
+  # =========================================================
+  - name: stats_subsystem
+    root: ${DPDK_REPO_PATH}
+    include:
+      - stats/
+
+  # =========================================================
+  # 7. logger/ 子系统 — 日志线程与插件日志
+  # =========================================================
+  - name: logger_subsystem
+    root: ${DPDK_REPO_PATH}
+    include:
+      - logger/
+
+  # =========================================================
+  # 8. plugin/ 核心 — 引擎接口、注册表、HTTP/日志内建引擎
+  # =========================================================
+  - name: plugin_core
+    root: ${DPDK_REPO_PATH}
+    include:
+      - plugin/
+
+  # =========================================================
+  # 9. api_server/ — C HTTP 查询后端
+  # =========================================================
+  - name: api_server
+    root: ${DPDK_REPO_PATH}
+    include:
+      - api_server/
+
+  # =========================================================
+  # 10. Flask Python Web 层 — 路由、service、配置
+  # =========================================================
+  - name: flask_web
+    root: ${DPDK_REPO_PATH}
+    include:
+      - Flask_network_new/app.py
+      - Flask_network_new/app_config.py
+      - Flask_network_new/app_smart.py
+      - Flask_network_new/core/
+      - Flask_network_new/services/

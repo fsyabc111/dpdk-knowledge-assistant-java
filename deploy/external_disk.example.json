@@ -1,0 +1,21 @@
+{
+  "volume": "/Volumes/study",
+  "volume_uuid": "填写 diskutil info 显示的 Volume UUID",
+  "runtime_root": "/Volumes/study/dpdk-runtime",
+  "profile": "dpdk",
+  "docker_context": "colima-dpdk-ext",
+  "compose_project": "dpdk-assistant",
+  "reuse_existing_instance": true,
+  "reuse_postgres_container": true,
+  "preserve_original_images": true,
+  "target_alembic": "0013_task_recovery",
+  "min_free_gib": 20,
+  "vm_cpus": 4,
+  "vm_memory_gib": 4,
+  "vm_disk_gib": 30,
+  "vm_disk_image": "/Volumes/study/dpdk-runtime/cache/colima/images/colima-arm64-docker.raw.gz",
+  "vm_disk_image_sha512": "32242674b046b5057e60c4aba334b51e3665f05412cda89ed081cc2de153ae5c41f6b105b5c442cbe48d78e2cc21e9ba1950e406b6fb4fc2fd1dd2259240abbd",
+  "emergency_backup_dir": "/Users/你的用户名/Documents/DPDK-Deployment-Backups/current",
+  "selected_source": "host-assistant-dev",
+  "selected_release_id": "ccbb92e558534cbcbd5e3d3b2ee4a30d"
+}

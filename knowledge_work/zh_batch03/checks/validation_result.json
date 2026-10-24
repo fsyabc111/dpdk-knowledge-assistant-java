@@ -1,0 +1,31 @@
+{
+  "status": "passed",
+  "batch": "zh_batch03",
+  "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+  "assistant_commit": "a8d0fbec7667a0580a8c6b7fde838d1b7aa0012d",
+  "source_files": 22,
+  "facts": 22,
+  "own_fact_ids_registered": 22,
+  "local_links": 125,
+  "knowledge_config": "/Users/fsy/code/dpdk/ai_chat_assistant/backend/data/knowledge_sources.yml",
+  "scan_entry_count": 27,
+  "candidate_file_count": 211,
+  "scan_roots_unchanged": true,
+  "candidate_count_matches_baseline": true,
+  "worktree_drift": [],
+  "errors": [],
+  "warnings": [
+    "drafts/tls_module_boundaries.md 中文字数 2249 超出任务书建议区间 1400-1900，须在交付说明中登记原因与是否拆分"
+  ],
+  "semantic_review": "静态定位检查不能证明事实正确；编写者自审见 reviews/self_review.md，独立 Agent 静态审核见 reviews/independent_review_20260919.md（意见已落实到 rev 2）；仍待人工审核",
+  "not_checked": "未执行编译、抓包、插件加载、数据库、索引、真实模型与 RAG 对照",
+  "documents": [
+    {
+      "path": "drafts/tls_module_boundaries.md",
+      "chinese_chars": 2249,
+      "chunks": 10,
+      "max_chunk_chars": 1140,
+      "chunks_over_window": 0
+    }
+  ]
+}

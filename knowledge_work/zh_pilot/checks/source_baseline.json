@@ -1,0 +1,150 @@
+{
+  "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+  "assistant_commit": "a8d0fbec7667a0580a8c6b7fde838d1b7aa0012d",
+  "source_branch": "master",
+  "assistant_branch": "main",
+  "source_status": "?? ai_chat_assistant/\n",
+  "assistant_initial_status": "",
+  "sources": [
+    {
+      "path": "Makefile",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/Makefile",
+      "lines": 220
+    },
+    {
+      "path": "main.c",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/main.c",
+      "lines": 3198
+    },
+    {
+      "path": "capture_dpdk.c",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/capture_dpdk.c",
+      "lines": 804
+    },
+    {
+      "path": "capture/capture.h",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/capture/capture.h",
+      "lines": 669
+    },
+    {
+      "path": "capture/capture.c",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/capture/capture.c",
+      "lines": 611
+    },
+    {
+      "path": "capture/capture_dpdk.c",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/capture/capture_dpdk.c",
+      "lines": 1210
+    },
+    {
+      "path": "capture/capture_pcap.c",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/capture/capture_pcap.c",
+      "lines": 515
+    },
+    {
+      "path": "capture/Makefile",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/capture/Makefile",
+      "lines": 188
+    },
+    {
+      "path": "capture/README.md",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/capture/README.md",
+      "lines": 390
+    },
+    {
+      "path": "session/session.h",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/session/session.h",
+      "lines": 774
+    },
+    {
+      "path": "session/session.c",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/session/session.c",
+      "lines": 581
+    },
+    {
+      "path": "session/README.md",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/session/README.md",
+      "lines": 127
+    },
+    {
+      "path": "plugin/engine.h",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/engine.h",
+      "lines": 275
+    },
+    {
+      "path": "plugin/engine_registry.c",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/engine_registry.c",
+      "lines": 435
+    },
+    {
+      "path": "plugin/README.md",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/README.md",
+      "lines": 264
+    },
+    {
+      "path": "plugin/PLUGIN_SYSTEM.md",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/PLUGIN_SYSTEM.md",
+      "lines": 309
+    },
+    {
+      "path": "docs/system_design.md",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/docs/system_design.md",
+      "lines": 1561
+    },
+    {
+      "path": "docs/codebase_reference.md",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/docs/codebase_reference.md",
+      "lines": 1050
+    },
+    {
+      "path": "stats/stats.h",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/stats/stats.h",
+      "lines": 175
+    },
+    {
+      "path": "stats/storage_engine.h",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/stats/storage_engine.h",
+      "lines": 144
+    },
+    {
+      "path": "plugin/Makefile",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/Makefile",
+      "lines": 133
+    },
+    {
+      "path": "stats/storage_engine.c",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/stats/storage_engine.c",
+      "lines": 1400
+    }
+  ],
+  "scan_roots": [
+    "/Users/fsy/code/dpdk/README.md",
+    "/Users/fsy/code/dpdk/docs",
+    "/Users/fsy/code/dpdk/plugin/README.md",
+    "/Users/fsy/code/dpdk/plugin/PLUGIN_SYSTEM.md",
+    "/Users/fsy/code/dpdk/plugin/plugins/README.md",
+    "/Users/fsy/code/dpdk/api_server/README.md",
+    "/Users/fsy/code/dpdk/capture/README.md",
+    "/Users/fsy/code/dpdk/session/README.md",
+    "/Users/fsy/code/dpdk/stats/README.md",
+    "/Users/fsy/code/dpdk/ai_chat_assistant/knowledge",
+    "/Users/fsy/code/dpdk/main.c",
+    "/Users/fsy/code/dpdk/capture_dpdk.c",
+    "/Users/fsy/code/dpdk/http_server.c",
+    "/Users/fsy/code/dpdk/http_server.h",
+    "/Users/fsy/code/dpdk/log.c",
+    "/Users/fsy/code/dpdk/log.h",
+    "/Users/fsy/code/dpdk/capture",
+    "/Users/fsy/code/dpdk/session",
+    "/Users/fsy/code/dpdk/stats",
+    "/Users/fsy/code/dpdk/logger",
+    "/Users/fsy/code/dpdk/plugin",
+    "/Users/fsy/code/dpdk/api_server",
+    "/Users/fsy/code/dpdk/Flask_network_new/app.py",
+    "/Users/fsy/code/dpdk/Flask_network_new/app_config.py",
+    "/Users/fsy/code/dpdk/Flask_network_new/app_smart.py",
+    "/Users/fsy/code/dpdk/Flask_network_new/core",
+    "/Users/fsy/code/dpdk/Flask_network_new/services"
+  ],
+  "knowledge_config": "/Users/fsy/code/dpdk/ai_chat_assistant/backend/data/knowledge_sources.yml"
+}

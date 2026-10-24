@@ -1,0 +1,50 @@
+{
+  "status": "passed",
+  "batch": "zh_batch02",
+  "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+  "assistant_commit": "a8d0fbec7667a0580a8c6b7fde838d1b7aa0012d",
+  "source_files": 18,
+  "facts": 45,
+  "own_fact_ids_registered": 45,
+  "local_links": 186,
+  "knowledge_config": "/Users/fsy/code/dpdk/ai_chat_assistant/backend/data/knowledge_sources.yml",
+  "scan_entry_count": 27,
+  "candidate_file_count": 211,
+  "scan_roots_unchanged": true,
+  "candidate_count_matches_baseline": true,
+  "worktree_drift": [],
+  "errors": [],
+  "warnings": [],
+  "semantic_review": "静态定位检查不能证明事实正确；编写者自审见 reviews/self_review.md，首批独立审核见 zh_pilot/reviews/；本批两篇仍待人工审核",
+  "not_checked": "未执行编译、抓包、插件加载、数据库、索引、真实模型与 RAG 对照",
+  "documents": [
+    {
+      "path": "drafts/session_key_and_lookup.md",
+      "chinese_chars": 1300,
+      "chunks": 8,
+      "max_chunk_chars": 662,
+      "chunks_over_window": 0
+    },
+    {
+      "path": "drafts/session_expiry_and_release.md",
+      "chinese_chars": 1631,
+      "chunks": 9,
+      "max_chunk_chars": 865,
+      "chunks_over_window": 0
+    },
+    {
+      "path": "drafts/dns_detection_and_parsing.md",
+      "chinese_chars": 1591,
+      "chunks": 9,
+      "max_chunk_chars": 908,
+      "chunks_over_window": 0
+    },
+    {
+      "path": "drafts/dns_results_and_returns.md",
+      "chinese_chars": 1579,
+      "chunks": 10,
+      "max_chunk_chars": 897,
+      "chunks_over_window": 0
+    }
+  ]
+}

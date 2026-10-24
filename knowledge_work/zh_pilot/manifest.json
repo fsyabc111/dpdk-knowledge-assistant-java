@@ -1,0 +1,938 @@
+{
+  "batch": "zh_pilot",
+  "revision": 2,
+  "created_at": "2026-09-18T10:45:51.477604+00:00",
+  "status": "待人工审核",
+  "source_repo": "/Users/fsy/code/dpdk",
+  "assistant_repo": "/Users/fsy/code/dpdk/ai_chat_assistant",
+  "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+  "assistant_commit": "a8d0fbec7667a0580a8c6b7fde838d1b7aa0012d",
+  "source_files": [
+    {
+      "path": "Makefile",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/Makefile",
+      "lines": 220
+    },
+    {
+      "path": "main.c",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/main.c",
+      "lines": 3198
+    },
+    {
+      "path": "capture_dpdk.c",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/capture_dpdk.c",
+      "lines": 804
+    },
+    {
+      "path": "capture/capture.h",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/capture/capture.h",
+      "lines": 669
+    },
+    {
+      "path": "capture/capture.c",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/capture/capture.c",
+      "lines": 611
+    },
+    {
+      "path": "capture/capture_dpdk.c",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/capture/capture_dpdk.c",
+      "lines": 1210
+    },
+    {
+      "path": "capture/capture_pcap.c",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/capture/capture_pcap.c",
+      "lines": 515
+    },
+    {
+      "path": "capture/Makefile",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/capture/Makefile",
+      "lines": 188
+    },
+    {
+      "path": "capture/README.md",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/capture/README.md",
+      "lines": 390
+    },
+    {
+      "path": "session/session.h",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/session/session.h",
+      "lines": 774
+    },
+    {
+      "path": "session/session.c",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/session/session.c",
+      "lines": 581
+    },
+    {
+      "path": "session/README.md",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/session/README.md",
+      "lines": 127
+    },
+    {
+      "path": "plugin/engine.h",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/engine.h",
+      "lines": 275
+    },
+    {
+      "path": "plugin/engine_registry.c",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/engine_registry.c",
+      "lines": 435
+    },
+    {
+      "path": "plugin/README.md",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/README.md",
+      "lines": 264
+    },
+    {
+      "path": "plugin/PLUGIN_SYSTEM.md",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/PLUGIN_SYSTEM.md",
+      "lines": 309
+    },
+    {
+      "path": "docs/system_design.md",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/docs/system_design.md",
+      "lines": 1561
+    },
+    {
+      "path": "docs/codebase_reference.md",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/docs/codebase_reference.md",
+      "lines": 1050
+    },
+    {
+      "path": "stats/stats.h",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/stats/stats.h",
+      "lines": 175
+    },
+    {
+      "path": "stats/storage_engine.h",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/stats/storage_engine.h",
+      "lines": 144
+    },
+    {
+      "path": "plugin/Makefile",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/plugin/Makefile",
+      "lines": 133
+    },
+    {
+      "path": "stats/storage_engine.c",
+      "snapshot": "snapshots/dpdk/20f882691ac03998e0e148e0a66041227cd3f751/stats/storage_engine.c",
+      "lines": 1400
+    }
+  ],
+  "documents": [
+    {
+      "document_id": "42f03fdb-531d-4399-9ec0-9658cb049f5b",
+      "revision": 2,
+      "topic": "插件接口与生命周期：从加载到处理报文",
+      "document_path": "drafts/plugin_lifecycle.md",
+      "evidence_path": "evidence/plugin_lifecycle.md",
+      "status": "待人工审核",
+      "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+      "facts": [
+        {
+          "id": "PL-001",
+          "section": "先区分接口、实例与会话",
+          "claim": "ops 定义回调，ctx 保存私有指针与统计，registry 保存数组/链/句柄，注册分配 entry 内 ctx。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "plugin/engine.h",
+              "start_line": 83,
+              "end_line": 168,
+              "symbol": "engine_ctx"
+            },
+            {
+              "path": "plugin/engine_registry.c",
+              "start_line": 110,
+              "end_line": 133,
+              "symbol": "entry->ctx"
+            }
+          ],
+          "reasoning": "结构定义与 entry 分配共同支持，不能把操作表误当实例。",
+          "status": "已核对（静态自审；待人工审核）",
+          "difference": "与旧接口说明基本一致，新增对象关系。"
+        },
+        {
+          "id": "PL-002",
+          "section": "先区分接口、实例与会话",
+          "claim": "插件调用接收 session 与 pkt；session 有独立管理器，parsed_packet 含 payload 指针。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "plugin/engine.h",
+              "start_line": 43,
+              "end_line": 69,
+              "symbol": "payload"
+            },
+            {
+              "path": "plugin/engine.h",
+              "start_line": 112,
+              "end_line": 125,
+              "symbol": "session_entry_t"
+            },
+            {
+              "path": "session/session.h",
+              "start_line": 150,
+              "end_line": 156,
+              "symbol": "session_manager"
+            }
+          ],
+          "reasoning": "参数只是指针，不隐含所有权转移。",
+          "status": "已核对（静态自审；待人工审核）",
+          "difference": "收窄类型名称可推导的语义。"
+        },
+        {
+          "id": "PL-003",
+          "section": "从加载到进入处理链",
+          "claim": "动态加载依次 dlopen/dlsym/get_ops，名称、重复与容量检查后初始化并登记。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "plugin/engine_registry.c",
+              "start_line": 273,
+              "end_line": 376,
+              "symbol": "engine_registry_load_plugin"
+            }
+          ],
+          "reasoning": "成功/失败分支均已回读；未执行动态加载。",
+          "status": "已核对（静态自审；待人工审核）",
+          "difference": "旧文档概括“自动注册”；实际函数内另实现注册步骤。"
+        },
+        {
+          "id": "PL-004",
+          "section": "从加载到进入处理链",
+          "claim": "启动固定列表按存在性加载；no-plugins 跳过该函数；entry 没有通用 enabled 字段。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "main.c",
+              "start_line": 2377,
+              "end_line": 2384,
+              "symbol": "g_no_plugins"
+            },
+            {
+              "path": "main.c",
+              "start_line": 2425,
+              "end_line": 2435,
+              "symbol": "access"
+            },
+            {
+              "path": "plugin/engine.h",
+              "start_line": 152,
+              "end_line": 168,
+              "symbol": "engine_entry"
+            }
+          ],
+          "reasoning": "不存在字段的结论限这组结构与调度，不否定某个插件自己的开关。",
+          "status": "已核对（静态自审；待人工审核）",
+          "difference": "不把启动开关描述为每插件通用启用状态。"
+        },
+        {
+          "id": "PL-005",
+          "section": "从加载到进入处理链",
+          "claim": "init 失败不调用 cleanup；init 成功后句柄记录分配失败的回滚会调用 cleanup。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "plugin/engine_registry.c",
+              "start_line": 121,
+              "end_line": 127,
+              "symbol": "ops->init"
+            },
+            {
+              "path": "plugin/engine_registry.c",
+              "start_line": 339,
+              "end_line": 362,
+              "symbol": "cleanup"
+            }
+          ],
+          "reasoning": "前者 free entry/dlclose；后者撤链、减计数再 cleanup。",
+          "status": "已核对（静态自审；待人工审核）",
+          "difference": "与常见“失败都成对清理”推断不同；旧文档没有完整列这些分支。"
+        },
+        {
+          "id": "PL-006",
+          "section": "can_handle、process 与返回值",
+          "claim": "priority 升序，同值后插；遍历先加 packets_processed，再要求 can_handle 非空且 true，直接调用 process。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "plugin/engine_registry.c",
+              "start_line": 35,
+              "end_line": 51,
+              "symbol": "insert_to_chain"
+            },
+            {
+              "path": "plugin/engine_registry.c",
+              "start_line": 188,
+              "end_line": 226,
+              "symbol": "engine_process"
+            }
+          ],
+          "reasoning": "计数位于 can_handle 之前；process 无空指针检查。",
+          "status": "已核对（静态自审；待人工审核）",
+          "difference": "头文件声明不能当完整注册校验。"
+        },
+        {
+          "id": "PL-007",
+          "section": "can_handle、process 与返回值",
+          "claim": "HANDLED 增匹配并返回 OK，ERROR 增错误并返回 ERROR，其他值继续；SKIP 无独立分支。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "plugin/engine.h",
+              "start_line": 24,
+              "end_line": 32,
+              "symbol": "ENGINE_SKIP"
+            },
+            {
+              "path": "plugin/engine_registry.c",
+              "start_line": 208,
+              "end_line": 226,
+              "symbol": "ENGINE_HANDLED"
+            }
+          ],
+          "reasoning": "区分 process 回调返回与 engine_process 对调用方返回。",
+          "status": "已核对（静态自审；待人工审核）",
+          "difference": "补齐旧摘要对 ERROR 与其他值的遗漏，不鼓励未定义返回值。"
+        },
+        {
+          "id": "PL-008",
+          "section": "多实例、热加载与清理边界",
+          "claim": "单线程全局 registry；worker 各建 registry/session；运行时逐实例加载，失败尝试回滚此前实例。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "main.c",
+              "start_line": 1607,
+              "end_line": 1626,
+              "symbol": "g_worker_engines"
+            },
+            {
+              "path": "main.c",
+              "start_line": 2441,
+              "end_line": 2451,
+              "symbol": "init_engine"
+            },
+            {
+              "path": "main.c",
+              "start_line": 195,
+              "end_line": 214,
+              "symbol": "collect_plugin_registries"
+            },
+            {
+              "path": "main.c",
+              "start_line": 450,
+              "end_line": 484,
+              "symbol": "loaded_workers"
+            }
+          ],
+          "reasoning": "逐次调用不是跨实例原子操作；不宣称共享库全局变量独立。",
+          "status": "已核对（静态自审；待人工审核）",
+          "difference": "收窄旧热插拔“不影响其他引擎”的绝对说法。"
+        },
+        {
+          "id": "PL-009",
+          "section": "多实例、热加载与清理边界",
+          "claim": "会话销毁/过期释放会话及列明扩展；payload 为原数据偏移，回调 release 或 worker free 后不可依赖原地址。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "session/session.c",
+              "start_line": 178,
+              "end_line": 197,
+              "symbol": "session_manager_destroy"
+            },
+            {
+              "path": "session/session.c",
+              "start_line": 457,
+              "end_line": 490,
+              "symbol": "session_flush_expired"
+            },
+            {
+              "path": "main.c",
+              "start_line": 1084,
+              "end_line": 1100,
+              "symbol": "parsed->payload"
+            },
+            {
+              "path": "capture/capture.c",
+              "start_line": 341,
+              "end_line": 346,
+              "symbol": "capture_release_packet"
+            },
+            {
+              "path": "main.c",
+              "start_line": 1948,
+              "end_line": 1954,
+              "symbol": "rte_pktmbuf_free"
+            }
+          ],
+          "reasoning": "没有把通用 C 指针建议写成已检查所有插件的行为。",
+          "status": "已核对（静态自审；待人工审核）",
+          "difference": "旧生命周期提示被定位到真实释放点。"
+        },
+        {
+          "id": "PL-010",
+          "section": "多实例、热加载与清理边界",
+          "claim": "卸载会 cleanup/dlclose；destroy cleanup/free entry 但未遍历 plugin_list；处理读锁、加载/卸载写锁。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "plugin/engine_registry.c",
+              "start_line": 188,
+              "end_line": 226,
+              "symbol": "pthread_rwlock_rdlock"
+            },
+            {
+              "path": "plugin/engine_registry.c",
+              "start_line": 252,
+              "end_line": 269,
+              "symbol": "engine_registry_destroy"
+            },
+            {
+              "path": "plugin/engine_registry.c",
+              "start_line": 307,
+              "end_line": 308,
+              "symbol": "pthread_rwlock_wrlock"
+            },
+            {
+              "path": "plugin/engine_registry.c",
+              "start_line": 379,
+              "end_line": 435,
+              "symbol": "engine_registry_unload_plugin"
+            }
+          ],
+          "reasoning": "函数范围已核对；未扩展为进程资源泄漏或插件线程安全结论。",
+          "status": "已核对（静态自审；待人工审核）",
+          "difference": "显式卸载不等同注册中心销毁。"
+        },
+        {
+          "id": "PL-011",
+          "section": "阅读顺序与自查问题",
+          "claim": "main 两条路径都要求会话与注册中心存在才调 engine_process。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "main.c",
+              "start_line": 1370,
+              "end_line": 1381,
+              "symbol": "engine_process"
+            },
+            {
+              "path": "main.c",
+              "start_line": 1918,
+              "end_line": 1921,
+              "symbol": "engine_process"
+            }
+          ],
+          "reasoning": "结合 PL-006/007 构成不进入 process 的检查顺序。",
+          "status": "已核对（静态自审；待人工审核）",
+          "difference": "区分 API 可接收空 session 与 main 的实际调用条件。"
+        },
+        {
+          "id": "PL-012",
+          "section": "多实例、热加载与清理边界",
+          "claim": "注销引擎是第三个释放边界：engine_registry_unregister 移出链表、调用 cleanup、压缩数组并 free entry，但不 dlclose，也不从 plugin_list 摘除节点；与显式卸载、与注册中心销毁都不相同。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "plugin/engine_registry.c",
+              "start_line": 142,
+              "end_line": 171,
+              "symbol": "engine_registry_unregister"
+            },
+            {
+              "path": "plugin/engine_registry.c",
+              "start_line": 379,
+              "end_line": 435,
+              "symbol": "dlclose"
+            }
+          ],
+          "reasoning": "三个函数的释放集合逐项对照；未据此断言进程必然泄漏或句柄必然残留。",
+          "status": "已核对（静态自审；待人工审核）",
+          "difference": "首批原文只对比 unload 与 destroy 两态；本条由独立静态审核补记。"
+        },
+        {
+          "id": "PL-013",
+          "section": "从加载到进入处理链",
+          "claim": "g_no_plugins 在 main.c 中只被 load_plugins_to_registry 读取；运行时插件控制入口不检查它，因此 --no-plugins 只关闭启动加载，不关闭后续热加载。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "main.c",
+              "start_line": 2377,
+              "end_line": 2384,
+              "symbol": "g_no_plugins"
+            },
+            {
+              "path": "main.c",
+              "start_line": 450,
+              "end_line": 484,
+              "symbol": "engine_registry_load_plugin"
+            }
+          ],
+          "reasoning": "以全文件检索确认该标志只有一处读取点；未验证控制入口在其他条件下是否被别处禁用。",
+          "status": "已核对（静态自审；待人工审核）",
+          "difference": "把启动开关的描述限定到启动路径，避免被读成全局禁用插件。"
+        }
+      ],
+      "revision_note": "rev 2（2026-09-18）：按独立 Agent 静态审核意见修订——PF-006 定位符号拆开引用；流程图分支与实现一致（报文篇）；补记 PL-012/PL-013/PF-015。仍为待人工审核。"
+    },
+    {
+      "document_id": "1f792714-0b1f-4bfa-b0f4-cd2cc5d7315c",
+      "revision": 2,
+      "topic": "报文处理主流程：从抓包到会话、插件与统计",
+      "document_path": "drafts/packet_flow.md",
+      "evidence_path": "evidence/packet_flow.md",
+      "status": "待人工审核",
+      "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+      "facts": [
+        {
+          "id": "PF-001",
+          "section": "从构建入口确认抓包实现",
+          "claim": "traffic_monitor 链接 main.o 和 capture/libcapture.a；子 Makefile 条件加入子目录后端文件。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "Makefile",
+              "start_line": 44,
+              "end_line": 81,
+              "symbol": "CAPTURE_LIB"
+            },
+            {
+              "path": "Makefile",
+              "start_line": 107,
+              "end_line": 115,
+              "symbol": "$(CAPTURE_LIB)"
+            },
+            {
+              "path": "capture/Makefile",
+              "start_line": 69,
+              "end_line": 97,
+              "symbol": "SRCS"
+            }
+          ],
+          "reasoning": "目标对象表未列根 capture_dpdk；不是全仓所有构建入口排除证明。",
+          "status": "已核对（静态自审；待人工审核）",
+          "difference": "同名源码按构建目录区分，未运行 make。"
+        },
+        {
+          "id": "PF-002",
+          "section": "从构建入口确认抓包实现",
+          "claim": "后端选择受编译宏和可用性判断控制，AUTO 先 DPDK 后 PCAP；初始化与 open 是后续步骤。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "capture/capture.c",
+              "start_line": 80,
+              "end_line": 121,
+              "symbol": "get_backend_ops"
+            },
+            {
+              "path": "capture/capture.c",
+              "start_line": 128,
+              "end_line": 175,
+              "symbol": "capture_create"
+            },
+            {
+              "path": "capture/capture.c",
+              "start_line": 180,
+              "end_line": 208,
+              "symbol": "capture_open"
+            }
+          ],
+          "reasoning": "显式分支失败返回 NULL，不声称初始化/open 失败会再尝试另一后端。",
+          "status": "已核对（静态自审；待人工审核）",
+          "difference": "区分选择策略与设备真正启动。"
+        },
+        {
+          "id": "PF-003",
+          "section": "单线程回调的实际顺序",
+          "claim": "单线程 main 调 capture_loop；loop 用 capture_recv，收到包后 handler，再 release。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "main.c",
+              "start_line": 3148,
+              "end_line": 3172,
+              "symbol": "capture_loop"
+            },
+            {
+              "path": "capture/capture.c",
+              "start_line": 319,
+              "end_line": 363,
+              "symbol": "capture_loop"
+            }
+          ],
+          "reasoning": "按实际调用而非 README 使用示例或注释。",
+          "status": "已核对（静态自审；待人工审核）",
+          "difference": "codebase_reference 单线程图写 capture_recv_burst，与当前路径不同。"
+        },
+        {
+          "id": "PF-004",
+          "section": "单线程回调的实际顺序",
+          "claim": "packet_handler 先计数后解析；解析失败返回 0 继续接收后续包。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "main.c",
+              "start_line": 1241,
+              "end_line": 1263,
+              "symbol": "packet_handler"
+            },
+            {
+              "path": "capture/capture.c",
+              "start_line": 341,
+              "end_line": 359,
+              "symbol": "processed"
+            }
+          ],
+          "reasoning": "return 0 与 handler 非零停止条件配套核对。",
+          "status": "已核对（静态自审；待人工审核）",
+          "difference": "计数不是解析成功率。"
+        },
+        {
+          "id": "PF-005",
+          "section": "单线程回调的实际顺序",
+          "claim": "parse_packet 按 caplen 读取并填写解析字段，payload 是原始 data 偏移；返回 0 不代表完整合法性认证。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "main.c",
+              "start_line": 1043,
+              "end_line": 1050,
+              "symbol": "caplen"
+            },
+            {
+              "path": "main.c",
+              "start_line": 1075,
+              "end_line": 1101,
+              "symbol": "parsed->payload"
+            },
+            {
+              "path": "main.c",
+              "start_line": 1103,
+              "end_line": 1153,
+              "symbol": "parsed->protocol"
+            }
+          ],
+          "reasoning": "未枚举每个短包漏洞；不作协议覆盖或安全保证。",
+          "status": "已核对（静态自审；待人工审核）",
+          "difference": "避免把“解析成功”泛化成完整协议支持。"
+        },
+        {
+          "id": "PF-006",
+          "section": "会话、插件与统计如何连接",
+          "claim": "仅 TCP/UDP 走 lookup/create/update，按 IPv4/v6 分支；IPv4 lookup 跳过过期项，update 更新方向计数。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "main.c",
+              "start_line": 1271,
+              "end_line": 1300,
+              "symbol": "session_lookup"
+            },
+            {
+              "path": "session/session.c",
+              "start_line": 203,
+              "end_line": 271,
+              "symbol": "session_lookup"
+            },
+            {
+              "path": "session/session.c",
+              "start_line": 58,
+              "end_line": 79,
+              "symbol": "normalize_key_v4"
+            }
+          ],
+          "reasoning": "调用点、IPv4 三个入口与规范化函数定义分开定位；不把两个 IP 版本实现逐字等同。",
+          "status": "已核对（静态自审；待人工审核）",
+          "difference": "沿实际调用定位会话生命周期。rev 2：原第二条把定位符号写成 normalize_key_v4，而其定义在 L58–L79、不在所引范围内，现拆开引用。"
+        },
+        {
+          "id": "PF-007",
+          "section": "会话、插件与统计如何连接",
+          "claim": "单线程 session_to_record/submit 在 engine_process 之前；record 在此填 TCP/UDP，submit 更新虚拟集合。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "main.c",
+              "start_line": 1302,
+              "end_line": 1307,
+              "symbol": "storage_engine_submit_session"
+            },
+            {
+              "path": "main.c",
+              "start_line": 1370,
+              "end_line": 1381,
+              "symbol": "engine_process"
+            },
+            {
+              "path": "main.c",
+              "start_line": 1224,
+              "end_line": 1235,
+              "symbol": "detected_protocol"
+            },
+            {
+              "path": "stats/storage_engine.c",
+              "start_line": 1286,
+              "end_line": 1314,
+              "symbol": "storage_engine_submit_session"
+            }
+          ],
+          "reasoning": "只说明这份记录，其他插件事件可能有独立通路。",
+          "status": "已核对（静态自审；待人工审核）",
+          "difference": "纠正把统计统一画在插件之后或等同落盘的简化。"
+        },
+        {
+          "id": "PF-008",
+          "section": "会话、插件与统计如何连接",
+          "claim": "main 调用 engine_process 未用其返回值直接停止抓包；无 session 时该插件入口不执行。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "main.c",
+              "start_line": 1370,
+              "end_line": 1381,
+              "symbol": "engine_process"
+            },
+            {
+              "path": "main.c",
+              "start_line": 1541,
+              "end_line": 1546,
+              "symbol": "g_running"
+            },
+            {
+              "path": "capture/capture.c",
+              "start_line": 341,
+              "end_line": 353,
+              "symbol": "handler"
+            }
+          ],
+          "reasoning": "调度链停止与抓包循环停止是不同层。",
+          "status": "已核对（静态自审；待人工审核）",
+          "difference": "沿调用者核对而非只读返回值枚举。"
+        },
+        {
+          "id": "PF-009",
+          "section": "周期工作与数据生命周期",
+          "claim": "回调尾部按时间条件做系统/协议统计、每小时 flush、30 秒会话清扫，提前返回会跳过。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "main.c",
+              "start_line": 1455,
+              "end_line": 1482,
+              "symbol": "g_last_stats_time"
+            },
+            {
+              "path": "main.c",
+              "start_line": 1484,
+              "end_line": 1509,
+              "symbol": "virtual_collection_update_protocol"
+            },
+            {
+              "path": "main.c",
+              "start_line": 1511,
+              "end_line": 1546,
+              "symbol": "g_last_session_flush"
+            },
+            {
+              "path": "main.c",
+              "start_line": 1257,
+              "end_line": 1263,
+              "symbol": "return 0"
+            }
+          ],
+          "reasoning": "这是到达分支时的检查，不是独立定时器；不声称唯一刷盘通路。",
+          "status": "已核对（静态自审；待人工审核）",
+          "difference": "保留时间条件，避免概括为固定准点任务。"
+        },
+        {
+          "id": "PF-010",
+          "section": "周期工作与数据生命周期",
+          "claim": "过期清扫先回调后 free；manager_destroy 释放条目但不调用同样的过期回调。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "session/session.c",
+              "start_line": 457,
+              "end_line": 490,
+              "symbol": "g_session_expire_callback"
+            },
+            {
+              "path": "session/session.c",
+              "start_line": 178,
+              "end_line": 197,
+              "symbol": "session_manager_destroy"
+            }
+          ],
+          "reasoning": "全量清扫与销毁函数逐段对照。",
+          "status": "已核对（静态自审；待人工审核）",
+          "difference": "不把两种释放路径当作完全相同。"
+        },
+        {
+          "id": "PF-011",
+          "section": "周期工作与数据生命周期",
+          "claim": "单线程 release 调后端并清 data/backend_data；DPDK free mbuf；PCAP release 不手动 free；parsed.payload 未随之清空。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "capture/capture.c",
+              "start_line": 377,
+              "end_line": 390,
+              "symbol": "pkt->data"
+            },
+            {
+              "path": "capture/capture_dpdk.c",
+              "start_line": 972,
+              "end_line": 980,
+              "symbol": "rte_pktmbuf_free"
+            },
+            {
+              "path": "capture/capture_pcap.c",
+              "start_line": 328,
+              "end_line": 346,
+              "symbol": "pcap_backend_release_packet"
+            },
+            {
+              "path": "main.c",
+              "start_line": 1084,
+              "end_line": 1100,
+              "symbol": "parsed->payload"
+            }
+          ],
+          "reasoning": "只按项目接口解释借用地址；未依赖未核实的 libpcap 内部期限细节。",
+          "status": "已核对（静态自审；待人工审核）",
+          "difference": "将生命周期注意事项连接到释放实现。"
+        },
+        {
+          "id": "PF-012",
+          "section": "DPDK worker 路径的区别",
+          "claim": "DPDK 分支启动 workers 和 storage；worker 直接收各自 NIC queue，并用独立会话/引擎。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "main.c",
+              "start_line": 1607,
+              "end_line": 1626,
+              "symbol": "g_worker_sessions"
+            },
+            {
+              "path": "main.c",
+              "start_line": 1830,
+              "end_line": 1855,
+              "symbol": "capture_dpdk_recv_raw"
+            },
+            {
+              "path": "main.c",
+              "start_line": 3104,
+              "end_line": 3144,
+              "symbol": "rte_eal_remote_launch"
+            }
+          ],
+          "reasoning": "函数头 ring 描述与函数体冲突，以实现为准；不证明 RSS 配置满足所有流对称性。",
+          "status": "已核对（静态自审；待人工审核）",
+          "difference": "纠正 worker 从私有 ring 取包的旧注释。"
+        },
+        {
+          "id": "PF-013",
+          "section": "DPDK worker 路径的区别",
+          "claim": "worker 先调插件再构造 storage_task；入 ring 失败回收，最后释放 mbuf；storage lcore 消费会话/IP 记录。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "main.c",
+              "start_line": 1918,
+              "end_line": 1954,
+              "symbol": "rte_ring_enqueue"
+            },
+            {
+              "path": "main.c",
+              "start_line": 2009,
+              "end_line": 2029,
+              "symbol": "storage_engine_submit_session"
+            }
+          ],
+          "reasoning": "没有持有原包等待数据库；内存池取失败也不能保证统计任务产生。",
+          "status": "已核对（静态自审；待人工审核）",
+          "difference": "与单线程提交时机分开描述，不声称所有副作用都在同一 ring。"
+        },
+        {
+          "id": "PF-014",
+          "section": "DPDK worker 路径的区别",
+          "claim": "worker 无包分支也转到分摊式过期清扫。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "main.c",
+              "start_line": 1849,
+              "end_line": 1855,
+              "symbol": "worker_periodic"
+            },
+            {
+              "path": "main.c",
+              "start_line": 1957,
+              "end_line": 1964,
+              "symbol": "session_flush_expired_amortized"
+            },
+            {
+              "path": "session/session.c",
+              "start_line": 516,
+              "end_line": 543,
+              "symbol": "g_session_expire_callback"
+            }
+          ],
+          "reasoning": "与单线程回调尾部清扫触发不同；未验证时间预算的实际效果。",
+          "status": "已核对（静态自审；待人工审核）",
+          "difference": "不沿用旧每 30 秒全表清扫作为 worker 现状。"
+        },
+        {
+          "id": "PF-015",
+          "section": "DPDK worker 路径的区别",
+          "claim": "两条路径的报文时间戳不在同一时钟域：worker 用 CLOCK_MONOTONIC 的秒数填 timestamp_sec（usec 因 memset 为 0），单线程 DPDK 后端用 time(NULL)，PCAP 后端用 libpcap 包头时间戳；而会话的 create_time/last_seen 与过期判断始终用 time(NULL)。",
+          "source_commit": "20f882691ac03998e0e148e0a66041227cd3f751",
+          "references": [
+            {
+              "path": "main.c",
+              "start_line": 1860,
+              "end_line": 1876,
+              "symbol": "CLOCK_MONOTONIC"
+            },
+            {
+              "path": "capture/capture_dpdk.c",
+              "start_line": 655,
+              "end_line": 662,
+              "symbol": "time(NULL)"
+            },
+            {
+              "path": "capture/capture_pcap.c",
+              "start_line": 264,
+              "end_line": 270,
+              "symbol": "timestamp_sec"
+            },
+            {
+              "path": "session/session.c",
+              "start_line": 245,
+              "end_line": 246,
+              "symbol": "time(NULL)"
+            }
+          ],
+          "reasoning": "四处取值来源逐一核对；不推断偏差大小，也不判断是否为缺陷。",
+          "status": "已核对（静态自审；待人工审核）",
+          "difference": "原稿记录 worker 收包入口差异，未记录时间戳时钟域；本条由独立静态审核补记。"
+        }
+      ],
+      "revision_note": "rev 2（2026-09-18）：按独立 Agent 静态审核意见修订——PF-006 定位符号拆开引用；流程图分支与实现一致（报文篇）；补记 PL-012/PL-013/PF-015。仍为待人工审核。"
+    }
+  ],
+  "reviewer": null,
+  "model_identifier": "未提供精确运行标识",
+  "token_usage": null,
+  "cost": null,
+  "usage_note": "未额外调用应用 LLM/embedding；编写会话用量不可得，不计作零。",
+  "index_status": "未入库",
+  "verification": "静态检查与编写者自审；待独立及人工审核",
+  "revision_note": "rev 2：首批两篇按独立静态审核意见定点修订，未改动主项目源码与共享规划；审核报告见 reviews/independent_review_20260918.md。"
+}

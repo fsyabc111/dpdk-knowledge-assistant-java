@@ -1,0 +1,306 @@
+# RAG 检索评估题库（第一阶段：评估体系先行）
+#
+# 与 tests/test_retrieval.py 的关系：本题库是检索回归断言的唯一事实来源，
+# test_retrieval.py 从这里 parametrize 生成用例（live mark）；runner.py 用
+# 同一题库计算 recall@k / MRR 量化指标并与本地基线对比漂移。
+#
+# 字段说明：
+#   id               用例唯一标识（--case 按它筛选）
+#   category         分类（协议检测/子系统/主题召回/文件名定位/结构体与接口/
+#                    概念与链路/Web 层/去重多样性/边界/负例观察）
+#   question         发送给检索服务的原始问题
+#   expected_sources 相关组列表：一组内片段互为替代（任一命中即该组召回），
+#                    组间是 AND（全部组命中才算完全召回，coverage@k=1.0）
+#   must_top         可选：要求 top-1 命中的片段（或替代片段列表）
+#   expect_nonempty  可选：仅断言返回非空（模糊/乱码边界例）
+#   observe          可选：true 时只记录不进通过判定（负例观察）
+#   limit            可选：pytest 硬断言使用的 limit（默认 10，与迁移前一致）
+#   note             可选：人工备注
+#
+# 判定哲学：检索指标是量化观测（recall/MRR 进基线对比），pytest 硬断言保持
+# 迁移前的二值语义。新增题目时先在真实环境跑 runner 确认当前系统能召回，
+# 再决定是否设 must_top；负例只观察不卡线（检索层没有「拒答」语义，答案层
+# 的低置信由 test_answer_quality.py 负责）。
+
+cases:
+  # ------------------------------------------------------------------
+  # 协议检测
+  # ------------------------------------------------------------------
+  - id: proto_dns
+    category: 协议检测
+    question: "DNS 协议检测怎么解析域名"
+    expected_sources: [["engine_dns.cpp"]]
+    must_top: "engine_dns.cpp"
+
+  - id: proto_quic
+    category: 协议检测
+    question: "QUIC 协议怎么检测版本协商"
+    expected_sources: [["engine_quic.c"]]
+    must_top: "engine_quic.c"
+
+  - id: proto_dtls
+    category: 协议检测
+    question: "DTLS 和 TLS 检测逻辑有什么不同"
+    expected_sources: [["engine_dtls.cpp"]]
+
+  - id: proto_rdp
+    category: 协议检测
+    question: "RDP 远程桌面检测"
+    expected_sources: [["engine_rdp.cpp"]]
+    must_top: "engine_rdp.cpp"
+
+  - id: proto_rtmp
+    category: 协议检测
+    question: "RTMP 流媒体检测"
+    expected_sources: [["engine_rtmp.cpp"]]
+    must_top: "engine_rtmp.cpp"
+
+  - id: proto_rtsp
+    category: 协议检测
+    question: "engine_rtsp.c 怎么解析命令"
+    expected_sources: [["engine_rtsp.c"]]
+    must_top: "engine_rtsp.c"
+
+  - id: proto_shadowsocks
+    category: 协议检测
+    question: "Shadowsocks 加密代理检测"
+    expected_sources: [["engine_shadowsocks.c"]]
+
+  - id: proto_v2ray
+    category: 协议检测
+    question: "V2Ray 协议检测"
+    expected_sources: [["engine_v2ray.c"]]
+    must_top: "engine_v2ray.c"
+
+  - id: proto_imap
+    category: 协议检测
+    question: "IMAP 邮件检测"
+    expected_sources: [["engine_imap.c"]]
+    must_top: "engine_imap.c"
+
+  - id: proto_smb
+    category: 协议检测
+    question: "SMB 文件共享检测"
+    expected_sources: [["engine_smb.cpp"]]
+    must_top: "engine_smb.cpp"
+
+  - id: proto_openvpn
+    category: 协议检测
+    question: "OpenVPN can_handle UDP TCP"
+    expected_sources: [["engine_openvpn.c"]]
+
+  - id: proto_ipsec
+    category: 协议检测
+    question: "IPsec IKE 协商检测"
+    expected_sources: [["engine_ipsecvpn.c"]]
+
+  - id: proto_ftp_pasv
+    category: 协议检测
+    question: "FTP 的 PASV passive 怎么 track"
+    expected_sources: [["ftp_pasv_registry"]]
+
+  # ------------------------------------------------------------------
+  # 子系统
+  # ------------------------------------------------------------------
+  - id: subsys_ti
+    category: 子系统
+    question: "威胁情报怎么加载匹配"
+    expected_sources: [["ti_intel_manager"]]
+
+  - id: subsys_ids
+    category: 子系统
+    question: "IDS ETOpen 检测恶意流量"
+    expected_sources: [["engine_ids.cpp"]]
+
+  - id: subsys_cert
+    category: 子系统
+    question: "TLS 证书提取 SNI SAN"
+    expected_sources: [["cert_extractor"]]
+
+  - id: subsys_ja3
+    category: 子系统
+    question: "JA3 指纹怎么计算"
+    expected_sources: [["ja3_fingerprint"]]
+
+  - id: subsys_tunnel
+    category: 子系统
+    question: "tunnel 隧道检测区分 VPN 代理"
+    expected_sources: [["engine_tunnel.c"]]
+
+  - id: subsys_event_batch
+    category: 子系统
+    question: "event_batch 热路径解耦"
+    expected_sources: [["event_batch"]]
+
+  - id: subsys_capacity
+    category: 子系统
+    question: "capacity_manager 内存反压"
+    expected_sources: [["capacity_manager.c"]]
+
+  - id: subsys_ip_profile
+    category: 子系统
+    question: "IP 画像 student_profile"
+    expected_sources: [["student_profile.c"]]
+
+  - id: subsys_daily_job
+    category: 子系统
+    question: "ip_profile_daily_job 每天任务"
+    expected_sources: [["ip_profile_daily_job.c"]]
+
+  # ------------------------------------------------------------------
+  # 主题召回
+  # ------------------------------------------------------------------
+  - id: topic_state_machine
+    category: 主题召回
+    question: "哪些协议会用到状态机"
+    expected_sources:
+      - ["engine_pop3.c"]
+      - ["engine_ssh.c"]
+      - ["engine_smtp.c", "engine_openvpn.c"]
+
+  - id: topic_verdict
+    category: 主题召回
+    question: "verdict 引擎怎么给事件打分"
+    expected_sources: [["verdict_engine"]]
+
+  - id: topic_storage_clickhouse
+    category: 主题召回
+    question: "ClickHouse 数据是怎么写入的"
+    expected_sources: [["storage_engine.c"]]
+
+  - id: topic_wireguard
+    category: 主题召回
+    question: "WireGuard VPN 检测原理"
+    expected_sources: [["engine_wireguard.c"]]
+    must_top: "engine_wireguard.c"
+
+  # ------------------------------------------------------------------
+  # 文件名定位
+  # ------------------------------------------------------------------
+  - id: filename_ftp_can_handle
+    category: 文件名定位
+    question: "engine_ftp.c 的 can_handle 函数"
+    expected_sources: [["engine_ftp.c"]]
+    must_top: "engine_ftp.c"
+
+  - id: filename_session_struct
+    category: 文件名定位
+    question: "session.h 里怎么定义流表结构的"
+    expected_sources: [["session.h"]]
+
+  - id: filename_main_c
+    category: 文件名定位
+    question: "main.c"
+    expected_sources: [["main.c"]]
+    must_top: "main.c"
+
+  # ------------------------------------------------------------------
+  # 结构体与接口
+  # ------------------------------------------------------------------
+  - id: struct_session_entry
+    category: 结构体与接口
+    question: "session_entry_t 结构体字段"
+    expected_sources: [["session.h"]]
+
+  - id: struct_engine_ops
+    category: 结构体与接口
+    question: "engine_ops_t 回调函数"
+    expected_sources: [["engine.h"]]
+
+  - id: struct_engine_ops_concept
+    category: 结构体与接口
+    question: "engine_ops_t 是什么？"
+    expected_sources: [["engine.h"]]
+
+  # ------------------------------------------------------------------
+  # 概念与链路
+  # ------------------------------------------------------------------
+  - id: overview_pipeline
+    category: 概念与链路
+    question: "这个项目的整体运行链路是什么？"
+    expected_sources: [["main.c"], ["capture"]]
+
+  - id: capture_dpdk_pcap
+    category: 概念与链路
+    question: "抓包层怎么区分 DPDK pcap"
+    expected_sources: [["capture"]]
+
+  # ------------------------------------------------------------------
+  # Web 层
+  # ------------------------------------------------------------------
+  - id: web_workspace
+    category: Web 层
+    question: "Flask workspace 路由代理"
+    expected_sources: [["Workspace_Integration_API.py"]]
+
+  - id: web_features
+    category: Web 层
+    question: "workspace_service.py FEATURES"
+    expected_sources: [["workspace_service.py"]]
+
+  # ------------------------------------------------------------------
+  # 去重多样性
+  # ------------------------------------------------------------------
+  - id: dedup_multi_protocol
+    category: 去重多样性
+    question: "HTTP HTTPS TLS 三个插件有什么区别"
+    expected_sources:
+      - ["http_plugin.c"]
+      - ["https_plugin.c"]
+      - ["tls_plugin.c", "tls_parser.c"]
+
+  - id: dedup_two_large
+    category: 去重多样性
+    question: "http_plugin.c 和 https_plugin.c 怎么处理请求的"
+    expected_sources: [["http_plugin.c"], ["https_plugin.c"]]
+
+  # ------------------------------------------------------------------
+  # 边界
+  # ------------------------------------------------------------------
+  - id: edge_short_chinese
+    category: 边界
+    question: "日志系统"
+    expect_nonempty: true
+
+  - id: edge_vague
+    category: 边界
+    question: "那个东西是怎么搞的"
+    expect_nonempty: true
+    observe: true
+    note: "模糊问句没有「正确」答案，只观察系统返回了什么"
+
+  - id: edge_nonsense
+    category: 边界
+    question: "asdf qwer 12345"
+    expect_nonempty: true
+    observe: true
+    note: "乱码输入不应报错；返回内容无正确性语义"
+
+  # ------------------------------------------------------------------
+  # 负例观察（知识库外问题：检索层总会返回兜底结果，这里只记录
+  # top 路径与分数用于人工巡检，不进通过判定）
+  # ------------------------------------------------------------------
+  - id: negative_redis
+    category: 负例观察
+    question: "Redis 缓存的过期策略怎么设计"
+    observe: true
+
+  - id: negative_k8s
+    category: 负例观察
+    question: "Kubernetes 滚动更新怎么配置"
+    observe: true
+
+  - id: negative_grpc
+    category: 负例观察
+    question: "gRPC 的拦截器怎么写"
+    observe: true
+
+  - id: negative_react
+    category: 负例观察
+    question: "React 状态管理库推荐哪个"
+    observe: true
+
+  - id: negative_docker
+    category: 负例观察
+    question: "Dockerfile 多阶段构建怎么写"
+    observe: true

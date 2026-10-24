@@ -1,0 +1,432 @@
+event: status
+data: {"stage": "memory"}
+
+event: start
+data: {"session_id": "sess_3cc80977d518", "request_id": "trace_e6bdf23e7783"}
+
+event: status
+data: {"stage": "agent"}
+
+event: delta
+data: {"delta": "好的，我来帮你"}
+
+event: delta
+data: {"delta": "评测这个 DNS "}
+
+event: delta
+data: {"delta": "插件。"}
+
+event: delta
+data: {"delta": "\n\n"}
+
+event: tool_start
+data: {"tool": "grade_plugin", "label": "正在评测 DNS 插件…"}
+
+event: tool_end
+data: {"tool": "grade_plugin", "ok": true, "summary": "9/9 通过，得分 100.0"}
+
+event: delta
+data: {"delta": "## "}
+
+event: delta
+data: {"delta": "评测结果："}
+
+event: delta
+data: {"delta": "🎉 满分"}
+
+event: delta
+data: {"delta": "通过"}
+
+event: delta
+data: {"delta": "！\n\n| "}
+
+event: delta
+data: {"delta": "指标"}
+
+event: delta
+data: {"delta": " | 结果 |"}
+
+event: delta
+data: {"delta": "\n|------"}
+
+event: delta
+data: {"delta": "|------|\n"}
+
+event: delta
+data: {"delta": "| **总分**"}
+
+event: delta
+data: {"delta": " | **10"}
+
+event: delta
+data: {"delta": "0 /"}
+
+event: delta
+data: {"delta": " 100"}
+
+event: delta
+data: {"delta": "** |\n|"}
+
+event: delta
+data: {"delta": " **通过用例**"}
+
+event: delta
+data: {"delta": " | "}
+
+event: delta
+data: {"delta": "9 / 9"}
+
+event: delta
+data: {"delta": " |\n| **"}
+
+event: delta
+data: {"delta": "失败用例** |"}
+
+event: delta
+data: {"delta": " 0 |\n\n"}
+
+event: delta
+data: {"delta": "### 逐用例"}
+
+event: delta
+data: {"delta": "详情\n\n|"}
+
+event: delta
+data: {"delta": " 用例 | "}
+
+event: delta
+data: {"delta": "类别 | "}
+
+event: delta
+data: {"delta": "结果 |\n|"}
+
+event: delta
+data: {"delta": "------|------"}
+
+event: delta
+data: {"delta": "|------|\n"}
+
+event: delta
+data: {"delta": "| `"}
+
+event: delta
+data: {"delta": "dns_basic_query`"}
+
+event: delta
+data: {"delta": " | ["}
+
+event: delta
+data: {"delta": "POSITIVE] "}
+
+event: delta
+data: {"delta": "基础查询 | ✅"}
+
+event: delta
+data: {"delta": " PASS |\n|"}
+
+event: delta
+data: {"delta": " `dns_cname"}
+
+event: delta
+data: {"delta": "_chain` | ["}
+
+event: delta
+data: {"delta": "POSITIVE] C"}
+
+event: delta
+data: {"delta": "NAME 链 |"}
+
+event: delta
+data: {"delta": " ✅ PASS |\n"}
+
+event: delta
+data: {"delta": "| `dns_ipv"}
+
+event: delta
+data: {"delta": "6` | ["}
+
+event: delta
+data: {"delta": "POSITIVE] IPv"}
+
+event: delta
+data: {"delta": "6 场景 |"}
+
+event: delta
+data: {"delta": " ✅ PASS |\n"}
+
+event: delta
+data: {"delta": "| `dns_n"}
+
+event: delta
+data: {"delta": "xdomain` |"}
+
+event: delta
+data: {"delta": " [POSITIVE]"}
+
+event: delta
+data: {"delta": " NXDOMAIN 响应"}
+
+event: delta
+data: {"delta": " | ✅ PASS |"}
+
+event: delta
+data: {"delta": "\n| `dns"}
+
+event: delta
+data: {"delta": "_interleaved`"}
+
+event: delta
+data: {"delta": " | [STATE]"}
+
+event: delta
+data: {"delta": " 交叉"}
+
+event: delta
+data: {"delta": "会话状态 | ✅"}
+
+event: delta
+data: {"delta": " PASS |\n|"}
+
+event: delta
+data: {"delta": " `dns_reverse`"}
+
+event: delta
+data: {"delta": " | [EDGE]"}
+
+event: delta
+data: {"delta": " 反向解析 |"}
+
+event: delta
+data: {"delta": " ✅ PASS |"}
+
+event: delta
+data: {"delta": "\n| `dns"}
+
+event: delta
+data: {"delta": "_edge_minimal`"}
+
+event: delta
+data: {"delta": " | [EDGE]"}
+
+event: delta
+data: {"delta": " 最小合法包"}
+
+event: delta
+data: {"delta": " | ✅ PASS |"}
+
+event: delta
+data: {"delta": "\n| `dns"}
+
+event: delta
+data: {"delta": "_malformed`"}
+
+event: delta
+data: {"delta": " | [MALFORM"}
+
+event: delta
+data: {"delta": "ED] 畸形"}
+
+event: delta
+data: {"delta": "报文 | ✅ PASS"}
+
+event: delta
+data: {"delta": " |\n| `"}
+
+event: delta
+data: {"delta": "dns_negative` |"}
+
+event: delta
+data: {"delta": " [NEGATIVE]"}
+
+event: delta
+data: {"delta": " 非 DNS "}
+
+event: delta
+data: {"delta": "流量 | ✅ PASS"}
+
+event: delta
+data: {"delta": " |\n\n###"}
+
+event: delta
+data: {"delta": " 总评\n\n"}
+
+event: delta
+data: {"delta": "你的 DNS 插件"}
+
+event: delta
+data: {"delta": "在所有测试维度上都"}
+
+event: delta
+data: {"delta": "表现正确"}
+
+event: delta
+data: {"delta": "：\n\n- **"}
+
+event: delta
+data: {"delta": "基础解析"}
+
+event: delta
+data: {"delta": "**：DNS "}
+
+event: delta
+data: {"delta": "头部、"}
+
+event: delta
+data: {"delta": "Question 段、"}
+
+event: delta
+data: {"delta": "Answer 段（"}
+
+event: delta
+data: {"delta": "A 记录 /"}
+
+event: delta
+data: {"delta": " CNAME"}
+
+event: delta
+data: {"delta": " 记录）均"}
+
+event: delta
+data: {"delta": "正确解析。\n"}
+
+event: delta
+data: {"delta": "- **跨包"}
+
+event: delta
+data: {"delta": "状态**：查询"}
+
+event: delta
+data: {"delta": "→响应的 tx"}
+
+event: delta
+data: {"delta": "id "}
+
+event: delta
+data: {"delta": "匹配和 qname"}
+
+event: delta
+data: {"delta": " 回填逻辑"}
+
+event: delta
+data: {"delta": "正确，交叉会话"}
+
+event: delta
+data: {"delta": "场景"}
+
+event: delta
+data: {"delta": "也能正确处理。\n"}
+
+event: delta
+data: {"delta": "-"}
+
+event: delta
+data: {"delta": " **边界处理**"}
+
+event: delta
+data: {"delta": "：最小合法"}
+
+event: delta
+data: {"delta": "包（仅 "}
+
+event: delta
+data: {"delta": "12 "}
+
+event: delta
+data: {"delta": "字节头部）、畸形"}
+
+event: delta
+data: {"delta": "报文、"}
+
+event: delta
+data: {"delta": "非 DNS 流量"}
+
+event: delta
+data: {"delta": "都能"}
+
+event: delta
+data: {"delta": "妥善应对，没有"}
+
+event: delta
+data: {"delta": "误判"}
+
+event: delta
+data: {"delta": "或崩溃。\n"}
+
+event: delta
+data: {"delta": "- **IPv6"}
+
+event: delta
+data: {"delta": " 支持**："}
+
+event: delta
+data: {"delta": "IPv6 地址"}
+
+event: delta
+data: {"delta": "的 client/resolver"}
+
+event: delta
+data: {"delta": " 角色"}
+
+event: delta
+data: {"delta": "识别正确。\n"}
+
+event: delta
+data: {"delta": "- **业务事件"}
+
+event: delta
+data: {"delta": "与决策日志**"}
+
+event: delta
+data: {"delta": "：`ch"}
+
+event: delta
+data: {"delta": "_event_enqueue()` "}
+
+event: delta
+data: {"delta": "和 `engine_log"}
+
+event: delta
+data: {"delta": "_event()` 的"}
+
+event: delta
+data: {"delta": "调用时机"}
+
+event: delta
+data: {"delta": "和字段填充均"}
+
+event: delta
+data: {"delta": "符合断"}
+
+event: delta
+data: {"delta": "言要求。\n\n"}
+
+event: delta
+data: {"delta": "整体实现"}
+
+event: delta
+data: {"delta": "非常完整，结构"}
+
+event: delta
+data: {"delta": "清晰，继续保持"}
+
+event: delta
+data: {"delta": "！如果后续想"}
+
+event: delta
+data: {"delta": "挑战其它"}
+
+event: delta
+data: {"delta": "协议（如 HTTP"}
+
+event: delta
+data: {"delta": "、SSH "}
+
+event: delta
+data: {"delta": "等），可以随时告诉我"}
+
+event: delta
+data: {"delta": "。"}
+
+event: done
+data: {"session_id": "sess_3cc80977d518", "message_id": "msg_6f04f5c98e98", "confidence": "low", "next_steps": ["阅读引用来源", "继续追问接口细节或协议特征"], "debug_trace": null}
+

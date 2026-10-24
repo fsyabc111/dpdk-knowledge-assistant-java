@@ -1,0 +1,46 @@
+# 本地仅容器化 harness；前后端和 PostgreSQL 在宿主机运行。
+# macOS / Colima 使用 bash local_harness.sh start，通过 SSH 回环转发访问。
+name: dpdk-assistant-local
+
+services:
+  harness:
+    image: dpdk-assistant-harness:local
+    build:
+      context: ${TEACHING_HARNESS_PATH:-../../teaching_harness}
+      dockerfile_inline: |
+        ARG PYTHON_IMAGE=docker.m.daocloud.io/library/python:3.12-slim-bookworm
+        FROM $${PYTHON_IMAGE}
+        ARG PIP_INDEX_URL=https://mirrors.aliyun.com/pypi/simple/
+        RUN sed -i 's|http://deb.debian.org/debian|https://mirrors.aliyun.com/debian|g; s|http://deb.debian.org/debian-security|https://mirrors.aliyun.com/debian-security|g' /etc/apt/sources.list.d/debian.sources \
+            && apt-get update \
+            && apt-get install -y --no-install-recommends gcc g++ make libssl-dev \
+            && rm -rf /var/lib/apt/lists/*
+        RUN useradd --create-home --uid 10001 teaching
+        ENV TH_HARNESS_HOME=/opt/teaching_harness
+        WORKDIR /opt/teaching_harness
+        COPY mcp_server/requirements.txt mcp_server/requirements.txt
+        RUN pip install --no-cache-dir --index-url $${PIP_INDEX_URL} -r mcp_server/requirements.txt
+        COPY --chown=teaching:teaching . .
+        RUN make >/dev/null && chown -R teaching:teaching /opt/teaching_harness
+        USER teaching
+        CMD ["python", "mcp_server/server.py"]
+    user: "10001:10001"
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    read_only: true
+    tmpfs:
+      - /tmp:size=256m,exec
+    mem_limit: 2g
+    pids_limit: 256
+    expose: ["8100"]
+    environment:
+      TH_MCP_TRANSPORT: http
+      TH_MCP_HOST: 0.0.0.0
+      TH_MCP_PORT: "8100"
+      TH_HARNESS_HOME: /opt/teaching_harness
+    networks: [harness_internal]
+    restart: unless-stopped
+
+networks:
+  harness_internal:
+    internal: true

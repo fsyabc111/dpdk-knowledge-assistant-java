@@ -1,0 +1,95 @@
+name: dpdk-assistant
+
+services:
+  postgres:
+    # 自定义镜像 = pgvector/pgvector:pg17 + zhparser 中文分词扩展（roadmap B2，
+    # deploy/postgres/Dockerfile）。镜像本地构建；数据卷 pgdata 与镜像无关。
+    image: dpdk-assistant-postgres:pg17-zhparser
+    build:
+      context: deploy/postgres
+    restart: unless-stopped
+    env_file: deploy/.env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d assistant"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    # Internal only — not published to the host.
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    restart: unless-stopped
+    env_file: deploy/.env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      # DPDK knowledge source repo, mounted read-only. Defaults to the parent
+      # directory of this checkout; override with DPDK_REPO_HOST_PATH.
+      - ${DPDK_REPO_HOST_PATH:-..}:/data/dpdk:ro
+    # default 网保留（frontend/postgres 可达、可出网调 LLM API）；
+    # harness_internal 用于访问 harness。
+    networks:
+      - default
+      - harness_internal
+    # Internal only — reached through the nginx frontend.
+
+  # teaching_harness 评测服务（独立仓库 E:\teaching_harness，D2/D15）：
+  # 编译并运行学生插件代码，经 MCP streamable HTTP 被 backend 调用。
+  harness:
+    build:
+      # 构建上下文指向独立的 teaching_harness 仓库。TEACHING_HARNESS_PATH 是
+      # 该仓库的父目录，默认 ../..（本 checkout 的上两级，即 E:\），上下文
+      # 即 E:\teaching_harness；路径不同就用 TEACHING_HARNESS_PATH 覆盖。
+      context: ${TEACHING_HARNESS_PATH:-../..}/teaching_harness
+    restart: unless-stopped
+    # 显式以镜像内非 root 用户 teaching(uid/gid 10001) 运行，双保险（Dockerfile 已设 USER）。
+    user: "10001:10001"
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    expose:
+      - "8100" # 仅 compose 内网可达，不发布到宿主机
+    networks:
+      # 运行学生代码必须无外网（D9）：默认网络自带外网出口，故单独挂到
+      # internal: true 的 harness_internal（无网关、无外部访问）。
+      - harness_internal
+    read_only: true
+    tmpfs:
+      # gcc 临时目录（read_only 根文件系统下唯一可写处）。docker tmpfs 默认
+      # 带 noexec，会导致 dlopen 编译产物失败（failed to map segment），必须显式 exec。
+      - /tmp:size=256m,exec
+    mem_limit: 2g
+    pids_limit: 256
+    environment:
+      TH_MCP_TRANSPORT: http
+      TH_MCP_HOST: 0.0.0.0
+      TH_MCP_PORT: "8100"
+      TH_HARNESS_HOME: /opt/teaching_harness
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - ./deploy/certs:/etc/nginx/certs:ro
+
+volumes:
+  pgdata:
+
+networks:
+  # harness 专用隔离网：无网关、无外部访问（学生代码在 harness 容器内编译
+  # 运行）。backend 同时挂 default 与该网；其余服务只在 default。
+  harness_internal:
+    internal: true

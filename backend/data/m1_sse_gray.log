@@ -1,0 +1,219 @@
+event: status
+data: {"stage": "memory"}
+
+event: start
+data: {"session_id": "sess_1cc29f3b4205", "request_id": "trace_7b71e9147894"}
+
+event: status
+data: {"stage": "retrieval"}
+
+event: sources
+data: {"citations": []}
+
+event: status
+data: {"stage": "generation"}
+
+event: delta
+data: {"delta": "**直接结论"}
+
+event: delta
+data: {"delta": "**\n当前知识库"}
+
+event: delta
+data: {"delta": "未覆盖关于 DP"}
+
+event: delta
+data: {"delta": "DK（Data Plane"}
+
+event: delta
+data: {"delta": " Development Kit）的具体"}
+
+event: delta
+data: {"delta": "项目资料。\n\n"}
+
+event: delta
+data: {"delta": "**解释**\n"}
+
+event: delta
+data: {"delta": "由于当前的检索上下"}
+
+event: delta
+data: {"delta": "文中未包含任何"}
+
+event: delta
+data: {"delta": "相关的项目文档、"}
+
+event: delta
+data: {"delta": "代码片段或 FAQ"}
+
+event: delta
+data: {"delta": "，我无法基于本"}
+
+event: delta
+data: {"delta": "项目的知识库为您提供 DP"}
+
+event: delta
+data: {"delta": "DK 的详细"}
+
+event: delta
+data: {"delta": "事实或在本项目"}
+
+event: delta
+data: {"delta": "中的具体使用说明"}
+
+event: delta
+data: {"delta": "。\n\n*补充"}
+
+event: delta
+data: {"delta": "通用背景"}
+
+event: delta
+data: {"delta": "（非项目事实"}
+
+event: delta
+data: {"delta": "）*"}
+
+event: delta
+data: {"delta": "：在通用的高"}
+
+event: delta
+data: {"delta": "性能网络开发领域"}
+
+event: delta
+data: {"delta": "，DPDK（"}
+
+event: delta
+data: {"delta": "数据"}
+
+event: delta
+data: {"delta": "平面开发套件）"}
+
+event: delta
+data: {"delta": "通常是一组用于"}
+
+event: delta
+data: {"delta": "数据面开发的库"}
+
+event: delta
+data: {"delta": "和"}
+
+event: delta
+data: {"delta": "网卡驱动。它"}
+
+event: delta
+data: {"delta": "通过"}
+
+event: delta
+data: {"delta": "支持用户态报文"}
+
+event: delta
+data: {"delta": "处理和"}
+
+event: delta
+data: {"delta": "轮询模式驱动"}
+
+event: delta
+data: {"delta": "（PMD），"}
+
+event: delta
+data: {"delta": "绕过传统的 Linux "}
+
+event: delta
+data: {"delta": "内核网络"}
+
+event: delta
+data: {"delta": "协议栈，从而实现"}
+
+event: delta
+data: {"delta": "极高的数据包"}
+
+event: delta
+data: {"delta": "处理性能。\n\n"}
+
+event: delta
+data: {"delta": "**参考来源**"}
+
+event: delta
+data: {"delta": "\n无（当前"}
+
+event: delta
+data: {"delta": "检索上下文为空）。"}
+
+event: delta
+data: {"delta": "\n\n**下一步**"}
+
+event: delta
+data: {"delta": "\n1. "}
+
+event: delta
+data: {"delta": "建议查阅 DPDK"}
+
+event: delta
+data: {"delta": " 官方文档（"}
+
+event: delta
+data: {"delta": "dpdk.org）"}
+
+event: delta
+data: {"delta": "以了解"}
+
+event: delta
+data: {"delta": "其基础原理、"}
+
+event: delta
+data: {"delta": "架构"}
+
+event: delta
+data: {"delta": "和 PMD "}
+
+event: delta
+data: {"delta": "机制。"}
+
+event: delta
+data: {"delta": "\n2. "}
+
+event: delta
+data: {"delta": "如果您想了解本"}
+
+event: delta
+data: {"delta": "流量检测项目中是否"}
+
+event: delta
+data: {"delta": "引入了"}
+
+event: delta
+data: {"delta": " DPDK 或"}
+
+event: delta
+data: {"delta": "类似的高性能报文"}
+
+event: delta
+data: {"delta": "处理框架，建议"}
+
+event: delta
+data: {"delta": "向教师/"}
+
+event: delta
+data: {"delta": "助教确认，或"}
+
+event: delta
+data: {"delta": "提供项目中"}
+
+event: delta
+data: {"delta": "特定网络接收模块"}
+
+event: delta
+data: {"delta": "的代码"}
+
+event: delta
+data: {"delta": "/文档名称，"}
+
+event: delta
+data: {"delta": "以便进行更精准的"}
+
+event: delta
+data: {"delta": "检索。"}
+
+event: done
+data: {"session_id": "sess_1cc29f3b4205", "message_id": "msg_b2aa322e923c", "confidence": "low", "next_steps": ["阅读引用来源", "继续追问接口细节或协议特征"], "debug_trace": null}
+

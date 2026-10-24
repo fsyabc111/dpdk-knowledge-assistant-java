@@ -1,0 +1,18 @@
+# Docker build context (repo root) exclusions.
+.git
+.logs
+.runtime
+**/.env
+deploy/external_disk.json
+backend/.venv
+backend/**/__pycache__
+backend/data/*.db
+backend/data/*.db-*
+backend/data/backups
+# live 评测基线是本地漂移对照数据（已 gitignore），不进镜像
+backend/data/live_eval_baseline.json
+backend/data/rag_eval_baseline.json
+frontend/node_modules
+frontend/dist
+deploy/certs/server.key
+deploy/certs/server.crt
