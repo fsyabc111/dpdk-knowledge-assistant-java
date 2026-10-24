@@ -7,14 +7,19 @@
 - 当前源码目标：本仓库冻结Python副本；原目录仅来源，不同步变化；backend/前端原件未改。
 - 验证代码/证据提交：08158c6初版、c94f43d修复、099dca2最终v2数据、a207a4a最后CLI类型守卫；之后仅文档/状态/审查收口。用户已验收交付7c76c31；验收记录提交d96bf4c已推送到同名origin分支，本地/远程SHA一致，证据evidence/P0/push-verification.json；其后仅补发布记录。
 
-## P1 收口进行中（2026-10-25 深夜）
+## P1 收口完成，P2 进行中（2026-10-25）
 
-- 本地提交链（集成分支）：… → bb07ab7（J1-04 完成+接口登记，150/150）→ c919550（model/harness Spring 接线）→ P1 phase-report 初稿+规范轴结论。全量测试 150/150。
-- **推送受阻（已解决）**：github.com:443 HTTPS 通路劣化期间改用 SSH-over-443（origin pushurl 已临时设为 ssh://git@ssh.github.com:443/fsyabc111/dpdk-knowledge-assistant-java.git，HTTPS 恢复后可改回）；bb07ab7..a29b4ad 已推送，ls-remote 核对本地/远程 SHA 一致（a29b4ad8）。
-- 独立审查：规范轴通过（0 阻断 4 建议，evidence/P1/review-standards.md；建议①已随 c919550 解决，②已改 STATUS，③本节登记，④随 P2 接线关闭）；规格轴进行中（evidence/P1/review-spec.md 待产出）。
-- worker worktree 登记：.migration-artifacts/worktrees/{j1-02,j1-03}（worker/j1-02@9d3e3b7、worker/j1-03@251b65f 均已合并；worktree 本体保留至 P1 收口推送核验后清理）。
+- **P1 工程门禁通过（ef728cb 已推送核验）**：五项齐备（四卡 150/150、PG/危险目标拒绝、替身+固定向量+问答链路、双轴独立审查 0 阻断、报告交接推送核验 SHA 一致）。规格审查建议 S1 已补登记（interface-changes.md）；S6 待 P2 接线关闭。用户验收待批次结束。P2 按 U11 预授权自动生效。
+- P2 已派工：J2-01（认证）worktree .migration-artifacts/worktrees/j2-01（worker/j2-01@ce6a139）；依赖链 J2-01→J2-02→J2-03∥J2-05→J2-04。spring-security-crypto 已由集成者预置（ce6a139）。
+- U11 联调接线落地（e0a5c26）：CORS 对等配置、backend-java/README.md 运行/联调命令。注意：该提交曾因与 J2-01 worker 并发占用同一测试 PG 实例出现一次瞬态 BUILD FAILURE，随即复跑 150/150 全绿（记录在案；后续集成验证尽量避开 worker 测试高峰或复跑确认）。
+- 推送通路：origin pushurl=ssh://git@ssh.github.com:443/...（HTTPS 劣化期间的临时切换，恢复正常后可改回）；每次推送 ls-remote 核对。
+
+## P1 收口历史（bb07ab7..ef728cb）
+
+- 提交链：bb07ab7（J1-04 完成+接口登记，150/150）→ c919550（model/harness Spring 接线）→ 2c49e78（phase-report 初稿+规范轴结论）→ a29b4ad/c7a44f4（推送恢复登记）→ ef728cb（门禁终稿）。
+- 独立审查：规范轴通过（0 阻断 4 建议，review-standards.md）；规格轴通过（0 阻断 6 建议，review-spec.md）。
+- J1 worker 分支：worker/j1-02@9d3e3b7、worker/j1-03@251b65f（已合并，worktree 已清理）。
 - P1 独立测试 PG（55481）持续运行供 P2 使用；测试库动态建删。
-- 下一步：规格轴结论 → 阻断修复复验 → phase-report 终稿 → 推送核验 → 按预授权进 P2（J2-01 起派工）。
 
 ## J1-01 切片1（历史记录，f84d2c9）
 
