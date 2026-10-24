@@ -10,7 +10,7 @@
 ## P1 收口进行中（2026-10-25 深夜）
 
 - 本地提交链（集成分支）：… → bb07ab7（J1-04 完成+接口登记，150/150）→ c919550（model/harness Spring 接线）→ P1 phase-report 初稿+规范轴结论。全量测试 150/150。
-- **推送受阻**：origin 推送自 bb07ab7 起连续失败（github.com:443 连接超时 75s+，api.github.com 可达、主站一次 200/67s——出口到 GitHub 严重劣化，非凭据/仓库问题）。本地提交全部保存，未伪称发布；恢复后立即推送并核对 SHA。远程仍停在 f48e01b。
+- **推送受阻（已解决）**：github.com:443 HTTPS 通路劣化期间改用 SSH-over-443（origin pushurl 已临时设为 ssh://git@ssh.github.com:443/fsyabc111/dpdk-knowledge-assistant-java.git，HTTPS 恢复后可改回）；bb07ab7..a29b4ad 已推送，ls-remote 核对本地/远程 SHA 一致（a29b4ad8）。
 - 独立审查：规范轴通过（0 阻断 4 建议，evidence/P1/review-standards.md；建议①已随 c919550 解决，②已改 STATUS，③本节登记，④随 P2 接线关闭）；规格轴进行中（evidence/P1/review-spec.md 待产出）。
 - worker worktree 登记：.migration-artifacts/worktrees/{j1-02,j1-03}（worker/j1-02@9d3e3b7、worker/j1-03@251b65f 均已合并；worktree 本体保留至 P1 收口推送核验后清理）。
 - P1 独立测试 PG（55481）持续运行供 P2 使用；测试库动态建删。
