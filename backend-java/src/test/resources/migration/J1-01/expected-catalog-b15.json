@@ -1,0 +1,2391 @@
+{
+    "tables": [
+        {
+            "name": "admin_audit_log",
+            "columns": [
+                {
+                    "name": "id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "actor",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "action",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "targets_json",
+                    "udt": "jsonb",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "created_at",
+                    "udt": "timestamptz",
+                    "nullable": "NO",
+                    "default": "now()",
+                    "generated": "NEVER",
+                    "gen_expr": null
+                }
+            ]
+        },
+        {
+            "name": "api_tokens",
+            "columns": [
+                {
+                    "name": "token_hash",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "user_id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "issued_at",
+                    "udt": "timestamptz",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "expires_at",
+                    "udt": "timestamptz",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "revoked_at",
+                    "udt": "timestamptz",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                }
+            ]
+        },
+        {
+            "name": "assignment_items",
+            "columns": [
+                {
+                    "name": "id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "assignment_id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "protocol",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "points",
+                    "udt": "int4",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                }
+            ]
+        },
+        {
+            "name": "assignments",
+            "columns": [
+                {
+                    "name": "id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "title",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "description",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": "''::text",
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "created_by",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "scope",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "deadline",
+                    "udt": "timestamptz",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "status",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": "'active'::text",
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "created_at",
+                    "udt": "timestamptz",
+                    "nullable": "NO",
+                    "default": "now()",
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "updated_at",
+                    "udt": "timestamptz",
+                    "nullable": "NO",
+                    "default": "now()",
+                    "generated": "NEVER",
+                    "gen_expr": null
+                }
+            ]
+        },
+        {
+            "name": "assistant_citations",
+            "columns": [
+                {
+                    "name": "id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "message_id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "chunk_id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "citation_engine",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": "'legacy'::text",
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "score",
+                    "udt": "float8",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "rank",
+                    "udt": "int4",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                }
+            ]
+        },
+        {
+            "name": "assistant_messages",
+            "columns": [
+                {
+                    "name": "id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "session_id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "role",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "content",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "metadata_json",
+                    "udt": "jsonb",
+                    "nullable": "NO",
+                    "default": "'{}'::jsonb",
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "created_at",
+                    "udt": "timestamptz",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                }
+            ]
+        },
+        {
+            "name": "assistant_sessions",
+            "columns": [
+                {
+                    "name": "id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "user_id",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "title",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "memory_summary",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": "''::text",
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "memory_summary_through_message_id",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "rag_release_id",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "created_at",
+                    "udt": "timestamptz",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "updated_at",
+                    "udt": "timestamptz",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                }
+            ]
+        },
+        {
+            "name": "data_li_knowledge_v1",
+            "columns": [
+                {
+                    "name": "id",
+                    "udt": "int8",
+                    "nullable": "NO",
+                    "default": "nextval('data_li_knowledge_v1_id_seq'::regclass)",
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "text",
+                    "udt": "varchar",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "metadata_",
+                    "udt": "jsonb",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "node_id",
+                    "udt": "varchar",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "embedding",
+                    "udt": "vector",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "text_search_tsv",
+                    "udt": "tsvector",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "ALWAYS",
+                    "gen_expr": "to_tsvector('simple'::regconfig, (text)::text)"
+                }
+            ]
+        },
+        {
+            "name": "grading_submissions",
+            "columns": [
+                {
+                    "name": "id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "user_id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "session_id",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "protocol",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "code_hash",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "score",
+                    "udt": "int4",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "passed",
+                    "udt": "int4",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "total",
+                    "udt": "int4",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "results_json",
+                    "udt": "jsonb",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "created_at",
+                    "udt": "timestamptz",
+                    "nullable": "NO",
+                    "default": "now()",
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "assignment_id",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "task_job_id",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                }
+            ]
+        },
+        {
+            "name": "knowledge_chunks",
+            "columns": [
+                {
+                    "name": "id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "document_id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "source_path",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "section",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "content",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "metadata_json",
+                    "udt": "jsonb",
+                    "nullable": "NO",
+                    "default": "'{}'::jsonb",
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "embedding",
+                    "udt": "vector",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "search_vector",
+                    "udt": "tsvector",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "ALWAYS",
+                    "gen_expr": "to_tsvector('simple'::regconfig, ((((((COALESCE(source_path, ''::text) || ' '::text) || COALESCE(section, ''::text)) || ' '::text) || COALESCE(content, ''::text)) || ' '::text) || COALESCE((metadata_json)::text, ''::text)))"
+                }
+            ]
+        },
+        {
+            "name": "knowledge_documents",
+            "columns": [
+                {
+                    "name": "id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "source_path",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "source_type",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "title",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "content_hash",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "git_commit",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "indexed_at",
+                    "udt": "timestamptz",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                }
+            ]
+        },
+        {
+            "name": "knowledge_indexes",
+            "columns": [
+                {
+                    "name": "id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "provider",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "embedding_model",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "chunker_version",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "source_config_hash",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "status",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "created_at",
+                    "udt": "timestamptz",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "completed_at",
+                    "udt": "timestamptz",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                }
+            ]
+        },
+        {
+            "name": "knowledge_source_files",
+            "columns": [
+                {
+                    "name": "source_path",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "content_hash",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "document_id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "indexed_at",
+                    "udt": "timestamptz",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                }
+            ]
+        },
+        {
+            "name": "password_reset_requests",
+            "columns": [
+                {
+                    "name": "id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "user_id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "status",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": "'pending'::text",
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "reset_token_hash",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "reset_expires_at",
+                    "udt": "timestamptz",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "created_at",
+                    "udt": "timestamptz",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "decided_at",
+                    "udt": "timestamptz",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "decided_by",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                }
+            ]
+        },
+        {
+            "name": "rag_index_state",
+            "columns": [
+                {
+                    "name": "name",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "release_id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                }
+            ]
+        },
+        {
+            "name": "rag_issue_events",
+            "columns": [
+                {
+                    "name": "id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "issue_id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "actor_id",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "action",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "detail",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "created_at",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                }
+            ]
+        },
+        {
+            "name": "rag_issues",
+            "columns": [
+                {
+                    "name": "id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "request_id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "status",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": "'open'::text",
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "owner_id",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "note",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": "''::text",
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "feedback",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": "''::text",
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "merged_into",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "knowledge_id",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "verified_release_id",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "verified_at",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "updated_at",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                }
+            ]
+        },
+        {
+            "name": "rag_knowledge",
+            "columns": [
+                {
+                    "name": "id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "created_by",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "title",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "body",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "revision",
+                    "udt": "int4",
+                    "nullable": "NO",
+                    "default": "1",
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "status",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": "'published'::text",
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "updated_at",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                }
+            ]
+        },
+        {
+            "name": "rag_knowledge_revisions",
+            "columns": [
+                {
+                    "name": "id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "knowledge_id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "revision",
+                    "udt": "int4",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "actor_id",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "title",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "body",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "status",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "created_at",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                }
+            ]
+        },
+        {
+            "name": "rag_release_nodes",
+            "columns": [
+                {
+                    "name": "release_id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "node_id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                }
+            ]
+        },
+        {
+            "name": "rag_releases",
+            "columns": [
+                {
+                    "name": "id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "configuration",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "created_at",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "node_count",
+                    "udt": "int4",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                }
+            ]
+        },
+        {
+            "name": "rag_requests",
+            "columns": [
+                {
+                    "name": "id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "request_id",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "input_hash",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "initial_request",
+                    "udt": "int4",
+                    "nullable": "NO",
+                    "default": "0",
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "purpose",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": "'chat'::text",
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "user_id",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "session_id",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "message_id",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "question",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "context_text",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": "''::text",
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "status",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": "'pending'::text",
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "reason",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": "''::text",
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "release_id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": "''::text",
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "evidence_json",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": "'[]'::text",
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "model_version",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": "''::text",
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "prompt_version",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": "'grounded-v1'::text",
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "elapsed_ms",
+                    "udt": "int4",
+                    "nullable": "NO",
+                    "default": "0",
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "created_at",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "updated_at",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                }
+            ]
+        },
+        {
+            "name": "rag_task_inputs",
+            "columns": [
+                {
+                    "name": "task_id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "question",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "attachment_name",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "attachment_suffix",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "source_text",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "source_origin",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "created_at",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "expires_at",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                }
+            ]
+        },
+        {
+            "name": "rag_task_jobs",
+            "columns": [
+                {
+                    "name": "id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "task_id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "job_id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "tool",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "protocol",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "code_hash",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "status",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "result_json",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "submission_done",
+                    "udt": "int4",
+                    "nullable": "NO",
+                    "default": "0",
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "created_at",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "updated_at",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                }
+            ]
+        },
+        {
+            "name": "teaching_faqs",
+            "columns": [
+                {
+                    "name": "id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "question",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "answer",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "tags",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "visibility",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": "'student'::text",
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "created_at",
+                    "udt": "timestamptz",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                }
+            ]
+        },
+        {
+            "name": "upstream_usage_records",
+            "columns": [
+                {
+                    "name": "id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "request_id",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "subject",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "session_id",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "kind",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "stage",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "model",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "prompt_tokens",
+                    "udt": "int4",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "completion_tokens",
+                    "udt": "int4",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "total_tokens",
+                    "udt": "int4",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "usage_source",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "call_count",
+                    "udt": "int4",
+                    "nullable": "NO",
+                    "default": "1",
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "duration_ms",
+                    "udt": "int4",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "cost_micros",
+                    "udt": "int4",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "currency",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "price_version",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "created_at",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                }
+            ]
+        },
+        {
+            "name": "usage_counters",
+            "columns": [
+                {
+                    "name": "subject",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "day",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "kind",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": "'chat'::text",
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "chat_count",
+                    "udt": "int4",
+                    "nullable": "NO",
+                    "default": "0",
+                    "generated": "NEVER",
+                    "gen_expr": null
+                }
+            ]
+        },
+        {
+            "name": "users",
+            "columns": [
+                {
+                    "name": "id",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "password_hash",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "roles",
+                    "udt": "text",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "daily_quota",
+                    "udt": "int4",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "enabled",
+                    "udt": "bool",
+                    "nullable": "NO",
+                    "default": "true",
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "created_at",
+                    "udt": "timestamptz",
+                    "nullable": "NO",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "must_change_password",
+                    "udt": "bool",
+                    "nullable": "NO",
+                    "default": "false",
+                    "generated": "NEVER",
+                    "gen_expr": null
+                },
+                {
+                    "name": "created_by",
+                    "udt": "text",
+                    "nullable": "YES",
+                    "default": null,
+                    "generated": "NEVER",
+                    "gen_expr": null
+                }
+            ]
+        }
+    ],
+    "indexes": [
+        {
+            "table": "admin_audit_log",
+            "name": "admin_audit_log_pkey",
+            "def": "CREATE UNIQUE INDEX admin_audit_log_pkey ON public.admin_audit_log USING btree (id)"
+        },
+        {
+            "table": "api_tokens",
+            "name": "api_tokens_pkey",
+            "def": "CREATE UNIQUE INDEX api_tokens_pkey ON public.api_tokens USING btree (token_hash)"
+        },
+        {
+            "table": "api_tokens",
+            "name": "api_tokens_user_id_idx",
+            "def": "CREATE INDEX api_tokens_user_id_idx ON public.api_tokens USING btree (user_id)"
+        },
+        {
+            "table": "assignment_items",
+            "name": "assignment_items_assignment_id_protocol_key",
+            "def": "CREATE UNIQUE INDEX assignment_items_assignment_id_protocol_key ON public.assignment_items USING btree (assignment_id, protocol)"
+        },
+        {
+            "table": "assignment_items",
+            "name": "assignment_items_pkey",
+            "def": "CREATE UNIQUE INDEX assignment_items_pkey ON public.assignment_items USING btree (id)"
+        },
+        {
+            "table": "assignments",
+            "name": "assignments_pkey",
+            "def": "CREATE UNIQUE INDEX assignments_pkey ON public.assignments USING btree (id)"
+        },
+        {
+            "table": "assistant_citations",
+            "name": "assistant_citations_pkey",
+            "def": "CREATE UNIQUE INDEX assistant_citations_pkey ON public.assistant_citations USING btree (id)"
+        },
+        {
+            "table": "assistant_messages",
+            "name": "assistant_messages_pkey",
+            "def": "CREATE UNIQUE INDEX assistant_messages_pkey ON public.assistant_messages USING btree (id)"
+        },
+        {
+            "table": "assistant_sessions",
+            "name": "assistant_sessions_pkey",
+            "def": "CREATE UNIQUE INDEX assistant_sessions_pkey ON public.assistant_sessions USING btree (id)"
+        },
+        {
+            "table": "data_li_knowledge_v1",
+            "name": "data_li_knowledge_v1_pkey",
+            "def": "CREATE UNIQUE INDEX data_li_knowledge_v1_pkey ON public.data_li_knowledge_v1 USING btree (id)"
+        },
+        {
+            "table": "grading_submissions",
+            "name": "grading_submissions_pkey",
+            "def": "CREATE UNIQUE INDEX grading_submissions_pkey ON public.grading_submissions USING btree (id)"
+        },
+        {
+            "table": "admin_audit_log",
+            "name": "idx_admin_audit_log_created",
+            "def": "CREATE INDEX idx_admin_audit_log_created ON public.admin_audit_log USING btree (created_at DESC)"
+        },
+        {
+            "table": "assignments",
+            "name": "idx_assignments_created_by",
+            "def": "CREATE INDEX idx_assignments_created_by ON public.assignments USING btree (created_by)"
+        },
+        {
+            "table": "assignments",
+            "name": "idx_assignments_status",
+            "def": "CREATE INDEX idx_assignments_status ON public.assignments USING btree (status)"
+        },
+        {
+            "table": "assistant_citations",
+            "name": "idx_assistant_citations_engine",
+            "def": "CREATE INDEX idx_assistant_citations_engine ON public.assistant_citations USING btree (citation_engine)"
+        },
+        {
+            "table": "assistant_citations",
+            "name": "idx_assistant_citations_message_id",
+            "def": "CREATE INDEX idx_assistant_citations_message_id ON public.assistant_citations USING btree (message_id)"
+        },
+        {
+            "table": "assistant_messages",
+            "name": "idx_assistant_messages_session_id",
+            "def": "CREATE INDEX idx_assistant_messages_session_id ON public.assistant_messages USING btree (session_id)"
+        },
+        {
+            "table": "grading_submissions",
+            "name": "idx_grading_assignment",
+            "def": "CREATE INDEX idx_grading_assignment ON public.grading_submissions USING btree (assignment_id, user_id)"
+        },
+        {
+            "table": "grading_submissions",
+            "name": "idx_grading_proto",
+            "def": "CREATE INDEX idx_grading_proto ON public.grading_submissions USING btree (protocol, created_at DESC)"
+        },
+        {
+            "table": "grading_submissions",
+            "name": "idx_grading_task_job_id",
+            "def": "CREATE UNIQUE INDEX idx_grading_task_job_id ON public.grading_submissions USING btree (task_job_id) WHERE (task_job_id IS NOT NULL)"
+        },
+        {
+            "table": "grading_submissions",
+            "name": "idx_grading_user",
+            "def": "CREATE INDEX idx_grading_user ON public.grading_submissions USING btree (user_id, created_at DESC)"
+        },
+        {
+            "table": "knowledge_chunks",
+            "name": "idx_knowledge_chunks_document_id",
+            "def": "CREATE INDEX idx_knowledge_chunks_document_id ON public.knowledge_chunks USING btree (document_id)"
+        },
+        {
+            "table": "knowledge_chunks",
+            "name": "idx_knowledge_chunks_embedding",
+            "def": "CREATE INDEX idx_knowledge_chunks_embedding ON public.knowledge_chunks USING hnsw (embedding vector_cosine_ops)"
+        },
+        {
+            "table": "knowledge_chunks",
+            "name": "idx_knowledge_chunks_search_vector",
+            "def": "CREATE INDEX idx_knowledge_chunks_search_vector ON public.knowledge_chunks USING gin (search_vector)"
+        },
+        {
+            "table": "knowledge_chunks",
+            "name": "idx_knowledge_chunks_section",
+            "def": "CREATE INDEX idx_knowledge_chunks_section ON public.knowledge_chunks USING btree (section)"
+        },
+        {
+            "table": "knowledge_chunks",
+            "name": "idx_knowledge_chunks_source_path",
+            "def": "CREATE INDEX idx_knowledge_chunks_source_path ON public.knowledge_chunks USING btree (source_path)"
+        },
+        {
+            "table": "knowledge_documents",
+            "name": "idx_knowledge_documents_source_path",
+            "def": "CREATE INDEX idx_knowledge_documents_source_path ON public.knowledge_documents USING btree (source_path)"
+        },
+        {
+            "table": "knowledge_indexes",
+            "name": "idx_knowledge_indexes_status",
+            "def": "CREATE INDEX idx_knowledge_indexes_status ON public.knowledge_indexes USING btree (status)"
+        },
+        {
+            "table": "knowledge_source_files",
+            "name": "idx_knowledge_source_files_document_id",
+            "def": "CREATE INDEX idx_knowledge_source_files_document_id ON public.knowledge_source_files USING btree (document_id)"
+        },
+        {
+            "table": "rag_release_nodes",
+            "name": "idx_rag_release_node",
+            "def": "CREATE INDEX idx_rag_release_node ON public.rag_release_nodes USING btree (node_id)"
+        },
+        {
+            "table": "rag_requests",
+            "name": "idx_rag_request_initial_key",
+            "def": "CREATE UNIQUE INDEX idx_rag_request_initial_key ON public.rag_requests USING btree (user_id, request_id) WHERE (initial_request = 1)"
+        },
+        {
+            "table": "rag_requests",
+            "name": "idx_rag_request_session_key",
+            "def": "CREATE UNIQUE INDEX idx_rag_request_session_key ON public.rag_requests USING btree (session_id, request_id)"
+        },
+        {
+            "table": "rag_requests",
+            "name": "idx_rag_request_status",
+            "def": "CREATE INDEX idx_rag_request_status ON public.rag_requests USING btree (status, updated_at)"
+        },
+        {
+            "table": "rag_requests",
+            "name": "idx_rag_request_user",
+            "def": "CREATE INDEX idx_rag_request_user ON public.rag_requests USING btree (user_id, created_at)"
+        },
+        {
+            "table": "rag_task_inputs",
+            "name": "idx_rag_task_inputs_expiry",
+            "def": "CREATE INDEX idx_rag_task_inputs_expiry ON public.rag_task_inputs USING btree (expires_at)"
+        },
+        {
+            "table": "rag_task_jobs",
+            "name": "idx_rag_task_jobs_task",
+            "def": "CREATE INDEX idx_rag_task_jobs_task ON public.rag_task_jobs USING btree (task_id)"
+        },
+        {
+            "table": "upstream_usage_records",
+            "name": "idx_usage_created",
+            "def": "CREATE INDEX idx_usage_created ON public.upstream_usage_records USING btree (created_at)"
+        },
+        {
+            "table": "upstream_usage_records",
+            "name": "idx_usage_stage_created",
+            "def": "CREATE INDEX idx_usage_stage_created ON public.upstream_usage_records USING btree (stage, created_at)"
+        },
+        {
+            "table": "upstream_usage_records",
+            "name": "idx_usage_subject_created",
+            "def": "CREATE INDEX idx_usage_subject_created ON public.upstream_usage_records USING btree (subject, created_at)"
+        },
+        {
+            "table": "knowledge_chunks",
+            "name": "knowledge_chunks_pkey",
+            "def": "CREATE UNIQUE INDEX knowledge_chunks_pkey ON public.knowledge_chunks USING btree (id)"
+        },
+        {
+            "table": "knowledge_documents",
+            "name": "knowledge_documents_pkey",
+            "def": "CREATE UNIQUE INDEX knowledge_documents_pkey ON public.knowledge_documents USING btree (id)"
+        },
+        {
+            "table": "knowledge_documents",
+            "name": "knowledge_documents_source_path_key",
+            "def": "CREATE UNIQUE INDEX knowledge_documents_source_path_key ON public.knowledge_documents USING btree (source_path)"
+        },
+        {
+            "table": "knowledge_indexes",
+            "name": "knowledge_indexes_pkey",
+            "def": "CREATE UNIQUE INDEX knowledge_indexes_pkey ON public.knowledge_indexes USING btree (id)"
+        },
+        {
+            "table": "knowledge_source_files",
+            "name": "knowledge_source_files_pkey",
+            "def": "CREATE UNIQUE INDEX knowledge_source_files_pkey ON public.knowledge_source_files USING btree (source_path)"
+        },
+        {
+            "table": "data_li_knowledge_v1",
+            "name": "li_knowledge_v1_idx",
+            "def": "CREATE INDEX li_knowledge_v1_idx ON public.data_li_knowledge_v1 USING gin (text_search_tsv)"
+        },
+        {
+            "table": "password_reset_requests",
+            "name": "password_reset_requests_pkey",
+            "def": "CREATE UNIQUE INDEX password_reset_requests_pkey ON public.password_reset_requests USING btree (id)"
+        },
+        {
+            "table": "password_reset_requests",
+            "name": "password_reset_requests_status_idx",
+            "def": "CREATE INDEX password_reset_requests_status_idx ON public.password_reset_requests USING btree (status)"
+        },
+        {
+            "table": "rag_index_state",
+            "name": "rag_index_state_pkey",
+            "def": "CREATE UNIQUE INDEX rag_index_state_pkey ON public.rag_index_state USING btree (name)"
+        },
+        {
+            "table": "rag_issue_events",
+            "name": "rag_issue_events_pkey",
+            "def": "CREATE UNIQUE INDEX rag_issue_events_pkey ON public.rag_issue_events USING btree (id)"
+        },
+        {
+            "table": "rag_issues",
+            "name": "rag_issues_pkey",
+            "def": "CREATE UNIQUE INDEX rag_issues_pkey ON public.rag_issues USING btree (id)"
+        },
+        {
+            "table": "rag_issues",
+            "name": "rag_issues_request_id_key",
+            "def": "CREATE UNIQUE INDEX rag_issues_request_id_key ON public.rag_issues USING btree (request_id)"
+        },
+        {
+            "table": "rag_knowledge",
+            "name": "rag_knowledge_pkey",
+            "def": "CREATE UNIQUE INDEX rag_knowledge_pkey ON public.rag_knowledge USING btree (id)"
+        },
+        {
+            "table": "rag_knowledge_revisions",
+            "name": "rag_knowledge_revisions_knowledge_id_revision_key",
+            "def": "CREATE UNIQUE INDEX rag_knowledge_revisions_knowledge_id_revision_key ON public.rag_knowledge_revisions USING btree (knowledge_id, revision)"
+        },
+        {
+            "table": "rag_knowledge_revisions",
+            "name": "rag_knowledge_revisions_pkey",
+            "def": "CREATE UNIQUE INDEX rag_knowledge_revisions_pkey ON public.rag_knowledge_revisions USING btree (id)"
+        },
+        {
+            "table": "rag_release_nodes",
+            "name": "rag_release_nodes_pkey",
+            "def": "CREATE UNIQUE INDEX rag_release_nodes_pkey ON public.rag_release_nodes USING btree (release_id, node_id)"
+        },
+        {
+            "table": "rag_releases",
+            "name": "rag_releases_pkey",
+            "def": "CREATE UNIQUE INDEX rag_releases_pkey ON public.rag_releases USING btree (id)"
+        },
+        {
+            "table": "rag_requests",
+            "name": "rag_requests_pkey",
+            "def": "CREATE UNIQUE INDEX rag_requests_pkey ON public.rag_requests USING btree (id)"
+        },
+        {
+            "table": "rag_task_inputs",
+            "name": "rag_task_inputs_pkey",
+            "def": "CREATE UNIQUE INDEX rag_task_inputs_pkey ON public.rag_task_inputs USING btree (task_id)"
+        },
+        {
+            "table": "rag_task_jobs",
+            "name": "rag_task_jobs_pkey",
+            "def": "CREATE UNIQUE INDEX rag_task_jobs_pkey ON public.rag_task_jobs USING btree (id)"
+        },
+        {
+            "table": "rag_task_jobs",
+            "name": "rag_task_jobs_task_id_job_id_key",
+            "def": "CREATE UNIQUE INDEX rag_task_jobs_task_id_job_id_key ON public.rag_task_jobs USING btree (task_id, job_id)"
+        },
+        {
+            "table": "teaching_faqs",
+            "name": "teaching_faqs_pkey",
+            "def": "CREATE UNIQUE INDEX teaching_faqs_pkey ON public.teaching_faqs USING btree (id)"
+        },
+        {
+            "table": "upstream_usage_records",
+            "name": "upstream_usage_records_pkey",
+            "def": "CREATE UNIQUE INDEX upstream_usage_records_pkey ON public.upstream_usage_records USING btree (id)"
+        },
+        {
+            "table": "usage_counters",
+            "name": "usage_counters_pkey",
+            "def": "CREATE UNIQUE INDEX usage_counters_pkey ON public.usage_counters USING btree (subject, day, kind)"
+        },
+        {
+            "table": "users",
+            "name": "users_created_by_idx",
+            "def": "CREATE INDEX users_created_by_idx ON public.users USING btree (created_by)"
+        },
+        {
+            "table": "users",
+            "name": "users_pkey",
+            "def": "CREATE UNIQUE INDEX users_pkey ON public.users USING btree (id)"
+        }
+    ],
+    "constraints": [
+        {
+            "table": "admin_audit_log",
+            "name": "admin_audit_log_pkey",
+            "type": "p",
+            "def": "PRIMARY KEY (id)"
+        },
+        {
+            "table": "api_tokens",
+            "name": "api_tokens_pkey",
+            "type": "p",
+            "def": "PRIMARY KEY (token_hash)"
+        },
+        {
+            "table": "api_tokens",
+            "name": "api_tokens_user_id_fkey",
+            "type": "f",
+            "def": "FOREIGN KEY (user_id) REFERENCES users(id)"
+        },
+        {
+            "table": "assignment_items",
+            "name": "assignment_items_assignment_id_fkey",
+            "type": "f",
+            "def": "FOREIGN KEY (assignment_id) REFERENCES assignments(id) ON DELETE CASCADE"
+        },
+        {
+            "table": "assignment_items",
+            "name": "assignment_items_assignment_id_protocol_key",
+            "type": "u",
+            "def": "UNIQUE (assignment_id, protocol)"
+        },
+        {
+            "table": "assignment_items",
+            "name": "assignment_items_pkey",
+            "type": "p",
+            "def": "PRIMARY KEY (id)"
+        },
+        {
+            "table": "assignments",
+            "name": "assignments_pkey",
+            "type": "p",
+            "def": "PRIMARY KEY (id)"
+        },
+        {
+            "table": "assistant_citations",
+            "name": "assistant_citations_message_id_fkey",
+            "type": "f",
+            "def": "FOREIGN KEY (message_id) REFERENCES assistant_messages(id) ON DELETE CASCADE"
+        },
+        {
+            "table": "assistant_citations",
+            "name": "assistant_citations_pkey",
+            "type": "p",
+            "def": "PRIMARY KEY (id)"
+        },
+        {
+            "table": "assistant_messages",
+            "name": "assistant_messages_pkey",
+            "type": "p",
+            "def": "PRIMARY KEY (id)"
+        },
+        {
+            "table": "assistant_messages",
+            "name": "assistant_messages_session_id_fkey",
+            "type": "f",
+            "def": "FOREIGN KEY (session_id) REFERENCES assistant_sessions(id) ON DELETE CASCADE"
+        },
+        {
+            "table": "assistant_sessions",
+            "name": "assistant_sessions_pkey",
+            "type": "p",
+            "def": "PRIMARY KEY (id)"
+        },
+        {
+            "table": "data_li_knowledge_v1",
+            "name": "data_li_knowledge_v1_pkey",
+            "type": "p",
+            "def": "PRIMARY KEY (id)"
+        },
+        {
+            "table": "grading_submissions",
+            "name": "grading_submissions_pkey",
+            "type": "p",
+            "def": "PRIMARY KEY (id)"
+        },
+        {
+            "table": "grading_submissions",
+            "name": "grading_submissions_session_id_fkey",
+            "type": "f",
+            "def": "FOREIGN KEY (session_id) REFERENCES assistant_sessions(id)"
+        },
+        {
+            "table": "knowledge_chunks",
+            "name": "knowledge_chunks_document_id_fkey",
+            "type": "f",
+            "def": "FOREIGN KEY (document_id) REFERENCES knowledge_documents(id) ON DELETE CASCADE"
+        },
+        {
+            "table": "knowledge_chunks",
+            "name": "knowledge_chunks_pkey",
+            "type": "p",
+            "def": "PRIMARY KEY (id)"
+        },
+        {
+            "table": "knowledge_documents",
+            "name": "knowledge_documents_pkey",
+            "type": "p",
+            "def": "PRIMARY KEY (id)"
+        },
+        {
+            "table": "knowledge_documents",
+            "name": "knowledge_documents_source_path_key",
+            "type": "u",
+            "def": "UNIQUE (source_path)"
+        },
+        {
+            "table": "knowledge_indexes",
+            "name": "knowledge_indexes_pkey",
+            "type": "p",
+            "def": "PRIMARY KEY (id)"
+        },
+        {
+            "table": "knowledge_source_files",
+            "name": "knowledge_source_files_document_id_fkey",
+            "type": "f",
+            "def": "FOREIGN KEY (document_id) REFERENCES knowledge_documents(id) ON DELETE CASCADE"
+        },
+        {
+            "table": "knowledge_source_files",
+            "name": "knowledge_source_files_pkey",
+            "type": "p",
+            "def": "PRIMARY KEY (source_path)"
+        },
+        {
+            "table": "password_reset_requests",
+            "name": "password_reset_requests_pkey",
+            "type": "p",
+            "def": "PRIMARY KEY (id)"
+        },
+        {
+            "table": "rag_index_state",
+            "name": "rag_index_state_pkey",
+            "type": "p",
+            "def": "PRIMARY KEY (name)"
+        },
+        {
+            "table": "rag_issue_events",
+            "name": "rag_issue_events_pkey",
+            "type": "p",
+            "def": "PRIMARY KEY (id)"
+        },
+        {
+            "table": "rag_issues",
+            "name": "rag_issues_pkey",
+            "type": "p",
+            "def": "PRIMARY KEY (id)"
+        },
+        {
+            "table": "rag_issues",
+            "name": "rag_issues_request_id_key",
+            "type": "u",
+            "def": "UNIQUE (request_id)"
+        },
+        {
+            "table": "rag_knowledge",
+            "name": "rag_knowledge_pkey",
+            "type": "p",
+            "def": "PRIMARY KEY (id)"
+        },
+        {
+            "table": "rag_knowledge_revisions",
+            "name": "rag_knowledge_revisions_knowledge_id_revision_key",
+            "type": "u",
+            "def": "UNIQUE (knowledge_id, revision)"
+        },
+        {
+            "table": "rag_knowledge_revisions",
+            "name": "rag_knowledge_revisions_pkey",
+            "type": "p",
+            "def": "PRIMARY KEY (id)"
+        },
+        {
+            "table": "rag_release_nodes",
+            "name": "rag_release_nodes_pkey",
+            "type": "p",
+            "def": "PRIMARY KEY (release_id, node_id)"
+        },
+        {
+            "table": "rag_releases",
+            "name": "rag_releases_pkey",
+            "type": "p",
+            "def": "PRIMARY KEY (id)"
+        },
+        {
+            "table": "rag_requests",
+            "name": "rag_requests_pkey",
+            "type": "p",
+            "def": "PRIMARY KEY (id)"
+        },
+        {
+            "table": "rag_task_inputs",
+            "name": "rag_task_inputs_pkey",
+            "type": "p",
+            "def": "PRIMARY KEY (task_id)"
+        },
+        {
+            "table": "rag_task_jobs",
+            "name": "rag_task_jobs_pkey",
+            "type": "p",
+            "def": "PRIMARY KEY (id)"
+        },
+        {
+            "table": "rag_task_jobs",
+            "name": "rag_task_jobs_task_id_job_id_key",
+            "type": "u",
+            "def": "UNIQUE (task_id, job_id)"
+        },
+        {
+            "table": "teaching_faqs",
+            "name": "teaching_faqs_pkey",
+            "type": "p",
+            "def": "PRIMARY KEY (id)"
+        },
+        {
+            "table": "upstream_usage_records",
+            "name": "upstream_usage_records_pkey",
+            "type": "p",
+            "def": "PRIMARY KEY (id)"
+        },
+        {
+            "table": "usage_counters",
+            "name": "usage_counters_pkey",
+            "type": "p",
+            "def": "PRIMARY KEY (subject, day, kind)"
+        },
+        {
+            "table": "users",
+            "name": "users_created_by_fkey",
+            "type": "f",
+            "def": "FOREIGN KEY (created_by) REFERENCES users(id)"
+        },
+        {
+            "table": "users",
+            "name": "users_pkey",
+            "type": "p",
+            "def": "PRIMARY KEY (id)"
+        }
+    ]
+}

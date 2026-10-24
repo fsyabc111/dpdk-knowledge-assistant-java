@@ -21,7 +21,7 @@
 |---|---|---|---|---|---|---|
 | J0-01 | accepted | p0_contracts；主Agent最终接收 | P0契约最终冻结 | 378文件/全映射/10静态护栏通过 | P0范围合成通过 / 用户验收通过（U10） | evidence/J0-01/final-freeze.md |
 | J0-02 | accepted | p0_oracle、p0_performance；主Agent最终接收 | p0-v2/合成基线交付 | 双库186×2、11PG、40CLI、三轮完整测量通过 | P0范围合成通过 / 用户验收通过（U10） | evidence/P0/phase-report.md |
-| J1-01 | in_progress | 主Agent（集成者窗口） | 实施中：backend-java骨架/迁移链/PG预检 | 未执行 | 未执行 | — |
+| J1-01 | in_progress | 主Agent（集成者窗口） | 切片1完成：骨架/pom/wrapper、fail-closed配置、三路径迁移链（B0015/V0014/V0015）、身份预检、18端口契约接口 | 通过（26/26：三路径+重复启动+拒绝负例+身份负例+uuid5/时钟/错误映射） | 未执行 | evidence/J1-01/build-and-paths.md |
 | J1-02 | planned | — | 未开始 | 未执行 | 未执行 | — |
 | J1-03 | planned | — | 未开始 | 未执行 | 未执行 | — |
 | J1-04 | planned | — | 未开始 | 未执行 | 未执行 | — |
