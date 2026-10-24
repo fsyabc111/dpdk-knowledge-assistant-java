@@ -3,7 +3,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-from .compare import compare,normalize,RULES,ID_FORMATS
+from .compare import compare,normalize,RULES,ID_FORMATS,FLOAT_TOLERANCE_RULES
 from .safety import ROOT,BASELINE
 
 
@@ -29,16 +29,17 @@ def main():
     walk(raw,cleaned)
     (folder/'normalization-review.json').write_text(json.dumps({'version':version,'owner_review':'字段实体格式先校验；全trace双射；UTC逐值；调用者request_id保持；数组不重排','user_acceptance':'未验收','paths':paths,'rules':[r.__dict__ for r in RULES],'identity_formats':ID_FORMATS},ensure_ascii=False,indent=2)+'\n')
     from .business_state import QUERIES
-    (folder/'business-projection.json').write_text(json.dumps({'version':'business-v2','queries':QUERIES,'shape':'一次白名单初态+逐case各表removed/added实际业务行+完整终态；可重建每步前置状态','privacy':'不导出密码、token/hash、源码或原始模型输出；消息字段指纹仅用于持久化内容一致性，不替代业务列','checkpoint':'HTTP response consumed and accepted tasks settled; direct transaction group fixed wallclock','retrieval_score_comparison':'exact；未启用1e-12容差；citation.round4/业务分数始终exact'},ensure_ascii=False,indent=2)+'\n')
+    (folder/'business-projection.json').write_text(json.dumps({'version':'business-v2','queries':QUERIES,'shape':'一次白名单初态+逐case各表removed/added实际业务行+完整终态；可重建每步前置状态','privacy':'不导出密码、token/hash、源码或原始模型输出；消息字段指纹仅用于持久化内容一致性，不替代业务列','checkpoint':'HTTP response consumed and accepted tasks settled; direct transaction group fixed wallclock','retrieval_score_comparison':FLOAT_TOLERANCE_RULES,'other_scores':'citation.round4/业务分数始终exact'},ensure_ascii=False,indent=2)+'\n')
     files=['python-golden.json','route-case-map.json','normalization-review.json','business-projection.json']
     data={'fixture_id':version,'status':'frozen-python-oracle; user acceptance pending','baseline_id':BASELINE,'contract_version':'p0-v1',
           'golden_provenance':'仅从p0_python_oracle冻结Python trace；候选无写入口；p0-v1 rev2保持不变',
+          'deterministic_id_port':{'module':'app.services.grading_service.uuid','behavior':'unique repeatable legal UUID v4 objects; frozen grading service still derives grade_16hex','limitation':'does not verify entropy; fixed redaction vectors preserve numeric-run behavior'},
           'files':{f:hashlib.sha256((folder/f).read_bytes()).hexdigest() for f in files},
           'clock':{'HTTP':'2026-10-24T04:00:00+00:00; logical microsecond step','PG_transaction_group':'2026-10-24T04:10:00+00:00 fixed; does not test monotone timestamps'},
-          'retrieval_tolerance':'exact; any future tolerance requires separately confirmed manifest version',
+          'retrieval_tolerance':FLOAT_TOLERANCE_RULES,'retrieval_order':'exact; semantic ties node_id ASC',
           'verification_command':f'.migration-artifacts/p0/venv/bin/python -m migration.oracle.verify --fixture {version} --candidate .migration-artifacts/p0/candidate-trace-{version}.json',
           'approved_java_differences':'../p0-approved-differences/comp003.json remains independent from Python golden',
-          'performance_thresholds':'pending_user_confirmation','live_quality':'live_not_authorized'}
+          'performance_thresholds':{'authority':'migration/contracts/thresholds.json','authorization':'U09/P0-D15','status':'numeric thresholds accepted; P0 phase user acceptance pending'},'live_quality':'live_not_authorized'}
     manifest.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n')
     print(json.dumps({'fixture':version,'files':len(files),'normalized_paths':len(paths),'golden_sha256':data['files']['python-golden.json']}))
 

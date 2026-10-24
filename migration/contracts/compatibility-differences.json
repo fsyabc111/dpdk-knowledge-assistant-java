@@ -217,6 +217,63 @@
       "blocked_scope": "J3-03重放契约需说明；不阻断P1合成骨架",
       "owner_task": "J3-03",
       "dynamic_evidence": "主Agent已回传oracle-python.log发现；最终关联J0-02合成fixture路径"
+    },
+    {
+      "id": "COMP-011",
+      "topic": "会话删除后任务历史身份仍可悬挂",
+      "source": [
+        {
+          "path": "backend/app/services/session_service.py",
+          "line": 318
+        }
+      ],
+      "baseline_behavior": "删除会话、消息、引用，并断开成绩session_id；rag_requests.session_id/message_id仍保留。不能新增ORM级联把问题/任务账本一起删掉。",
+      "disposition": "preserve_explicit_deleted_session_exception",
+      "blocked_scope": "仅明确由该场景删除的会话允许悬挂；其他消息/任务关联缺失必须差分失败。改变保留策略需另定范围。",
+      "owner_task": "J2-05",
+      "dynamic_evidence": "docs/java-migration/evidence/J0-02/known-differences.md / ORACLE-D02"
+    },
+    {
+      "id": "COMP-012",
+      "topic": "冻结React的SSE分帧范围与错误结束",
+      "source": [
+        {
+          "path": "frontend/src/api/client.js",
+          "line": 162
+        },
+        {
+          "path": "backend/app/api/tasks.py",
+          "line": 76
+        }
+      ],
+      "baseline_behavior": "React仅按LF空行分帧，不支持CRLF转写，也不flush无空行终止的EOF尾帧；Python流异常可以只发error后结束，无done。",
+      "disposition": "preserve_client_consumable_wire_and_error_end",
+      "blocked_scope": "Java须输出冻结客户端可消费的LF帧；合法error结束不等于成功done。若改前端兼容CRLF需后续单独范围，不能靠比较器静默放宽。",
+      "owner_task": "J3-03",
+      "dynamic_evidence": "docs/java-migration/evidence/P0/review-spec.md / S3-S4及修复复审"
+    },
+    {
+      "id": "COMP-013",
+      "topic": "号码脱敏会遮蔽含连续数字的生成成绩身份",
+      "source": [
+        {
+          "path": "backend/app/services/rag_issue_service.py",
+          "line": 16
+        },
+        {
+          "path": "backend/app/services/rag_issue_service.py",
+          "line": 31
+        },
+        {
+          "path": "backend/app/services/grading_service.py",
+          "line": 86
+        }
+      ],
+      "baseline_behavior": "redact对连续至少7位数字做号码遮蔽，可能命中随机grade_id中数字串；两端不同随机ID会导致讲解持久化文本字节与字面指纹不同。",
+      "disposition": "preserve_redaction_algorithm_freeze_deterministic_fixture_identity",
+      "blocked_scope": "P0仅在fixture注入合法、唯一、确定性的grading UUID端口，并另固定含/不含数字串的redact结果；不检验UUID熵、不修改Python。若产品层避免身份被遮蔽，须另案明确兼容差异。",
+      "owner_task": "J3-04",
+      "dynamic_evidence": "docs/java-migration/evidence/J0-02/review-fixes.md及p0-v2身份/脱敏向量"
     }
   ]
 }

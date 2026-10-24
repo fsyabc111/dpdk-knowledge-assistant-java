@@ -1,0 +1,13 @@
+{
+  "case_id": "auth-account-valid-to-disabled",
+  "status": "通过",
+  "baseline_id": "80b29135faddd16d5e39fdbf0633291ea6a20489",
+  "database": "p0_candidate_oracle",
+  "assertions": {
+    "fresh_token_valid_before_disable": true,
+    "same_token_invalid_after_disable": true,
+    "old_token_not_revived_after_enable": true,
+    "new_token_valid_after_enable": true
+  },
+  "scope": "真实冻结UserService与隔离PG；不记录明文token/密码/hash；独立补验不改变已冻结HTTP trace"
+}

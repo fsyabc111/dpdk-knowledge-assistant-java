@@ -1,0 +1,504 @@
+{
+  "baseline": "80b29135faddd16d5e39fdbf0633291ea6a20489",
+  "baseline_summary_sha256": "b3c8200ae2feee65ee9e2f8d3f73cbea327baae05206758c7de7e5f8050261b2",
+  "groups": {
+    "login": {
+      "n": 180,
+      "p50_ms": 218.847,
+      "p95_ms": 247.916,
+      "p99_ms": null,
+      "p99_policy": "至少1000样本才报告最近秩p99",
+      "max_ms": 309.832,
+      "requests": 180,
+      "http_200": 180,
+      "unexpected_errors": 0,
+      "expected_backpressure": 0,
+      "unexpected_error_rate": 0.0
+    },
+    "assignment_read": {
+      "n": 21600,
+      "p50_ms": 11.02,
+      "p95_ms": 30.137,
+      "p99_ms": 74.395,
+      "p99_policy": "至少1000样本才报告最近秩p99",
+      "max_ms": 118.377,
+      "requests": 21600,
+      "http_200": 21600,
+      "unexpected_errors": 0,
+      "expected_backpressure": 0,
+      "unexpected_error_rate": 0.0
+    },
+    "formal_submit": {
+      "n": 144,
+      "p50_ms": 213.668,
+      "p95_ms": 219.006,
+      "p99_ms": null,
+      "p99_policy": "至少1000样本才报告最近秩p99",
+      "max_ms": 260.992,
+      "requests": 144,
+      "http_200": 144,
+      "unexpected_errors": 0,
+      "expected_backpressure": 0,
+      "unexpected_error_rate": 0.0
+    },
+    "chat": {
+      "n": 8419,
+      "p50_ms": 2100.598,
+      "p95_ms": 2154.735,
+      "p99_ms": 2195.212,
+      "p99_policy": "至少1000样本才报告最近秩p99",
+      "max_ms": 2274.554,
+      "requests": 8419,
+      "http_200": 8419,
+      "unexpected_errors": 0,
+      "expected_backpressure": 0,
+      "unexpected_error_rate": 0.0
+    },
+    "explain_admission": {
+      "n": 144,
+      "p50_ms": 26.744,
+      "p95_ms": 56.494,
+      "p99_ms": null,
+      "p99_policy": "至少1000样本才报告最近秩p99",
+      "max_ms": 103.085,
+      "requests": 144,
+      "http_200": 144,
+      "unexpected_errors": 0,
+      "expected_backpressure": 0,
+      "unexpected_error_rate": 0.0
+    },
+    "explain_terminal": {
+      "n": 144,
+      "p50_ms": 2103.419,
+      "p95_ms": 2154.977,
+      "p99_ms": null,
+      "p99_policy": "至少1000样本才报告最近秩p99",
+      "max_ms": 2262.994,
+      "requests": 144,
+      "http_200": 144,
+      "unexpected_errors": 0,
+      "expected_backpressure": 0,
+      "unexpected_error_rate": 0.0
+    }
+  },
+  "rounds": [
+    {
+      "phase": "measurement",
+      "round": 1,
+      "target_seconds": 600.0,
+      "elapsed_seconds_including_drain": 602.0902832089996,
+      "groups": {
+        "login": {
+          "n": 60,
+          "p50_ms": 216.232,
+          "p95_ms": 236.088,
+          "p99_ms": null,
+          "p99_policy": "至少1000样本才报告最近秩p99",
+          "max_ms": 244.198,
+          "requests": 60,
+          "http_200": 60,
+          "unexpected_error_rate": 0.0,
+          "offered_completed_rps_over_target_window": 0.1
+        },
+        "assignment_read": {
+          "n": 7200,
+          "p50_ms": 12.536,
+          "p95_ms": 33.225,
+          "p99_ms": 87.484,
+          "p99_policy": "至少1000样本才报告最近秩p99",
+          "max_ms": 118.377,
+          "requests": 7200,
+          "http_200": 7200,
+          "unexpected_error_rate": 0.0,
+          "offered_completed_rps_over_target_window": 12.0
+        },
+        "formal_submit": {
+          "n": 48,
+          "p50_ms": 214.051,
+          "p95_ms": 218.481,
+          "p99_ms": null,
+          "p99_policy": "至少1000样本才报告最近秩p99",
+          "max_ms": 260.992,
+          "requests": 48,
+          "http_200": 48,
+          "unexpected_error_rate": 0.0,
+          "offered_completed_rps_over_target_window": 0.08
+        },
+        "chat": {
+          "n": 2812,
+          "p50_ms": 2100.627,
+          "p95_ms": 2148.964,
+          "p99_ms": 2176.489,
+          "p99_policy": "至少1000样本才报告最近秩p99",
+          "max_ms": 2208.907,
+          "requests": 2812,
+          "http_200": 2812,
+          "unexpected_error_rate": 0.0,
+          "offered_completed_rps_over_target_window": 4.6866666666666665
+        },
+        "explain_admission": {
+          "n": 48,
+          "p50_ms": 31.323,
+          "p95_ms": 56.387,
+          "p99_ms": null,
+          "p99_policy": "至少1000样本才报告最近秩p99",
+          "max_ms": 62.677,
+          "requests": 48,
+          "http_200": 48,
+          "unexpected_error_rate": 0.0,
+          "offered_completed_rps_over_target_window": 0.08
+        },
+        "explain_terminal": {
+          "n": 48,
+          "p50_ms": 2103.419,
+          "p95_ms": 2135.261,
+          "p99_ms": null,
+          "p99_policy": "至少1000样本才报告最近秩p99",
+          "max_ms": 2165.128,
+          "requests": 48,
+          "http_200": 48,
+          "unexpected_error_rate": 0.0,
+          "offered_completed_rps_over_target_window": 0.08
+        }
+      },
+      "resources": {
+        "sample_interval_seconds": 1,
+        "samples": 577,
+        "cpu_basis": "ps累计CPU的相邻采样差，100%=一核；PG进程退出可能造成低估；PG与其他oracle共享实例",
+        "rss_basis": "app单进程RSS；PG主进程及直接子进程RSS求和，含共享页重复，非独占内存",
+        "app_cpu_pct_peak": 781.4564187193577,
+        "pg_cpu_pct_peak": 7.630179505947118,
+        "app_rss_mib_peak": 184.09375,
+        "pg_rss_sum_mib_peak": 544.234375,
+        "active_peak": 10,
+        "waiting_peak": 0
+      },
+      "after": {
+        "tables": {
+          "users": 61,
+          "api_tokens": 180,
+          "assignments": 1,
+          "assistant_sessions": 3430,
+          "assistant_messages": 6860,
+          "rag_requests": 3430,
+          "rag_task_inputs": 0,
+          "rag_task_jobs": 0,
+          "grading_submissions": 58,
+          "upstream_usage_records": 6860
+        },
+        "states": {
+          "answered": 3430
+        },
+        "usage": {
+          "chat": 3430,
+          "grading": 58
+        },
+        "duplicate_task_job_grades": 0,
+        "boundary_calls": {
+          "mcp:grade_plugin": 58,
+          "model": 6860,
+          "retrieval": 3430
+        },
+        "blocked_network_attempts": 0
+      }
+    },
+    {
+      "phase": "measurement",
+      "round": 2,
+      "target_seconds": 600.0,
+      "elapsed_seconds_including_drain": 601.2503208749986,
+      "groups": {
+        "login": {
+          "n": 60,
+          "p50_ms": 219.588,
+          "p95_ms": 260.369,
+          "p99_ms": null,
+          "p99_policy": "至少1000样本才报告最近秩p99",
+          "max_ms": 309.832,
+          "requests": 60,
+          "http_200": 60,
+          "unexpected_error_rate": 0.0,
+          "offered_completed_rps_over_target_window": 0.1
+        },
+        "assignment_read": {
+          "n": 7200,
+          "p50_ms": 10.808,
+          "p95_ms": 29.195,
+          "p99_ms": 67.603,
+          "p99_policy": "至少1000样本才报告最近秩p99",
+          "max_ms": 112.418,
+          "requests": 7200,
+          "http_200": 7200,
+          "unexpected_error_rate": 0.0,
+          "offered_completed_rps_over_target_window": 12.0
+        },
+        "formal_submit": {
+          "n": 48,
+          "p50_ms": 214.186,
+          "p95_ms": 219.307,
+          "p99_ms": null,
+          "p99_policy": "至少1000样本才报告最近秩p99",
+          "max_ms": 248.282,
+          "requests": 48,
+          "http_200": 48,
+          "unexpected_error_rate": 0.0,
+          "offered_completed_rps_over_target_window": 0.08
+        },
+        "chat": {
+          "n": 2805,
+          "p50_ms": 2100.296,
+          "p95_ms": 2152.039,
+          "p99_ms": 2192.444,
+          "p99_policy": "至少1000样本才报告最近秩p99",
+          "max_ms": 2245.668,
+          "requests": 2805,
+          "http_200": 2805,
+          "unexpected_error_rate": 0.0,
+          "offered_completed_rps_over_target_window": 4.675
+        },
+        "explain_admission": {
+          "n": 48,
+          "p50_ms": 24.71,
+          "p95_ms": 56.936,
+          "p99_ms": null,
+          "p99_policy": "至少1000样本才报告最近秩p99",
+          "max_ms": 74.297,
+          "requests": 48,
+          "http_200": 48,
+          "unexpected_error_rate": 0.0,
+          "offered_completed_rps_over_target_window": 0.08
+        },
+        "explain_terminal": {
+          "n": 48,
+          "p50_ms": 2103.296,
+          "p95_ms": 2134.054,
+          "p99_ms": null,
+          "p99_policy": "至少1000样本才报告最近秩p99",
+          "max_ms": 2162.226,
+          "requests": 48,
+          "http_200": 48,
+          "unexpected_error_rate": 0.0,
+          "offered_completed_rps_over_target_window": 0.08
+        }
+      },
+      "resources": {
+        "sample_interval_seconds": 1,
+        "samples": 576,
+        "cpu_basis": "ps累计CPU的相邻采样差，100%=一核；PG进程退出可能造成低估；PG与其他oracle共享实例",
+        "rss_basis": "app单进程RSS；PG主进程及直接子进程RSS求和，含共享页重复，非独占内存",
+        "app_cpu_pct_peak": 787.7946685692244,
+        "pg_cpu_pct_peak": 9.575325917168085,
+        "app_rss_mib_peak": 184.546875,
+        "pg_rss_sum_mib_peak": 680.078125,
+        "active_peak": 10,
+        "waiting_peak": 0
+      },
+      "after": {
+        "tables": {
+          "users": 61,
+          "api_tokens": 300,
+          "assignments": 1,
+          "assistant_sessions": 6855,
+          "assistant_messages": 13710,
+          "rag_requests": 6855,
+          "rag_task_inputs": 0,
+          "rag_task_jobs": 0,
+          "grading_submissions": 116,
+          "upstream_usage_records": 13710
+        },
+        "states": {
+          "answered": 6855
+        },
+        "usage": {
+          "chat": 6855,
+          "grading": 116
+        },
+        "duplicate_task_job_grades": 0,
+        "boundary_calls": {
+          "mcp:grade_plugin": 116,
+          "model": 13710,
+          "retrieval": 6855
+        },
+        "blocked_network_attempts": 0
+      }
+    },
+    {
+      "phase": "measurement",
+      "round": 3,
+      "target_seconds": 600.0,
+      "elapsed_seconds_including_drain": 602.0768795000004,
+      "groups": {
+        "login": {
+          "n": 60,
+          "p50_ms": 219.826,
+          "p95_ms": 240.301,
+          "p99_ms": null,
+          "p99_policy": "至少1000样本才报告最近秩p99",
+          "max_ms": 261.748,
+          "requests": 60,
+          "http_200": 60,
+          "unexpected_error_rate": 0.0,
+          "offered_completed_rps_over_target_window": 0.1
+        },
+        "assignment_read": {
+          "n": 7200,
+          "p50_ms": 9.771,
+          "p95_ms": 25.805,
+          "p99_ms": 65.773,
+          "p99_policy": "至少1000样本才报告最近秩p99",
+          "max_ms": 112.775,
+          "requests": 7200,
+          "http_200": 7200,
+          "unexpected_error_rate": 0.0,
+          "offered_completed_rps_over_target_window": 12.0
+        },
+        "formal_submit": {
+          "n": 48,
+          "p50_ms": 212.548,
+          "p95_ms": 219.006,
+          "p99_ms": null,
+          "p99_policy": "至少1000样本才报告最近秩p99",
+          "max_ms": 236.494,
+          "requests": 48,
+          "http_200": 48,
+          "unexpected_error_rate": 0.0,
+          "offered_completed_rps_over_target_window": 0.08
+        },
+        "chat": {
+          "n": 2802,
+          "p50_ms": 2101.056,
+          "p95_ms": 2163.409,
+          "p99_ms": 2208.953,
+          "p99_policy": "至少1000样本才报告最近秩p99",
+          "max_ms": 2274.554,
+          "requests": 2802,
+          "http_200": 2802,
+          "unexpected_error_rate": 0.0,
+          "offered_completed_rps_over_target_window": 4.67
+        },
+        "explain_admission": {
+          "n": 48,
+          "p50_ms": 26.513,
+          "p95_ms": 99.866,
+          "p99_ms": null,
+          "p99_policy": "至少1000样本才报告最近秩p99",
+          "max_ms": 103.085,
+          "requests": 48,
+          "http_200": 48,
+          "unexpected_error_rate": 0.0,
+          "offered_completed_rps_over_target_window": 0.08
+        },
+        "explain_terminal": {
+          "n": 48,
+          "p50_ms": 2102.907,
+          "p95_ms": 2177.715,
+          "p99_ms": null,
+          "p99_policy": "至少1000样本才报告最近秩p99",
+          "max_ms": 2262.994,
+          "requests": 48,
+          "http_200": 48,
+          "unexpected_error_rate": 0.0,
+          "offered_completed_rps_over_target_window": 0.08
+        }
+      },
+      "resources": {
+        "sample_interval_seconds": 1,
+        "samples": 578,
+        "cpu_basis": "ps累计CPU的相邻采样差，100%=一核；PG进程退出可能造成低估；PG与其他oracle共享实例",
+        "rss_basis": "app单进程RSS；PG主进程及直接子进程RSS求和，含共享页重复，非独占内存",
+        "app_cpu_pct_peak": 791.3119164469407,
+        "pg_cpu_pct_peak": 6.685397182165073,
+        "app_rss_mib_peak": 184.625,
+        "pg_rss_sum_mib_peak": 798.296875,
+        "active_peak": 10,
+        "waiting_peak": 0
+      },
+      "after": {
+        "tables": {
+          "users": 61,
+          "api_tokens": 420,
+          "assignments": 1,
+          "assistant_sessions": 10278,
+          "assistant_messages": 20556,
+          "rag_requests": 10278,
+          "rag_task_inputs": 0,
+          "rag_task_jobs": 0,
+          "grading_submissions": 174,
+          "upstream_usage_records": 20556
+        },
+        "states": {
+          "answered": 10278
+        },
+        "usage": {
+          "chat": 10278,
+          "grading": 174
+        },
+        "duplicate_task_job_grades": 0,
+        "boundary_calls": {
+          "mcp:grade_plugin": 174,
+          "model": 20556,
+          "retrieval": 10278
+        },
+        "blocked_network_attempts": 0
+      }
+    }
+  ],
+  "correctness_assertions": {
+    "no_unexpected_http_or_business_errors": true,
+    "all_accepted_tasks_answered": true,
+    "one_chat_charge_per_accepted_task": true,
+    "terminal_inputs_deleted": true,
+    "formal_submissions_equal_successes": true,
+    "one_mcp_submit_per_formal_success": true,
+    "no_grade_from_explanation": true,
+    "no_external_network_attempt": true
+  },
+  "final": {
+    "tables": {
+      "users": 61,
+      "api_tokens": 420,
+      "assignments": 1,
+      "assistant_sessions": 10278,
+      "assistant_messages": 20556,
+      "rag_requests": 10278,
+      "rag_task_inputs": 0,
+      "rag_task_jobs": 0,
+      "grading_submissions": 174,
+      "upstream_usage_records": 20556
+    },
+    "states": {
+      "answered": 10278
+    },
+    "usage": {
+      "chat": 10278,
+      "grading": 174
+    },
+    "duplicate_task_job_grades": 0,
+    "boundary_calls": {
+      "mcp:grade_plugin": 174,
+      "model": 20556,
+      "retrieval": 10278
+    },
+    "blocked_network_attempts": 0
+  },
+  "resources": {
+    "app_cpu_p95_one_core_percent": 21.991783917301348,
+    "app_cpu_peak_one_core_percent": 791.3119164469407,
+    "app_rss_peak_mib": 184.625,
+    "other_database_active_samples": 0,
+    "actual_sampler_interval_ms": {
+      "n": 1728,
+      "p50_ms": 1047.917,
+      "p95_ms": 1053.291,
+      "p99_ms": 1055.695,
+      "p99_policy": "至少1000样本才报告最近秩p99",
+      "max_ms": 1161.36
+    },
+    "measurement_samples": 1731,
+    "other_load_first_utc": null,
+    "other_load_last_utc": null
+  },
+  "known_good_recovery_execution_seconds_max": 0.07428804199662409,
+  "capacity_pass": false,
+  "status": "测量完成；阈值候选待用户确认；Python恢复现状保留COMP003已批准安全差异；真实质量未验证"
+}

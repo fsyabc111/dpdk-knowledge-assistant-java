@@ -63,8 +63,11 @@ async def execute(database):
             assert row['task_id']==state['chat']['task_id'] and row['session_id']==state['chat']['session_id']
     assert counts['rag_task_inputs']==0 and all(row['status']!='pending' for row in associations)
     schema=schema_report()
+    from app.services.rag_issue_service import redact,input_hash
+    semantic_vectors={'redaction':[{'input':value,'actual':redact(value)} for value in ['grade_abcdefab12345678','grade_abcdefabaaaa4aab']],
+        'input_hash':[{'input':value,'actual':input_hash(value)} for value in ['  cafe\u0301\n','café','a b','a  b','AB','ab']]}
     trace={'version':'p0-v2','baseline_id':BASELINE,'fixture_version':'p0-v2',
-           'business_initial':cases.business_initial,'observations':cases.observations,
+           'upstream_vectors':upstream_results,'semantic_vectors':semantic_vectors,'business_initial':cases.business_initial,'observations':cases.observations,
            'auth_state_step':auth_state_step,'transaction_cases':tx,
            'state':{'counts':counts,'associations':associations,'source_marker_hits':marker_hits,'business':business_final}}
     report={'identity':{k:v for k,v in identity.items() if k not in {'data_directory'}},'schema':schema,'routes':mapping,

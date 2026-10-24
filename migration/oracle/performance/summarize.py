@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from collections import defaultdict
 import json
+import hashlib
 import math
 from pathlib import Path
 import sys
@@ -59,9 +60,17 @@ def main():
                              "allowed_p95_increase_ms": round(max(reference * .20, 50), 3),
                              "policy": "同硬件同PG/数据/替身/配置和相同窗口；绝对上限与相对差值两项同时满足；仅候选待用户确认"}
     recovery = json.loads((EVIDENCE / "recovery.json").read_text())
+    audit_path = EVIDENCE / "final-pg-audit.json"
+    audit = json.loads(audit_path.read_text()) if audit_path.exists() else None
+    if audit is not None and audit.get("baseline_summary_sha256") != hashlib.sha256((EVIDENCE / "baseline-summary.json").read_bytes()).hexdigest():
+        raise RuntimeError("最终PG核对属于其他/旧基线统计，先重跑audit.py")
+    if audit is not None and (audit.get("status") != "通过" or not all(audit["checks"].values())):
+        raise RuntimeError("最终PG总账核对存在失败，保留原证据，不生成门限候选")
     execution = [r["recovery_execution_seconds"] for r in recovery["results"] if r["case_id"] in {"kill-restart-accepted", "kill-restart-before-terminal"}]
     proposal = {"status": "proposed_pending_user_confirmation", "capacity_pass": False,
+                "baseline_summary_sha256": hashlib.sha256((EVIDENCE / "baseline-summary.json").read_bytes()).hexdigest(),
                 "groups": candidates, "unexpected_error_rate_upper": .001,
+                "evaluation_policy": "同样3轮120s预热+600s测量。每端点每一测量轮分别同时满足绝对p95与Python最差轮p95+允许差值；每端点每轮异常/总请求≤0.1%，拒绝/超时不删分母。不能用合并值掩盖单轮失败。预热全部保留作诊断，不作启动性能保证；独立队列用例的预期429单列",
                 "correctness_hard_limits": {"unauthorized_access": 0, "duplicate_business_charge": 0, "duplicate_chat_grade": 0, "never_terminal_task": 0},
                 "combined_cpu_sustained_p95_one_core_percent_upper": ceiling(max(100, cpu_p95 * 1.5), 25),
                 "combined_rss_mib_upper": ceiling(max(512, app_rss_peak * 1.5), 64),
@@ -72,13 +81,16 @@ def main():
                                                "status": "P0可执行synthetic门禁候选，非应用独占或P5生产容量"},
                 "pg_resource_gate": "本实例共享多个oracle库，当前只记录进程资源；尚未提出可归属本应用的PG独占硬上限",
                 "recovery_execution_rto_seconds_upper": 1,
-                "recovery_rto_scope": "仅10ms/10ms/10ms恢复脚本，进程已启动、槽位可用、PG健康，开始ensure_managed到终态；不含JVM/进程启动、grace、调度等待和真实上游",
+                "recovery_rto_scope": "仅10ms/10ms/10ms脚本的kill-restart-accepted与kill-restart-before-terminal：未有未决外部job或已有finished结果；进程已启动、槽位可用、PG健康，ensure_managed到终态；不含启动、grace、调度和真实上游。running等待由600s外墙约束，不套1s；unknown按COMP003另验安全终态，不宣称外部作业完成",
                 "default_scheduler_wait_seconds_upper_derived": 330,
                 "derived_user_visible_rto": "30s grace + 300s扫描间隔保守上界 + 执行；仅推导，尚无真实自动循环最坏值实测，不作为生产恢复承诺",
                 "rpo_candidate": "应用进程SIGKILL且PG继续健康时，已提交受理身份/配额/成绩/作业账本不丢失，局部测试RPO=0；未测PG/主机故障或备份恢复；未保存模型中间输出不保证，临时执行输入遵循24h TTL；外部MCP执行未知不等于业务无损",
-                "unknown_submission_blocker": "当前Python unknown恢复跨进程grade_plugin调用2次；COMP003安全差异由主Agent/用户决定，不改Python、不视为恢复全通过"}
+                "approved_safety_difference": {"id": "COMP003 / U08 / P0-D13", "status": "主Agent转达用户已批准；不修改Python，保留失败证据",
+                                               "python_observed": "unknown恢复跨进程grade_plugin调用2次，本地quota/grade各1；running也以同job再调用",
+                                               "future_java": "running只查/等；unknown/查询失败停止重投，system_error终态提示结果待核对，保留submitted账本，清临时输入",
+                                               "scope": "Java尚未实现；baseline running观察通过不等于安全策略通过"}}
     write_json(EVIDENCE / "threshold-candidates.json", proposal)
-    aggregate = {"baseline": environment["baseline"], "groups": groups, "rounds": measured,
+    aggregate = {"baseline": environment["baseline"], "baseline_summary_sha256": proposal["baseline_summary_sha256"], "groups": groups, "rounds": measured,
                  "correctness_assertions": summary["correctness_assertions"], "final": summary["final"],
                  "resources": {"app_cpu_p95_one_core_percent": cpu_p95, "app_cpu_peak_one_core_percent": max(app_cpu),
                                "app_rss_peak_mib": app_rss_peak, "other_database_active_samples": len(other_load),
@@ -86,7 +98,7 @@ def main():
                                "measurement_samples": len(resource_samples), "other_load_first_utc": other_load[0]["wall_utc"] if other_load else None,
                                "other_load_last_utc": other_load[-1]["wall_utc"] if other_load else None},
                  "known_good_recovery_execution_seconds_max": max(execution), "capacity_pass": False,
-                 "status": "测量完成；阈值候选待用户确认；unknown恢复存在冻结缺陷；真实质量未验证"}
+                 "status": "测量完成；阈值候选待用户确认；Python恢复现状保留COMP003已批准安全差异；真实质量未验证"}
     write_json(EVIDENCE / "aggregate.json", aggregate)
     lines = ["# J0-02 Python 合成性能与恢复实测", "", aggregate["status"] + "。", "",
              f"基线 `{environment['baseline']}`；Python `{environment['python'].split()[0]}`；{environment['cpu_model']}，逻辑 CPU {environment['logical_cpu_count']}；PG {environment['postgres_settings']['server_version']} / pgvector {environment['vector_version']}，schema `{environment['schema']}`。", "",
@@ -102,10 +114,14 @@ def main():
                   "业务断言：" + "；".join(f"{k}={v}" for k, v in summary["correctness_assertions"].items()) + "。", "",
                   "队列边界：41 请求出现 20 活动/20 等待，20 成功、1 立即队满 429、20 等待 10s 后 429；这是预期背压，分母 41，不计作正常 mix 的异常率。终态临时输入为零，配额为 20，槽位归零。", "",
                   "恢复使用加速 10ms 外部脚本，SIGKILL 受理后和成绩提交后、答案终态前均能恢复，重放不重扣、不再调用 MCP，已完成成绩不重复。重驱动执行最大 " + f"{max(execution):.6f}s" + "；该值排除了 30s grace、300s扫描间隔及进程启动。默认调度保守等待上界 330s 属源码推导，未实测实际最坏自动恢复。", "",
-                  "MCP已进入而响应尚未返回时 SIGKILL，恢复先查 unknown 再以相同 job 再提交：跨进程实际 grade_plugin 调用 2 次，本地配额/成绩各 1。外部执行次数与本地幂等不能混为一谈。这一安全边界为失败，未改冻结源码。running 同 job 再调用仅记录现状，不能证明真实 harness 会加入原执行。finished 能复用结果，不再提交。", "",
+                  "MCP已进入而响应尚未返回时 SIGKILL，恢复先查 unknown 再以相同 job 再提交：跨进程实际 grade_plugin 调用 2 次，本地配额/成绩各 1。MCP提交调用数与本地幂等不能混为一谈，替身也不证明真实harness执行次数。这一安全边界为失败，未改冻结源码。running 同 job 再调用仅记录现状，不能证明真实 harness 会加入原执行。finished 能复用结果，不再提交。用户已接受COMP003（U08/P0-D13）：未来Java running只查/等，unknown/查询失败停止重投、system_error终态提示待核对、保留submitted账本、清理输入；Java尚未实现。", "",
                   "600s TaskService 外墙通过虚拟 loop.time 的 599/600.5 边界验证；真实 PG 落 timeout/system_error、清临时输入和释放槽，迟到 finish 被已有终态守卫拒绝。该用例不等同于等候真实 600s 墙钟。断订阅验证服务生成器关闭后后台继续、终态可重放；TCP/浏览器断线未验证。24h TTL 由功能 oracle 承担。", "",
                   "候选阈值见 `threshold-candidates.json`，绝对 p95 与允许差值需同时满足。异常率候选 ≤0.1%，正确性硬限制为零越权/重复扣次/重复聊天成绩/永不终态。CPU/RSS/恢复候选均待用户确认，未冻结、未宣称容量通过。真实模型、embedding与harness质量均未验证。", "",
                   "精确重跑命令、替身设置、统计方法、资源归属与限制见 `migration/oracle/performance/README.md`。原始耗时数组和日志仅留 `.migration-artifacts/p0/performance/`；可提交证据只含合成统计/断言。"])
+    if audit is not None:
+        unknown = sum(item["cost_unknown"] for item in audit["upstream_usage"])
+        zero = sum(item["cost_explicit_zero"] for item in audit["upstream_usage"])
+        lines.extend(["", f"最终只读PG核对：{audit['status']}，全部{len(audit['checks'])}项断言通过；业务终态/扣次={summary['final']['tables']['rag_requests']}，正式成绩/评测扣次={audit['grades']['formal']}，临时输入={audit['remaining_inputs']}。合成模型usage费用unknown={unknown}条，显式零费用={zero}条，unknown未转换为0；不代表真实模型/harness费用。详见 `final-pg-audit.json`（绑定本次baseline-summary的SHA256）。"])
     (EVIDENCE / "REPORT.md").write_text("\n".join(lines) + "\n")
     print(json.dumps({"status": aggregate["status"], "groups": groups, "resources": aggregate["resources"]}, ensure_ascii=False))
 

@@ -16,6 +16,8 @@
 
 每个命令清空该专用 benchmark 库的业务表并产生 60 个合成学生、1 个合成组长、1 份合成作业；不会操作其他 oracle 库。源码输入每次运行生成随机标记，只保存在运行时内存/受理临时表；故障阶段所需临时信息只进 `.migration-artifacts/p0/performance/`。不要同时对该库运行两个本运行器。
 
+60个ASGI客户端使用60个独立合成client IP，保留真实每IP登录限流，不模拟共用NAT地址。负载凭证由真实 `UserService.issue_token` 在seed阶段发行并保持稳定；每阶段的60次真实 `/api/auth/login` 单独计量，响应新token不替换该稳定负载token。因此这里测的是账号认证/持续授权负载，没有模拟浏览器登录态切换。
+
 ## 精确命令
 
 依赖必须由主 Agent 在 `.migration-artifacts/p0/venv` 安装冻结 backend 锁定依赖与 dev 组。主 Agent 管理 PG 生命周期，本运行器不启动、停止或清理 PG。
@@ -25,8 +27,8 @@
 .migration-artifacts/p0/venv/bin/python migration/oracle/performance/run.py queue > .migration-artifacts/p0/performance/queue.log 2>&1
 .migration-artifacts/p0/venv/bin/python migration/oracle/performance/run.py recovery > .migration-artifacts/p0/performance/recovery.log 2>&1
 .migration-artifacts/p0/venv/bin/python migration/oracle/performance/run.py benchmark --rounds 3 --warmup 120 --measurement 600 --label baseline > .migration-artifacts/p0/performance/baseline.log 2>&1
-.migration-artifacts/p0/venv/bin/python migration/oracle/performance/summarize.py > .migration-artifacts/p0/performance/summary.log 2>&1
 .migration-artifacts/p0/venv/bin/python migration/oracle/performance/audit.py > .migration-artifacts/p0/performance/final-pg-audit.log 2>&1
+.migration-artifacts/p0/venv/bin/python migration/oracle/performance/summarize.py > .migration-artifacts/p0/performance/summary.log 2>&1
 ```
 
 长测为 3 轮，每轮先预热 120s、测量 600s；在窗口截止前启动的请求允许完成，另报含排空的墙钟时长。60 账号每阶段各登录一次、每 5s 读作业；10 个问答 worker 连续发起独立会话，轮转 60 账号。正式提交每完成一轮后等 10s，再发起下一次；每次成功提交随后发起讲解并等待终态。问答和讲解共用 10 个请求槽上限，避免讲解另增峰值。提交/讲解各自分组，处于同一固定 mix 的资源竞争环境，不视为隔离的纯端点最大吞吐。

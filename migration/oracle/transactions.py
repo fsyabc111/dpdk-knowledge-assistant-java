@@ -107,7 +107,7 @@ async def _run_cases():
     assert len({c.id for c in chunks})==len(chunks)
     result('pg-vector-rrf-mmr','1024维PG exact cosine→FTS/path融合→冻结RRF/MMR；保留排序及score',
            semantic_ids=vector_ids,ranked=[{'chunk_id':c.id,'score':c.score,'source_path':c.source_path} for c in chunks],
-           tolerance={'comparison':'exact','future_tolerance':'requires explicit user confirmation and manifest version','order':'exact; semantic ties node_id ASC'})
+           tolerance={'raw_ranked_score_absolute':1e-12,'authorization':'U09 user accepted','other_business_scores':'exact','order':'exact; semantic ties node_id ASC'})
     from app.services.citation_service import citations_from_chunks
     from app.rag.types import RetrievedChunk
     six=[RetrievedChunk(id=f'li_six_{i}',source_path='synthetic/same.md',section=str(i),title='同文件片段',content='合成片段',metadata={},score=1.0-i/10) for i in range(6)]

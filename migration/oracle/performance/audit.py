@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 from pathlib import Path
 import sys
 
@@ -42,6 +43,7 @@ def main():
               "one_runtime_source_hash": formal["source_hashes"] == 1,
               "chat_charge_matches_tasks": next(r["n"] for r in usage if r["kind"] == "chat") == expected_tasks}
     output = {"status": "通过" if all(checks.values()) else "失败", "checks": checks, "identity": identity,
+              "baseline_summary_sha256": hashlib.sha256((EVIDENCE / "baseline-summary.json").read_bytes()).hexdigest(),
               "task_states": states, "business_usage": usage, "upstream_usage": providers, "job_states": jobs,
               "remaining_inputs": remaining_inputs, "grades": formal,
               "cost_scope": "合成模型usage来自固定脚本；没有配置真实单价，cost_unknown单列且不转换为0。正式MCP调用以负载边界计数为准，不能把usage表缺少某类记录解释成真实上游零费用；无真实账单或评测花费证据"}

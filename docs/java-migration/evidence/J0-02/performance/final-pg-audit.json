@@ -1,0 +1,58 @@
+{
+  "status": "通过",
+  "checks": {
+    "schema_0015": true,
+    "all_tasks_answered": true,
+    "terminal_inputs_zero": true,
+    "no_chat_grade_in_plain_qa_mix": true,
+    "formal_count_matches_snapshot": true,
+    "one_runtime_source_hash": true,
+    "chat_charge_matches_tasks": true
+  },
+  "identity": {
+    "database": "p0_benchmark_oracle",
+    "role": "p0_oracle",
+    "host": "127.0.0.1",
+    "port": 55473,
+    "comment": "java-migration-p0-synthetic-80b29135",
+    "data_directory": "/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/p0/pgdata",
+    "version": "PostgreSQL 17.10 (Homebrew) on aarch64-apple-darwin25.4.0, compiled by Apple clang version 21.0.0 (clang-2100.0.123.102), 64-bit"
+  },
+  "baseline_summary_sha256": "b3c8200ae2feee65ee9e2f8d3f73cbea327baae05206758c7de7e5f8050261b2",
+  "task_states": [
+    {
+      "status": "answered",
+      "n": 10278
+    }
+  ],
+  "business_usage": [
+    {
+      "kind": "chat",
+      "n": 10278
+    },
+    {
+      "kind": "grading",
+      "n": 174
+    }
+  ],
+  "upstream_usage": [
+    {
+      "kind": "llm",
+      "stage": "planner",
+      "usage_source": "upstream",
+      "n": 20556,
+      "calls": 20556,
+      "cost_unknown": 20556,
+      "cost_explicit_zero": 0,
+      "token_count_unknown": 0
+    }
+  ],
+  "job_states": [],
+  "remaining_inputs": 0,
+  "grades": {
+    "formal": 174,
+    "chat": 0,
+    "source_hashes": 1
+  },
+  "cost_scope": "合成模型usage来自固定脚本；没有配置真实单价，cost_unknown单列且不转换为0。正式MCP调用以负载边界计数为准，不能把usage表缺少某类记录解释成真实上游零费用；无真实账单或评测花费证据"
+}

@@ -2,6 +2,8 @@
 from __future__ import annotations
 from datetime import datetime
 import json
+import hashlib
+import re
 
 # 每个SELECT显式枚举列；不以表hash或行数代替业务值。
 QUERIES={
@@ -10,14 +12,14 @@ QUERIES={
  'password_reset_requests':"SELECT id AS reset_request_id,user_id,status,(reset_token_hash IS NOT NULL) AS has_reset_token,reset_expires_at,created_at,decided_at,decided_by FROM password_reset_requests ORDER BY created_at,user_id,id",
  'admin_audit_log':"SELECT id AS audit_id,actor,action,targets_json AS targets,created_at FROM admin_audit_log ORDER BY created_at,actor,action,id",
  'assistant_sessions':"SELECT id AS session_id,user_id,title,rag_release_id AS release_id,(memory_summary<>'') AS has_memory_summary,memory_summary_through_message_id AS summary_message_id,created_at,updated_at FROM assistant_sessions ORDER BY title,user_id,created_at,id",
- 'assistant_messages':"SELECT m.id AS message_id,m.session_id,m.role,md5(m.content) AS content_fingerprint,octet_length(m.content) AS content_bytes,m.metadata_json AS metadata,m.created_at FROM assistant_messages m JOIN assistant_sessions s ON s.id=m.session_id ORDER BY s.title,m.created_at,m.role,md5(m.content),m.id",
+ 'assistant_messages':"SELECT m.id AS message_id,m.session_id,m.role,m.content AS _content_source,octet_length(m.content) AS content_bytes,m.metadata_json AS metadata,m.created_at FROM assistant_messages m JOIN assistant_sessions s ON s.id=m.session_id ORDER BY s.title,m.created_at,m.role,md5(m.content),m.id",
  'assistant_citations':"SELECT c.id AS citation_id,c.message_id,c.chunk_id,c.citation_engine,c.score,c.rank FROM assistant_citations c JOIN assistant_messages m ON m.id=c.message_id JOIN assistant_sessions s ON s.id=m.session_id ORDER BY s.title,m.created_at,c.rank,c.id",
  'usage_counters':"SELECT subject,day,kind,chat_count FROM usage_counters ORDER BY subject,day,kind",
- 'upstream_usage_records':"SELECT id AS usage_id,request_id,subject,session_id,kind,stage,model,prompt_tokens,completion_tokens,total_tokens,usage_source,call_count,duration_ms,cost_micros,currency,price_version,created_at FROM upstream_usage_records ORDER BY created_at,subject,stage,kind,model,id",
+ 'upstream_usage_records':"SELECT id AS usage_id,request_id,subject,session_id,kind,stage,model,prompt_tokens,completion_tokens,total_tokens,usage_source,call_count,duration_ms,cost_micros,currency,price_version,created_at FROM upstream_usage_records ORDER BY created_at,subject,stage,kind,model,usage_source,prompt_tokens,completion_tokens,total_tokens,call_count,cost_micros,currency,id",
  'assignments':"SELECT id AS assignment_id,title,description,created_by,scope,deadline,status,created_at,updated_at FROM assignments ORDER BY created_at,title,id",
  'assignment_items':"SELECT i.id AS assignment_item_id,i.assignment_id,i.protocol,i.points FROM assignment_items i JOIN assignments a ON a.id=i.assignment_id ORDER BY a.created_at,a.title,i.protocol,i.id",
  'grading_submissions':"SELECT id AS submission_id,user_id,session_id,protocol,code_hash,score,passed,total,results_json AS grade_details,assignment_id,task_job_id AS job_id,created_at FROM grading_submissions ORDER BY created_at,user_id,protocol,id",
- 'rag_requests':"SELECT id AS task_id,request_id,input_hash,initial_request,purpose,user_id,session_id,message_id,md5(question) AS question_fingerprint,md5(context_text) AS context_fingerprint,status,reason,release_id,evidence_json AS evidence,model_version,prompt_version,elapsed_ms,created_at,updated_at FROM rag_requests ORDER BY question,purpose,user_id,created_at,id",
+ 'rag_requests':"SELECT id AS task_id,request_id,input_hash,initial_request,purpose,user_id,session_id,message_id,question AS _question_source,context_text AS _context_source,status,reason,release_id,evidence_json AS evidence,model_version,prompt_version,elapsed_ms,created_at,updated_at FROM rag_requests ORDER BY question,purpose,user_id,created_at,id",
  'rag_task_inputs':"SELECT task_id,octet_length(question) AS question_bytes,attachment_name,attachment_suffix,(source_text IS NOT NULL) AS has_source,octet_length(source_text) AS source_bytes,source_origin,created_at,expires_at FROM rag_task_inputs ORDER BY created_at,task_id",
  'rag_task_jobs':"SELECT id AS ledger_id,task_id,job_id,tool,protocol,code_hash,status,result_json AS job_result,submission_done,created_at,updated_at FROM rag_task_jobs ORDER BY tool,protocol,created_at,job_id",
  'rag_issues':"SELECT i.id AS issue_id,i.request_id AS originating_task_id,i.status,i.owner_id,i.note,i.feedback,i.merged_into AS merged_issue_id,i.knowledge_id,i.verified_release_id,i.verified_at,i.updated_at FROM rag_issues i JOIN rag_requests r ON r.id=i.request_id ORDER BY r.question,r.user_id,i.id",
@@ -53,12 +55,31 @@ def _result(result):
     return out
 
 
-def project_row(table,row):
+def text_identity_projection(text,known_entities):
+    # 只分离本次实际业务表已经登记的实体；疑似ID字面示例仍属于正文指纹。
+    links=[]
+    if not known_entities:return hashlib.sha256(str(text or '').encode()).hexdigest(),links
+    pattern=r'(?<![A-Za-z0-9_])(?:'+'|'.join(re.escape(value) for value in sorted(known_entities,key=lambda x:(-len(x),x)))+r')(?![A-Za-z0-9_])'
+    def substitute(match):
+        value=match.group(0);field=known_entities[value]
+        links.append({field:value})
+        return '<'+field+'>'
+    literal=re.sub(pattern,substitute,str(text or ''))
+    return hashlib.sha256(literal.encode()).hexdigest(),links
+
+
+def project_row(table,row,known_entities=None):
+    known_entities=known_entities or {}
     row=dict(row)
     for key,value in list(row.items()):
         if isinstance(value,datetime):row[key]=value.isoformat()
         elif key in JSON_FIELDS and value is not None:row[key]=_json(value)
-    if table=='assistant_messages':row['metadata']={k:v for k,v in row['metadata'].items() if k in SAFE_MESSAGE_METADATA}
+    if table=='assistant_messages':
+        row['metadata']={k:v for k,v in row['metadata'].items() if k in SAFE_MESSAGE_METADATA}
+        row['content_fingerprint'],row['content_identity_links']=text_identity_projection(row.pop('_content_source',''),known_entities)
+    if table=='rag_requests':
+        row['question_fingerprint'],row['question_identity_links']=text_identity_projection(row.pop('_question_source'),known_entities)
+        row['context_fingerprint'],row['context_identity_links']=text_identity_projection(row.pop('_context_source'),known_entities)
     if table=='grading_submissions':
         details=row['grade_details'] or {}
         row['grade_details']={'source_origin':details.get('source_origin'),
@@ -75,10 +96,13 @@ def project_row(table,row):
 def snapshot():
     """单个只读repeatable-read事务内取得白名单业务值；导入本模块不连接PG。"""
     from app.db import get_conn
-    tables={}
+    raw_tables={}
     with get_conn() as conn:
         conn.execute('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY')
-        for table,query in QUERIES.items():tables[table]=[project_row(table,r) for r in conn.execute(query).fetchall()]
+        for table,query in QUERIES.items():raw_tables[table]=[dict(row) for row in conn.execute(query).fetchall()]
+    aliases={'task_id','session_id','message_id','assignment_id','submission_id','knowledge_id','revision_id','citation_id','ledger_id','issue_event_id','assignment_item_id','audit_id','usage_id','reset_request_id'}
+    known_entities={row[key]:key for rows in raw_tables.values() for row in rows for key in aliases if isinstance(row.get(key),str) and row[key]}
+    tables={table:[project_row(table,row,known_entities) for row in rows] for table,rows in raw_tables.items()}
     return {'projection_version':'business-v2','tables':tables}
 
 

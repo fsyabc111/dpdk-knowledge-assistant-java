@@ -1,6 +1,6 @@
 {
   "version": "p0-v1",
-  "freeze_status": "final-freeze-awaits-J0-02-and-user-P0-acceptance",
+  "freeze_status": "frozen_by_user_2026-10-24_U09",
   "deterministic": {
     "mandatory_case_pass_percent": 100,
     "unexplained_difference_count": 0,
@@ -9,23 +9,110 @@
   "fixed_vector_retrieval": {
     "dimensions": 1024,
     "model_embedding_calls": "forbidden in P0",
-    "ranking_order_and_ties": "pending J0-02 fixture; no new sorting tie policy invented",
-    "float_tolerance": "pending J0-02 evidence and final freeze"
+    "ranking_order": "exact ordered node IDs; semantic ties follow source node_id ASC",
+    "raw_retrieval_score_absolute_tolerance": 1e-12,
+    "citation_rank_and_rounded_score": "exact",
+    "fixture": "p0-v2; explicit field policy in fixture manifest",
+    "evidence": "J0-02 trace transaction_cases pg-vector-rrf-mmr"
   },
   "synthetic_capacity": {
+    "status": "frozen_by_user_2026-10-24_U09",
+    "groups": {
+      "login": {
+        "reference_python_worst_round_p95_ms": 260.369,
+        "absolute_p95_upper_ms": 500,
+        "allowed_p95_increase_ms": 52.074,
+        "policy": "每个候选测量轮同时满足绝对p95与相对增量门槛；硬件、PG、数据、替身、配置和测量域须对齐；U09已确认",
+        "allowed_p95_increase_formula_ms": "max(reference_python_worst_round_p95_ms * 0.20, 50)"
+      },
+      "assignment_read": {
+        "reference_python_worst_round_p95_ms": 33.225,
+        "absolute_p95_upper_ms": 100,
+        "allowed_p95_increase_ms": 50,
+        "policy": "每个候选测量轮同时满足绝对p95与相对增量门槛；硬件、PG、数据、替身、配置和测量域须对齐；U09已确认",
+        "allowed_p95_increase_formula_ms": "max(reference_python_worst_round_p95_ms * 0.20, 50)"
+      },
+      "chat": {
+        "reference_python_worst_round_p95_ms": 2163.409,
+        "absolute_p95_upper_ms": 3000,
+        "allowed_p95_increase_ms": 432.682,
+        "policy": "每个候选测量轮同时满足绝对p95与相对增量门槛；硬件、PG、数据、替身、配置和测量域须对齐；U09已确认",
+        "allowed_p95_increase_formula_ms": "max(reference_python_worst_round_p95_ms * 0.20, 50)"
+      },
+      "formal_submit": {
+        "reference_python_worst_round_p95_ms": 219.307,
+        "absolute_p95_upper_ms": 500,
+        "allowed_p95_increase_ms": 50,
+        "policy": "每个候选测量轮同时满足绝对p95与相对增量门槛；硬件、PG、数据、替身、配置和测量域须对齐；U09已确认",
+        "allowed_p95_increase_formula_ms": "max(reference_python_worst_round_p95_ms * 0.20, 50)"
+      },
+      "explain_admission": {
+        "reference_python_worst_round_p95_ms": 99.866,
+        "absolute_p95_upper_ms": 250,
+        "allowed_p95_increase_ms": 50,
+        "policy": "每个候选测量轮同时满足绝对p95与相对增量门槛；硬件、PG、数据、替身、配置和测量域须对齐；U09已确认",
+        "allowed_p95_increase_formula_ms": "max(reference_python_worst_round_p95_ms * 0.20, 50)"
+      },
+      "explain_terminal": {
+        "reference_python_worst_round_p95_ms": 2177.715,
+        "absolute_p95_upper_ms": 3000,
+        "allowed_p95_increase_ms": 435.543,
+        "policy": "每个候选测量轮同时满足绝对p95与相对增量门槛；硬件、PG、数据、替身、配置和测量域须对齐；U09已确认",
+        "allowed_p95_increase_formula_ms": "max(reference_python_worst_round_p95_ms * 0.20, 50)"
+      }
+    },
+    "unexpected_error_rate_upper": 0.001,
+    "evaluation_policy": "同样3轮120s预热+600s测量。每端点每一测量轮分别同时满足绝对p95与Python最差轮p95+允许差值；每端点每轮异常/总请求≤0.1%，拒绝/超时不删分母。不能用合并值掩盖单轮失败。预热全部保留作诊断，不作启动性能保证；独立队列用例的预期429单列",
+    "correctness_hard_limits": {
+      "unauthorized_access": 0,
+      "duplicate_business_charge": 0,
+      "duplicate_chat_grade": 0,
+      "never_terminal_task": 0
+    },
+    "combined_cpu_sustained_p95_one_core_percent_upper": 100,
+    "combined_rss_mib_upper": 512,
+    "resource_comparison_domain": {
+      "python": "应用+负载器+统计/采样器合计，当前处于同一Python进程",
+      "java": "Java应用进程+等价Python负载/统计/采样进程之和；按时间对齐每个样本后求和再计算p95/峰值，不能相加不同时刻的峰值或百分位",
+      "layout_gate": "P1交付等价候选adapter或另测独立server基线；布局/采样域未对齐时仅观察，不判通过",
+      "network": "当前Python同进程ASGI不含TCP/TLS/nginx；未来adapter须明确网络开销差异",
+      "status": "frozen_P0_synthetic_only_not_production"
+    },
+    "pg_resource_gate": "本实例共享多个oracle库，当前只记录进程资源；尚未提出可归属本应用的PG独占硬上限",
+    "recovery_execution_rto_seconds_upper": 1,
+    "recovery_rto_scope": "仅10ms/10ms/10ms脚本的kill-restart-accepted与kill-restart-before-terminal：未有未决外部job或已有finished结果；进程已启动、槽位可用、PG健康，ensure_managed到终态；不含启动、grace、调度和真实上游。running等待由600s外墙约束，不套1s；unknown按COMP003另验安全终态，不宣称外部作业完成",
+    "default_scheduler_wait_seconds_upper_derived": 330,
+    "derived_user_visible_rto": "30s grace + 300s扫描间隔保守上界 + 执行；仅推导，尚无真实自动循环最坏值实测，不作为生产恢复承诺",
+    "rpo_candidate": "应用进程SIGKILL且PG继续健康时，已提交受理身份/配额/成绩/作业账本不丢失，局部测试RPO=0；未测PG/主机故障或备份恢复；未保存模型中间输出不保证，临时执行输入遵循24h TTL；外部MCP执行未知不等于业务无损",
+    "approved_safety_difference": {
+      "id": "COMP003 / U08 / P0-D13",
+      "status": "主Agent转达用户已批准；不修改Python，保留失败证据",
+      "python_observed": "unknown恢复跨进程grade_plugin调用2次，本地quota/grade各1；running也以同job再调用",
+      "future_java": "running只查/等；unknown/查询失败停止重投，system_error终态提示结果待核对，保留submitted账本，清临时输入",
+      "scope": "Java尚未实现；baseline running观察通过不等于安全策略通过"
+    },
     "student_population_max": 60,
     "peak_question_concurrency": 10,
-    "queue_boundary": "measure active/waiting/beyond-boundary separately; configured defaults are not acceptance thresholds",
-    "p95_ms": null,
-    "error_rate": null,
-    "cpu_rss_limit": null,
-    "recovery_rto_ms": null,
-    "recovery_rpo": "pending synthetic crash/transaction evidence",
-    "status": "pending_measurement_from_J0-02"
+    "normal_mix_measurement": {
+      "rounds": 3,
+      "warmup_seconds_each": 120,
+      "measurement_seconds_each": 600,
+      "model_call_delay_seconds": 1,
+      "retrieval_delay_seconds": 0.05,
+      "mcp_delay_seconds": 0.2
+    },
+    "reference_evidence": "docs/java-migration/evidence/J0-02/performance/aggregate.json",
+    "java_candidate_capacity_pass": null,
+    "python_normal_mix_measurement_pass": true
   },
   "real_quality": {
     "status": "live_not_authorized",
     "procedure": "freeze corpus/questions/model/parameters/repetitions/budget/judging, separately approve Python live baseline, then freeze allowed deltas before Java live comparison",
     "numeric_thresholds": null
+  },
+  "authorization": {
+    "decision": "DECISIONS U09 / P0-D15",
+    "date": "2026-10-24",
+    "phase": "P0 only; P1 not authorized"
   }
 }

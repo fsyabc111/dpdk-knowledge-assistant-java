@@ -1,0 +1,28 @@
+{
+  "fixture": "p0-v2",
+  "golden_sha256": "8d0658661fedb31c6a0690ea97cb3167534504049c65861b3c67e6691337de14",
+  "per_database": {
+    "http_observations": 186,
+    "routes": 66,
+    "pg_cases": 11,
+    "schema_tables": 29,
+    "business_tables": 25
+  },
+  "cli": {
+    "cases": 34,
+    "exit_0": 2,
+    "exit_1": 20,
+    "exit_2": 12,
+    "stderr_or_traceback": false
+  },
+  "pure_tests": 9,
+  "account_disable_assertions": 4,
+  "v1_unchanged": true,
+  "privacy_marker_hits": 0,
+  "pending_tasks": 0,
+  "temporary_inputs": 0,
+  "phase_acceptance": "pending_main_independent_review_and_user",
+  "threshold_authority": "migration/contracts/thresholds.json",
+  "qualification_failures": "preserved; not counted as passed",
+  "evidence": "review-fixes.md"
+}

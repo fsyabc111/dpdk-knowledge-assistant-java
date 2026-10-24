@@ -113,16 +113,48 @@ class ReviewFixTests(unittest.TestCase):
               ('observations-object',{'observations':{}},2)]
             bad_date=copy.deepcopy(original);bad_date['observations'][0]['body']['expires_at']='2026-99-24T04:00:00+00:00'
             variants.append(('calendar',bad_date,2))
+            for name,mutate in [
+                ('state-array',lambda x:x.update(state=[])),
+                ('transaction-null',lambda x:x.update(transaction_cases=None)),
+                ('request-array',lambda x:x['observations'][0].update(request=[])),
+                ('request-input-array',lambda x:x['observations'][0]['request'].update(input=[])),
+                ('request-params-array',lambda x:x['observations'][0]['request'].update(params=[])),
+                ('transaction-item-null',lambda x:x.update(transaction_cases=[None])),
+                ('auth-step-array',lambda x:x.update(auth_state_step=[]))]:
+                broken=copy.deepcopy(original);mutate(broken);variants.append((name,broken,2))
             business=copy.deepcopy(original);business['observations'][0]['body']['request_id']='22222222-2222-4222-8222-222222222222'
             variants.append(('business',business,1))
             for name,value,expected_code in variants:
                 target.write_text(json.dumps(value));out=io.StringIO()
                 with patch.object(verify,'ROOT',fake_root),patch.object(sys,'argv',['verify','--fixture','p0-v2','--candidate',str(target)]),contextlib.redirect_stdout(out):code=verify.main()
                 self.assertEqual(code,expected_code,name);self.assertIsInstance(json.loads(out.getvalue()),dict)
+                cli=[sys.executable,'-c',"from pathlib import Path; from migration.oracle import verify; verify.ROOT=Path("+repr(str(fake_root))+"); raise SystemExit(verify.main())",'--fixture','p0-v2','--candidate',str(target)]
+                completed=subprocess.run(cli,capture_output=True,text=True)
+                self.assertEqual(completed.returncode,expected_code,name);self.assertEqual(completed.stderr,'',name);json.loads(completed.stdout)
             target.write_text('{"observations":[],"attack":'+'['*2000+'0'+']'*2000+'}')
             command=[sys.executable,'-c',"from pathlib import Path; from migration.oracle import verify; verify.ROOT=Path("+repr(str(fake_root))+"); raise SystemExit(verify.main())",'--fixture','p0-v2','--candidate',str(target)]
             result=subprocess.run(command,capture_output=True,text=True)
             self.assertEqual(result.returncode,2);self.assertEqual(result.stderr,'');self.assertEqual(json.loads(result.stdout)['status'],'invalid_manifest_or_input')
+    def test_raw_retrieval_tolerance_only(self):
+        from .compare import exact
+        base={'transaction_cases':[{'ranked':[{'chunk_id':'li_a','score':0.75},{'chunk_id':'li_b','score':0.5}]}]}
+        within=copy.deepcopy(base);within['transaction_cases'][0]['ranked'][0]['score']+=0.5e-12;exact(base,within)
+        beyond=copy.deepcopy(base);beyond['transaction_cases'][0]['ranked'][0]['score']+=2e-12
+        with self.assertRaises(Difference):exact(base,beyond)
+        reordered=copy.deepcopy(base);reordered['transaction_cases'][0]['ranked'].reverse()
+        with self.assertRaises(Difference):exact(base,reordered)
+        for value in [('citation',{'score':1.02},{'score':1.0200000000001}),('business',{'score':80.0},{'score':80.0000000000001})]:
+            with self.assertRaises(Difference):exact(value[1],value[2],f'$.{value[0]}')
+    def test_text_projection_known_entities_only(self):
+        from .business_state import text_identity_projection
+        first='grade_'+'a'*16;second='grade_'+'b'*16;unknown='grade_'+'c'*16
+        known={first:'submission_id',second:'submission_id'}
+        fingerprint,links=text_identity_projection('正文 '+first,known)
+        changed,changed_links=text_identity_projection('正文 '+second,known)
+        self.assertEqual(fingerprint,changed);self.assertNotEqual(links,changed_links)
+        literal,_=text_identity_projection('修改正文 '+first,known);self.assertNotEqual(fingerprint,literal)
+        untouched,refs=text_identity_projection('字面示例 '+unknown,known)
+        self.assertEqual(refs,[]);self.assertEqual(untouched,hashlib.sha256(('字面示例 '+unknown).encode()).hexdigest())
     def test_projection_privacy_columns(self):
         from .business_state import QUERIES,project_row
         self.assertTrue(all('SELECT *' not in query.upper() for query in QUERIES.values()))

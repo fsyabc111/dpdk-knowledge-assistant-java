@@ -12,7 +12,7 @@ async def run(c):
     from app.config import get_settings
     from app.core import auth
     from app.services.user_service import UserService,clear_token_cache
-    from app.services.rag_issue_service import input_hash
+    from app.services.rag_issue_service import input_hash,redact
     from app.db import get_conn
     results=[]
     def request(token=None):return Request({'type':'http','headers':[(b'authorization',('Bearer '+token).encode())] if token else [],'client':('127.0.0.1',12345)})
@@ -56,4 +56,6 @@ async def run(c):
     two.content_hash='b'*64
     assert input_hash('问题',one)!=input_hash('问题',two)
     record('identity-nfc-strip','真实input_hash仅NFC/首尾Python strip；内部空白、大小写、附件原始字节摘要保持区别')
+    assert redact('grade_abcdefab12345678')=='grade_abcdefab[号码已省略]'
+    record('redact-grade-numeric-run','冻结redact会将grade_id中连续8位数字当号码省略；单独保留既有行为，fixture使用确定合法UUID避免随机触发')
     return results

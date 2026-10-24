@@ -1,0 +1,2261 @@
+{
+  "version": "p0-v2",
+  "owner_review": "字段实体格式先校验；全trace双射；UTC逐值；调用者request_id保持；数组不重排",
+  "user_acceptance": "未验收",
+  "paths": [
+    {
+      "path": "$.business_initial.tables.assistant_sessions[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.business_initial.tables.assistant_sessions[1].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.business_initial.tables.assistant_messages[0].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.business_initial.tables.assistant_messages[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.business_initial.tables.assistant_messages[1].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.business_initial.tables.assistant_messages[1].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.business_initial.tables.assistant_messages[1].metadata.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.business_initial.tables.assistant_messages[1].metadata.issue_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.business_initial.tables.assistant_citations[0].citation_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.business_initial.tables.assistant_citations[0].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.business_initial.tables.rag_requests[0].task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.business_initial.tables.rag_requests[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.business_initial.tables.rag_requests[0].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.business_initial.tables.rag_requests[0].elapsed_ms",
+      "kind": "duration"
+    },
+    {
+      "path": "$.business_initial.tables.rag_issues[0].issue_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.business_initial.tables.rag_issues[0].originating_task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[0].body.token",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[1].body.token",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[2].body.token",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[3].body.token",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[4].body.token",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[5].body.token",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[6].body.token",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[7].body.token",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[15].body.items[0].id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[42].business_delta.tables.password_reset_requests.added[0].reset_request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[43].body.requests[0].id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[44].request.path_parameters.request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[44].body.reset_token",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[44].business_delta.tables.password_reset_requests.removed[0].reset_request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[44].business_delta.tables.password_reset_requests.added[0].reset_request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[45].business_delta.tables.password_reset_requests.removed[0].reset_request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[45].business_delta.tables.password_reset_requests.added[0].reset_request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[46].business_delta.tables.password_reset_requests.added[0].reset_request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[47].body.requests[0].id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[48].request.path_parameters.request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[48].business_delta.tables.password_reset_requests.removed[0].reset_request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[48].business_delta.tables.password_reset_requests.added[0].reset_request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[49].business_delta.tables.admin_audit_log.added[0].audit_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[50].body.id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[50].business_delta.tables.assignments.added[0].assignment_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[50].business_delta.tables.assignment_items.added[0].assignment_item_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[50].business_delta.tables.assignment_items.added[0].assignment_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[51].request.path_parameters.assignment_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[51].body.id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[52].request.path_parameters.assignment_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[52].body.id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[52].business_delta.tables.assignments.removed[0].assignment_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[52].business_delta.tables.assignments.added[0].assignment_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[53].request.path_parameters.assignment_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[53].body.submission_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[53].business_delta.tables.grading_submissions.added[0].submission_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[53].business_delta.tables.grading_submissions.added[0].assignment_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[54].body.assignments[0].id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[55].body.assignments[0].id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[56].request.path_parameters.assignment_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[56].body.assignment.id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[57].request.path_parameters.assignment_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[58].request.path_parameters.assignment_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[58].request.path_parameters.submission_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[58].body.session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[58].body.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[58].business_delta.tables.assistant_sessions.added[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[58].business_delta.tables.assistant_messages.added[0].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[58].business_delta.tables.assistant_messages.added[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[58].business_delta.tables.assistant_messages.added[0].metadata.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[58].business_delta.tables.assistant_messages.added[0].metadata.request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[58].business_delta.tables.assistant_messages.added[0].content_identity_links[0].submission_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[58].business_delta.tables.assistant_messages.added[1].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[58].business_delta.tables.assistant_messages.added[1].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[58].business_delta.tables.assistant_messages.added[1].metadata.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[58].business_delta.tables.assistant_messages.added[1].metadata.request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[58].business_delta.tables.assistant_citations.added[0].citation_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[58].business_delta.tables.assistant_citations.added[0].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[58].business_delta.tables.assistant_citations.added[1].citation_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[58].business_delta.tables.assistant_citations.added[1].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[58].business_delta.tables.assistant_citations.added[2].citation_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[58].business_delta.tables.assistant_citations.added[2].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[58].business_delta.tables.upstream_usage_records.added[0].usage_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[58].business_delta.tables.upstream_usage_records.added[0].request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[58].business_delta.tables.upstream_usage_records.added[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[58].business_delta.tables.upstream_usage_records.added[1].usage_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[58].business_delta.tables.upstream_usage_records.added[1].request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[58].business_delta.tables.upstream_usage_records.added[1].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[58].business_delta.tables.upstream_usage_records.added[2].usage_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[58].business_delta.tables.upstream_usage_records.added[2].request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[58].business_delta.tables.upstream_usage_records.added[2].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[58].business_delta.tables.rag_requests.added[0].task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[58].business_delta.tables.rag_requests.added[0].request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[58].business_delta.tables.rag_requests.added[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[58].business_delta.tables.rag_requests.added[0].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[58].business_delta.tables.rag_requests.added[0].elapsed_ms",
+      "kind": "duration"
+    },
+    {
+      "path": "$.observations[58].business_delta.tables.rag_requests.added[0].question_identity_links[0].submission_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[59].request.path_parameters.assignment_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[59].body.id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[59].business_delta.tables.assignments.removed[0].assignment_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[59].business_delta.tables.assignments.added[0].assignment_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[60].request.path_parameters.assignment_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[60].body.id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[60].business_delta.tables.assignments.removed[0].assignment_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[60].business_delta.tables.assignments.added[0].assignment_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[61].body.id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[61].business_delta.tables.rag_knowledge.added[0].knowledge_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[61].business_delta.tables.rag_knowledge_revisions.added[0].revision_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[61].business_delta.tables.rag_knowledge_revisions.added[0].knowledge_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[62].request.path_parameters.knowledge_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[62].body.id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[62].business_delta.tables.rag_knowledge.removed[0].knowledge_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[62].business_delta.tables.rag_knowledge.added[0].knowledge_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[62].business_delta.tables.rag_knowledge_revisions.added[0].revision_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[62].business_delta.tables.rag_knowledge_revisions.added[0].knowledge_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[63].request.path_parameters.knowledge_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[64].request.path_parameters.issue_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[64].body.id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[64].body.request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[64].body.elapsed_ms",
+      "kind": "duration"
+    },
+    {
+      "path": "$.observations[65].request.path_parameters.issue_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[65].body.id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[65].body.request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[65].body.elapsed_ms",
+      "kind": "duration"
+    },
+    {
+      "path": "$.observations[65].business_delta.tables.rag_issues.removed[0].issue_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[65].business_delta.tables.rag_issues.removed[0].originating_task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[65].business_delta.tables.rag_issues.added[0].issue_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[65].business_delta.tables.rag_issues.added[0].originating_task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[65].business_delta.tables.rag_issue_events.added[0].issue_event_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[65].business_delta.tables.rag_issue_events.added[0].issue_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[66].request.input.message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[66].body.issue_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[66].business_delta.tables.rag_issues.removed[0].issue_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[66].business_delta.tables.rag_issues.removed[0].originating_task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[66].business_delta.tables.rag_issues.added[0].issue_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[66].business_delta.tables.rag_issues.added[0].originating_task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[66].business_delta.tables.rag_issue_events.added[0].issue_event_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[66].business_delta.tables.rag_issue_events.added[0].issue_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[67].request.path_parameters.issue_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[67].business_delta.tables.rag_issues.removed[0].issue_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[67].business_delta.tables.rag_issues.removed[0].originating_task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[67].business_delta.tables.rag_issues.added[0].issue_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[67].business_delta.tables.rag_issues.added[0].originating_task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[67].business_delta.tables.rag_issue_events.added[0].issue_event_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[67].business_delta.tables.rag_issue_events.added[0].issue_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[68].body.session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[68].body.message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[68].body.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[68].business_delta.tables.assistant_sessions.added[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[68].business_delta.tables.assistant_messages.added[0].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[68].business_delta.tables.assistant_messages.added[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[68].business_delta.tables.assistant_messages.added[0].metadata.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[68].business_delta.tables.assistant_messages.added[1].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[68].business_delta.tables.assistant_messages.added[1].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[68].business_delta.tables.assistant_messages.added[1].metadata.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[68].business_delta.tables.assistant_citations.added[0].citation_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[68].business_delta.tables.assistant_citations.added[0].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[68].business_delta.tables.assistant_citations.added[1].citation_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[68].business_delta.tables.assistant_citations.added[1].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[68].business_delta.tables.assistant_citations.added[2].citation_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[68].business_delta.tables.assistant_citations.added[2].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[68].business_delta.tables.upstream_usage_records.added[0].usage_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[68].business_delta.tables.upstream_usage_records.added[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[68].business_delta.tables.upstream_usage_records.added[1].usage_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[68].business_delta.tables.upstream_usage_records.added[1].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[68].business_delta.tables.upstream_usage_records.added[2].usage_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[68].business_delta.tables.upstream_usage_records.added[2].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[68].business_delta.tables.upstream_usage_records.added[3].usage_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[68].business_delta.tables.upstream_usage_records.added[3].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[68].business_delta.tables.rag_requests.added[0].task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[68].business_delta.tables.rag_requests.added[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[68].business_delta.tables.rag_requests.added[0].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[68].business_delta.tables.rag_requests.added[0].elapsed_ms",
+      "kind": "duration"
+    },
+    {
+      "path": "$.observations[69].body[0].data.session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[69].body[0].data.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[69].body[6].data.session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[69].body[6].data.message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[69].body[6].data.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[69].business_delta.tables.assistant_sessions.added[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[69].business_delta.tables.assistant_messages.added[0].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[69].business_delta.tables.assistant_messages.added[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[69].business_delta.tables.assistant_messages.added[0].metadata.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[69].business_delta.tables.assistant_messages.added[1].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[69].business_delta.tables.assistant_messages.added[1].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[69].business_delta.tables.assistant_messages.added[1].metadata.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[69].business_delta.tables.assistant_citations.added[0].citation_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[69].business_delta.tables.assistant_citations.added[0].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[69].business_delta.tables.assistant_citations.added[1].citation_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[69].business_delta.tables.assistant_citations.added[1].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[69].business_delta.tables.assistant_citations.added[2].citation_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[69].business_delta.tables.assistant_citations.added[2].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[69].business_delta.tables.upstream_usage_records.added[0].usage_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[69].business_delta.tables.upstream_usage_records.added[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[69].business_delta.tables.upstream_usage_records.added[1].usage_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[69].business_delta.tables.upstream_usage_records.added[1].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[69].business_delta.tables.upstream_usage_records.added[2].usage_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[69].business_delta.tables.upstream_usage_records.added[2].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[69].business_delta.tables.upstream_usage_records.added[3].usage_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[69].business_delta.tables.upstream_usage_records.added[3].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[69].business_delta.tables.rag_requests.added[0].task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[69].business_delta.tables.rag_requests.added[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[69].business_delta.tables.rag_requests.added[0].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[69].business_delta.tables.rag_requests.added[0].elapsed_ms",
+      "kind": "duration"
+    },
+    {
+      "path": "$.observations[70].body.sessions[0].id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[70].body.sessions[1].id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[70].body.sessions[2].id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[70].body.sessions[3].id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[70].body.sessions[4].id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[71].request.path_parameters.session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[71].body.session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[71].body.messages[0].id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[72].request.params.session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[73].request.path_parameters.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[73].body.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[73].body.session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[73].body.message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[73].body.elapsed_ms",
+      "kind": "duration"
+    },
+    {
+      "path": "$.observations[74].request.path_parameters.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[74].body[0].data.session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[74].body[0].data.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[74].body[6].data.session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[74].body[6].data.message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[74].body[6].data.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[75].request.path_parameters.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[75].body.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[75].body.session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[75].body.message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[75].body.elapsed_ms",
+      "kind": "duration"
+    },
+    {
+      "path": "$.observations[76].request.path_parameters.session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[76].business_delta.tables.assistant_sessions.removed[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[76].business_delta.tables.assistant_messages.removed[0].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[76].business_delta.tables.assistant_messages.removed[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[76].business_delta.tables.assistant_messages.removed[0].metadata.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[76].business_delta.tables.assistant_messages.removed[1].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[76].business_delta.tables.assistant_messages.removed[1].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[76].business_delta.tables.assistant_messages.removed[1].metadata.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[76].business_delta.tables.assistant_citations.removed[0].citation_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[76].business_delta.tables.assistant_citations.removed[0].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[76].business_delta.tables.assistant_citations.removed[1].citation_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[76].business_delta.tables.assistant_citations.removed[1].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[76].business_delta.tables.assistant_citations.removed[2].citation_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[76].business_delta.tables.assistant_citations.removed[2].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[78].request.path_parameters.session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[85].request.path_parameters.assignment_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[87].request.path_parameters.assignment_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[89].request.path_parameters.assignment_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[93].request.path_parameters.session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[94].request.path_parameters.session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[101].request.path_parameters.issue_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[104].request.path_parameters.knowledge_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[110].request.path_parameters.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[112].request.path_parameters.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[120].request.path_parameters.assignment_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[121].request.path_parameters.assignment_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[122].request.path_parameters.issue_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[123].request.path_parameters.issue_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[124].request.path_parameters.knowledge_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[125].request.path_parameters.knowledge_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[144].request.path_parameters.assignment_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[146].request.path_parameters.assignment_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[146].request.path_parameters.submission_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[148].request.path_parameters.assignment_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[149].request.path_parameters.assignment_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[150].request.path_parameters.assignment_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[168].request.path_parameters.issue_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[172].request.path_parameters.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[174].request.path_parameters.session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[175].request.path_parameters.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[176].request.path_parameters.assignment_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[178].request.path_parameters.issue_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[183].body.session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[183].body.message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[183].body.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[183].business_delta.tables.assistant_sessions.added[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[183].business_delta.tables.assistant_messages.added[0].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[183].business_delta.tables.assistant_messages.added[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[183].business_delta.tables.assistant_messages.added[0].metadata.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[183].business_delta.tables.assistant_messages.added[1].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[183].business_delta.tables.assistant_messages.added[1].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[183].business_delta.tables.assistant_messages.added[1].metadata.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[183].business_delta.tables.assistant_citations.added[0].citation_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[183].business_delta.tables.assistant_citations.added[0].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[183].business_delta.tables.assistant_citations.added[1].citation_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[183].business_delta.tables.assistant_citations.added[1].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[183].business_delta.tables.assistant_citations.added[2].citation_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[183].business_delta.tables.assistant_citations.added[2].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[183].business_delta.tables.upstream_usage_records.added[0].usage_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[183].business_delta.tables.upstream_usage_records.added[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[183].business_delta.tables.upstream_usage_records.added[1].usage_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[183].business_delta.tables.upstream_usage_records.added[1].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[183].business_delta.tables.upstream_usage_records.added[2].usage_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[183].business_delta.tables.upstream_usage_records.added[2].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[183].business_delta.tables.upstream_usage_records.added[3].usage_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[183].business_delta.tables.upstream_usage_records.added[3].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[183].business_delta.tables.rag_requests.added[0].task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[183].business_delta.tables.rag_requests.added[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[183].business_delta.tables.rag_requests.added[0].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[183].business_delta.tables.rag_requests.added[0].elapsed_ms",
+      "kind": "duration"
+    },
+    {
+      "path": "$.observations[184].body.session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[184].body.message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.observations[184].body.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[0].business_delta.tables.assistant_sessions.added[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[0].business_delta.tables.assistant_messages.added[0].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[0].business_delta.tables.assistant_messages.added[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[0].business_delta.tables.assistant_messages.added[0].metadata.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[0].business_delta.tables.assistant_messages.added[0].metadata.request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[0].business_delta.tables.rag_requests.added[0].task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[0].business_delta.tables.rag_requests.added[0].request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[0].business_delta.tables.rag_requests.added[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[0].business_delta.tables.rag_requests.added[0].elapsed_ms",
+      "kind": "duration"
+    },
+    {
+      "path": "$.transaction_cases[0].business_delta.tables.rag_task_inputs.added[0].task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[3].business_delta.tables.assistant_messages.added[0].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[3].business_delta.tables.assistant_messages.added[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[3].business_delta.tables.assistant_messages.added[0].metadata.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[3].business_delta.tables.assistant_messages.added[0].metadata.request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[3].business_delta.tables.rag_requests.removed[0].task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[3].business_delta.tables.rag_requests.removed[0].request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[3].business_delta.tables.rag_requests.removed[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[3].business_delta.tables.rag_requests.removed[0].elapsed_ms",
+      "kind": "duration"
+    },
+    {
+      "path": "$.transaction_cases[3].business_delta.tables.rag_requests.added[0].task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[3].business_delta.tables.rag_requests.added[0].request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[3].business_delta.tables.rag_requests.added[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[3].business_delta.tables.rag_requests.added[0].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[3].business_delta.tables.rag_requests.added[0].elapsed_ms",
+      "kind": "duration"
+    },
+    {
+      "path": "$.transaction_cases[3].business_delta.tables.rag_task_inputs.removed[0].task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[4].business_delta.tables.assistant_sessions.added[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[4].business_delta.tables.assistant_messages.added[0].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[4].business_delta.tables.assistant_messages.added[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[4].business_delta.tables.assistant_messages.added[0].metadata.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[4].business_delta.tables.assistant_messages.added[0].metadata.request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[4].business_delta.tables.rag_requests.added[0].task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[4].business_delta.tables.rag_requests.added[0].request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[4].business_delta.tables.rag_requests.added[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[4].business_delta.tables.rag_requests.added[0].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[4].business_delta.tables.rag_requests.added[0].elapsed_ms",
+      "kind": "duration"
+    },
+    {
+      "path": "$.transaction_cases[4].business_delta.tables.rag_task_jobs.added[0].ledger_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[4].business_delta.tables.rag_task_jobs.added[0].task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[5].business_delta.tables.assistant_sessions.added[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[5].business_delta.tables.grading_submissions.added[0].submission_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[5].business_delta.tables.grading_submissions.added[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[5].business_delta.tables.rag_requests.added[0].task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[5].business_delta.tables.rag_requests.added[0].request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[5].business_delta.tables.rag_requests.added[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[5].business_delta.tables.rag_requests.added[0].elapsed_ms",
+      "kind": "duration"
+    },
+    {
+      "path": "$.transaction_cases[5].business_delta.tables.rag_task_jobs.added[0].ledger_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[5].business_delta.tables.rag_task_jobs.added[0].task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[10].business_delta.tables.rag_requests.removed[0].task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[10].business_delta.tables.rag_requests.removed[0].request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[10].business_delta.tables.rag_requests.removed[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[10].business_delta.tables.rag_requests.removed[0].elapsed_ms",
+      "kind": "duration"
+    },
+    {
+      "path": "$.transaction_cases[10].business_delta.tables.rag_requests.added[0].task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[10].business_delta.tables.rag_requests.added[0].request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[10].business_delta.tables.rag_requests.added[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[10].business_delta.tables.rag_requests.added[0].elapsed_ms",
+      "kind": "duration"
+    },
+    {
+      "path": "$.transaction_cases[10].business_delta.tables.rag_issues.added[0].issue_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.transaction_cases[10].business_delta.tables.rag_issues.added[0].originating_task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[0].task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[0].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[1].task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[1].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[1].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[1].stored_message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[1].stored_session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[2].task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[2].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[2].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[2].stored_message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[2].stored_session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[3].task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[3].request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[3].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[3].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[3].stored_message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[3].stored_session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[4].task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[4].request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[4].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[4].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[4].stored_message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[4].stored_session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[5].task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[5].request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[5].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[6].task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[6].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[6].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[6].stored_message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[6].stored_session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[7].task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[7].request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[7].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[7].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[7].stored_message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.associations[7].stored_session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.password_reset_requests[0].reset_request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.password_reset_requests[1].reset_request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.admin_audit_log[0].audit_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_sessions[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_sessions[1].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_sessions[2].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_sessions[3].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_sessions[4].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_sessions[5].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_sessions[6].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_sessions[7].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[0].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[0].metadata.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[1].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[1].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[1].metadata.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[2].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[2].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[2].metadata.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[3].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[3].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[3].metadata.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[4].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[4].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[4].metadata.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[4].metadata.request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[5].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[5].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[5].metadata.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[5].metadata.request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[6].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[6].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[6].metadata.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[6].metadata.request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[7].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[7].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[7].metadata.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[7].metadata.request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[7].content_identity_links[0].submission_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[8].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[8].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[8].metadata.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[8].metadata.request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[9].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[9].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[10].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[10].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[10].metadata.task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_messages[10].metadata.issue_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_citations[0].citation_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_citations[0].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_citations[1].citation_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_citations[1].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_citations[2].citation_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_citations[2].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_citations[3].citation_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_citations[3].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_citations[4].citation_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_citations[4].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_citations[5].citation_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_citations[5].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_citations[6].citation_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_citations[6].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_citations[7].citation_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_citations[7].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_citations[8].citation_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_citations[8].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_citations[9].citation_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assistant_citations[9].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.upstream_usage_records[0].usage_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.upstream_usage_records[0].request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.upstream_usage_records[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.upstream_usage_records[1].usage_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.upstream_usage_records[1].request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.upstream_usage_records[1].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.upstream_usage_records[2].usage_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.upstream_usage_records[2].request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.upstream_usage_records[2].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.upstream_usage_records[3].usage_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.upstream_usage_records[3].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.upstream_usage_records[4].usage_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.upstream_usage_records[4].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.upstream_usage_records[5].usage_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.upstream_usage_records[5].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.upstream_usage_records[6].usage_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.upstream_usage_records[6].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.upstream_usage_records[7].usage_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.upstream_usage_records[7].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.upstream_usage_records[8].usage_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.upstream_usage_records[8].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.upstream_usage_records[9].usage_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.upstream_usage_records[9].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.upstream_usage_records[10].usage_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.upstream_usage_records[10].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.upstream_usage_records[11].usage_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.upstream_usage_records[11].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.upstream_usage_records[12].usage_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.upstream_usage_records[12].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.upstream_usage_records[13].usage_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.upstream_usage_records[13].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.upstream_usage_records[14].usage_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.upstream_usage_records[14].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assignments[0].assignment_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assignment_items[0].assignment_item_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.assignment_items[0].assignment_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.grading_submissions[0].submission_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.grading_submissions[0].assignment_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.grading_submissions[1].submission_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.grading_submissions[1].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_requests[0].task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_requests[0].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_requests[0].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_requests[0].elapsed_ms",
+      "kind": "duration"
+    },
+    {
+      "path": "$.state.business.tables.rag_requests[1].task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_requests[1].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_requests[1].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_requests[1].elapsed_ms",
+      "kind": "duration"
+    },
+    {
+      "path": "$.state.business.tables.rag_requests[2].task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_requests[2].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_requests[2].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_requests[2].elapsed_ms",
+      "kind": "duration"
+    },
+    {
+      "path": "$.state.business.tables.rag_requests[3].task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_requests[3].request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_requests[3].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_requests[3].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_requests[3].elapsed_ms",
+      "kind": "duration"
+    },
+    {
+      "path": "$.state.business.tables.rag_requests[4].task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_requests[4].request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_requests[4].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_requests[4].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_requests[4].elapsed_ms",
+      "kind": "duration"
+    },
+    {
+      "path": "$.state.business.tables.rag_requests[5].task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_requests[5].request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_requests[5].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_requests[5].elapsed_ms",
+      "kind": "duration"
+    },
+    {
+      "path": "$.state.business.tables.rag_requests[6].task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_requests[6].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_requests[6].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_requests[6].elapsed_ms",
+      "kind": "duration"
+    },
+    {
+      "path": "$.state.business.tables.rag_requests[7].task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_requests[7].request_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_requests[7].session_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_requests[7].message_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_requests[7].elapsed_ms",
+      "kind": "duration"
+    },
+    {
+      "path": "$.state.business.tables.rag_requests[7].question_identity_links[0].submission_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_task_jobs[0].ledger_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_task_jobs[0].task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_task_jobs[1].ledger_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_task_jobs[1].task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_issues[0].issue_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_issues[0].originating_task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_issues[1].issue_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_issues[1].originating_task_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_issue_events[0].issue_event_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_issue_events[0].issue_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_issue_events[1].issue_event_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_issue_events[1].issue_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_issue_events[2].issue_event_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_issue_events[2].issue_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_knowledge[0].knowledge_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_knowledge_revisions[0].revision_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_knowledge_revisions[0].knowledge_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_knowledge_revisions[1].revision_id",
+      "kind": "typed_generated_identity"
+    },
+    {
+      "path": "$.state.business.tables.rag_knowledge_revisions[1].knowledge_id",
+      "kind": "typed_generated_identity"
+    }
+  ],
+  "rules": [
+    {
+      "pattern": ".*\\.(?:task_id|originating_task_id|issue_id|message_id|stored_message_id|session_id|stored_session_id|assignment_id|submission_id|knowledge_id|revision_id|reset_request_id|citation_id|merged_issue_id|summary_message_id|issue_event_id|ledger_id|assignment_item_id|audit_id|usage_id|token|reset_token|request_id|id)$",
+      "kind": "typed_identity",
+      "reason": "字段/实体命名校验后按全trace双射"
+    },
+    {
+      "pattern": ".*\\.(elapsed_ms|duration_ms)$",
+      "kind": "duration",
+      "reason": "运行耗时非确定，保留非负整数或NULL类型"
+    }
+  ],
+  "identity_formats": {
+    "task": "[a-f0-9]{32}",
+    "message": "(?:[a-f0-9]{32}|msg_[a-f0-9]{12})",
+    "session": "(?:sess_[a-f0-9]{12}|explain-grade_[a-f0-9]{16})",
+    "assignment": "asg_[a-f0-9]{16}",
+    "grade": "grade_[a-f0-9]{16}",
+    "knowledge": "[a-f0-9]{32}",
+    "revision": "[a-f0-9]{32}",
+    "reset_request": "[a-f0-9]{32}",
+    "citation": "(?:[a-f0-9]{32}|cit_[a-f0-9]{12})",
+    "issue_event": "[a-f0-9]{32}",
+    "ledger": "[a-f0-9]{32}",
+    "assignment_item": "item_[a-f0-9]{16}",
+    "audit": "aud_[a-f0-9]{12}",
+    "usage": "use_[a-f0-9]{12}",
+    "request": "[a-f0-9]{8}-[a-f0-9]{4}-[1-5][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}",
+    "token": "[A-Za-z0-9_-]{32,}"
+  }
+}

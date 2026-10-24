@@ -1,0 +1,41 @@
+{
+  "version": "business-v2",
+  "queries": {
+    "users": "SELECT id AS user_id,roles,daily_quota,enabled,must_change_password,created_by,created_at FROM users ORDER BY id",
+    "api_tokens": "SELECT user_id,issued_at,expires_at,revoked_at FROM api_tokens ORDER BY user_id,issued_at,expires_at",
+    "password_reset_requests": "SELECT id AS reset_request_id,user_id,status,(reset_token_hash IS NOT NULL) AS has_reset_token,reset_expires_at,created_at,decided_at,decided_by FROM password_reset_requests ORDER BY created_at,user_id,id",
+    "admin_audit_log": "SELECT id AS audit_id,actor,action,targets_json AS targets,created_at FROM admin_audit_log ORDER BY created_at,actor,action,id",
+    "assistant_sessions": "SELECT id AS session_id,user_id,title,rag_release_id AS release_id,(memory_summary<>'') AS has_memory_summary,memory_summary_through_message_id AS summary_message_id,created_at,updated_at FROM assistant_sessions ORDER BY title,user_id,created_at,id",
+    "assistant_messages": "SELECT m.id AS message_id,m.session_id,m.role,m.content AS _content_source,octet_length(m.content) AS content_bytes,m.metadata_json AS metadata,m.created_at FROM assistant_messages m JOIN assistant_sessions s ON s.id=m.session_id ORDER BY s.title,m.created_at,m.role,md5(m.content),m.id",
+    "assistant_citations": "SELECT c.id AS citation_id,c.message_id,c.chunk_id,c.citation_engine,c.score,c.rank FROM assistant_citations c JOIN assistant_messages m ON m.id=c.message_id JOIN assistant_sessions s ON s.id=m.session_id ORDER BY s.title,m.created_at,c.rank,c.id",
+    "usage_counters": "SELECT subject,day,kind,chat_count FROM usage_counters ORDER BY subject,day,kind",
+    "upstream_usage_records": "SELECT id AS usage_id,request_id,subject,session_id,kind,stage,model,prompt_tokens,completion_tokens,total_tokens,usage_source,call_count,duration_ms,cost_micros,currency,price_version,created_at FROM upstream_usage_records ORDER BY created_at,subject,stage,kind,model,usage_source,prompt_tokens,completion_tokens,total_tokens,call_count,cost_micros,currency,id",
+    "assignments": "SELECT id AS assignment_id,title,description,created_by,scope,deadline,status,created_at,updated_at FROM assignments ORDER BY created_at,title,id",
+    "assignment_items": "SELECT i.id AS assignment_item_id,i.assignment_id,i.protocol,i.points FROM assignment_items i JOIN assignments a ON a.id=i.assignment_id ORDER BY a.created_at,a.title,i.protocol,i.id",
+    "grading_submissions": "SELECT id AS submission_id,user_id,session_id,protocol,code_hash,score,passed,total,results_json AS grade_details,assignment_id,task_job_id AS job_id,created_at FROM grading_submissions ORDER BY created_at,user_id,protocol,id",
+    "rag_requests": "SELECT id AS task_id,request_id,input_hash,initial_request,purpose,user_id,session_id,message_id,question AS _question_source,context_text AS _context_source,status,reason,release_id,evidence_json AS evidence,model_version,prompt_version,elapsed_ms,created_at,updated_at FROM rag_requests ORDER BY question,purpose,user_id,created_at,id",
+    "rag_task_inputs": "SELECT task_id,octet_length(question) AS question_bytes,attachment_name,attachment_suffix,(source_text IS NOT NULL) AS has_source,octet_length(source_text) AS source_bytes,source_origin,created_at,expires_at FROM rag_task_inputs ORDER BY created_at,task_id",
+    "rag_task_jobs": "SELECT id AS ledger_id,task_id,job_id,tool,protocol,code_hash,status,result_json AS job_result,submission_done,created_at,updated_at FROM rag_task_jobs ORDER BY tool,protocol,created_at,job_id",
+    "rag_issues": "SELECT i.id AS issue_id,i.request_id AS originating_task_id,i.status,i.owner_id,i.note,i.feedback,i.merged_into AS merged_issue_id,i.knowledge_id,i.verified_release_id,i.verified_at,i.updated_at FROM rag_issues i JOIN rag_requests r ON r.id=i.request_id ORDER BY r.question,r.user_id,i.id",
+    "rag_issue_events": "SELECT e.id AS issue_event_id,e.issue_id,e.actor_id,e.action,e.detail,e.created_at FROM rag_issue_events e JOIN rag_requests r ON r.id=e.issue_id ORDER BY r.question,e.created_at,e.action,e.id",
+    "rag_knowledge": "SELECT id AS knowledge_id,created_by,title,body,revision,status,updated_at FROM rag_knowledge ORDER BY title,revision,id",
+    "rag_knowledge_revisions": "SELECT id AS revision_id,knowledge_id,revision,actor_id,title,body,status,created_at FROM rag_knowledge_revisions ORDER BY title,revision,created_at,id",
+    "rag_releases": "SELECT id AS release_id,configuration,created_at,node_count FROM rag_releases ORDER BY created_at,id",
+    "rag_index_state": "SELECT name,release_id FROM rag_index_state ORDER BY name",
+    "rag_release_nodes": "SELECT release_id,node_id FROM rag_release_nodes ORDER BY release_id,node_id",
+    "knowledge_documents": "SELECT id AS document_id,source_path,source_type,title,content_hash,git_commit,indexed_at FROM knowledge_documents ORDER BY source_path,id",
+    "knowledge_chunks": "SELECT id AS chunk_id,document_id,source_path,section,md5(content) AS content_fingerprint,octet_length(content) AS content_bytes,metadata_json AS metadata FROM knowledge_chunks ORDER BY source_path,section,id",
+    "li_nodes": "SELECT node_id,md5(text) AS content_fingerprint,octet_length(text) AS content_bytes,metadata_ AS metadata,vector_dims(embedding) AS embedding_dimensions FROM data_li_knowledge_v1 ORDER BY node_id"
+  },
+  "shape": "一次白名单初态+逐case各表removed/added实际业务行+完整终态；可重建每步前置状态",
+  "privacy": "不导出密码、token/hash、源码或原始模型输出；消息字段指纹仅用于持久化内容一致性，不替代业务列",
+  "checkpoint": "HTTP response consumed and accepted tasks settled; direct transaction group fixed wallclock",
+  "retrieval_score_comparison": [
+    {
+      "pattern": "\\$\\.transaction_cases\\[\\d+\\]\\.ranked\\[\\d+\\]\\.score",
+      "absolute": 1e-12,
+      "reason": "U09 用户批准raw检索分数容差；顺序/citation.round4/业务分数仍exact"
+    }
+  ],
+  "other_scores": "citation.round4/业务分数始终exact"
+}

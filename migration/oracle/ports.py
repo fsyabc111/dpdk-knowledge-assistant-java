@@ -4,6 +4,8 @@ import asyncio
 import json
 from types import SimpleNamespace
 from unittest.mock import patch
+import threading
+import uuid
 
 LLM_LEDGER = []
 MCP_LEDGER = []
@@ -69,7 +71,21 @@ async def direct_chat(self, messages, *, usage=None, stage=''):
 
 
 def install_ports():
+    # grade_id被拼进讲解文本；固定合法UUID端口避免随机十进制长串触发源脱敏差异。
+    # 不改造grade逻辑；仍由冻结服务截取hex并完成真实事务。
+    grade_counter=0
+    grade_lock=threading.Lock()
+    def grade_uuid4():
+        nonlocal grade_counter
+        with grade_lock:
+            grade_counter+=1;value=grade_counter
+            letters=[]
+            for _ in range(8):letters.append('abcdef'[value%6]);value//=6
+            prefix='abcdefab'+''.join(reversed(letters))
+        return uuid.UUID(hex=prefix+'abcdefabcdefabcd',version=4)
+    grade_uuid_port=SimpleNamespace(uuid4=grade_uuid4)
     patches = [
+        patch('app.services.grading_service.uuid',grade_uuid_port),
         patch('app.agent.service.build_agent_chat_model',build_model),
         patch('app.agent.mcp_client.HarnessMcpClient.call_tool',lambda self,t,a:mcp_call(t,a)),
         patch('app.services.retrieval_service.build_embedding_model',lambda settings:FixedEmbedding()),

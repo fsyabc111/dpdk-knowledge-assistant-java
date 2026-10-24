@@ -27,7 +27,7 @@ ID_FORMATS = {
     'session': r'(?:sess_[a-f0-9]{12}|explain-grade_[a-f0-9]{16})',
     'assignment': r'asg_[a-f0-9]{16}', 'grade': r'grade_[a-f0-9]{16}',
     'knowledge': HEX32, 'revision': HEX32, 'reset_request': HEX32,
-    'citation': HEX32, 'issue_event': HEX32, 'ledger': HEX32,
+    'citation': rf'(?:{HEX32}|cit_[a-f0-9]{{12}})', 'issue_event': HEX32, 'ledger': HEX32,
     'assignment_item': r'item_[a-f0-9]{16}', 'audit': r'aud_[a-f0-9]{12}',
     'usage': r'use_[a-f0-9]{12}', 'request': UUID,
     'token': r'[A-Za-z0-9_-]{32,}',
@@ -46,6 +46,7 @@ FIELD_KINDS = {
 def validate_trace_schema(trace: Any) -> None:
     """先迭代验证容器/资源上限，避免递归或损坏输入产生traceback。"""
     if type(trace) is not dict: raise InvalidTrace('trace顶层必须是object')
+    if 'state' in trace and type(trace['state']) is not dict:raise InvalidTrace('state必须是object')
     observations=trace.get('observations')
     if type(observations) is not list: raise InvalidTrace('observations必须是array')
     stack=[(trace,0)]; nodes=0
@@ -63,6 +64,13 @@ def validate_trace_schema(trace: Any) -> None:
         if type(record) is not dict:raise InvalidTrace('observation必须是object')
         if type(record.get('status')) is not int or not 100<=record['status']<=599:raise InvalidTrace('observation.status必须是HTTP整数')
         if type(record.get('media_type')) is not str or 'body' not in record:raise InvalidTrace('observation缺media_type/body')
+        if 'route_id' in record and type(record['route_id']) is not str:raise InvalidTrace('route_id必须是string')
+        if 'request' in record:
+            request=record['request']
+            if type(request) is not dict:raise InvalidTrace('observation.request必须是object')
+            for name in ('input','params'):
+                if name in request and request[name] is not None and type(request[name]) is not dict:raise InvalidTrace('request.'+name+'必须是object或NULL')
+            if 'path_parameters' in request and type(request['path_parameters']) is not dict:raise InvalidTrace('request.path_parameters必须是object')
         if record['media_type']=='text/event-stream':
             if type(record['body']) is not list:raise InvalidTrace('SSE body必须是array')
             for event in record['body']:
@@ -71,8 +79,11 @@ def validate_trace_schema(trace: Any) -> None:
         if trace.get('fixture_version')=='p0-v2':
             if type(record.get('business_before')) is not dict or type(record.get('business_after')) is not dict:
                 raise InvalidTrace('p0-v2每个observation必须有业务前后状态')
-    if trace.get('fixture_version')=='p0-v2' and type(trace.get('state',{}).get('business')) is not dict:
-        raise InvalidTrace('p0-v2缺最终业务状态')
+    if trace.get('fixture_version')=='p0-v2':
+        if type(trace.get('state')) is not dict or type(trace['state'].get('business')) is not dict:raise InvalidTrace('p0-v2缺最终业务状态object')
+        if type(trace.get('transaction_cases')) is not list or any(type(item) is not dict for item in trace['transaction_cases']):raise InvalidTrace('transaction_cases必须是object数组')
+        if type(trace.get('auth_state_step')) is not dict:raise InvalidTrace('auth_state_step必须是object')
+        if type(trace.get('business_initial')) is not dict:raise InvalidTrace('business_initial必须是object')
 
 
 def parse_sse(chunks) -> list[dict]:
@@ -145,7 +156,7 @@ def _kind(path,value,route):
     if key in FIELD_KINDS:return FIELD_KINDS[key]
     if key=='request_id':
         if '/api/rag/issues' in route and '.body.' in path:return 'task'
-        if '/api/admin/password-reset-requests/' in route:return 'reset_request'
+        if '/api/admin/password-reset-requests/' in route and '.request.path_parameters.' in path:return 'reset_request'
         return 'request'
     if key!='id':return None
     if '.messages[' in path:return 'message'
@@ -166,8 +177,8 @@ def normalize(value:Any,path='$',*,ids=None,caller_ids=None,allow_placeholders=F
     if ids is None:ids={}
     if identity_kinds is None:identity_kinds={}
     if caller_ids is None:
-        caller_ids={o.get('request',{}).get('input',{}).get('request_id') for o in value.get('observations',[])
-                    if isinstance(o.get('request',{}).get('input'),dict)} if isinstance(value,dict) else set()
+        caller_ids={o['request']['input']['request_id'] for o in value.get('observations',[])
+                    if isinstance(o.get('request',{}).get('input'),dict) and isinstance(o['request']['input'].get('request_id'),str)} if isinstance(value,dict) else set()
     if isinstance(value,dict) and 'route_id' in value:route=value['route_id']
     key=path.rsplit('.',1)[-1]
     if not isinstance(value,(dict,list)) and value is not None:
@@ -198,7 +209,15 @@ def normalize(value:Any,path='$',*,ids=None,caller_ids=None,allow_placeholders=F
     return value
 
 
+FLOAT_TOLERANCE_RULES=[{'pattern':r'\$\.transaction_cases\[\d+\]\.ranked\[\d+\]\.score','absolute':1e-12,'reason':'U09 用户批准raw检索分数容差；顺序/citation.round4/业务分数仍exact'}]
+
+
 def exact(expected,actual,path='$'):
+    if type(expected) is float and type(actual) is float:
+        rule=next((r for r in FLOAT_TOLERANCE_RULES if re.fullmatch(r['pattern'],path)),None)
+        if rule is not None:
+            if abs(expected-actual)>rule['absolute']:raise Difference(f'{path}: raw检索分数超过绝对容差')
+            return
     if type(expected) is not type(actual):raise Difference(f'{path}: 类型不同 {type(expected).__name__}/{type(actual).__name__}')
     if isinstance(expected,dict):
         if set(expected)!=set(actual):raise Difference(f'{path}: 字段/缺省不同')
@@ -244,6 +263,7 @@ def validate_business_chain(trace):
         if not all(type(v) is dict for v in (before,after,delta)) or type(delta.get('tables')) is not dict:
             raise InvalidTrace('业务checkpoint/delta容器损坏')
         if set(delta['tables'])!=set(current):raise InvalidTrace('业务delta必须逐表声明，未变化表也不得省略')
+        if type(before.get('row_counts')) is not dict or type(after.get('row_counts')) is not dict:raise InvalidTrace('业务checkpoint.row_counts必须是object')
         if before.get('row_counts')!={table:len(rows) for table,rows in current.items()}:raise Difference('业务前置行数与上一checkpoint不符')
         for table,change in delta['tables'].items():
             if type(change) is not dict or not rows_valid(change.get('removed')) or not rows_valid(change.get('added')):

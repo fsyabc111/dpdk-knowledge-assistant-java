@@ -1,0 +1,38 @@
+{
+  "fixture_id": "p0-v2",
+  "status": "frozen-python-oracle; user acceptance pending",
+  "baseline_id": "80b29135faddd16d5e39fdbf0633291ea6a20489",
+  "contract_version": "p0-v1",
+  "golden_provenance": "仅从p0_python_oracle冻结Python trace；候选无写入口；p0-v1 rev2保持不变",
+  "deterministic_id_port": {
+    "module": "app.services.grading_service.uuid",
+    "behavior": "unique repeatable legal UUID v4 objects; frozen grading service still derives grade_16hex",
+    "limitation": "does not verify entropy; fixed redaction vectors preserve numeric-run behavior"
+  },
+  "files": {
+    "python-golden.json": "8d0658661fedb31c6a0690ea97cb3167534504049c65861b3c67e6691337de14",
+    "route-case-map.json": "f6fd8a96f4498caf10833a3e445b982d31e91d383a8eb6abb370b4542e69c5f0",
+    "normalization-review.json": "3487b49ef250724dda684e6cff89688ae3e5feb6fb26aff2d67c67ab8bef2fc6",
+    "business-projection.json": "70db4edc730800adb4c6865a046a1d1331f12c5fe6c4b52252b463141c90ff74"
+  },
+  "clock": {
+    "HTTP": "2026-10-24T04:00:00+00:00; logical microsecond step",
+    "PG_transaction_group": "2026-10-24T04:10:00+00:00 fixed; does not test monotone timestamps"
+  },
+  "retrieval_tolerance": [
+    {
+      "pattern": "\\$\\.transaction_cases\\[\\d+\\]\\.ranked\\[\\d+\\]\\.score",
+      "absolute": 1e-12,
+      "reason": "U09 用户批准raw检索分数容差；顺序/citation.round4/业务分数仍exact"
+    }
+  ],
+  "retrieval_order": "exact; semantic ties node_id ASC",
+  "verification_command": ".migration-artifacts/p0/venv/bin/python -m migration.oracle.verify --fixture p0-v2 --candidate .migration-artifacts/p0/candidate-trace-p0-v2.json",
+  "approved_java_differences": "../p0-approved-differences/comp003.json remains independent from Python golden",
+  "performance_thresholds": {
+    "authority": "migration/contracts/thresholds.json",
+    "authorization": "U09/P0-D15",
+    "status": "numeric thresholds accepted; P0 phase user acceptance pending"
+  },
+  "live_quality": "live_not_authorized"
+}

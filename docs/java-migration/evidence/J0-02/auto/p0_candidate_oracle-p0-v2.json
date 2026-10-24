@@ -1,0 +1,4825 @@
+{
+  "identity": {
+    "database": "p0_candidate_oracle",
+    "role": "p0_oracle",
+    "host": "127.0.0.1",
+    "port": 55473,
+    "comment": "java-migration-p0-synthetic-80b29135",
+    "version": "PostgreSQL 17.10 (Homebrew) on aarch64-apple-darwin25.4.0, compiled by Apple clang version 21.0.0 (clang-2100.0.123.102), 64-bit"
+  },
+  "schema": {
+    "expected_tables": [
+      "admin_audit_log",
+      "alembic_version",
+      "api_tokens",
+      "assignment_items",
+      "assignments",
+      "assistant_citations",
+      "assistant_messages",
+      "assistant_sessions",
+      "data_li_knowledge_v1",
+      "grading_submissions",
+      "knowledge_chunks",
+      "knowledge_documents",
+      "knowledge_indexes",
+      "knowledge_source_files",
+      "password_reset_requests",
+      "rag_index_state",
+      "rag_issue_events",
+      "rag_issues",
+      "rag_knowledge",
+      "rag_knowledge_revisions",
+      "rag_release_nodes",
+      "rag_releases",
+      "rag_requests",
+      "rag_task_inputs",
+      "rag_task_jobs",
+      "teaching_faqs",
+      "upstream_usage_records",
+      "usage_counters",
+      "users"
+    ],
+    "actual_tables": [
+      "admin_audit_log",
+      "alembic_version",
+      "api_tokens",
+      "assignment_items",
+      "assignments",
+      "assistant_citations",
+      "assistant_messages",
+      "assistant_sessions",
+      "data_li_knowledge_v1",
+      "grading_submissions",
+      "knowledge_chunks",
+      "knowledge_documents",
+      "knowledge_indexes",
+      "knowledge_source_files",
+      "password_reset_requests",
+      "rag_index_state",
+      "rag_issue_events",
+      "rag_issues",
+      "rag_knowledge",
+      "rag_knowledge_revisions",
+      "rag_release_nodes",
+      "rag_releases",
+      "rag_requests",
+      "rag_task_inputs",
+      "rag_task_jobs",
+      "teaching_faqs",
+      "upstream_usage_records",
+      "usage_counters",
+      "users"
+    ],
+    "missing": [],
+    "alembic_head": [
+      "0015_explain_purpose"
+    ],
+    "indexes": [
+      {
+        "tablename": "admin_audit_log",
+        "indexname": "admin_audit_log_pkey",
+        "indexdef": "CREATE UNIQUE INDEX admin_audit_log_pkey ON public.admin_audit_log USING btree (id)"
+      },
+      {
+        "tablename": "admin_audit_log",
+        "indexname": "idx_admin_audit_log_created",
+        "indexdef": "CREATE INDEX idx_admin_audit_log_created ON public.admin_audit_log USING btree (created_at DESC)"
+      },
+      {
+        "tablename": "alembic_version",
+        "indexname": "alembic_version_pkc",
+        "indexdef": "CREATE UNIQUE INDEX alembic_version_pkc ON public.alembic_version USING btree (version_num)"
+      },
+      {
+        "tablename": "api_tokens",
+        "indexname": "api_tokens_pkey",
+        "indexdef": "CREATE UNIQUE INDEX api_tokens_pkey ON public.api_tokens USING btree (token_hash)"
+      },
+      {
+        "tablename": "api_tokens",
+        "indexname": "api_tokens_user_id_idx",
+        "indexdef": "CREATE INDEX api_tokens_user_id_idx ON public.api_tokens USING btree (user_id)"
+      },
+      {
+        "tablename": "assignment_items",
+        "indexname": "assignment_items_assignment_id_protocol_key",
+        "indexdef": "CREATE UNIQUE INDEX assignment_items_assignment_id_protocol_key ON public.assignment_items USING btree (assignment_id, protocol)"
+      },
+      {
+        "tablename": "assignment_items",
+        "indexname": "assignment_items_pkey",
+        "indexdef": "CREATE UNIQUE INDEX assignment_items_pkey ON public.assignment_items USING btree (id)"
+      },
+      {
+        "tablename": "assignments",
+        "indexname": "assignments_pkey",
+        "indexdef": "CREATE UNIQUE INDEX assignments_pkey ON public.assignments USING btree (id)"
+      },
+      {
+        "tablename": "assignments",
+        "indexname": "idx_assignments_created_by",
+        "indexdef": "CREATE INDEX idx_assignments_created_by ON public.assignments USING btree (created_by)"
+      },
+      {
+        "tablename": "assignments",
+        "indexname": "idx_assignments_status",
+        "indexdef": "CREATE INDEX idx_assignments_status ON public.assignments USING btree (status)"
+      },
+      {
+        "tablename": "assistant_citations",
+        "indexname": "assistant_citations_pkey",
+        "indexdef": "CREATE UNIQUE INDEX assistant_citations_pkey ON public.assistant_citations USING btree (id)"
+      },
+      {
+        "tablename": "assistant_citations",
+        "indexname": "idx_assistant_citations_engine",
+        "indexdef": "CREATE INDEX idx_assistant_citations_engine ON public.assistant_citations USING btree (citation_engine)"
+      },
+      {
+        "tablename": "assistant_citations",
+        "indexname": "idx_assistant_citations_message_id",
+        "indexdef": "CREATE INDEX idx_assistant_citations_message_id ON public.assistant_citations USING btree (message_id)"
+      },
+      {
+        "tablename": "assistant_messages",
+        "indexname": "assistant_messages_pkey",
+        "indexdef": "CREATE UNIQUE INDEX assistant_messages_pkey ON public.assistant_messages USING btree (id)"
+      },
+      {
+        "tablename": "assistant_messages",
+        "indexname": "idx_assistant_messages_session_id",
+        "indexdef": "CREATE INDEX idx_assistant_messages_session_id ON public.assistant_messages USING btree (session_id)"
+      },
+      {
+        "tablename": "assistant_sessions",
+        "indexname": "assistant_sessions_pkey",
+        "indexdef": "CREATE UNIQUE INDEX assistant_sessions_pkey ON public.assistant_sessions USING btree (id)"
+      },
+      {
+        "tablename": "data_li_knowledge_v1",
+        "indexname": "data_li_knowledge_v1_pkey",
+        "indexdef": "CREATE UNIQUE INDEX data_li_knowledge_v1_pkey ON public.data_li_knowledge_v1 USING btree (id)"
+      },
+      {
+        "tablename": "data_li_knowledge_v1",
+        "indexname": "li_knowledge_v1_idx",
+        "indexdef": "CREATE INDEX li_knowledge_v1_idx ON public.data_li_knowledge_v1 USING gin (text_search_tsv)"
+      },
+      {
+        "tablename": "grading_submissions",
+        "indexname": "grading_submissions_pkey",
+        "indexdef": "CREATE UNIQUE INDEX grading_submissions_pkey ON public.grading_submissions USING btree (id)"
+      },
+      {
+        "tablename": "grading_submissions",
+        "indexname": "idx_grading_assignment",
+        "indexdef": "CREATE INDEX idx_grading_assignment ON public.grading_submissions USING btree (assignment_id, user_id)"
+      },
+      {
+        "tablename": "grading_submissions",
+        "indexname": "idx_grading_proto",
+        "indexdef": "CREATE INDEX idx_grading_proto ON public.grading_submissions USING btree (protocol, created_at DESC)"
+      },
+      {
+        "tablename": "grading_submissions",
+        "indexname": "idx_grading_task_job_id",
+        "indexdef": "CREATE UNIQUE INDEX idx_grading_task_job_id ON public.grading_submissions USING btree (task_job_id) WHERE (task_job_id IS NOT NULL)"
+      },
+      {
+        "tablename": "grading_submissions",
+        "indexname": "idx_grading_user",
+        "indexdef": "CREATE INDEX idx_grading_user ON public.grading_submissions USING btree (user_id, created_at DESC)"
+      },
+      {
+        "tablename": "knowledge_chunks",
+        "indexname": "idx_knowledge_chunks_document_id",
+        "indexdef": "CREATE INDEX idx_knowledge_chunks_document_id ON public.knowledge_chunks USING btree (document_id)"
+      },
+      {
+        "tablename": "knowledge_chunks",
+        "indexname": "idx_knowledge_chunks_embedding",
+        "indexdef": "CREATE INDEX idx_knowledge_chunks_embedding ON public.knowledge_chunks USING hnsw (embedding vector_cosine_ops)"
+      },
+      {
+        "tablename": "knowledge_chunks",
+        "indexname": "idx_knowledge_chunks_search_vector",
+        "indexdef": "CREATE INDEX idx_knowledge_chunks_search_vector ON public.knowledge_chunks USING gin (search_vector)"
+      },
+      {
+        "tablename": "knowledge_chunks",
+        "indexname": "idx_knowledge_chunks_section",
+        "indexdef": "CREATE INDEX idx_knowledge_chunks_section ON public.knowledge_chunks USING btree (section)"
+      },
+      {
+        "tablename": "knowledge_chunks",
+        "indexname": "idx_knowledge_chunks_source_path",
+        "indexdef": "CREATE INDEX idx_knowledge_chunks_source_path ON public.knowledge_chunks USING btree (source_path)"
+      },
+      {
+        "tablename": "knowledge_chunks",
+        "indexname": "knowledge_chunks_pkey",
+        "indexdef": "CREATE UNIQUE INDEX knowledge_chunks_pkey ON public.knowledge_chunks USING btree (id)"
+      },
+      {
+        "tablename": "knowledge_documents",
+        "indexname": "idx_knowledge_documents_source_path",
+        "indexdef": "CREATE INDEX idx_knowledge_documents_source_path ON public.knowledge_documents USING btree (source_path)"
+      },
+      {
+        "tablename": "knowledge_documents",
+        "indexname": "knowledge_documents_pkey",
+        "indexdef": "CREATE UNIQUE INDEX knowledge_documents_pkey ON public.knowledge_documents USING btree (id)"
+      },
+      {
+        "tablename": "knowledge_documents",
+        "indexname": "knowledge_documents_source_path_key",
+        "indexdef": "CREATE UNIQUE INDEX knowledge_documents_source_path_key ON public.knowledge_documents USING btree (source_path)"
+      },
+      {
+        "tablename": "knowledge_indexes",
+        "indexname": "idx_knowledge_indexes_status",
+        "indexdef": "CREATE INDEX idx_knowledge_indexes_status ON public.knowledge_indexes USING btree (status)"
+      },
+      {
+        "tablename": "knowledge_indexes",
+        "indexname": "knowledge_indexes_pkey",
+        "indexdef": "CREATE UNIQUE INDEX knowledge_indexes_pkey ON public.knowledge_indexes USING btree (id)"
+      },
+      {
+        "tablename": "knowledge_source_files",
+        "indexname": "idx_knowledge_source_files_document_id",
+        "indexdef": "CREATE INDEX idx_knowledge_source_files_document_id ON public.knowledge_source_files USING btree (document_id)"
+      },
+      {
+        "tablename": "knowledge_source_files",
+        "indexname": "knowledge_source_files_pkey",
+        "indexdef": "CREATE UNIQUE INDEX knowledge_source_files_pkey ON public.knowledge_source_files USING btree (source_path)"
+      },
+      {
+        "tablename": "password_reset_requests",
+        "indexname": "password_reset_requests_pkey",
+        "indexdef": "CREATE UNIQUE INDEX password_reset_requests_pkey ON public.password_reset_requests USING btree (id)"
+      },
+      {
+        "tablename": "password_reset_requests",
+        "indexname": "password_reset_requests_status_idx",
+        "indexdef": "CREATE INDEX password_reset_requests_status_idx ON public.password_reset_requests USING btree (status)"
+      },
+      {
+        "tablename": "rag_index_state",
+        "indexname": "rag_index_state_pkey",
+        "indexdef": "CREATE UNIQUE INDEX rag_index_state_pkey ON public.rag_index_state USING btree (name)"
+      },
+      {
+        "tablename": "rag_issue_events",
+        "indexname": "rag_issue_events_pkey",
+        "indexdef": "CREATE UNIQUE INDEX rag_issue_events_pkey ON public.rag_issue_events USING btree (id)"
+      },
+      {
+        "tablename": "rag_issues",
+        "indexname": "rag_issues_pkey",
+        "indexdef": "CREATE UNIQUE INDEX rag_issues_pkey ON public.rag_issues USING btree (id)"
+      },
+      {
+        "tablename": "rag_issues",
+        "indexname": "rag_issues_request_id_key",
+        "indexdef": "CREATE UNIQUE INDEX rag_issues_request_id_key ON public.rag_issues USING btree (request_id)"
+      },
+      {
+        "tablename": "rag_knowledge",
+        "indexname": "rag_knowledge_pkey",
+        "indexdef": "CREATE UNIQUE INDEX rag_knowledge_pkey ON public.rag_knowledge USING btree (id)"
+      },
+      {
+        "tablename": "rag_knowledge_revisions",
+        "indexname": "rag_knowledge_revisions_knowledge_id_revision_key",
+        "indexdef": "CREATE UNIQUE INDEX rag_knowledge_revisions_knowledge_id_revision_key ON public.rag_knowledge_revisions USING btree (knowledge_id, revision)"
+      },
+      {
+        "tablename": "rag_knowledge_revisions",
+        "indexname": "rag_knowledge_revisions_pkey",
+        "indexdef": "CREATE UNIQUE INDEX rag_knowledge_revisions_pkey ON public.rag_knowledge_revisions USING btree (id)"
+      },
+      {
+        "tablename": "rag_release_nodes",
+        "indexname": "idx_rag_release_node",
+        "indexdef": "CREATE INDEX idx_rag_release_node ON public.rag_release_nodes USING btree (node_id)"
+      },
+      {
+        "tablename": "rag_release_nodes",
+        "indexname": "rag_release_nodes_pkey",
+        "indexdef": "CREATE UNIQUE INDEX rag_release_nodes_pkey ON public.rag_release_nodes USING btree (release_id, node_id)"
+      },
+      {
+        "tablename": "rag_releases",
+        "indexname": "rag_releases_pkey",
+        "indexdef": "CREATE UNIQUE INDEX rag_releases_pkey ON public.rag_releases USING btree (id)"
+      },
+      {
+        "tablename": "rag_requests",
+        "indexname": "idx_rag_request_initial_key",
+        "indexdef": "CREATE UNIQUE INDEX idx_rag_request_initial_key ON public.rag_requests USING btree (user_id, request_id) WHERE (initial_request = 1)"
+      },
+      {
+        "tablename": "rag_requests",
+        "indexname": "idx_rag_request_session_key",
+        "indexdef": "CREATE UNIQUE INDEX idx_rag_request_session_key ON public.rag_requests USING btree (session_id, request_id)"
+      },
+      {
+        "tablename": "rag_requests",
+        "indexname": "idx_rag_request_status",
+        "indexdef": "CREATE INDEX idx_rag_request_status ON public.rag_requests USING btree (status, updated_at)"
+      },
+      {
+        "tablename": "rag_requests",
+        "indexname": "idx_rag_request_user",
+        "indexdef": "CREATE INDEX idx_rag_request_user ON public.rag_requests USING btree (user_id, created_at)"
+      },
+      {
+        "tablename": "rag_requests",
+        "indexname": "rag_requests_pkey",
+        "indexdef": "CREATE UNIQUE INDEX rag_requests_pkey ON public.rag_requests USING btree (id)"
+      },
+      {
+        "tablename": "rag_task_inputs",
+        "indexname": "idx_rag_task_inputs_expiry",
+        "indexdef": "CREATE INDEX idx_rag_task_inputs_expiry ON public.rag_task_inputs USING btree (expires_at)"
+      },
+      {
+        "tablename": "rag_task_inputs",
+        "indexname": "rag_task_inputs_pkey",
+        "indexdef": "CREATE UNIQUE INDEX rag_task_inputs_pkey ON public.rag_task_inputs USING btree (task_id)"
+      },
+      {
+        "tablename": "rag_task_jobs",
+        "indexname": "idx_rag_task_jobs_task",
+        "indexdef": "CREATE INDEX idx_rag_task_jobs_task ON public.rag_task_jobs USING btree (task_id)"
+      },
+      {
+        "tablename": "rag_task_jobs",
+        "indexname": "rag_task_jobs_pkey",
+        "indexdef": "CREATE UNIQUE INDEX rag_task_jobs_pkey ON public.rag_task_jobs USING btree (id)"
+      },
+      {
+        "tablename": "rag_task_jobs",
+        "indexname": "rag_task_jobs_task_id_job_id_key",
+        "indexdef": "CREATE UNIQUE INDEX rag_task_jobs_task_id_job_id_key ON public.rag_task_jobs USING btree (task_id, job_id)"
+      },
+      {
+        "tablename": "teaching_faqs",
+        "indexname": "teaching_faqs_pkey",
+        "indexdef": "CREATE UNIQUE INDEX teaching_faqs_pkey ON public.teaching_faqs USING btree (id)"
+      },
+      {
+        "tablename": "upstream_usage_records",
+        "indexname": "idx_usage_created",
+        "indexdef": "CREATE INDEX idx_usage_created ON public.upstream_usage_records USING btree (created_at)"
+      },
+      {
+        "tablename": "upstream_usage_records",
+        "indexname": "idx_usage_stage_created",
+        "indexdef": "CREATE INDEX idx_usage_stage_created ON public.upstream_usage_records USING btree (stage, created_at)"
+      },
+      {
+        "tablename": "upstream_usage_records",
+        "indexname": "idx_usage_subject_created",
+        "indexdef": "CREATE INDEX idx_usage_subject_created ON public.upstream_usage_records USING btree (subject, created_at)"
+      },
+      {
+        "tablename": "upstream_usage_records",
+        "indexname": "upstream_usage_records_pkey",
+        "indexdef": "CREATE UNIQUE INDEX upstream_usage_records_pkey ON public.upstream_usage_records USING btree (id)"
+      },
+      {
+        "tablename": "usage_counters",
+        "indexname": "usage_counters_pkey",
+        "indexdef": "CREATE UNIQUE INDEX usage_counters_pkey ON public.usage_counters USING btree (subject, day, kind)"
+      },
+      {
+        "tablename": "users",
+        "indexname": "users_created_by_idx",
+        "indexdef": "CREATE INDEX users_created_by_idx ON public.users USING btree (created_by)"
+      },
+      {
+        "tablename": "users",
+        "indexname": "users_pkey",
+        "indexdef": "CREATE UNIQUE INDEX users_pkey ON public.users USING btree (id)"
+      }
+    ],
+    "constraints": [
+      {
+        "conname": "admin_audit_log_pkey",
+        "contype": "p",
+        "table_name": "admin_audit_log",
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "conname": "alembic_version_pkc",
+        "contype": "p",
+        "table_name": "alembic_version",
+        "definition": "PRIMARY KEY (version_num)"
+      },
+      {
+        "conname": "api_tokens_pkey",
+        "contype": "p",
+        "table_name": "api_tokens",
+        "definition": "PRIMARY KEY (token_hash)"
+      },
+      {
+        "conname": "api_tokens_user_id_fkey",
+        "contype": "f",
+        "table_name": "api_tokens",
+        "definition": "FOREIGN KEY (user_id) REFERENCES users(id)"
+      },
+      {
+        "conname": "assignment_items_assignment_id_fkey",
+        "contype": "f",
+        "table_name": "assignment_items",
+        "definition": "FOREIGN KEY (assignment_id) REFERENCES assignments(id) ON DELETE CASCADE"
+      },
+      {
+        "conname": "assignment_items_assignment_id_protocol_key",
+        "contype": "u",
+        "table_name": "assignment_items",
+        "definition": "UNIQUE (assignment_id, protocol)"
+      },
+      {
+        "conname": "assignment_items_pkey",
+        "contype": "p",
+        "table_name": "assignment_items",
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "conname": "assignments_pkey",
+        "contype": "p",
+        "table_name": "assignments",
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "conname": "assistant_citations_message_id_fkey",
+        "contype": "f",
+        "table_name": "assistant_citations",
+        "definition": "FOREIGN KEY (message_id) REFERENCES assistant_messages(id) ON DELETE CASCADE"
+      },
+      {
+        "conname": "assistant_citations_pkey",
+        "contype": "p",
+        "table_name": "assistant_citations",
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "conname": "assistant_messages_pkey",
+        "contype": "p",
+        "table_name": "assistant_messages",
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "conname": "assistant_messages_session_id_fkey",
+        "contype": "f",
+        "table_name": "assistant_messages",
+        "definition": "FOREIGN KEY (session_id) REFERENCES assistant_sessions(id) ON DELETE CASCADE"
+      },
+      {
+        "conname": "assistant_sessions_pkey",
+        "contype": "p",
+        "table_name": "assistant_sessions",
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "conname": "data_li_knowledge_v1_pkey",
+        "contype": "p",
+        "table_name": "data_li_knowledge_v1",
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "conname": "grading_submissions_pkey",
+        "contype": "p",
+        "table_name": "grading_submissions",
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "conname": "grading_submissions_session_id_fkey",
+        "contype": "f",
+        "table_name": "grading_submissions",
+        "definition": "FOREIGN KEY (session_id) REFERENCES assistant_sessions(id)"
+      },
+      {
+        "conname": "knowledge_chunks_document_id_fkey",
+        "contype": "f",
+        "table_name": "knowledge_chunks",
+        "definition": "FOREIGN KEY (document_id) REFERENCES knowledge_documents(id) ON DELETE CASCADE"
+      },
+      {
+        "conname": "knowledge_chunks_pkey",
+        "contype": "p",
+        "table_name": "knowledge_chunks",
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "conname": "knowledge_documents_pkey",
+        "contype": "p",
+        "table_name": "knowledge_documents",
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "conname": "knowledge_documents_source_path_key",
+        "contype": "u",
+        "table_name": "knowledge_documents",
+        "definition": "UNIQUE (source_path)"
+      },
+      {
+        "conname": "knowledge_indexes_pkey",
+        "contype": "p",
+        "table_name": "knowledge_indexes",
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "conname": "knowledge_source_files_document_id_fkey",
+        "contype": "f",
+        "table_name": "knowledge_source_files",
+        "definition": "FOREIGN KEY (document_id) REFERENCES knowledge_documents(id) ON DELETE CASCADE"
+      },
+      {
+        "conname": "knowledge_source_files_pkey",
+        "contype": "p",
+        "table_name": "knowledge_source_files",
+        "definition": "PRIMARY KEY (source_path)"
+      },
+      {
+        "conname": "password_reset_requests_pkey",
+        "contype": "p",
+        "table_name": "password_reset_requests",
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "conname": "rag_index_state_pkey",
+        "contype": "p",
+        "table_name": "rag_index_state",
+        "definition": "PRIMARY KEY (name)"
+      },
+      {
+        "conname": "rag_issue_events_pkey",
+        "contype": "p",
+        "table_name": "rag_issue_events",
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "conname": "rag_issues_pkey",
+        "contype": "p",
+        "table_name": "rag_issues",
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "conname": "rag_issues_request_id_key",
+        "contype": "u",
+        "table_name": "rag_issues",
+        "definition": "UNIQUE (request_id)"
+      },
+      {
+        "conname": "rag_knowledge_pkey",
+        "contype": "p",
+        "table_name": "rag_knowledge",
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "conname": "rag_knowledge_revisions_knowledge_id_revision_key",
+        "contype": "u",
+        "table_name": "rag_knowledge_revisions",
+        "definition": "UNIQUE (knowledge_id, revision)"
+      },
+      {
+        "conname": "rag_knowledge_revisions_pkey",
+        "contype": "p",
+        "table_name": "rag_knowledge_revisions",
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "conname": "rag_release_nodes_pkey",
+        "contype": "p",
+        "table_name": "rag_release_nodes",
+        "definition": "PRIMARY KEY (release_id, node_id)"
+      },
+      {
+        "conname": "rag_releases_pkey",
+        "contype": "p",
+        "table_name": "rag_releases",
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "conname": "rag_requests_pkey",
+        "contype": "p",
+        "table_name": "rag_requests",
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "conname": "rag_task_inputs_pkey",
+        "contype": "p",
+        "table_name": "rag_task_inputs",
+        "definition": "PRIMARY KEY (task_id)"
+      },
+      {
+        "conname": "rag_task_jobs_pkey",
+        "contype": "p",
+        "table_name": "rag_task_jobs",
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "conname": "rag_task_jobs_task_id_job_id_key",
+        "contype": "u",
+        "table_name": "rag_task_jobs",
+        "definition": "UNIQUE (task_id, job_id)"
+      },
+      {
+        "conname": "teaching_faqs_pkey",
+        "contype": "p",
+        "table_name": "teaching_faqs",
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "conname": "upstream_usage_records_pkey",
+        "contype": "p",
+        "table_name": "upstream_usage_records",
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "conname": "usage_counters_pkey",
+        "contype": "p",
+        "table_name": "usage_counters",
+        "definition": "PRIMARY KEY (subject, day, kind)"
+      },
+      {
+        "conname": "users_created_by_fkey",
+        "contype": "f",
+        "table_name": "users",
+        "definition": "FOREIGN KEY (created_by) REFERENCES users(id)"
+      },
+      {
+        "conname": "users_pkey",
+        "contype": "p",
+        "table_name": "users",
+        "definition": "PRIMARY KEY (id)"
+      }
+    ]
+  },
+  "routes": [
+    {
+      "route_id": "DELETE /api/chat/sessions/{session_id}",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "DELETE /api/chat/sessions/{session_id}::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "DELETE /api/chat/sessions/{session_id}::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "DELETE /api/chat/sessions/{session_id}::invalid-resource"
+        ],
+        "reason": "未知资源标识；revisions缺失条目返回空数组"
+      },
+      "retry_concurrency": {
+        "status": "未执行",
+        "reason": "已运行基础成功/权限/输入分支；重试或并发完整分支留待对应业务卡差分扩展",
+        "owner": "对应coverage-map.owner_task/J5-01"
+      }
+    },
+    {
+      "route_id": "GET /api/admin/audit-log",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/admin/audit-log::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/admin/audit-log::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "明确不适用",
+        "reason": "冻结端点无可校验body/query/path输入；未知query被框架忽略，不伪装422。"
+      },
+      "retry_concurrency": {
+        "status": "明确不适用",
+        "reason": "只读端点，不产生业务副作用；无重试状态机"
+      }
+    },
+    {
+      "route_id": "GET /api/admin/password-reset-requests",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/admin/password-reset-requests::success",
+          "GET /api/admin/password-reset-requests::success-after-request",
+          "GET /api/admin/password-reset-requests::success-second"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/admin/password-reset-requests::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "明确不适用",
+        "reason": "冻结端点无可校验body/query/path输入；未知query被框架忽略，不伪装422。"
+      },
+      "retry_concurrency": {
+        "status": "明确不适用",
+        "reason": "只读端点，不产生业务副作用；无重试状态机"
+      }
+    },
+    {
+      "route_id": "GET /api/admin/users",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/admin/users::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/admin/users::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "明确不适用",
+        "reason": "冻结端点无可校验body/query/path输入；未知query被框架忽略，不伪装422。"
+      },
+      "retry_concurrency": {
+        "status": "明确不适用",
+        "reason": "只读端点，不产生业务副作用；无重试状态机"
+      }
+    },
+    {
+      "route_id": "GET /api/assignments",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/assignments::success",
+          "GET /api/assignments::success-nonempty-manager",
+          "GET /api/assignments::success-nonempty-student"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/assignments::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "明确不适用",
+        "reason": "冻结端点无可校验body/query/path输入；未知query被框架忽略，不伪装422。"
+      },
+      "retry_concurrency": {
+        "status": "明确不适用",
+        "reason": "只读端点，不产生业务副作用；无重试状态机"
+      }
+    },
+    {
+      "route_id": "GET /api/assignments/protocols",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/assignments/protocols::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/assignments/protocols::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "明确不适用",
+        "reason": "冻结端点无可校验body/query/path输入；未知query被框架忽略，不伪装422。"
+      },
+      "retry_concurrency": {
+        "status": "明确不适用",
+        "reason": "只读端点，不产生业务副作用；无重试状态机"
+      }
+    },
+    {
+      "route_id": "GET /api/assignments/{assignment_id}",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/assignments/{assignment_id}::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/assignments/{assignment_id}::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/assignments/{assignment_id}::invalid-resource"
+        ],
+        "reason": "未知资源标识；revisions缺失条目返回空数组"
+      },
+      "retry_concurrency": {
+        "status": "明确不适用",
+        "reason": "只读端点，不产生业务副作用；无重试状态机"
+      }
+    },
+    {
+      "route_id": "GET /api/assignments/{assignment_id}/export",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/assignments/{assignment_id}/export::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/assignments/{assignment_id}/export::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/assignments/{assignment_id}/export::invalid-resource"
+        ],
+        "reason": "未知资源标识；revisions缺失条目返回空数组"
+      },
+      "retry_concurrency": {
+        "status": "明确不适用",
+        "reason": "只读端点，不产生业务副作用；无重试状态机"
+      }
+    },
+    {
+      "route_id": "GET /api/assignments/{assignment_id}/grades",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/assignments/{assignment_id}/grades::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/assignments/{assignment_id}/grades::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/assignments/{assignment_id}/grades::invalid-resource"
+        ],
+        "reason": "未知资源标识；revisions缺失条目返回空数组"
+      },
+      "retry_concurrency": {
+        "status": "明确不适用",
+        "reason": "只读端点，不产生业务副作用；无重试状态机"
+      }
+    },
+    {
+      "route_id": "GET /api/chat/sessions",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/chat/sessions::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/chat/sessions::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/chat/sessions::invalid-input"
+        ],
+        "reason": "声明查询参数边界"
+      },
+      "retry_concurrency": {
+        "status": "明确不适用",
+        "reason": "只读端点，不产生业务副作用；无重试状态机"
+      }
+    },
+    {
+      "route_id": "GET /api/chat/sessions/{session_id}",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/chat/sessions/{session_id}::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/chat/sessions/{session_id}::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/chat/sessions/{session_id}::invalid-input"
+        ],
+        "reason": "声明查询参数边界"
+      },
+      "retry_concurrency": {
+        "status": "明确不适用",
+        "reason": "只读端点，不产生业务副作用；无重试状态机"
+      }
+    },
+    {
+      "route_id": "GET /api/grading/submissions",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/grading/submissions::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/grading/submissions::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/grading/submissions::invalid-input"
+        ],
+        "reason": "声明查询参数边界"
+      },
+      "retry_concurrency": {
+        "status": "明确不适用",
+        "reason": "只读端点，不产生业务副作用；无重试状态机"
+      }
+    },
+    {
+      "route_id": "GET /api/grading/summary",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/grading/summary::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/grading/summary::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "明确不适用",
+        "reason": "冻结端点无可校验body/query/path输入；未知query被框架忽略，不伪装422。"
+      },
+      "retry_concurrency": {
+        "status": "明确不适用",
+        "reason": "只读端点，不产生业务副作用；无重试状态机"
+      }
+    },
+    {
+      "route_id": "GET /api/health",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/health::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "明确不适用",
+        "reason": "冻结路由公开或匿名账户恢复入口；不要求Bearer。账户枚举由专门反例验证。"
+      },
+      "invalid_input": {
+        "status": "明确不适用",
+        "reason": "冻结端点无可校验body/query/path输入；未知query被框架忽略，不伪装422。"
+      },
+      "retry_concurrency": {
+        "status": "明确不适用",
+        "reason": "只读端点，不产生业务副作用；无重试状态机"
+      }
+    },
+    {
+      "route_id": "GET /api/internal/session-storage",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/internal/session-storage::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/internal/session-storage::unauthorized"
+        ],
+        "expected_status": 403
+      },
+      "invalid_input": {
+        "status": "明确不适用",
+        "reason": "冻结端点无可校验body/query/path输入；未知query被框架忽略，不伪装422。"
+      },
+      "retry_concurrency": {
+        "status": "明确不适用",
+        "reason": "只读端点，不产生业务副作用；无重试状态机"
+      }
+    },
+    {
+      "route_id": "GET /api/rag/issues",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/rag/issues::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/rag/issues::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/rag/issues::invalid-input"
+        ],
+        "reason": "声明查询参数边界"
+      },
+      "retry_concurrency": {
+        "status": "明确不适用",
+        "reason": "只读端点，不产生业务副作用；无重试状态机"
+      }
+    },
+    {
+      "route_id": "GET /api/rag/issues/{issue_id}",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/rag/issues/{issue_id}::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/rag/issues/{issue_id}::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/rag/issues/{issue_id}::invalid-resource"
+        ],
+        "reason": "未知资源标识；revisions缺失条目返回空数组"
+      },
+      "retry_concurrency": {
+        "status": "明确不适用",
+        "reason": "只读端点，不产生业务副作用；无重试状态机"
+      }
+    },
+    {
+      "route_id": "GET /api/rag/knowledge",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/rag/knowledge::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/rag/knowledge::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "明确不适用",
+        "reason": "冻结端点无可校验body/query/path输入；未知query被框架忽略，不伪装422。"
+      },
+      "retry_concurrency": {
+        "status": "明确不适用",
+        "reason": "只读端点，不产生业务副作用；无重试状态机"
+      }
+    },
+    {
+      "route_id": "GET /api/rag/knowledge/{knowledge_id}/revisions",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/rag/knowledge/{knowledge_id}/revisions::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/rag/knowledge/{knowledge_id}/revisions::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/rag/knowledge/{knowledge_id}/revisions::invalid-resource"
+        ],
+        "reason": "未知资源标识；revisions缺失条目返回空数组"
+      },
+      "retry_concurrency": {
+        "status": "明确不适用",
+        "reason": "只读端点，不产生业务副作用；无重试状态机"
+      }
+    },
+    {
+      "route_id": "GET /api/ready",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/ready::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "明确不适用",
+        "reason": "冻结路由公开或匿名账户恢复入口；不要求Bearer。账户枚举由专门反例验证。"
+      },
+      "invalid_input": {
+        "status": "明确不适用",
+        "reason": "冻结端点无可校验body/query/path输入；未知query被框架忽略，不伪装422。"
+      },
+      "retry_concurrency": {
+        "status": "明确不适用",
+        "reason": "只读端点，不产生业务副作用；无重试状态机"
+      }
+    },
+    {
+      "route_id": "GET /api/sources/{chunk_id}",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/sources/{chunk_id}::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/sources/{chunk_id}::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/sources/{chunk_id}::invalid-resource"
+        ],
+        "reason": "未知资源标识；revisions缺失条目返回空数组"
+      },
+      "retry_concurrency": {
+        "status": "明确不适用",
+        "reason": "只读端点，不产生业务副作用；无重试状态机"
+      }
+    },
+    {
+      "route_id": "GET /api/tasks/active",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/tasks/active::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/tasks/active::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/tasks/active::invalid-input"
+        ],
+        "reason": "声明查询参数边界"
+      },
+      "retry_concurrency": {
+        "status": "明确不适用",
+        "reason": "只读端点，不产生业务副作用；无重试状态机"
+      }
+    },
+    {
+      "route_id": "GET /api/tasks/{task_id}",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/tasks/{task_id}::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/tasks/{task_id}::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/tasks/{task_id}::invalid-resource"
+        ],
+        "reason": "未知资源标识；revisions缺失条目返回空数组"
+      },
+      "retry_concurrency": {
+        "status": "明确不适用",
+        "reason": "只读端点，不产生业务副作用；无重试状态机"
+      }
+    },
+    {
+      "route_id": "GET /api/tasks/{task_id}/events",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/tasks/{task_id}/events::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/tasks/{task_id}/events::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/tasks/{task_id}/events::invalid-resource"
+        ],
+        "reason": "未知资源标识；revisions缺失条目返回空数组"
+      },
+      "retry_concurrency": {
+        "status": "通过",
+        "case_ids": [
+          "pg-admission-race",
+          "pg-finish-once",
+          "pg-cancel-idempotent"
+        ],
+        "reason": "真实PG服务级身份/终态/取消原语；HTTP接续重放另有专例"
+      }
+    },
+    {
+      "route_id": "GET /api/usage/cost",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/usage/cost::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/usage/cost::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/usage/cost::invalid-input"
+        ],
+        "reason": "声明查询参数边界"
+      },
+      "retry_concurrency": {
+        "status": "明确不适用",
+        "reason": "只读端点，不产生业务副作用；无重试状态机"
+      }
+    },
+    {
+      "route_id": "GET /api/usage/me",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/usage/me::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/usage/me::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "明确不适用",
+        "reason": "冻结端点无可校验body/query/path输入；未知query被框架忽略，不伪装422。"
+      },
+      "retry_concurrency": {
+        "status": "明确不适用",
+        "reason": "只读端点，不产生业务副作用；无重试状态机"
+      }
+    },
+    {
+      "route_id": "GET /api/usage/subjects",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/usage/subjects::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "GET /api/usage/subjects::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "明确不适用",
+        "reason": "冻结端点无可校验body/query/path输入；未知query被框架忽略，不伪装422。"
+      },
+      "retry_concurrency": {
+        "status": "明确不适用",
+        "reason": "只读端点，不产生业务副作用；无重试状态机"
+      }
+    },
+    {
+      "route_id": "GET /docs",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "GET /docs::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "明确不适用",
+        "reason": "冻结路由公开或匿名账户恢复入口；不要求Bearer。账户枚举由专门反例验证。"
+      },
+      "invalid_input": {
+        "status": "明确不适用",
+        "reason": "冻结端点无可校验body/query/path输入；未知query被框架忽略，不伪装422。"
+      },
+      "retry_concurrency": {
+        "status": "明确不适用",
+        "reason": "只读端点，不产生业务副作用；无重试状态机"
+      }
+    },
+    {
+      "route_id": "GET /docs/oauth2-redirect",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "GET /docs/oauth2-redirect::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "明确不适用",
+        "reason": "冻结路由公开或匿名账户恢复入口；不要求Bearer。账户枚举由专门反例验证。"
+      },
+      "invalid_input": {
+        "status": "明确不适用",
+        "reason": "冻结端点无可校验body/query/path输入；未知query被框架忽略，不伪装422。"
+      },
+      "retry_concurrency": {
+        "status": "明确不适用",
+        "reason": "只读端点，不产生业务副作用；无重试状态机"
+      }
+    },
+    {
+      "route_id": "GET /metrics",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "GET /metrics::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "明确不适用",
+        "reason": "冻结路由公开或匿名账户恢复入口；不要求Bearer。账户枚举由专门反例验证。"
+      },
+      "invalid_input": {
+        "status": "明确不适用",
+        "reason": "冻结端点无可校验body/query/path输入；未知query被框架忽略，不伪装422。"
+      },
+      "retry_concurrency": {
+        "status": "明确不适用",
+        "reason": "只读端点，不产生业务副作用；无重试状态机"
+      }
+    },
+    {
+      "route_id": "GET /openapi.json",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "GET /openapi.json::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "明确不适用",
+        "reason": "冻结路由公开或匿名账户恢复入口；不要求Bearer。账户枚举由专门反例验证。"
+      },
+      "invalid_input": {
+        "status": "明确不适用",
+        "reason": "冻结端点无可校验body/query/path输入；未知query被框架忽略，不伪装422。"
+      },
+      "retry_concurrency": {
+        "status": "明确不适用",
+        "reason": "只读端点，不产生业务副作用；无重试状态机"
+      }
+    },
+    {
+      "route_id": "GET /redoc",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "GET /redoc::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "明确不适用",
+        "reason": "冻结路由公开或匿名账户恢复入口；不要求Bearer。账户枚举由专门反例验证。"
+      },
+      "invalid_input": {
+        "status": "明确不适用",
+        "reason": "冻结端点无可校验body/query/path输入；未知query被框架忽略，不伪装422。"
+      },
+      "retry_concurrency": {
+        "status": "明确不适用",
+        "reason": "只读端点，不产生业务副作用；无重试状态机"
+      }
+    },
+    {
+      "route_id": "HEAD /docs",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "HEAD /docs::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "明确不适用",
+        "reason": "冻结路由公开或匿名账户恢复入口；不要求Bearer。账户枚举由专门反例验证。"
+      },
+      "invalid_input": {
+        "status": "明确不适用",
+        "reason": "冻结端点无可校验body/query/path输入；未知query被框架忽略，不伪装422。"
+      },
+      "retry_concurrency": {
+        "status": "明确不适用",
+        "reason": "只读端点，不产生业务副作用；无重试状态机"
+      }
+    },
+    {
+      "route_id": "HEAD /docs/oauth2-redirect",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "HEAD /docs/oauth2-redirect::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "明确不适用",
+        "reason": "冻结路由公开或匿名账户恢复入口；不要求Bearer。账户枚举由专门反例验证。"
+      },
+      "invalid_input": {
+        "status": "明确不适用",
+        "reason": "冻结端点无可校验body/query/path输入；未知query被框架忽略，不伪装422。"
+      },
+      "retry_concurrency": {
+        "status": "明确不适用",
+        "reason": "只读端点，不产生业务副作用；无重试状态机"
+      }
+    },
+    {
+      "route_id": "HEAD /openapi.json",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "HEAD /openapi.json::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "明确不适用",
+        "reason": "冻结路由公开或匿名账户恢复入口；不要求Bearer。账户枚举由专门反例验证。"
+      },
+      "invalid_input": {
+        "status": "明确不适用",
+        "reason": "冻结端点无可校验body/query/path输入；未知query被框架忽略，不伪装422。"
+      },
+      "retry_concurrency": {
+        "status": "明确不适用",
+        "reason": "只读端点，不产生业务副作用；无重试状态机"
+      }
+    },
+    {
+      "route_id": "HEAD /redoc",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "HEAD /redoc::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "明确不适用",
+        "reason": "冻结路由公开或匿名账户恢复入口；不要求Bearer。账户枚举由专门反例验证。"
+      },
+      "invalid_input": {
+        "status": "明确不适用",
+        "reason": "冻结端点无可校验body/query/path输入；未知query被框架忽略，不伪装422。"
+      },
+      "retry_concurrency": {
+        "status": "明确不适用",
+        "reason": "只读端点，不产生业务副作用；无重试状态机"
+      }
+    },
+    {
+      "route_id": "PATCH /api/admin/users/{user_id}",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "PATCH /api/admin/users/{user_id}::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "PATCH /api/admin/users/{user_id}::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "PATCH /api/admin/users/{user_id}::invalid-input"
+        ],
+        "reason": "配额不能为负数"
+      },
+      "retry_concurrency": {
+        "status": "未执行",
+        "reason": "已运行基础成功/权限/输入分支；重试或并发完整分支留待对应业务卡差分扩展",
+        "owner": "对应coverage-map.owner_task/J5-01"
+      }
+    },
+    {
+      "route_id": "PATCH /api/assignments/{assignment_id}",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "PATCH /api/assignments/{assignment_id}::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "PATCH /api/assignments/{assignment_id}::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "PATCH /api/assignments/{assignment_id}::invalid-input"
+        ],
+        "reason": "标题最小长度"
+      },
+      "retry_concurrency": {
+        "status": "未执行",
+        "reason": "已运行基础成功/权限/输入分支；重试或并发完整分支留待对应业务卡差分扩展",
+        "owner": "对应coverage-map.owner_task/J5-01"
+      }
+    },
+    {
+      "route_id": "PATCH /api/rag/issues/{issue_id}",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "PATCH /api/rag/issues/{issue_id}::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "PATCH /api/rag/issues/{issue_id}::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "PATCH /api/rag/issues/{issue_id}::invalid-input"
+        ],
+        "reason": "缺少必填字段"
+      },
+      "retry_concurrency": {
+        "status": "未执行",
+        "reason": "已运行基础成功/权限/输入分支；重试或并发完整分支留待对应业务卡差分扩展",
+        "owner": "对应coverage-map.owner_task/J5-01"
+      }
+    },
+    {
+      "route_id": "PATCH /api/rag/knowledge/{knowledge_id}",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "PATCH /api/rag/knowledge/{knowledge_id}::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "PATCH /api/rag/knowledge/{knowledge_id}::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "PATCH /api/rag/knowledge/{knowledge_id}::invalid-input"
+        ],
+        "reason": "缺少必填字段"
+      },
+      "retry_concurrency": {
+        "status": "未执行",
+        "reason": "已运行基础成功/权限/输入分支；重试或并发完整分支留待对应业务卡差分扩展",
+        "owner": "对应coverage-map.owner_task/J5-01"
+      }
+    },
+    {
+      "route_id": "POST /api/admin/password-reset-requests/{request_id}/approve",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/admin/password-reset-requests/{request_id}/approve::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/admin/password-reset-requests/{request_id}/approve::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/admin/password-reset-requests/{request_id}/approve::invalid-resource"
+        ],
+        "reason": "未知资源标识；revisions缺失条目返回空数组"
+      },
+      "retry_concurrency": {
+        "status": "未执行",
+        "reason": "已运行基础成功/权限/输入分支；重试或并发完整分支留待对应业务卡差分扩展",
+        "owner": "对应coverage-map.owner_task/J5-01"
+      }
+    },
+    {
+      "route_id": "POST /api/admin/password-reset-requests/{request_id}/reject",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/admin/password-reset-requests/{request_id}/reject::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/admin/password-reset-requests/{request_id}/reject::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/admin/password-reset-requests/{request_id}/reject::invalid-resource"
+        ],
+        "reason": "未知资源标识；revisions缺失条目返回空数组"
+      },
+      "retry_concurrency": {
+        "status": "未执行",
+        "reason": "已运行基础成功/权限/输入分支；重试或并发完整分支留待对应业务卡差分扩展",
+        "owner": "对应coverage-map.owner_task/J5-01"
+      }
+    },
+    {
+      "route_id": "POST /api/admin/users",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/admin/users::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/admin/users::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/admin/users::invalid-input"
+        ],
+        "reason": "缺少必填字段"
+      },
+      "retry_concurrency": {
+        "status": "未执行",
+        "reason": "已运行基础成功/权限/输入分支；重试或并发完整分支留待对应业务卡差分扩展",
+        "owner": "对应coverage-map.owner_task/J5-01"
+      }
+    },
+    {
+      "route_id": "POST /api/admin/users/assign",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/admin/users/assign::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/admin/users/assign::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/admin/users/assign::invalid-input"
+        ],
+        "reason": "缺少必填字段"
+      },
+      "retry_concurrency": {
+        "status": "未执行",
+        "reason": "已运行基础成功/权限/输入分支；重试或并发完整分支留待对应业务卡差分扩展",
+        "owner": "对应coverage-map.owner_task/J5-01"
+      }
+    },
+    {
+      "route_id": "POST /api/admin/users/delete",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/admin/users/delete::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/admin/users/delete::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/admin/users/delete::invalid-input"
+        ],
+        "reason": "缺少必填字段"
+      },
+      "retry_concurrency": {
+        "status": "未执行",
+        "reason": "已运行基础成功/权限/输入分支；重试或并发完整分支留待对应业务卡差分扩展",
+        "owner": "对应coverage-map.owner_task/J5-01"
+      }
+    },
+    {
+      "route_id": "POST /api/admin/users/{user_id}/reset-password",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/admin/users/{user_id}/reset-password::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/admin/users/{user_id}/reset-password::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/admin/users/{user_id}/reset-password::invalid-resource"
+        ],
+        "reason": "未知资源标识；revisions缺失条目返回空数组"
+      },
+      "retry_concurrency": {
+        "status": "未执行",
+        "reason": "已运行基础成功/权限/输入分支；重试或并发完整分支留待对应业务卡差分扩展",
+        "owner": "对应coverage-map.owner_task/J5-01"
+      }
+    },
+    {
+      "route_id": "POST /api/admin/users/{user_id}/set-password",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/admin/users/{user_id}/set-password::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/admin/users/{user_id}/set-password::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/admin/users/{user_id}/set-password::invalid-input"
+        ],
+        "reason": "缺少必填字段"
+      },
+      "retry_concurrency": {
+        "status": "未执行",
+        "reason": "已运行基础成功/权限/输入分支；重试或并发完整分支留待对应业务卡差分扩展",
+        "owner": "对应coverage-map.owner_task/J5-01"
+      }
+    },
+    {
+      "route_id": "POST /api/admin/users/{user_id}/status",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/admin/users/{user_id}/status::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/admin/users/{user_id}/status::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/admin/users/{user_id}/status::invalid-input"
+        ],
+        "reason": "缺少必填字段"
+      },
+      "retry_concurrency": {
+        "status": "未执行",
+        "reason": "已运行基础成功/权限/输入分支；重试或并发完整分支留待对应业务卡差分扩展",
+        "owner": "对应coverage-map.owner_task/J5-01"
+      }
+    },
+    {
+      "route_id": "POST /api/assignments",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/assignments::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/assignments::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/assignments::invalid-input"
+        ],
+        "reason": "缺少必填字段"
+      },
+      "retry_concurrency": {
+        "status": "未执行",
+        "reason": "已运行基础成功/权限/输入分支；重试或并发完整分支留待对应业务卡差分扩展",
+        "owner": "对应coverage-map.owner_task/J5-01"
+      }
+    },
+    {
+      "route_id": "POST /api/assignments/{assignment_id}/reactivate",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/assignments/{assignment_id}/reactivate::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/assignments/{assignment_id}/reactivate::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/assignments/{assignment_id}/reactivate::invalid-resource"
+        ],
+        "reason": "未知资源标识；revisions缺失条目返回空数组"
+      },
+      "retry_concurrency": {
+        "status": "未执行",
+        "reason": "已运行基础成功/权限/输入分支；重试或并发完整分支留待对应业务卡差分扩展",
+        "owner": "对应coverage-map.owner_task/J5-01"
+      }
+    },
+    {
+      "route_id": "POST /api/assignments/{assignment_id}/submissions/{submission_id}/explain",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/assignments/{assignment_id}/submissions/{submission_id}/explain::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/assignments/{assignment_id}/submissions/{submission_id}/explain::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/assignments/{assignment_id}/submissions/{submission_id}/explain::invalid-resource"
+        ],
+        "reason": "未知资源标识；revisions缺失条目返回空数组"
+      },
+      "retry_concurrency": {
+        "status": "未执行",
+        "reason": "已运行基础成功/权限/输入分支；重试或并发完整分支留待对应业务卡差分扩展",
+        "owner": "对应coverage-map.owner_task/J5-01"
+      }
+    },
+    {
+      "route_id": "POST /api/assignments/{assignment_id}/submit",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/assignments/{assignment_id}/submit::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/assignments/{assignment_id}/submit::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/assignments/{assignment_id}/submit::invalid-input"
+        ],
+        "reason": "缺少必填字段"
+      },
+      "retry_concurrency": {
+        "status": "未执行",
+        "reason": "正式submit无业务幂等键；保留重复提交风险，不扩展chat去重承诺",
+        "owner": "J2-03/J5-01"
+      }
+    },
+    {
+      "route_id": "POST /api/assignments/{assignment_id}/withdraw",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/assignments/{assignment_id}/withdraw::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/assignments/{assignment_id}/withdraw::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/assignments/{assignment_id}/withdraw::invalid-resource"
+        ],
+        "reason": "未知资源标识；revisions缺失条目返回空数组"
+      },
+      "retry_concurrency": {
+        "status": "未执行",
+        "reason": "已运行基础成功/权限/输入分支；重试或并发完整分支留待对应业务卡差分扩展",
+        "owner": "对应coverage-map.owner_task/J5-01"
+      }
+    },
+    {
+      "route_id": "POST /api/auth/change-password",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/auth/change-password::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/auth/change-password::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/auth/change-password::invalid-input"
+        ],
+        "reason": "缺少必填字段"
+      },
+      "retry_concurrency": {
+        "status": "未执行",
+        "reason": "已运行基础成功/权限/输入分支；重试或并发完整分支留待对应业务卡差分扩展",
+        "owner": "对应coverage-map.owner_task/J5-01"
+      }
+    },
+    {
+      "route_id": "POST /api/auth/login",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/auth/login::success-leader",
+          "POST /api/auth/login::success-teacher_a",
+          "POST /api/auth/login::success-teacher_b",
+          "POST /api/auth/login::success-student_a",
+          "POST /api/auth/login::success-student_b",
+          "POST /api/auth/login::success-free",
+          "POST /api/auth/login::success-delete",
+          "POST /api/auth/login::success-disabled"
+        ]
+      },
+      "unauthorized": {
+        "status": "明确不适用",
+        "reason": "冻结路由公开或匿名账户恢复入口；不要求Bearer。账户枚举由专门反例验证。"
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/auth/login::invalid-input"
+        ],
+        "reason": "缺少必填字段"
+      },
+      "retry_concurrency": {
+        "status": "未执行",
+        "reason": "已运行基础成功/权限/输入分支；重试或并发完整分支留待对应业务卡差分扩展",
+        "owner": "对应coverage-map.owner_task/J5-01"
+      }
+    },
+    {
+      "route_id": "POST /api/auth/logout",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/auth/logout::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/auth/logout::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "明确不适用",
+        "reason": "冻结端点无可校验body/query/path输入；未知query被框架忽略，不伪装422。"
+      },
+      "retry_concurrency": {
+        "status": "未执行",
+        "reason": "已运行基础成功/权限/输入分支；重试或并发完整分支留待对应业务卡差分扩展",
+        "owner": "对应coverage-map.owner_task/J5-01"
+      }
+    },
+    {
+      "route_id": "POST /api/auth/password-reset",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/auth/password-reset::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "明确不适用",
+        "reason": "冻结路由公开或匿名账户恢复入口；不要求Bearer。账户枚举由专门反例验证。"
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/auth/password-reset::invalid-input"
+        ],
+        "reason": "缺少必填字段"
+      },
+      "retry_concurrency": {
+        "status": "未执行",
+        "reason": "已运行基础成功/权限/输入分支；重试或并发完整分支留待对应业务卡差分扩展",
+        "owner": "对应coverage-map.owner_task/J5-01"
+      }
+    },
+    {
+      "route_id": "POST /api/auth/password-reset-requests",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/auth/password-reset-requests::success",
+          "POST /api/auth/password-reset-requests::success-second"
+        ]
+      },
+      "unauthorized": {
+        "status": "明确不适用",
+        "reason": "冻结路由公开或匿名账户恢复入口；不要求Bearer。账户枚举由专门反例验证。"
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/auth/password-reset-requests::invalid-input"
+        ],
+        "reason": "缺少必填字段"
+      },
+      "retry_concurrency": {
+        "status": "未执行",
+        "reason": "已运行基础成功/权限/输入分支；重试或并发完整分支留待对应业务卡差分扩展",
+        "owner": "对应coverage-map.owner_task/J5-01"
+      }
+    },
+    {
+      "route_id": "POST /api/chat",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/chat::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/chat::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/chat::invalid-input"
+        ],
+        "reason": "缺少必填字段"
+      },
+      "retry_concurrency": {
+        "status": "通过",
+        "case_ids": [
+          "pg-admission-race",
+          "pg-finish-once",
+          "pg-cancel-idempotent"
+        ],
+        "reason": "真实PG服务级身份/终态/取消原语；HTTP接续重放另有专例"
+      }
+    },
+    {
+      "route_id": "POST /api/chat/stream",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/chat/stream::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/chat/stream::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/chat/stream::invalid-input"
+        ],
+        "reason": "缺少必填字段"
+      },
+      "retry_concurrency": {
+        "status": "通过",
+        "case_ids": [
+          "pg-admission-race",
+          "pg-finish-once",
+          "pg-cancel-idempotent"
+        ],
+        "reason": "真实PG服务级身份/终态/取消原语；HTTP接续重放另有专例"
+      }
+    },
+    {
+      "route_id": "POST /api/internal/purge-sessions",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/internal/purge-sessions::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/internal/purge-sessions::unauthorized"
+        ],
+        "expected_status": 403
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/internal/purge-sessions::invalid-input"
+        ],
+        "reason": "声明查询参数边界"
+      },
+      "retry_concurrency": {
+        "status": "未执行",
+        "reason": "已运行基础成功/权限/输入分支；重试或并发完整分支留待对应业务卡差分扩展",
+        "owner": "对应coverage-map.owner_task/J5-01"
+      }
+    },
+    {
+      "route_id": "POST /api/plugin-template",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/plugin-template::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/plugin-template::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/plugin-template::invalid-input"
+        ],
+        "reason": "缺少必填字段"
+      },
+      "retry_concurrency": {
+        "status": "未执行",
+        "reason": "已运行基础成功/权限/输入分支；重试或并发完整分支留待对应业务卡差分扩展",
+        "owner": "对应coverage-map.owner_task/J5-01"
+      }
+    },
+    {
+      "route_id": "POST /api/rag/feedback",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/rag/feedback::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/rag/feedback::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/rag/feedback::invalid-input"
+        ],
+        "reason": "缺少必填字段"
+      },
+      "retry_concurrency": {
+        "status": "未执行",
+        "reason": "已运行基础成功/权限/输入分支；重试或并发完整分支留待对应业务卡差分扩展",
+        "owner": "对应coverage-map.owner_task/J5-01"
+      }
+    },
+    {
+      "route_id": "POST /api/rag/issues/{issue_id}/verify",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/rag/issues/{issue_id}/verify::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/rag/issues/{issue_id}/verify::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/rag/issues/{issue_id}/verify::invalid-resource"
+        ],
+        "reason": "未知资源标识；revisions缺失条目返回空数组"
+      },
+      "retry_concurrency": {
+        "status": "未执行",
+        "reason": "已运行基础成功/权限/输入分支；重试或并发完整分支留待对应业务卡差分扩展",
+        "owner": "对应coverage-map.owner_task/J5-01"
+      }
+    },
+    {
+      "route_id": "POST /api/rag/knowledge",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/rag/knowledge::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/rag/knowledge::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/rag/knowledge::invalid-input"
+        ],
+        "reason": "缺少必填字段"
+      },
+      "retry_concurrency": {
+        "status": "未执行",
+        "reason": "已运行基础成功/权限/输入分支；重试或并发完整分支留待对应业务卡差分扩展",
+        "owner": "对应coverage-map.owner_task/J5-01"
+      }
+    },
+    {
+      "route_id": "POST /api/tasks/{task_id}/cancel",
+      "success": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/tasks/{task_id}/cancel::success"
+        ]
+      },
+      "unauthorized": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/tasks/{task_id}/cancel::unauthorized"
+        ],
+        "expected_status": 401
+      },
+      "invalid_input": {
+        "status": "通过",
+        "case_ids": [
+          "POST /api/tasks/{task_id}/cancel::invalid-resource"
+        ],
+        "reason": "未知资源标识；revisions缺失条目返回空数组"
+      },
+      "retry_concurrency": {
+        "status": "通过",
+        "case_ids": [
+          "pg-admission-race",
+          "pg-finish-once",
+          "pg-cancel-idempotent"
+        ],
+        "reason": "真实PG服务级身份/终态/取消原语；HTTP接续重放另有专例"
+      }
+    }
+  ],
+  "upstream": [
+    {
+      "case_id": "llm-multi_chunk",
+      "status": "通过",
+      "attempts": 1,
+      "usage_source": "upstream",
+      "total_tokens": 5,
+      "assertion": "真实OpenAICompatibleClient脚本化传输；缺失unknown、重复usage不重复计费、已吐delta不重试"
+    },
+    {
+      "case_id": "llm-bad_json",
+      "status": "通过",
+      "attempts": 1,
+      "usage_source": "unknown",
+      "total_tokens": null,
+      "assertion": "真实OpenAICompatibleClient脚本化传输；缺失unknown、重复usage不重复计费、已吐delta不重试"
+    },
+    {
+      "case_id": "llm-disconnect",
+      "status": "通过",
+      "attempts": 1,
+      "usage_source": "upstream",
+      "total_tokens": 5,
+      "assertion": "真实OpenAICompatibleClient脚本化传输；缺失unknown、重复usage不重复计费、已吐delta不重试"
+    },
+    {
+      "case_id": "llm-429",
+      "status": "通过",
+      "attempts": 2,
+      "usage_source": "upstream",
+      "total_tokens": 5,
+      "assertion": "真实OpenAICompatibleClient脚本化传输；缺失unknown、重复usage不重复计费、已吐delta不重试"
+    },
+    {
+      "case_id": "llm-timeout",
+      "status": "通过",
+      "attempts": 2,
+      "usage_source": "unknown",
+      "total_tokens": null,
+      "assertion": "真实OpenAICompatibleClient脚本化传输；缺失unknown、重复usage不重复计费、已吐delta不重试"
+    },
+    {
+      "case_id": "llm-usage_missing",
+      "status": "通过",
+      "attempts": 1,
+      "usage_source": "unknown",
+      "total_tokens": null,
+      "assertion": "真实OpenAICompatibleClient脚本化传输；缺失unknown、重复usage不重复计费、已吐delta不重试"
+    },
+    {
+      "case_id": "llm-usage_duplicate",
+      "status": "通过",
+      "attempts": 1,
+      "usage_source": "upstream",
+      "total_tokens": 5,
+      "assertion": "真实OpenAICompatibleClient脚本化传输；缺失unknown、重复usage不重复计费、已吐delta不重试"
+    },
+    {
+      "case_id": "mcp-connect_failure",
+      "status": "通过",
+      "connect_attempts": 3,
+      "submitted_calls": 1,
+      "assertion": "真实HarnessMcpClient有限建连重试；已提交结果未知仅1次，不盲重试"
+    },
+    {
+      "case_id": "mcp-initialize_failure",
+      "status": "通过",
+      "connect_attempts": 3,
+      "submitted_calls": 1,
+      "assertion": "真实HarnessMcpClient有限建连重试；已提交结果未知仅1次，不盲重试"
+    },
+    {
+      "case_id": "mcp-submitted_response_lost",
+      "status": "通过",
+      "connect_attempts": 1,
+      "submitted_calls": 1,
+      "assertion": "真实HarnessMcpClient有限建连重试；已提交结果未知仅1次，不盲重试"
+    },
+    {
+      "case_id": "mcp-finished",
+      "status": "通过",
+      "connect_attempts": 1,
+      "submitted_calls": 1,
+      "assertion": "真实HarnessMcpClient有限建连重试；已提交结果未知仅1次，不盲重试"
+    },
+    {
+      "case_id": "mcp-running",
+      "status": "通过",
+      "connect_attempts": 1,
+      "submitted_calls": 1,
+      "assertion": "真实HarnessMcpClient有限建连重试；已提交结果未知仅1次，不盲重试"
+    },
+    {
+      "case_id": "mcp-unknown",
+      "status": "通过",
+      "connect_attempts": 1,
+      "submitted_calls": 1,
+      "assertion": "真实HarnessMcpClient有限建连重试；已提交结果未知仅1次，不盲重试"
+    },
+    {
+      "case_id": "mcp-restart_clears_ledger",
+      "status": "通过",
+      "connect_attempts": 1,
+      "submitted_calls": 1,
+      "assertion": "真实HarnessMcpClient有限建连重试；已提交结果未知仅1次，不盲重试"
+    }
+  ],
+  "auth": [
+    {
+      "case_id": "auth-local",
+      "status": "通过",
+      "assertion": "真实require_auth local免Bearer产生唯一local/admin主体"
+    },
+    {
+      "case_id": "auth-token",
+      "status": "通过",
+      "assertion": "有效静态主体/角色/配额保持；缺失和无效token均401+WWW-Authenticate"
+    },
+    {
+      "case_id": "auth-account-disabled-revoked",
+      "status": "通过",
+      "assertion": "已logout令牌在停用/重新启用后仍无效；有效token转停用的独立向量尚未覆盖"
+    },
+    {
+      "case_id": "auth-storage",
+      "status": "通过",
+      "assertion": "真实token仅SHA256摘要入库；合成bcrypt $2b$/cost4格式可verify（正式cost12在性能组）"
+    },
+    {
+      "case_id": "identity-nfc-strip",
+      "status": "通过",
+      "assertion": "真实input_hash仅NFC/首尾Python strip；内部空白、大小写、附件原始字节摘要保持区别"
+    },
+    {
+      "case_id": "redact-grade-numeric-run",
+      "status": "通过",
+      "assertion": "冻结redact会将grade_id中连续8位数字当号码省略；单独保留既有行为，fixture使用确定合法UUID避免随机触发"
+    }
+  ],
+  "transactions": [
+    {
+      "case_id": "pg-admission-race",
+      "status": "通过",
+      "assertion": "12并发同身份仅1任务/1输入/1用户消息/1配额",
+      "business_before": {
+        "row_counts": {
+          "users": 8,
+          "api_tokens": 7,
+          "password_reset_requests": 2,
+          "admin_audit_log": 1,
+          "assistant_sessions": 5,
+          "assistant_messages": 8,
+          "assistant_citations": 10,
+          "usage_counters": 3,
+          "upstream_usage_records": 15,
+          "assignments": 1,
+          "assignment_items": 1,
+          "grading_submissions": 1,
+          "rag_requests": 5,
+          "rag_task_inputs": 0,
+          "rag_task_jobs": 0,
+          "rag_issues": 1,
+          "rag_issue_events": 3,
+          "rag_knowledge": 1,
+          "rag_knowledge_revisions": 2,
+          "rag_releases": 1,
+          "rag_index_state": 1,
+          "rag_release_nodes": 3,
+          "knowledge_documents": 1,
+          "knowledge_chunks": 1,
+          "li_nodes": 3
+        }
+      },
+      "business_delta": {
+        "tables": {
+          "users": {
+            "removed": [],
+            "added": []
+          },
+          "api_tokens": {
+            "removed": [],
+            "added": []
+          },
+          "password_reset_requests": {
+            "removed": [],
+            "added": []
+          },
+          "admin_audit_log": {
+            "removed": [],
+            "added": []
+          },
+          "assistant_sessions": {
+            "removed": [],
+            "added": [
+              {
+                "session_id": "sess_038a6b4992e1",
+                "user_id": "U20270000011",
+                "title": "PG受理并发",
+                "release_id": null,
+                "has_memory_summary": false,
+                "summary_message_id": null,
+                "created_at": "2026-10-24T04:10:00+00:00",
+                "updated_at": "2026-10-24T04:10:00+00:00"
+              }
+            ]
+          },
+          "assistant_messages": {
+            "removed": [],
+            "added": [
+              {
+                "message_id": "msg_b09cbbcc3950",
+                "session_id": "sess_038a6b4992e1",
+                "role": "user",
+                "content_bytes": 14,
+                "metadata": {
+                  "task_id": "9c27546742cf40b9b4072ea4274cf51b",
+                  "request_id": "ec2e62d5-1dfc-4c03-82c4-1501eb39a446"
+                },
+                "created_at": "2026-10-24T04:10:00+00:00",
+                "content_fingerprint": "0c9941e4f650cc6234c21412acaac74b3587e2fd0b4e44c31bd1d98100d39a6b",
+                "content_identity_links": []
+              }
+            ]
+          },
+          "assistant_citations": {
+            "removed": [],
+            "added": []
+          },
+          "usage_counters": {
+            "removed": [
+              {
+                "subject": "U20270000011",
+                "day": "2026-10-24",
+                "kind": "chat",
+                "chat_count": 4
+              }
+            ],
+            "added": [
+              {
+                "subject": "U20270000011",
+                "day": "2026-10-24",
+                "kind": "chat",
+                "chat_count": 5
+              }
+            ]
+          },
+          "upstream_usage_records": {
+            "removed": [],
+            "added": []
+          },
+          "assignments": {
+            "removed": [],
+            "added": []
+          },
+          "assignment_items": {
+            "removed": [],
+            "added": []
+          },
+          "grading_submissions": {
+            "removed": [],
+            "added": []
+          },
+          "rag_requests": {
+            "removed": [],
+            "added": [
+              {
+                "task_id": "9c27546742cf40b9b4072ea4274cf51b",
+                "request_id": "ec2e62d5-1dfc-4c03-82c4-1501eb39a446",
+                "input_hash": "b5188577958cbb40d5b0926bcecebff807c67068d661bf04e6ac30c8210b883a",
+                "initial_request": 0,
+                "purpose": "chat",
+                "user_id": "U20270000011",
+                "session_id": "sess_038a6b4992e1",
+                "message_id": null,
+                "status": "pending",
+                "reason": "",
+                "release_id": "",
+                "evidence": [],
+                "model_version": "synthetic",
+                "prompt_version": "grounded-v1",
+                "elapsed_ms": 0,
+                "created_at": "2026-10-24T04:10:00+00:00",
+                "updated_at": "2026-10-24T04:10:00+00:00",
+                "question_fingerprint": "0c9941e4f650cc6234c21412acaac74b3587e2fd0b4e44c31bd1d98100d39a6b",
+                "question_identity_links": [],
+                "context_fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "context_identity_links": []
+              }
+            ]
+          },
+          "rag_task_inputs": {
+            "removed": [],
+            "added": [
+              {
+                "task_id": "9c27546742cf40b9b4072ea4274cf51b",
+                "question_bytes": 14,
+                "attachment_name": null,
+                "attachment_suffix": null,
+                "has_source": false,
+                "source_bytes": null,
+                "source_origin": null,
+                "created_at": "2026-10-24T04:10:00+00:00",
+                "expires_at": "2026-10-25T04:10:00+00:00"
+              }
+            ]
+          },
+          "rag_task_jobs": {
+            "removed": [],
+            "added": []
+          },
+          "rag_issues": {
+            "removed": [],
+            "added": []
+          },
+          "rag_issue_events": {
+            "removed": [],
+            "added": []
+          },
+          "rag_knowledge": {
+            "removed": [],
+            "added": []
+          },
+          "rag_knowledge_revisions": {
+            "removed": [],
+            "added": []
+          },
+          "rag_releases": {
+            "removed": [],
+            "added": []
+          },
+          "rag_index_state": {
+            "removed": [],
+            "added": []
+          },
+          "rag_release_nodes": {
+            "removed": [],
+            "added": []
+          },
+          "knowledge_documents": {
+            "removed": [],
+            "added": []
+          },
+          "knowledge_chunks": {
+            "removed": [],
+            "added": []
+          },
+          "li_nodes": {
+            "removed": [],
+            "added": []
+          }
+        }
+      },
+      "business_after": {
+        "row_counts": {
+          "users": 8,
+          "api_tokens": 7,
+          "password_reset_requests": 2,
+          "admin_audit_log": 1,
+          "assistant_sessions": 6,
+          "assistant_messages": 9,
+          "assistant_citations": 10,
+          "usage_counters": 3,
+          "upstream_usage_records": 15,
+          "assignments": 1,
+          "assignment_items": 1,
+          "grading_submissions": 1,
+          "rag_requests": 6,
+          "rag_task_inputs": 1,
+          "rag_task_jobs": 0,
+          "rag_issues": 1,
+          "rag_issue_events": 3,
+          "rag_knowledge": 1,
+          "rag_knowledge_revisions": 2,
+          "rag_releases": 1,
+          "rag_index_state": 1,
+          "rag_release_nodes": 3,
+          "knowledge_documents": 1,
+          "knowledge_chunks": 1,
+          "li_nodes": 3
+        }
+      },
+      "workers": 12
+    },
+    {
+      "case_id": "pg-admission-rollback",
+      "status": "通过",
+      "assertion": "任务insert之后故障回滚，无孤儿任务/用户消息/额外配额",
+      "business_before": {
+        "row_counts": {
+          "users": 8,
+          "api_tokens": 7,
+          "password_reset_requests": 2,
+          "admin_audit_log": 1,
+          "assistant_sessions": 6,
+          "assistant_messages": 9,
+          "assistant_citations": 10,
+          "usage_counters": 3,
+          "upstream_usage_records": 15,
+          "assignments": 1,
+          "assignment_items": 1,
+          "grading_submissions": 1,
+          "rag_requests": 6,
+          "rag_task_inputs": 1,
+          "rag_task_jobs": 0,
+          "rag_issues": 1,
+          "rag_issue_events": 3,
+          "rag_knowledge": 1,
+          "rag_knowledge_revisions": 2,
+          "rag_releases": 1,
+          "rag_index_state": 1,
+          "rag_release_nodes": 3,
+          "knowledge_documents": 1,
+          "knowledge_chunks": 1,
+          "li_nodes": 3
+        }
+      },
+      "business_delta": {
+        "tables": {
+          "users": {
+            "removed": [],
+            "added": []
+          },
+          "api_tokens": {
+            "removed": [],
+            "added": []
+          },
+          "password_reset_requests": {
+            "removed": [],
+            "added": []
+          },
+          "admin_audit_log": {
+            "removed": [],
+            "added": []
+          },
+          "assistant_sessions": {
+            "removed": [],
+            "added": []
+          },
+          "assistant_messages": {
+            "removed": [],
+            "added": []
+          },
+          "assistant_citations": {
+            "removed": [],
+            "added": []
+          },
+          "usage_counters": {
+            "removed": [],
+            "added": []
+          },
+          "upstream_usage_records": {
+            "removed": [],
+            "added": []
+          },
+          "assignments": {
+            "removed": [],
+            "added": []
+          },
+          "assignment_items": {
+            "removed": [],
+            "added": []
+          },
+          "grading_submissions": {
+            "removed": [],
+            "added": []
+          },
+          "rag_requests": {
+            "removed": [],
+            "added": []
+          },
+          "rag_task_inputs": {
+            "removed": [],
+            "added": []
+          },
+          "rag_task_jobs": {
+            "removed": [],
+            "added": []
+          },
+          "rag_issues": {
+            "removed": [],
+            "added": []
+          },
+          "rag_issue_events": {
+            "removed": [],
+            "added": []
+          },
+          "rag_knowledge": {
+            "removed": [],
+            "added": []
+          },
+          "rag_knowledge_revisions": {
+            "removed": [],
+            "added": []
+          },
+          "rag_releases": {
+            "removed": [],
+            "added": []
+          },
+          "rag_index_state": {
+            "removed": [],
+            "added": []
+          },
+          "rag_release_nodes": {
+            "removed": [],
+            "added": []
+          },
+          "knowledge_documents": {
+            "removed": [],
+            "added": []
+          },
+          "knowledge_chunks": {
+            "removed": [],
+            "added": []
+          },
+          "li_nodes": {
+            "removed": [],
+            "added": []
+          }
+        }
+      },
+      "business_after": {
+        "row_counts": {
+          "users": 8,
+          "api_tokens": 7,
+          "password_reset_requests": 2,
+          "admin_audit_log": 1,
+          "assistant_sessions": 6,
+          "assistant_messages": 9,
+          "assistant_citations": 10,
+          "usage_counters": 3,
+          "upstream_usage_records": 15,
+          "assignments": 1,
+          "assignment_items": 1,
+          "grading_submissions": 1,
+          "rag_requests": 6,
+          "rag_task_inputs": 1,
+          "rag_task_jobs": 0,
+          "rag_issues": 1,
+          "rag_issue_events": 3,
+          "rag_knowledge": 1,
+          "rag_knowledge_revisions": 2,
+          "rag_releases": 1,
+          "rag_index_state": 1,
+          "rag_release_nodes": 3,
+          "knowledge_documents": 1,
+          "knowledge_chunks": 1,
+          "li_nodes": 3
+        }
+      }
+    },
+    {
+      "case_id": "pg-finish-rollback",
+      "status": "通过",
+      "assertion": "终态UPDATE后assistant INSERT真实FK失败，任务仍pending且输入保留",
+      "business_before": {
+        "row_counts": {
+          "users": 8,
+          "api_tokens": 7,
+          "password_reset_requests": 2,
+          "admin_audit_log": 1,
+          "assistant_sessions": 6,
+          "assistant_messages": 9,
+          "assistant_citations": 10,
+          "usage_counters": 3,
+          "upstream_usage_records": 15,
+          "assignments": 1,
+          "assignment_items": 1,
+          "grading_submissions": 1,
+          "rag_requests": 6,
+          "rag_task_inputs": 1,
+          "rag_task_jobs": 0,
+          "rag_issues": 1,
+          "rag_issue_events": 3,
+          "rag_knowledge": 1,
+          "rag_knowledge_revisions": 2,
+          "rag_releases": 1,
+          "rag_index_state": 1,
+          "rag_release_nodes": 3,
+          "knowledge_documents": 1,
+          "knowledge_chunks": 1,
+          "li_nodes": 3
+        }
+      },
+      "business_delta": {
+        "tables": {
+          "users": {
+            "removed": [],
+            "added": []
+          },
+          "api_tokens": {
+            "removed": [],
+            "added": []
+          },
+          "password_reset_requests": {
+            "removed": [],
+            "added": []
+          },
+          "admin_audit_log": {
+            "removed": [],
+            "added": []
+          },
+          "assistant_sessions": {
+            "removed": [],
+            "added": []
+          },
+          "assistant_messages": {
+            "removed": [],
+            "added": []
+          },
+          "assistant_citations": {
+            "removed": [],
+            "added": []
+          },
+          "usage_counters": {
+            "removed": [],
+            "added": []
+          },
+          "upstream_usage_records": {
+            "removed": [],
+            "added": []
+          },
+          "assignments": {
+            "removed": [],
+            "added": []
+          },
+          "assignment_items": {
+            "removed": [],
+            "added": []
+          },
+          "grading_submissions": {
+            "removed": [],
+            "added": []
+          },
+          "rag_requests": {
+            "removed": [],
+            "added": []
+          },
+          "rag_task_inputs": {
+            "removed": [],
+            "added": []
+          },
+          "rag_task_jobs": {
+            "removed": [],
+            "added": []
+          },
+          "rag_issues": {
+            "removed": [],
+            "added": []
+          },
+          "rag_issue_events": {
+            "removed": [],
+            "added": []
+          },
+          "rag_knowledge": {
+            "removed": [],
+            "added": []
+          },
+          "rag_knowledge_revisions": {
+            "removed": [],
+            "added": []
+          },
+          "rag_releases": {
+            "removed": [],
+            "added": []
+          },
+          "rag_index_state": {
+            "removed": [],
+            "added": []
+          },
+          "rag_release_nodes": {
+            "removed": [],
+            "added": []
+          },
+          "knowledge_documents": {
+            "removed": [],
+            "added": []
+          },
+          "knowledge_chunks": {
+            "removed": [],
+            "added": []
+          },
+          "li_nodes": {
+            "removed": [],
+            "added": []
+          }
+        }
+      },
+      "business_after": {
+        "row_counts": {
+          "users": 8,
+          "api_tokens": 7,
+          "password_reset_requests": 2,
+          "admin_audit_log": 1,
+          "assistant_sessions": 6,
+          "assistant_messages": 9,
+          "assistant_citations": 10,
+          "usage_counters": 3,
+          "upstream_usage_records": 15,
+          "assignments": 1,
+          "assignment_items": 1,
+          "grading_submissions": 1,
+          "rag_requests": 6,
+          "rag_task_inputs": 1,
+          "rag_task_jobs": 0,
+          "rag_issues": 1,
+          "rag_issue_events": 3,
+          "rag_knowledge": 1,
+          "rag_knowledge_revisions": 2,
+          "rag_releases": 1,
+          "rag_index_state": 1,
+          "rag_release_nodes": 3,
+          "knowledge_documents": 1,
+          "knowledge_chunks": 1,
+          "li_nodes": 3
+        }
+      }
+    },
+    {
+      "case_id": "pg-finish-once",
+      "status": "通过",
+      "assertion": "终态保存一次、原始输入即清；probe重放保持message关联",
+      "business_before": {
+        "row_counts": {
+          "users": 8,
+          "api_tokens": 7,
+          "password_reset_requests": 2,
+          "admin_audit_log": 1,
+          "assistant_sessions": 6,
+          "assistant_messages": 9,
+          "assistant_citations": 10,
+          "usage_counters": 3,
+          "upstream_usage_records": 15,
+          "assignments": 1,
+          "assignment_items": 1,
+          "grading_submissions": 1,
+          "rag_requests": 6,
+          "rag_task_inputs": 1,
+          "rag_task_jobs": 0,
+          "rag_issues": 1,
+          "rag_issue_events": 3,
+          "rag_knowledge": 1,
+          "rag_knowledge_revisions": 2,
+          "rag_releases": 1,
+          "rag_index_state": 1,
+          "rag_release_nodes": 3,
+          "knowledge_documents": 1,
+          "knowledge_chunks": 1,
+          "li_nodes": 3
+        }
+      },
+      "business_delta": {
+        "tables": {
+          "users": {
+            "removed": [],
+            "added": []
+          },
+          "api_tokens": {
+            "removed": [],
+            "added": []
+          },
+          "password_reset_requests": {
+            "removed": [],
+            "added": []
+          },
+          "admin_audit_log": {
+            "removed": [],
+            "added": []
+          },
+          "assistant_sessions": {
+            "removed": [],
+            "added": []
+          },
+          "assistant_messages": {
+            "removed": [],
+            "added": [
+              {
+                "message_id": "8e56c8a65d764750a6a319082e14ecab",
+                "session_id": "sess_038a6b4992e1",
+                "role": "assistant",
+                "content_bytes": 18,
+                "metadata": {
+                  "task_id": "9c27546742cf40b9b4072ea4274cf51b",
+                  "confidence": "high",
+                  "request_id": "ec2e62d5-1dfc-4c03-82c4-1501eb39a446",
+                  "answer_reason": "supported",
+                  "answer_status": "answered",
+                  "stream_status": "completed"
+                },
+                "created_at": "2026-10-24T04:10:00+00:00",
+                "content_fingerprint": "7fae06b26a36ac906a8e072a21cbd6a993d31ced8ff36a3a38d4e4587d719098",
+                "content_identity_links": []
+              }
+            ]
+          },
+          "assistant_citations": {
+            "removed": [],
+            "added": []
+          },
+          "usage_counters": {
+            "removed": [],
+            "added": []
+          },
+          "upstream_usage_records": {
+            "removed": [],
+            "added": []
+          },
+          "assignments": {
+            "removed": [],
+            "added": []
+          },
+          "assignment_items": {
+            "removed": [],
+            "added": []
+          },
+          "grading_submissions": {
+            "removed": [],
+            "added": []
+          },
+          "rag_requests": {
+            "removed": [
+              {
+                "task_id": "9c27546742cf40b9b4072ea4274cf51b",
+                "request_id": "ec2e62d5-1dfc-4c03-82c4-1501eb39a446",
+                "input_hash": "b5188577958cbb40d5b0926bcecebff807c67068d661bf04e6ac30c8210b883a",
+                "initial_request": 0,
+                "purpose": "chat",
+                "user_id": "U20270000011",
+                "session_id": "sess_038a6b4992e1",
+                "message_id": null,
+                "status": "pending",
+                "reason": "",
+                "release_id": "",
+                "evidence": [],
+                "model_version": "synthetic",
+                "prompt_version": "grounded-v1",
+                "elapsed_ms": 0,
+                "created_at": "2026-10-24T04:10:00+00:00",
+                "updated_at": "2026-10-24T04:10:00+00:00",
+                "question_fingerprint": "0c9941e4f650cc6234c21412acaac74b3587e2fd0b4e44c31bd1d98100d39a6b",
+                "question_identity_links": [],
+                "context_fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "context_identity_links": []
+              }
+            ],
+            "added": [
+              {
+                "task_id": "9c27546742cf40b9b4072ea4274cf51b",
+                "request_id": "ec2e62d5-1dfc-4c03-82c4-1501eb39a446",
+                "input_hash": "b5188577958cbb40d5b0926bcecebff807c67068d661bf04e6ac30c8210b883a",
+                "initial_request": 0,
+                "purpose": "chat",
+                "user_id": "U20270000011",
+                "session_id": "sess_038a6b4992e1",
+                "message_id": "8e56c8a65d764750a6a319082e14ecab",
+                "status": "answered",
+                "reason": "supported",
+                "release_id": "p0-synthetic-release-1",
+                "evidence": [],
+                "model_version": "synthetic",
+                "prompt_version": "grounded-v1",
+                "elapsed_ms": 1,
+                "created_at": "2026-10-24T04:10:00+00:00",
+                "updated_at": "2026-10-24T04:10:00+00:00",
+                "question_fingerprint": "0c9941e4f650cc6234c21412acaac74b3587e2fd0b4e44c31bd1d98100d39a6b",
+                "question_identity_links": [],
+                "context_fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "context_identity_links": []
+              }
+            ]
+          },
+          "rag_task_inputs": {
+            "removed": [
+              {
+                "task_id": "9c27546742cf40b9b4072ea4274cf51b",
+                "question_bytes": 14,
+                "attachment_name": null,
+                "attachment_suffix": null,
+                "has_source": false,
+                "source_bytes": null,
+                "source_origin": null,
+                "created_at": "2026-10-24T04:10:00+00:00",
+                "expires_at": "2026-10-25T04:10:00+00:00"
+              }
+            ],
+            "added": []
+          },
+          "rag_task_jobs": {
+            "removed": [],
+            "added": []
+          },
+          "rag_issues": {
+            "removed": [],
+            "added": []
+          },
+          "rag_issue_events": {
+            "removed": [],
+            "added": []
+          },
+          "rag_knowledge": {
+            "removed": [],
+            "added": []
+          },
+          "rag_knowledge_revisions": {
+            "removed": [],
+            "added": []
+          },
+          "rag_releases": {
+            "removed": [],
+            "added": []
+          },
+          "rag_index_state": {
+            "removed": [],
+            "added": []
+          },
+          "rag_release_nodes": {
+            "removed": [],
+            "added": []
+          },
+          "knowledge_documents": {
+            "removed": [],
+            "added": []
+          },
+          "knowledge_chunks": {
+            "removed": [],
+            "added": []
+          },
+          "li_nodes": {
+            "removed": [],
+            "added": []
+          }
+        }
+      },
+      "business_after": {
+        "row_counts": {
+          "users": 8,
+          "api_tokens": 7,
+          "password_reset_requests": 2,
+          "admin_audit_log": 1,
+          "assistant_sessions": 6,
+          "assistant_messages": 10,
+          "assistant_citations": 10,
+          "usage_counters": 3,
+          "upstream_usage_records": 15,
+          "assignments": 1,
+          "assignment_items": 1,
+          "grading_submissions": 1,
+          "rag_requests": 6,
+          "rag_task_inputs": 0,
+          "rag_task_jobs": 0,
+          "rag_issues": 1,
+          "rag_issue_events": 3,
+          "rag_knowledge": 1,
+          "rag_knowledge_revisions": 2,
+          "rag_releases": 1,
+          "rag_index_state": 1,
+          "rag_release_nodes": 3,
+          "knowledge_documents": 1,
+          "knowledge_chunks": 1,
+          "li_nodes": 3
+        }
+      }
+    },
+    {
+      "case_id": "pg-cancel-idempotent",
+      "status": "通过",
+      "assertion": "重复取消保持1占位消息；输入清理；取消后成绩闸拒绝写入",
+      "business_before": {
+        "row_counts": {
+          "users": 8,
+          "api_tokens": 7,
+          "password_reset_requests": 2,
+          "admin_audit_log": 1,
+          "assistant_sessions": 6,
+          "assistant_messages": 10,
+          "assistant_citations": 10,
+          "usage_counters": 3,
+          "upstream_usage_records": 15,
+          "assignments": 1,
+          "assignment_items": 1,
+          "grading_submissions": 1,
+          "rag_requests": 6,
+          "rag_task_inputs": 0,
+          "rag_task_jobs": 0,
+          "rag_issues": 1,
+          "rag_issue_events": 3,
+          "rag_knowledge": 1,
+          "rag_knowledge_revisions": 2,
+          "rag_releases": 1,
+          "rag_index_state": 1,
+          "rag_release_nodes": 3,
+          "knowledge_documents": 1,
+          "knowledge_chunks": 1,
+          "li_nodes": 3
+        }
+      },
+      "business_delta": {
+        "tables": {
+          "users": {
+            "removed": [],
+            "added": []
+          },
+          "api_tokens": {
+            "removed": [],
+            "added": []
+          },
+          "password_reset_requests": {
+            "removed": [],
+            "added": []
+          },
+          "admin_audit_log": {
+            "removed": [],
+            "added": []
+          },
+          "assistant_sessions": {
+            "removed": [],
+            "added": [
+              {
+                "session_id": "sess_4202087730f2",
+                "user_id": "U20270000011",
+                "title": "PG取消",
+                "release_id": null,
+                "has_memory_summary": false,
+                "summary_message_id": null,
+                "created_at": "2026-10-24T04:10:00+00:00",
+                "updated_at": "2026-10-24T04:10:00+00:00"
+              }
+            ]
+          },
+          "assistant_messages": {
+            "removed": [],
+            "added": [
+              {
+                "message_id": "02a4a74bf25a4f6b8f08a9231a29608a",
+                "session_id": "sess_4202087730f2",
+                "role": "assistant",
+                "content_bytes": 21,
+                "metadata": {
+                  "task_id": "24f588013612437492d3c76102847a6b",
+                  "request_id": "0210af9d-b3bb-4c9e-819d-381525caaaf4",
+                  "answer_reason": "user_cancelled",
+                  "answer_status": "cancelled",
+                  "stream_status": "cancelled"
+                },
+                "created_at": "2026-10-24T04:10:00+00:00",
+                "content_fingerprint": "5580b51f96cca837cde2ed16809e3e13fd49da6225a9b0257f2cf7d2c924ab03",
+                "content_identity_links": []
+              }
+            ]
+          },
+          "assistant_citations": {
+            "removed": [],
+            "added": []
+          },
+          "usage_counters": {
+            "removed": [],
+            "added": []
+          },
+          "upstream_usage_records": {
+            "removed": [],
+            "added": []
+          },
+          "assignments": {
+            "removed": [],
+            "added": []
+          },
+          "assignment_items": {
+            "removed": [],
+            "added": []
+          },
+          "grading_submissions": {
+            "removed": [],
+            "added": []
+          },
+          "rag_requests": {
+            "removed": [],
+            "added": [
+              {
+                "task_id": "24f588013612437492d3c76102847a6b",
+                "request_id": "0210af9d-b3bb-4c9e-819d-381525caaaf4",
+                "input_hash": "d102e07dc72c8032a45d72dc208dbde0eb05c2f723f02e8198cebf971c3fec8c",
+                "initial_request": 0,
+                "purpose": "chat",
+                "user_id": "U20270000011",
+                "session_id": "sess_4202087730f2",
+                "message_id": "02a4a74bf25a4f6b8f08a9231a29608a",
+                "status": "cancelled",
+                "reason": "user_cancelled",
+                "release_id": "",
+                "evidence": [],
+                "model_version": "synthetic",
+                "prompt_version": "grounded-v1",
+                "elapsed_ms": 0,
+                "created_at": "2026-10-24T04:10:00+00:00",
+                "updated_at": "2026-10-24T04:10:00+00:00",
+                "question_fingerprint": "0b671f4577975c67c1f6efe6abc76117ad1ba040b54d4ac9d21062897bfb6eeb",
+                "question_identity_links": [],
+                "context_fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "context_identity_links": []
+              }
+            ]
+          },
+          "rag_task_inputs": {
+            "removed": [],
+            "added": []
+          },
+          "rag_task_jobs": {
+            "removed": [],
+            "added": [
+              {
+                "ledger_id": "e89b6ac824ab4d94ba20041e54a4fb6a",
+                "task_id": "24f588013612437492d3c76102847a6b",
+                "job_id": "p0-cancel-job",
+                "tool": "grade_plugin",
+                "protocol": "dns",
+                "code_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+                "status": "submitted",
+                "job_result": null,
+                "submission_done": 0,
+                "created_at": "2026-10-24T04:10:00+00:00",
+                "updated_at": "2026-10-24T04:10:00+00:00"
+              }
+            ]
+          },
+          "rag_issues": {
+            "removed": [],
+            "added": []
+          },
+          "rag_issue_events": {
+            "removed": [],
+            "added": []
+          },
+          "rag_knowledge": {
+            "removed": [],
+            "added": []
+          },
+          "rag_knowledge_revisions": {
+            "removed": [],
+            "added": []
+          },
+          "rag_releases": {
+            "removed": [],
+            "added": []
+          },
+          "rag_index_state": {
+            "removed": [],
+            "added": []
+          },
+          "rag_release_nodes": {
+            "removed": [],
+            "added": []
+          },
+          "knowledge_documents": {
+            "removed": [],
+            "added": []
+          },
+          "knowledge_chunks": {
+            "removed": [],
+            "added": []
+          },
+          "li_nodes": {
+            "removed": [],
+            "added": []
+          }
+        }
+      },
+      "business_after": {
+        "row_counts": {
+          "users": 8,
+          "api_tokens": 7,
+          "password_reset_requests": 2,
+          "admin_audit_log": 1,
+          "assistant_sessions": 7,
+          "assistant_messages": 11,
+          "assistant_citations": 10,
+          "usage_counters": 3,
+          "upstream_usage_records": 15,
+          "assignments": 1,
+          "assignment_items": 1,
+          "grading_submissions": 1,
+          "rag_requests": 7,
+          "rag_task_inputs": 0,
+          "rag_task_jobs": 1,
+          "rag_issues": 1,
+          "rag_issue_events": 3,
+          "rag_knowledge": 1,
+          "rag_knowledge_revisions": 2,
+          "rag_releases": 1,
+          "rag_index_state": 1,
+          "rag_release_nodes": 3,
+          "knowledge_documents": 1,
+          "knowledge_chunks": 1,
+          "li_nodes": 3
+        }
+      }
+    },
+    {
+      "case_id": "pg-grade-job-dedup",
+      "status": "通过",
+      "assertion": "12并发同job仅1成绩，submission_done与成绩同事务",
+      "business_before": {
+        "row_counts": {
+          "users": 8,
+          "api_tokens": 7,
+          "password_reset_requests": 2,
+          "admin_audit_log": 1,
+          "assistant_sessions": 7,
+          "assistant_messages": 11,
+          "assistant_citations": 10,
+          "usage_counters": 3,
+          "upstream_usage_records": 15,
+          "assignments": 1,
+          "assignment_items": 1,
+          "grading_submissions": 1,
+          "rag_requests": 7,
+          "rag_task_inputs": 0,
+          "rag_task_jobs": 1,
+          "rag_issues": 1,
+          "rag_issue_events": 3,
+          "rag_knowledge": 1,
+          "rag_knowledge_revisions": 2,
+          "rag_releases": 1,
+          "rag_index_state": 1,
+          "rag_release_nodes": 3,
+          "knowledge_documents": 1,
+          "knowledge_chunks": 1,
+          "li_nodes": 3
+        }
+      },
+      "business_delta": {
+        "tables": {
+          "users": {
+            "removed": [],
+            "added": []
+          },
+          "api_tokens": {
+            "removed": [],
+            "added": []
+          },
+          "password_reset_requests": {
+            "removed": [],
+            "added": []
+          },
+          "admin_audit_log": {
+            "removed": [],
+            "added": []
+          },
+          "assistant_sessions": {
+            "removed": [],
+            "added": [
+              {
+                "session_id": "sess_ffa19c6c109d",
+                "user_id": "U20270000011",
+                "title": "PG成绩去重",
+                "release_id": null,
+                "has_memory_summary": false,
+                "summary_message_id": null,
+                "created_at": "2026-10-24T04:10:00+00:00",
+                "updated_at": "2026-10-24T04:10:00+00:00"
+              }
+            ]
+          },
+          "assistant_messages": {
+            "removed": [],
+            "added": []
+          },
+          "assistant_citations": {
+            "removed": [],
+            "added": []
+          },
+          "usage_counters": {
+            "removed": [],
+            "added": []
+          },
+          "upstream_usage_records": {
+            "removed": [],
+            "added": []
+          },
+          "assignments": {
+            "removed": [],
+            "added": []
+          },
+          "assignment_items": {
+            "removed": [],
+            "added": []
+          },
+          "grading_submissions": {
+            "removed": [],
+            "added": [
+              {
+                "submission_id": "grade_abcdefabaaaa4aac",
+                "user_id": "U20270000011",
+                "session_id": "sess_ffa19c6c109d",
+                "protocol": "dns",
+                "code_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+                "score": 80,
+                "passed": 4,
+                "total": 5,
+                "grade_details": {
+                  "source_origin": "pasted",
+                  "results": []
+                },
+                "assignment_id": null,
+                "job_id": "p0-dedup-job",
+                "created_at": "2026-10-24T04:10:00+00:00"
+              }
+            ]
+          },
+          "rag_requests": {
+            "removed": [],
+            "added": [
+              {
+                "task_id": "b779e024cd8b473da9872008a150d378",
+                "request_id": "30e0f39c-9bca-4545-9f03-164cbbaff885",
+                "input_hash": "a9e0e5829fe5b9c06acae8c4f16f1e13d73aa54084a5ffeb922e0183336718a1",
+                "initial_request": 0,
+                "purpose": "chat",
+                "user_id": "U20270000011",
+                "session_id": "sess_ffa19c6c109d",
+                "message_id": null,
+                "status": "pending",
+                "reason": "",
+                "release_id": "",
+                "evidence": [],
+                "model_version": "synthetic",
+                "prompt_version": "grounded-v1",
+                "elapsed_ms": 0,
+                "created_at": "2026-10-24T04:10:00+00:00",
+                "updated_at": "2026-10-24T04:10:00+00:00",
+                "question_fingerprint": "6ce398fec9de195726cb67f308052920fc7b83be078cb99195ca9295dade5f0e",
+                "question_identity_links": [],
+                "context_fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "context_identity_links": []
+              }
+            ]
+          },
+          "rag_task_inputs": {
+            "removed": [],
+            "added": []
+          },
+          "rag_task_jobs": {
+            "removed": [],
+            "added": [
+              {
+                "ledger_id": "9d5b9745583448bfa57a868eaa808306",
+                "task_id": "b779e024cd8b473da9872008a150d378",
+                "job_id": "p0-dedup-job",
+                "tool": "grade_plugin",
+                "protocol": "dns",
+                "code_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+                "status": "submitted",
+                "job_result": null,
+                "submission_done": 1,
+                "created_at": "2026-10-24T04:10:00+00:00",
+                "updated_at": "2026-10-24T04:10:00+00:00"
+              }
+            ]
+          },
+          "rag_issues": {
+            "removed": [],
+            "added": []
+          },
+          "rag_issue_events": {
+            "removed": [],
+            "added": []
+          },
+          "rag_knowledge": {
+            "removed": [],
+            "added": []
+          },
+          "rag_knowledge_revisions": {
+            "removed": [],
+            "added": []
+          },
+          "rag_releases": {
+            "removed": [],
+            "added": []
+          },
+          "rag_index_state": {
+            "removed": [],
+            "added": []
+          },
+          "rag_release_nodes": {
+            "removed": [],
+            "added": []
+          },
+          "knowledge_documents": {
+            "removed": [],
+            "added": []
+          },
+          "knowledge_chunks": {
+            "removed": [],
+            "added": []
+          },
+          "li_nodes": {
+            "removed": [],
+            "added": []
+          }
+        }
+      },
+      "business_after": {
+        "row_counts": {
+          "users": 8,
+          "api_tokens": 7,
+          "password_reset_requests": 2,
+          "admin_audit_log": 1,
+          "assistant_sessions": 8,
+          "assistant_messages": 11,
+          "assistant_citations": 10,
+          "usage_counters": 3,
+          "upstream_usage_records": 15,
+          "assignments": 1,
+          "assignment_items": 1,
+          "grading_submissions": 2,
+          "rag_requests": 8,
+          "rag_task_inputs": 0,
+          "rag_task_jobs": 2,
+          "rag_issues": 1,
+          "rag_issue_events": 3,
+          "rag_knowledge": 1,
+          "rag_knowledge_revisions": 2,
+          "rag_releases": 1,
+          "rag_index_state": 1,
+          "rag_release_nodes": 3,
+          "knowledge_documents": 1,
+          "knowledge_chunks": 1,
+          "li_nodes": 3
+        }
+      },
+      "workers": 12
+    },
+    {
+      "case_id": "pg-recovery-claim",
+      "status": "通过",
+      "assertion": "12并发陈旧pending认领仅1赢家",
+      "business_before": {
+        "row_counts": {
+          "users": 8,
+          "api_tokens": 7,
+          "password_reset_requests": 2,
+          "admin_audit_log": 1,
+          "assistant_sessions": 8,
+          "assistant_messages": 11,
+          "assistant_citations": 10,
+          "usage_counters": 3,
+          "upstream_usage_records": 15,
+          "assignments": 1,
+          "assignment_items": 1,
+          "grading_submissions": 2,
+          "rag_requests": 8,
+          "rag_task_inputs": 0,
+          "rag_task_jobs": 2,
+          "rag_issues": 1,
+          "rag_issue_events": 3,
+          "rag_knowledge": 1,
+          "rag_knowledge_revisions": 2,
+          "rag_releases": 1,
+          "rag_index_state": 1,
+          "rag_release_nodes": 3,
+          "knowledge_documents": 1,
+          "knowledge_chunks": 1,
+          "li_nodes": 3
+        }
+      },
+      "business_delta": {
+        "tables": {
+          "users": {
+            "removed": [],
+            "added": []
+          },
+          "api_tokens": {
+            "removed": [],
+            "added": []
+          },
+          "password_reset_requests": {
+            "removed": [],
+            "added": []
+          },
+          "admin_audit_log": {
+            "removed": [],
+            "added": []
+          },
+          "assistant_sessions": {
+            "removed": [],
+            "added": []
+          },
+          "assistant_messages": {
+            "removed": [],
+            "added": []
+          },
+          "assistant_citations": {
+            "removed": [],
+            "added": []
+          },
+          "usage_counters": {
+            "removed": [],
+            "added": []
+          },
+          "upstream_usage_records": {
+            "removed": [],
+            "added": []
+          },
+          "assignments": {
+            "removed": [],
+            "added": []
+          },
+          "assignment_items": {
+            "removed": [],
+            "added": []
+          },
+          "grading_submissions": {
+            "removed": [],
+            "added": []
+          },
+          "rag_requests": {
+            "removed": [],
+            "added": []
+          },
+          "rag_task_inputs": {
+            "removed": [],
+            "added": []
+          },
+          "rag_task_jobs": {
+            "removed": [],
+            "added": []
+          },
+          "rag_issues": {
+            "removed": [],
+            "added": []
+          },
+          "rag_issue_events": {
+            "removed": [],
+            "added": []
+          },
+          "rag_knowledge": {
+            "removed": [],
+            "added": []
+          },
+          "rag_knowledge_revisions": {
+            "removed": [],
+            "added": []
+          },
+          "rag_releases": {
+            "removed": [],
+            "added": []
+          },
+          "rag_index_state": {
+            "removed": [],
+            "added": []
+          },
+          "rag_release_nodes": {
+            "removed": [],
+            "added": []
+          },
+          "knowledge_documents": {
+            "removed": [],
+            "added": []
+          },
+          "knowledge_chunks": {
+            "removed": [],
+            "added": []
+          },
+          "li_nodes": {
+            "removed": [],
+            "added": []
+          }
+        }
+      },
+      "business_after": {
+        "row_counts": {
+          "users": 8,
+          "api_tokens": 7,
+          "password_reset_requests": 2,
+          "admin_audit_log": 1,
+          "assistant_sessions": 8,
+          "assistant_messages": 11,
+          "assistant_citations": 10,
+          "usage_counters": 3,
+          "upstream_usage_records": 15,
+          "assignments": 1,
+          "assignment_items": 1,
+          "grading_submissions": 2,
+          "rag_requests": 8,
+          "rag_task_inputs": 0,
+          "rag_task_jobs": 2,
+          "rag_issues": 1,
+          "rag_issue_events": 3,
+          "rag_knowledge": 1,
+          "rag_knowledge_revisions": 2,
+          "rag_releases": 1,
+          "rag_index_state": 1,
+          "rag_release_nodes": 3,
+          "knowledge_documents": 1,
+          "knowledge_chunks": 1,
+          "li_nodes": 3
+        }
+      },
+      "workers": 12
+    },
+    {
+      "case_id": "pg-input-ttl",
+      "status": "通过",
+      "assertion": "24h有效窗口内可读；推进到expires_at之后不可读且删除",
+      "business_before": {
+        "row_counts": {
+          "users": 8,
+          "api_tokens": 7,
+          "password_reset_requests": 2,
+          "admin_audit_log": 1,
+          "assistant_sessions": 8,
+          "assistant_messages": 11,
+          "assistant_citations": 10,
+          "usage_counters": 3,
+          "upstream_usage_records": 15,
+          "assignments": 1,
+          "assignment_items": 1,
+          "grading_submissions": 2,
+          "rag_requests": 8,
+          "rag_task_inputs": 0,
+          "rag_task_jobs": 2,
+          "rag_issues": 1,
+          "rag_issue_events": 3,
+          "rag_knowledge": 1,
+          "rag_knowledge_revisions": 2,
+          "rag_releases": 1,
+          "rag_index_state": 1,
+          "rag_release_nodes": 3,
+          "knowledge_documents": 1,
+          "knowledge_chunks": 1,
+          "li_nodes": 3
+        }
+      },
+      "business_delta": {
+        "tables": {
+          "users": {
+            "removed": [],
+            "added": []
+          },
+          "api_tokens": {
+            "removed": [],
+            "added": []
+          },
+          "password_reset_requests": {
+            "removed": [],
+            "added": []
+          },
+          "admin_audit_log": {
+            "removed": [],
+            "added": []
+          },
+          "assistant_sessions": {
+            "removed": [],
+            "added": []
+          },
+          "assistant_messages": {
+            "removed": [],
+            "added": []
+          },
+          "assistant_citations": {
+            "removed": [],
+            "added": []
+          },
+          "usage_counters": {
+            "removed": [],
+            "added": []
+          },
+          "upstream_usage_records": {
+            "removed": [],
+            "added": []
+          },
+          "assignments": {
+            "removed": [],
+            "added": []
+          },
+          "assignment_items": {
+            "removed": [],
+            "added": []
+          },
+          "grading_submissions": {
+            "removed": [],
+            "added": []
+          },
+          "rag_requests": {
+            "removed": [],
+            "added": []
+          },
+          "rag_task_inputs": {
+            "removed": [],
+            "added": []
+          },
+          "rag_task_jobs": {
+            "removed": [],
+            "added": []
+          },
+          "rag_issues": {
+            "removed": [],
+            "added": []
+          },
+          "rag_issue_events": {
+            "removed": [],
+            "added": []
+          },
+          "rag_knowledge": {
+            "removed": [],
+            "added": []
+          },
+          "rag_knowledge_revisions": {
+            "removed": [],
+            "added": []
+          },
+          "rag_releases": {
+            "removed": [],
+            "added": []
+          },
+          "rag_index_state": {
+            "removed": [],
+            "added": []
+          },
+          "rag_release_nodes": {
+            "removed": [],
+            "added": []
+          },
+          "knowledge_documents": {
+            "removed": [],
+            "added": []
+          },
+          "knowledge_chunks": {
+            "removed": [],
+            "added": []
+          },
+          "li_nodes": {
+            "removed": [],
+            "added": []
+          }
+        }
+      },
+      "business_after": {
+        "row_counts": {
+          "users": 8,
+          "api_tokens": 7,
+          "password_reset_requests": 2,
+          "admin_audit_log": 1,
+          "assistant_sessions": 8,
+          "assistant_messages": 11,
+          "assistant_citations": 10,
+          "usage_counters": 3,
+          "upstream_usage_records": 15,
+          "assignments": 1,
+          "assignment_items": 1,
+          "grading_submissions": 2,
+          "rag_requests": 8,
+          "rag_task_inputs": 0,
+          "rag_task_jobs": 2,
+          "rag_issues": 1,
+          "rag_issue_events": 3,
+          "rag_knowledge": 1,
+          "rag_knowledge_revisions": 2,
+          "rag_releases": 1,
+          "rag_index_state": 1,
+          "rag_release_nodes": 3,
+          "knowledge_documents": 1,
+          "knowledge_chunks": 1,
+          "li_nodes": 3
+        }
+      }
+    },
+    {
+      "case_id": "pg-vector-rrf-mmr",
+      "status": "通过",
+      "assertion": "1024维PG exact cosine→FTS/path融合→冻结RRF/MMR；保留排序及score",
+      "business_before": {
+        "row_counts": {
+          "users": 8,
+          "api_tokens": 7,
+          "password_reset_requests": 2,
+          "admin_audit_log": 1,
+          "assistant_sessions": 8,
+          "assistant_messages": 11,
+          "assistant_citations": 10,
+          "usage_counters": 3,
+          "upstream_usage_records": 15,
+          "assignments": 1,
+          "assignment_items": 1,
+          "grading_submissions": 2,
+          "rag_requests": 8,
+          "rag_task_inputs": 0,
+          "rag_task_jobs": 2,
+          "rag_issues": 1,
+          "rag_issue_events": 3,
+          "rag_knowledge": 1,
+          "rag_knowledge_revisions": 2,
+          "rag_releases": 1,
+          "rag_index_state": 1,
+          "rag_release_nodes": 3,
+          "knowledge_documents": 1,
+          "knowledge_chunks": 1,
+          "li_nodes": 3
+        }
+      },
+      "business_delta": {
+        "tables": {
+          "users": {
+            "removed": [],
+            "added": []
+          },
+          "api_tokens": {
+            "removed": [],
+            "added": []
+          },
+          "password_reset_requests": {
+            "removed": [],
+            "added": []
+          },
+          "admin_audit_log": {
+            "removed": [],
+            "added": []
+          },
+          "assistant_sessions": {
+            "removed": [],
+            "added": []
+          },
+          "assistant_messages": {
+            "removed": [],
+            "added": []
+          },
+          "assistant_citations": {
+            "removed": [],
+            "added": []
+          },
+          "usage_counters": {
+            "removed": [],
+            "added": []
+          },
+          "upstream_usage_records": {
+            "removed": [],
+            "added": []
+          },
+          "assignments": {
+            "removed": [],
+            "added": []
+          },
+          "assignment_items": {
+            "removed": [],
+            "added": []
+          },
+          "grading_submissions": {
+            "removed": [],
+            "added": []
+          },
+          "rag_requests": {
+            "removed": [],
+            "added": []
+          },
+          "rag_task_inputs": {
+            "removed": [],
+            "added": []
+          },
+          "rag_task_jobs": {
+            "removed": [],
+            "added": []
+          },
+          "rag_issues": {
+            "removed": [],
+            "added": []
+          },
+          "rag_issue_events": {
+            "removed": [],
+            "added": []
+          },
+          "rag_knowledge": {
+            "removed": [],
+            "added": []
+          },
+          "rag_knowledge_revisions": {
+            "removed": [],
+            "added": []
+          },
+          "rag_releases": {
+            "removed": [],
+            "added": []
+          },
+          "rag_index_state": {
+            "removed": [],
+            "added": []
+          },
+          "rag_release_nodes": {
+            "removed": [],
+            "added": []
+          },
+          "knowledge_documents": {
+            "removed": [],
+            "added": []
+          },
+          "knowledge_chunks": {
+            "removed": [],
+            "added": []
+          },
+          "li_nodes": {
+            "removed": [],
+            "added": []
+          }
+        }
+      },
+      "business_after": {
+        "row_counts": {
+          "users": 8,
+          "api_tokens": 7,
+          "password_reset_requests": 2,
+          "admin_audit_log": 1,
+          "assistant_sessions": 8,
+          "assistant_messages": 11,
+          "assistant_citations": 10,
+          "usage_counters": 3,
+          "upstream_usage_records": 15,
+          "assignments": 1,
+          "assignment_items": 1,
+          "grading_submissions": 2,
+          "rag_requests": 8,
+          "rag_task_inputs": 0,
+          "rag_task_jobs": 2,
+          "rag_issues": 1,
+          "rag_issue_events": 3,
+          "rag_knowledge": 1,
+          "rag_knowledge_revisions": 2,
+          "rag_releases": 1,
+          "rag_index_state": 1,
+          "rag_release_nodes": 3,
+          "knowledge_documents": 1,
+          "knowledge_chunks": 1,
+          "li_nodes": 3
+        }
+      },
+      "semantic_ids": [
+        "li_p0_node_0",
+        "li_p0_node_1",
+        "li_p0_node_2"
+      ],
+      "ranked": [
+        {
+          "chunk_id": "li_p0_node_0",
+          "score": 1.02,
+          "source_path": "synthetic/dns0.md"
+        },
+        {
+          "chunk_id": "li_p0_node_2",
+          "score": 0.94,
+          "source_path": "synthetic/dns1.md"
+        },
+        {
+          "chunk_id": "li_p0_node_1",
+          "score": 0.94,
+          "source_path": "synthetic/dns0.md"
+        }
+      ],
+      "tolerance": {
+        "raw_ranked_score_absolute": 1e-12,
+        "authorization": "U09 user accepted",
+        "other_business_scores": "exact",
+        "order": "exact; semantic ties node_id ASC"
+      }
+    },
+    {
+      "case_id": "citation-six-same-file",
+      "status": "通过",
+      "assertion": "同文件6片段逐个保留、次序不变、不截断为4条",
+      "business_before": {
+        "row_counts": {
+          "users": 8,
+          "api_tokens": 7,
+          "password_reset_requests": 2,
+          "admin_audit_log": 1,
+          "assistant_sessions": 8,
+          "assistant_messages": 11,
+          "assistant_citations": 10,
+          "usage_counters": 3,
+          "upstream_usage_records": 15,
+          "assignments": 1,
+          "assignment_items": 1,
+          "grading_submissions": 2,
+          "rag_requests": 8,
+          "rag_task_inputs": 0,
+          "rag_task_jobs": 2,
+          "rag_issues": 1,
+          "rag_issue_events": 3,
+          "rag_knowledge": 1,
+          "rag_knowledge_revisions": 2,
+          "rag_releases": 1,
+          "rag_index_state": 1,
+          "rag_release_nodes": 3,
+          "knowledge_documents": 1,
+          "knowledge_chunks": 1,
+          "li_nodes": 3
+        }
+      },
+      "business_delta": {
+        "tables": {
+          "users": {
+            "removed": [],
+            "added": []
+          },
+          "api_tokens": {
+            "removed": [],
+            "added": []
+          },
+          "password_reset_requests": {
+            "removed": [],
+            "added": []
+          },
+          "admin_audit_log": {
+            "removed": [],
+            "added": []
+          },
+          "assistant_sessions": {
+            "removed": [],
+            "added": []
+          },
+          "assistant_messages": {
+            "removed": [],
+            "added": []
+          },
+          "assistant_citations": {
+            "removed": [],
+            "added": []
+          },
+          "usage_counters": {
+            "removed": [],
+            "added": []
+          },
+          "upstream_usage_records": {
+            "removed": [],
+            "added": []
+          },
+          "assignments": {
+            "removed": [],
+            "added": []
+          },
+          "assignment_items": {
+            "removed": [],
+            "added": []
+          },
+          "grading_submissions": {
+            "removed": [],
+            "added": []
+          },
+          "rag_requests": {
+            "removed": [],
+            "added": []
+          },
+          "rag_task_inputs": {
+            "removed": [],
+            "added": []
+          },
+          "rag_task_jobs": {
+            "removed": [],
+            "added": []
+          },
+          "rag_issues": {
+            "removed": [],
+            "added": []
+          },
+          "rag_issue_events": {
+            "removed": [],
+            "added": []
+          },
+          "rag_knowledge": {
+            "removed": [],
+            "added": []
+          },
+          "rag_knowledge_revisions": {
+            "removed": [],
+            "added": []
+          },
+          "rag_releases": {
+            "removed": [],
+            "added": []
+          },
+          "rag_index_state": {
+            "removed": [],
+            "added": []
+          },
+          "rag_release_nodes": {
+            "removed": [],
+            "added": []
+          },
+          "knowledge_documents": {
+            "removed": [],
+            "added": []
+          },
+          "knowledge_chunks": {
+            "removed": [],
+            "added": []
+          },
+          "li_nodes": {
+            "removed": [],
+            "added": []
+          }
+        }
+      },
+      "business_after": {
+        "row_counts": {
+          "users": 8,
+          "api_tokens": 7,
+          "password_reset_requests": 2,
+          "admin_audit_log": 1,
+          "assistant_sessions": 8,
+          "assistant_messages": 11,
+          "assistant_citations": 10,
+          "usage_counters": 3,
+          "upstream_usage_records": 15,
+          "assignments": 1,
+          "assignment_items": 1,
+          "grading_submissions": 2,
+          "rag_requests": 8,
+          "rag_task_inputs": 0,
+          "rag_task_jobs": 2,
+          "rag_issues": 1,
+          "rag_issue_events": 3,
+          "rag_knowledge": 1,
+          "rag_knowledge_revisions": 2,
+          "rag_releases": 1,
+          "rag_index_state": 1,
+          "rag_release_nodes": 3,
+          "knowledge_documents": 1,
+          "knowledge_chunks": 1,
+          "li_nodes": 3
+        }
+      },
+      "citations": [
+        {
+          "chunk_id": "li_six_0",
+          "source_path": "synthetic/same.md",
+          "title": "同文件片段",
+          "section": "0",
+          "score": 1.0
+        },
+        {
+          "chunk_id": "li_six_1",
+          "source_path": "synthetic/same.md",
+          "title": "同文件片段",
+          "section": "1",
+          "score": 0.9
+        },
+        {
+          "chunk_id": "li_six_2",
+          "source_path": "synthetic/same.md",
+          "title": "同文件片段",
+          "section": "2",
+          "score": 0.8
+        },
+        {
+          "chunk_id": "li_six_3",
+          "source_path": "synthetic/same.md",
+          "title": "同文件片段",
+          "section": "3",
+          "score": 0.7
+        },
+        {
+          "chunk_id": "li_six_4",
+          "source_path": "synthetic/same.md",
+          "title": "同文件片段",
+          "section": "4",
+          "score": 0.6
+        },
+        {
+          "chunk_id": "li_six_5",
+          "source_path": "synthetic/same.md",
+          "title": "同文件片段",
+          "section": "5",
+          "score": 0.5
+        }
+      ]
+    },
+    {
+      "case_id": "pg-cleanup-terminal",
+      "status": "通过",
+      "assertion": "专例收口零pending与输入清理",
+      "business_before": {
+        "row_counts": {
+          "users": 8,
+          "api_tokens": 7,
+          "password_reset_requests": 2,
+          "admin_audit_log": 1,
+          "assistant_sessions": 8,
+          "assistant_messages": 11,
+          "assistant_citations": 10,
+          "usage_counters": 3,
+          "upstream_usage_records": 15,
+          "assignments": 1,
+          "assignment_items": 1,
+          "grading_submissions": 2,
+          "rag_requests": 8,
+          "rag_task_inputs": 0,
+          "rag_task_jobs": 2,
+          "rag_issues": 1,
+          "rag_issue_events": 3,
+          "rag_knowledge": 1,
+          "rag_knowledge_revisions": 2,
+          "rag_releases": 1,
+          "rag_index_state": 1,
+          "rag_release_nodes": 3,
+          "knowledge_documents": 1,
+          "knowledge_chunks": 1,
+          "li_nodes": 3
+        }
+      },
+      "business_delta": {
+        "tables": {
+          "users": {
+            "removed": [],
+            "added": []
+          },
+          "api_tokens": {
+            "removed": [],
+            "added": []
+          },
+          "password_reset_requests": {
+            "removed": [],
+            "added": []
+          },
+          "admin_audit_log": {
+            "removed": [],
+            "added": []
+          },
+          "assistant_sessions": {
+            "removed": [],
+            "added": []
+          },
+          "assistant_messages": {
+            "removed": [],
+            "added": []
+          },
+          "assistant_citations": {
+            "removed": [],
+            "added": []
+          },
+          "usage_counters": {
+            "removed": [],
+            "added": []
+          },
+          "upstream_usage_records": {
+            "removed": [],
+            "added": []
+          },
+          "assignments": {
+            "removed": [],
+            "added": []
+          },
+          "assignment_items": {
+            "removed": [],
+            "added": []
+          },
+          "grading_submissions": {
+            "removed": [],
+            "added": []
+          },
+          "rag_requests": {
+            "removed": [
+              {
+                "task_id": "b779e024cd8b473da9872008a150d378",
+                "request_id": "30e0f39c-9bca-4545-9f03-164cbbaff885",
+                "input_hash": "a9e0e5829fe5b9c06acae8c4f16f1e13d73aa54084a5ffeb922e0183336718a1",
+                "initial_request": 0,
+                "purpose": "chat",
+                "user_id": "U20270000011",
+                "session_id": "sess_ffa19c6c109d",
+                "message_id": null,
+                "status": "pending",
+                "reason": "",
+                "release_id": "",
+                "evidence": [],
+                "model_version": "synthetic",
+                "prompt_version": "grounded-v1",
+                "elapsed_ms": 0,
+                "created_at": "2026-10-24T04:10:00+00:00",
+                "updated_at": "2026-10-24T04:10:00+00:00",
+                "question_fingerprint": "6ce398fec9de195726cb67f308052920fc7b83be078cb99195ca9295dade5f0e",
+                "question_identity_links": [],
+                "context_fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "context_identity_links": []
+              }
+            ],
+            "added": [
+              {
+                "task_id": "b779e024cd8b473da9872008a150d378",
+                "request_id": "30e0f39c-9bca-4545-9f03-164cbbaff885",
+                "input_hash": "a9e0e5829fe5b9c06acae8c4f16f1e13d73aa54084a5ffeb922e0183336718a1",
+                "initial_request": 0,
+                "purpose": "chat",
+                "user_id": "U20270000011",
+                "session_id": "sess_ffa19c6c109d",
+                "message_id": null,
+                "status": "system_error",
+                "reason": "p0-synthetic-end",
+                "release_id": "",
+                "evidence": [],
+                "model_version": "synthetic",
+                "prompt_version": "grounded-v1",
+                "elapsed_ms": 0,
+                "created_at": "2026-10-24T04:10:00+00:00",
+                "updated_at": "2026-10-24T04:10:00+00:00",
+                "question_fingerprint": "6ce398fec9de195726cb67f308052920fc7b83be078cb99195ca9295dade5f0e",
+                "question_identity_links": [],
+                "context_fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "context_identity_links": []
+              }
+            ]
+          },
+          "rag_task_inputs": {
+            "removed": [],
+            "added": []
+          },
+          "rag_task_jobs": {
+            "removed": [],
+            "added": []
+          },
+          "rag_issues": {
+            "removed": [],
+            "added": [
+              {
+                "issue_id": "b779e024cd8b473da9872008a150d378",
+                "originating_task_id": "b779e024cd8b473da9872008a150d378",
+                "status": "open",
+                "owner_id": null,
+                "note": "",
+                "feedback": "",
+                "merged_issue_id": null,
+                "knowledge_id": null,
+                "verified_release_id": null,
+                "verified_at": null,
+                "updated_at": "2026-10-24T04:10:00+00:00"
+              }
+            ]
+          },
+          "rag_issue_events": {
+            "removed": [],
+            "added": []
+          },
+          "rag_knowledge": {
+            "removed": [],
+            "added": []
+          },
+          "rag_knowledge_revisions": {
+            "removed": [],
+            "added": []
+          },
+          "rag_releases": {
+            "removed": [],
+            "added": []
+          },
+          "rag_index_state": {
+            "removed": [],
+            "added": []
+          },
+          "rag_release_nodes": {
+            "removed": [],
+            "added": []
+          },
+          "knowledge_documents": {
+            "removed": [],
+            "added": []
+          },
+          "knowledge_chunks": {
+            "removed": [],
+            "added": []
+          },
+          "li_nodes": {
+            "removed": [],
+            "added": []
+          }
+        }
+      },
+      "business_after": {
+        "row_counts": {
+          "users": 8,
+          "api_tokens": 7,
+          "password_reset_requests": 2,
+          "admin_audit_log": 1,
+          "assistant_sessions": 8,
+          "assistant_messages": 11,
+          "assistant_citations": 10,
+          "usage_counters": 3,
+          "upstream_usage_records": 15,
+          "assignments": 1,
+          "assignment_items": 1,
+          "grading_submissions": 2,
+          "rag_requests": 8,
+          "rag_task_inputs": 0,
+          "rag_task_jobs": 2,
+          "rag_issues": 2,
+          "rag_issue_events": 3,
+          "rag_knowledge": 1,
+          "rag_knowledge_revisions": 2,
+          "rag_releases": 1,
+          "rag_index_state": 1,
+          "rag_release_nodes": 3,
+          "knowledge_documents": 1,
+          "knowledge_chunks": 1,
+          "li_nodes": 3
+        }
+      }
+    }
+  ],
+  "privacy": {
+    "runtime_source_marker_hits": 0,
+    "pending_tasks": 0,
+    "transient_inputs": 0
+  },
+  "ledger": {
+    "llm_calls": 11,
+    "mcp_calls": 3,
+    "mcp": [
+      {
+        "tool": "list_protocols",
+        "job_id": null
+      },
+      {
+        "tool": "grade_plugin",
+        "job_id": null
+      },
+      {
+        "tool": "get_reference_answer",
+        "job_id": null
+      }
+    ],
+    "tool_call_id_observed": true
+  }
+}

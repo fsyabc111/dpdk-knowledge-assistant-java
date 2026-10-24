@@ -1,23 +1,37 @@
 # 主 Agent 恢复点
 
-- 日期：2026-10-24；目标：Java 主后端迁移，当前仅 P0 获直接用户授权。
-- 授权：J0-01/J0-02、多 Agent、独立合成测试/PG/本地上游替身、开发分支和本地提交；不授权 P1/真实上游/旧环境写入/push/main 合并/部署/删除恢复资产。
-- 工作目录：`/Volumes/study/code/new_project/dpdk-knowledge-assistant-java`；分支 `codex/p0-baseline-oracle`；起点 `80b29135faddd16d5e39fdbf0633291ea6a20489`。初始 main 干净、origin 核验正确。
-- Oracle 来源：此仓库冻结 Python 副本；原目录只作来源记录。旧测试报告不计新验证。
-- 当前：J0-01 p0-v1 初版可消费（66路由/29表/103配置/63模型/378文件校验通过），语义继续完善。J0-02 双独立库各184观测/66路由成功/14脚本/10PG用例/29表通过，Python严格自对照通过；正式3轮容量正在运行，独立审查准备中。
-- owner：主 Agent 独占 STATUS/MAIN/DECISIONS/阶段报告/根共享文件；p0_contracts 独占 migration/contracts、migration/baseline、evidence/J0-01、handoffs/J0-01.md；p0_oracle 独占 migration/fixtures、migration/oracle（排除 performance 子目录）、evidence/J0-02（排除 performance）和 handoffs/J0-02.md；p0_performance 独占 migration/oracle/performance、evidence/J0-02/performance、handoffs/J0-02-performance.md。
-- 后续数据库迁移唯一 owner 为主 Agent，在 J1-01 获授权窗口实现；P0 不实施 Java。
-- 在跑：p0_performance（长测）、p0_oracle（审查修复，长测后才跑PG）、p0_contracts（继承模型与契约静态修复）。双轴审查和技术栈研究已结束，修后需复审。
-- 服务：本仓库专用 PG17.10，127.0.0.1:55473，数据 .migration-artifacts/p0/pgdata；库 p0_python_oracle/p0_candidate_oracle，角色 p0_oracle，另有 p0_benchmark_oracle 专供性能；三库 comment java-migration-p0-synthetic-80b29135；socket /tmp/dpdk-java-p0-80b29135。模型/MCP仅替身，正式性能应用运行中。独立 venv Python3.11.15+133包，pip check通过；未改系统代理。环境清单 .migration-artifacts/p0/environment.json。
-- 未提交：P0 授权/恢复记录（主 Agent），J0-01 输出（worker）。禁止 reset/clean 覆盖。
-- 决策：关键产品差异与实测门禁集中请用户确认；真实质量另获 live 授权。
-- 下一动作：功能/性能资格运行（已开始）→正式3轮120s预热+600s测量→收集兼容取舍与阈值→独立审查。
+- 日期：2026-10-24；目标：Java 主后端迁移，当前仅 P0 获授权。用户验收/P1仍未放行。
+- 目录：`/Volumes/study/code/new_project/dpdk-knowledge-assistant-java`；分支 `codex/p0-baseline-oracle`；初始基线 `80b29135faddd16d5e39fdbf0633291ea6a20489`。
+- 授权：J0-01/J0-02、多 Agent、合成专用PG/替身/依赖/测试/本地提交；禁止P1/真实上游/原项目部署业务库写入/push/main合并/部署/删除恢复资产。
+- Oracle只读本仓库冻结Python副本，不吸收原目录新变化；原Python/前端未改。
+- 已有本地提交：`08158c6` 初版、`c94f43d` 首轮修复；之后动态证据/门槛/最终回修尚待集成本地提交。未推送。
 
-- 长测：p0_performance持有exec session55014；真实Python ASGI+PG，3×(预热120s+测量600s)，日志 `.migration-artifacts/p0/performance/baseline.log`，证据 `evidence/J0-02/performance/baseline-round-*.json`。禁止同时跑额外负载或停止共享PG。正式长测开始后主Agent不连接PG。
-- 用户已确认：COMP-003 Java安全差异（running轮询受600s墙；unknown/查询失败不重投，现有system_error终态+failure_code，保留job账本/清理临时输入），依据2026-10-24用户明确接受建议，见DECISIONS/P0-D13；阈值待三轮数据后确认。
-- 已有本地审查提交 `08158c6`，未推送；其后主Agent同步COMP-003批准状态、failure_code=`harness_result_unknown`和schema owner/动态证据，尚未提交。公共契约集成窗口现归主Agent。
-- 独立审查初步确认：静态模型枚举漏传递继承 ManagerAssignment（submission_count/student_count）；verify合法JSON非object/非法日期可能抛非约定异常。等待两轴正式报告后分别交J0-01/J0-02 owner修复；不连接PG干扰长测。
-- 功能初版fixture p0-v1/rev2，golden c041d83636b31684aeef9f1497925a0ebdc3112b9a7ea781f1fd92093b943edf；CLI验证184观测通过。P0未收口：逐case DB状态值/非空manager列表需独立审查确认；有效token停用脚本待长测结束执行。若扩展黄金，必须新版本而非覆盖。
+## 当前完成与门禁
 
-- P0-D14已选Java21 / Boot4.0.9 / AI2.0.2及BOM管理的JDBC7.0.10 / Flyway11.14.1 / PGJDBC42.7.14；官方依据见evidence/J0-01/java-stack-selection.md。Java未构建运行，P1未授权。
-- 待修：业务状态投影（Spec P1）、继承模型及非空列表、SSE CRLF/error-only、身份命名格式、损坏输入CLI。扩展p0-v2须保留p0-v1；最终双库与有效token停用补验仅在长测结束后执行。
+- J0-01：378文件校验一致；66路由/29表/103配置/64模型映射，修正初版漏掉的ManagerAssignment继承模型；10项静态护栏通过。
+- J0-02初版p0-v1/rev2保留不改；新p0-v2增加业务初态、逐case实际delta、终态、PG/检索结果和非空管理列表。两独立库已采集186观测/66路由/11PG用例/29表，正在修正自对照中的文本内嵌生成身份；未最终冻结。
+- 三轮正式负载已完成，每轮120秒预热+600秒测量；8419问答p95=2154.735ms、p99=2195.212ms；21600读作业p95=30.137ms；正常分组异常0。PG终态/扣次10278，正式成绩/扣次174，临时输入0；warmup和讲解解释了与测量问答数的口径差异。
+- 负载session55014已正常退出0、真实app shutdown完成；故障/负载子进程均已结束。正式测量窗口已关闭，独立库动态补验现已开放。
+- 双轴初审已结束并回修；规范S-01/S-02关闭，S-03嵌套损坏输入还需最终复审；Spec S3/S4代码层关闭，S1/S2等待v2动态/manifest/非空列表证据。报告在evidence/P0，原报告不可覆盖。
+- 旧完整业务重试/并发矩阵、真实0013升级、React场景、Java构建、真实模型/embedding/harness均未宣称通过，按原任务卡后续验证。
+
+## 已确认决策
+
+- U08/P0-D13：用户接受Java安全差异；running只等/查且受600秒外墙；unknown/查询失败不重投，system_error终态/failure_code=harness_result_unknown，保留submitted账本、清临时输入。Python重投失败证据保留。
+- U09/P0-D15：用户已接受全部合成门槛；权威值migration/contracts/thresholds.json。资源是应用+负载/采样合计；1秒RTO仅10ms脚本执行，330秒调度等待仅推导；固定向量raw score容差1e-12、顺序和舍入后引用分数精确。
+- P0-D14：Java21/Boot4.0.9/AI2.0.2；JDBC7.0.10/Flyway11.14.1/PGJDBC42.7.14随BOM；官方依据evidence/J0-01/java-stack-selection.md。没有Java构建。Flyway B15/V14/V15三路径设计待P1实测，迁移唯一owner为主Agent/root。
+
+## 所有权与资源
+
+- 主Agent：STATUS/MAIN/DECISIONS/ARCHITECTURE/阶段报告/thresholds/公共集成；p0_contracts已交还静态和契约窗口。
+- 当前唯一在跑worker：p0_oracle，拥有J0-02非performance代码/fixture/证据/交接（approved-differences/comp003由主Agent集成）；正做动态补验、CLI嵌套输入修复及最终冻结。
+- p0_performance已收口并释放所有performance路径；不再跑负载/PG扫描。两个review agent当前已收口，待v2完成后followup最终复审。
+- 本仓库专用PG17.10+vector0.8.4仍运行：127.0.0.1:55473，角色p0_oracle，库p0_python_oracle/p0_candidate_oracle/p0_benchmark_oracle；comment=java-migration-p0-synthetic-80b29135；data_directory=.migration-artifacts/p0/pgdata；socket=/tmp/dpdk-java-p0-80b29135。
+- venv=.migration-artifacts/p0/venv，Python3.11.15、133包且pip check通过；安装未改系统代理。原始日志/输入均在忽略的.migration-artifacts，禁止提交。
+
+## 下一动作
+
+1. 接收p0_oracle v2真实自对照、manifest、业务值反例/非空列表/有效token停用/CLI全部结果；保留所有失败，不改Python。
+2. 提交最终代码/fixture审查快照，followup规范与Spec两条独立复审，关闭剩余条件项。
+3. 主Agent同步最终冻结/差异/四层验收与阶段报告，校验来源和秘密/运行产物、只做本地提交。
+4. 所有worker确认不再用PG后，仅停止本任务PG进程；保留pgdata/venv/日志/恢复资产。交付P0报告并等待用户验收/P1放行。

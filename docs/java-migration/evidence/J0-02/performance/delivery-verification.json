@@ -1,0 +1,21 @@
+{
+  "runner_unchanged_during_official_run": true,
+  "runner_sha256": "7c151385d7b9ac879527c459b5c2bd283b12bb14ebc2141c389c7d61c3efa0f9",
+  "frozen_backend_diff_paths": [],
+  "evidence_forbidden_content_findings": {},
+  "evidence_file_count_before_this_check": 29,
+  "evidence_bytes_before_this_check": 899141,
+  "measurement_rounds": 3,
+  "warmup_rounds": 3,
+  "measurement_target_seconds": [
+    600.0,
+    600.0,
+    600.0
+  ],
+  "all_business_assertions": true,
+  "benchmark_exit_code_observed": 0,
+  "real_quality": "未验证",
+  "stage_approval": "子Agent不放行阶段",
+  "baseline_summary_sha256": "b3c8200ae2feee65ee9e2f8d3f73cbea327baae05206758c7de7e5f8050261b2",
+  "audit_and_candidate_bound_to_summary": true
+}
