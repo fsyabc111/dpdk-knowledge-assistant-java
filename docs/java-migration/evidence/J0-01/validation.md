@@ -1,4 +1,6 @@
-# J0-01 可提交验证摘要
+# J0-01 初版历史验证摘要（63模型漏项已审查修正）
+
+本页保留初版实际执行记录。独立审查发现该63项枚举集合漏掉间接继承模型ManagerAssignment，旧的覆盖100%不能证明全量模型无漏项。当前已修复为64模型、10项护栏；现行结果见 `review-fixes.md`、`coverage-report.json`，旧机器报告另存 `coverage-report-initial-reviewed.json`。不要继续把下表历史63项或5项测试作为当前完整性证明。
 
 - 工作区：`/Volumes/study/code/new_project/dpdk-knowledge-assistant-java`；共享分支 `codex/p0-baseline-oracle`。
 - 冻结提交：`80b29135faddd16d5e39fdbf0633291ea6a20489`。原 manifest SHA-256：`29dc72e7f19c949f9d70b642e3e085a98bd26b1ca2a320fc0be43b5461d7e60c`。
@@ -27,4 +29,4 @@
 - J0-01未启动Python应用、未连接任何PG、未调用真实或替身模型/MCP、未运行评测/性能/恢复。动态证据由J0-02/性能owner提供，后续再引用确切fixture/测量ID。
 - 29项是完整生产表**命名与去向**（含动态LI与alembic元数据），不是29表实际catalog全量验证。动态LI列/索引、条件zhparser和真实旧0013结构均未验证。
 - 原外部系统、DPDK/harness、生产PG、真实模型/embedding可用性全部未验证；未推送、未P1实施、未做生产操作。
-- 待决项：COMP-003的harness同job_id幂等证据/用户批准差异；COMP-010首次/重放分开fixture；阈值保持待J0-02测量。它们没有被伪装为通过。
+- 初版交接时的待决项：COMP-003、COMP-010与阈值。此后主Agent已按用户授权U08/P0-D13接受COMP-003安全差异并接入空库schema证据；最新状态以差异账本/主交接为准。当前修复不覆盖主Agent的阈值、差异或技术栈研究文件。

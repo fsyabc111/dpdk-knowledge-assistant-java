@@ -64,11 +64,11 @@
         }
       ],
       "baseline_behavior": "_harness_job_status 对失败/异常/超时返回 None；_resume_grading_job 仅 finished+dict result 或本地 finished 可 replay。submitted 且 running/unknown/None 返回 replayed=None，随后 grade_plugin 主流程再提交同一 job_id。源码注释依赖 harness 同 job_id 加入既有执行/幂等重投，但外部 harness 未复制、未验证。单次 MCP call_tool 提交后不传输重试不能覆盖这一业务层第二次调用。",
-      "disposition": "pending_harness_evidence_or_user_approved_difference",
-      "recommendation": "Python oracle 如实保留；未证明 harness 同 job_id 幂等前，Java 对 unknown 不自动重新提交。若需维持重投，先用获授权 harness 合同/实证解释；采用安全阻断属于有意兼容差异，由主 Agent 提请用户确认。",
-      "blocked_scope": "J3-02 恢复接线冻结/真实评测放行；不阻断 P1 合成模型/MCP适配",
+      "disposition": "user_approved_java_safety_difference",
+      "recommendation": "用户已明确接受（DECISIONS U08/P0-D13）：Python oracle 如实保留；Java 对 running 仅等待/查询并受任务硬时限约束；unknown/查询失败停止自动重投，以现有 system_error 终态及 failure_code 提示结果待核对，保留 submitted job 账本，终态清理临时输入。",
+      "blocked_scope": "Java 安全目标尚未实现/验证；由 J1-02 保留失败分类，J3-02/J3-03 实现与验证。真实评测仍须另获授权",
       "owner_task": "J3-02",
-      "dynamic_evidence": "pending J0-02 / performance synthetic recovery result"
+      "dynamic_evidence": "docs/java-migration/evidence/J0-02/performance/recovery.json；安全目标 migration/fixtures/p0-approved-differences/comp003.json"
     },
     {
       "id": "COMP-004",

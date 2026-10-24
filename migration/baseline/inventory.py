@@ -133,17 +133,144 @@ def route_inventory(trees):
 
 
 def schemas_inventory(trees):
-    models = []
+    """解析本地继承闭包和导入别名；不通过导入 Pydantic/应用获取字段。"""
+    modules, classes = {}, {}
+
+    def module_name(path):
+        parts = list(path.with_suffix("").parts)
+        if parts[0] == "backend":
+            parts.pop(0)
+        if parts[-1] == "__init__":
+            parts.pop()
+        return ".".join(parts)
+
     for p, tree in trees.items():
-        if not (str(p).startswith("backend/app/schemas/") or str(p).startswith("backend/app/api/")):
-            continue
+        module = module_name(p)
+        package = module if p.stem == "__init__" else module.rpartition(".")[0]
+        bindings = {}
         for n in tree.body:
-            if not isinstance(n, ast.ClassDef):
+            if isinstance(n, ast.Import):
+                for alias in n.names:
+                    bindings[alias.asname or alias.name.split(".")[0]] = alias.name if alias.asname else alias.name.split(".")[0]
+            elif isinstance(n, ast.ImportFrom):
+                if n.level:
+                    prefix = package.split(".")[:len(package.split(".")) - n.level + 1]
+                    imported = ".".join(prefix + ([n.module] if n.module else []))
+                else:
+                    imported = n.module or ""
+                for alias in n.names:
+                    if alias.name != "*":
+                        bindings[alias.asname or alias.name] = f"{imported}.{alias.name}".strip(".")
+            elif isinstance(n, ast.Assign) and isinstance(n.value, (ast.Name, ast.Attribute)):
+                for target in n.targets:
+                    if isinstance(target, ast.Name):
+                        bindings[target.id] = f"@local:{expr(n.value)}"
+            elif isinstance(n, ast.ClassDef):
+                symbol = f"{module}.{n.name}" if module else n.name
+                classes[symbol] = (p, n, module)
+        modules[module] = bindings
+
+    def resolve_text(module, text, trail=()):
+        key = (module, text)
+        if key in trail:
+            raise ValueError(f"模型别名循环: {module}:{text}")
+        local = f"{module}.{text}" if module else text
+        if local in classes:
+            return local
+        root, dot, rest = text.partition(".")
+        binding = modules.get(module, {}).get(root)
+        if binding:
+            if binding.startswith("@local:"):
+                expanded = resolve_text(module, binding[len("@local:"):], trail + (key,))
+            else:
+                expanded = binding
+            text = expanded + (dot + rest if dot else "")
+        if text in classes:
+            return text
+        # 导入的模块可以再次 re-export 某个父类，继续静态跟随绑定。
+        target_module, _, target_name = text.rpartition(".")
+        if target_module in modules and target_name in modules[target_module]:
+            return resolve_text(target_module, target_name, trail + (key,))
+        return text
+
+    def resolve_base(module, node):
+        if isinstance(node, ast.Subscript):
+            return resolve_base(module, node.value)
+        return resolve_text(module, expr(node))
+
+    base_symbols = {symbol:[resolve_base(module,b) for b in node.bases]
+                    for symbol,(_,node,module) in classes.items()}
+    mro_cache = {}
+
+    def static_mro(symbol, trail=()):
+        if symbol in mro_cache:
+            return mro_cache[symbol]
+        if symbol in trail:
+            raise ValueError(f"模型继承循环: {' -> '.join(trail + (symbol,))}")
+        if symbol not in classes:
+            return [symbol]  # 外部类保持不透明，绝不导入它求运行时 MRO。
+        parents = base_symbols[symbol]
+        sequences = [list(static_mro(parent, trail + (symbol,))) for parent in parents] + [list(parents)]
+        order = [symbol]
+        while any(sequences):
+            sequences = [s for s in sequences if s]
+            head = next((s[0] for s in sequences if all(s[0] not in other[1:] for other in sequences)), None)
+            if head is None:
+                raise ValueError(f"模型本地 C3 继承顺序冲突: {symbol}")
+            order.append(head)
+            for sequence in sequences:
+                if sequence[0] == head:
+                    sequence.pop(0)
+        mro_cache[symbol] = order
+        return order
+
+    roots = {"pydantic.BaseModel", "pydantic.main.BaseModel"}
+    model_symbols = {symbol for symbol in classes if roots.intersection(static_mro(symbol))}
+
+    def model_id(symbol):
+        p,node,_ = classes[symbol]
+        return f"{p.as_posix()}::{node.name}"
+
+    def own_fields(symbol):
+        p,node,_ = classes[symbol]
+        return [location(p,a,name=expr(a.target),annotation=expr(a.annotation),default=expr(a.value))
+                for a in node.body if isinstance(a,ast.AnnAssign)]
+
+    models = []
+    for symbol,(p,node,module) in classes.items():
+        if symbol not in model_symbols:
+            continue
+        fields = own_fields(symbol)
+        effective = {}
+        for ancestor in reversed(static_mro(symbol)):
+            if ancestor not in classes:
                 continue
-            if not n.bases or not any(expr(b) == "BaseModel" for b in n.bases):
-                continue
-            fields = [location(p, a, name=expr(a.target), annotation=expr(a.annotation), default=expr(a.value)) for a in n.body if isinstance(a, ast.AnnAssign)]
-            models.append(location(p, n, id=f"{p.as_posix()}::{n.name}", name=n.name, bases=[expr(b) for b in n.bases], fields=fields))
+            for field in own_fields(ancestor):
+                effective[field["name"]] = {**field,"declared_in":model_id(ancestor),"inherited":ancestor != symbol}
+        references = []
+        for field in effective.values():
+            declaration_module = module_name(Path(field["path"]))
+            annotation = ast.parse(field["annotation"],mode="eval")
+            pending = list(ast.walk(annotation))
+            while pending:
+                item = pending.pop()
+                if isinstance(item,ast.Constant) and isinstance(item.value,str):
+                    try:
+                        pending.extend(ast.walk(ast.parse(item.value,mode="eval")))
+                    except SyntaxError:
+                        pass
+                elif isinstance(item,(ast.Name,ast.Attribute)):
+                    target = resolve_text(declaration_module,expr(item))
+                    if target in model_symbols:
+                        ref = {"field":field["name"],"model_id":model_id(target),"path":field["path"],"line":field["line"]}
+                        if ref not in references:
+                            references.append(ref)
+        models.append(location(p,node,id=model_id(symbol),name=node.name,bases=[expr(b) for b in node.bases],fields=fields,
+            resolved_bases=[{"expression":expr(base),"symbol":target,"model_id":model_id(target) if target in model_symbols else None}
+                            for base,target in zip(node.bases,base_symbols[symbol])],
+            inheritance_mro=[model_id(a) if a in classes else a for a in static_mro(symbol)],
+            inherited_fields=[f for f in effective.values() if f["inherited"]],effective_fields=list(effective.values()),
+            field_model_references=sorted(references,key=lambda r:(r["field"],r["model_id"]))))
     return models
 
 
@@ -311,6 +438,16 @@ def coverage(data, contracts):
         errors.append("environment_template")
     if data["direct_environment_access"]:
         errors.append("direct_environment_access_requires_explicit_mapping")
+    model_ids = {m["id"] for m in data["models"]}
+    mapped_models = {m["id"]:m for m in contracts["models"]}
+    definition_keys = ["bases","fields","resolved_bases","inheritance_mro","inherited_fields","effective_fields","field_model_references"]
+    definition_differences = [{"id":m["id"],"fields":[k for k in definition_keys if mapped_models[m["id"]].get(k) != m[k]]}
+                              for m in data["models"] if m["id"] in mapped_models and any(mapped_models[m["id"]].get(k) != m[k] for k in definition_keys)]
+    dangling_references = [{"id":m["id"],"reference":ref["model_id"]} for m in data["models"] for ref in m["field_model_references"] if ref["model_id"] not in model_ids]
+    report["model_inheritance"] = {"checked":len(data["models"]),"inherited_models":sum(bool(m["inherited_fields"]) for m in data["models"]),
+                                  "definition_differences":definition_differences,"dangling_model_references":dangling_references}
+    if definition_differences or dangling_references:
+        errors.append("model_inheritance")
     semantic_missing = [{"id":r["id"],"fields":[k for k in ["source","authorization","request","response","errors","side_effects"] if not r.get(k)]}
                         for r in contracts["routes"] if any(not r.get(k) for k in ["source","authorization","request","response","errors","side_effects"])]
     report["route_semantics"] = {"unmapped":semantic_missing,"checked":len(contracts["routes"])}

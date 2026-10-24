@@ -21,6 +21,7 @@
 
 - 复用功能 owner 的 `migration/oracle/safety.py`；只连接 `p0_benchmark_oracle`，严格核对回环host/55473、role、database comment和仓库pgdata目录后才运行冻结DDL。
 - 性能设置恢复真实默认 bcrypt12、每主体每分钟20、PG池32、20活动/20等待/10s队列超时/600s任务外墙；合成账号日配额100000，原子扣次真实执行。
+- CPU/RSS比较域为应用+负载器+统计/采样器合计，当前处于同一Python进程。后续Java若独立进程，合计Java+等价Python负载/采样进程；按时间样本对齐求和后再算p95/峰值。布局不齐只观察不判通过；P1交付等价adapter或另测server基线。同步ps/PG采样开销计入延迟，当前ASGI不含TCP；本次只支持P0 synthetic门禁，不是应用独占或P5生产容量。
 - 正常负载替身固定每模型调用1s、检索50ms、MCP200ms。恢复故障脚本另用各10ms，不能把其重驱动执行RTO直接当正常用户RTO。
 - MCP进入后响应未返回时SIGKILL，当前Python恢复先查unknown，再以同job提交；跨进程实际grade调用2次，本地配额/成绩各1。此为已复现的安全边界冲突，未改源、未降低断言。与主 Agent 的 COMP003 差异决定衔接。
 - running用例的“通过”只表示当前Python身份/配额/唯一约束得到观察；源码仍同job再调用grade，不能证明真实harness加入既有执行，也不代表拟定Java只轮询策略已实现。
@@ -45,6 +46,7 @@
 - 长测采齐后运行 `.../python migration/oracle/performance/summarize.py`，核对8项业务断言、全部轮次、资源峰/活动会话，再交候选p95/差值/错误率/CPU/RSS/RTO/RPO；需用户确认后主Agent冻结。
 - 主 Agent 已转达用户接受 COMP003（U08/P0-D13）：Java对running只查/等、unknown/查询失败停止重投并system_error终态提示待核对、保留submitted账本、终态清理输入。本子任务只记录Python现状，不改源，也不在P0实现Java。
 - 真模型、embedding、真实检索质量、真实harness、容器执行隔离、TCP/nginx/浏览器断线、多副本fencing、生产RTO/RPO均未验证。
+- 本次RPO仅指PG健康时应用进程SIGKILL后的已提交业务行保持，不含PG/主机故障或备份恢复；临时执行输入仍遵循24h TTL，不保证模型中间输出。
 - 24h临时输入TTL由功能oracle负责；本文件只做终态即清和实际600s配置的虚拟时钟边界。
 - 回退代码仅删除本owner新增路径。合成库/PG进程由主Agent管理，不停止共享PG；不涉及原环境、外部模型/harness副作用。日志/耗时数组/源码临时输入不提交。
 

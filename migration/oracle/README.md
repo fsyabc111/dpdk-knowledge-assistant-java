@@ -1,50 +1,61 @@
 # P0 Python 差分 oracle
 
-此目录调用本仓库冻结 `backend/` 的真实业务逻辑。功能基线为 `80b29135faddd16d5e39fdbf0633291ea6a20489`，fixture 为 `p0-v1`（冻结修订 2）。Java 尚未实现，`p0_candidate_oracle` 本轮运行同一 Python，证明比较器的正例可用。真实模型、embedding 质量与真实 harness 未获授权，均未验证。
+调用本仓库冻结 `backend/` 真实业务逻辑，基线 `80b29135faddd16d5e39fdbf0633291ea6a20489`。`p0-v1` 修订2是历史基础fixture，黄金/manifest保持不变；两轴审查修复扩展到 `p0-v2`。当前p0-v2仅纯内存通过，动态采集、冻结和复审待正式长测退出后的授权窗口。Java尚未实现，真实模型/embedding/harness质量未验证。
 
-## 唯一重跑入口
+## 显式版本命令
 
-主 Agent 提供 `.migration-artifacts/p0/venv` 与 PG17.10/vector0.8.4。确认没有性能测量占用后，在仓库根目录依次运行：
+历史v1只读复验：
 
 ```sh
-.migration-artifacts/p0/venv/bin/python -m migration.oracle.run --database p0_python_oracle
-.migration-artifacts/p0/venv/bin/python -m migration.oracle.run --database p0_candidate_oracle
-.migration-artifacts/p0/venv/bin/python -m migration.oracle.verify --candidate .migration-artifacts/p0/candidate-trace.json
-.migration-artifacts/p0/venv/bin/python -m migration.oracle.selfcheck
+.migration-artifacts/p0/venv/bin/python -m migration.oracle.verify --fixture p0-v1 --candidate .migration-artifacts/p0/candidate-trace.json
 ```
 
-`run` 会重置其指定专用库的合成表，不能与同库其他运行并发。两个数据库互相独立。运行前验证 URL、host、port、role、database comment 和 data_directory；拒绝默认库、localhost别名、非回环、其他角色、URL附加参数。先清空 ambient，再禁用 `Settings.env_file`，最后才导入应用；socket guard 拒绝非回环出网。每连接 `PGOPTIONS=-c timezone=UTC`，不修改 PG 全局时区。
+纯内存/CLI修复回归（不导入app、不连接PG）：
 
-空库走冻结 `init_db → Alembic 0001..0015 → init_db`，li物理表通过冻结 `PGVectorStore` 建立。该证据是空库到当前schema，不是 schema0013 升级演练。已有库必须处于 `0015_explain_purpose`；运行再核验29表与关键唯一索引。
+```sh
+PYTHONDONTWRITEBYTECODE=1 .migration-artifacts/p0/venv/bin/python -m unittest migration.oracle.test_review_fixes -v
+```
 
-ASGITransport 显式不跑应用 startup/background maintenance；schema由入口建立。完整进程重启、硬期限与性能由独立性能worker记录。
+仅在主Agent确认长测退出后，顺序执行新v2动态采集：
 
-## 真实逻辑与替身边界
+```sh
+.migration-artifacts/p0/venv/bin/python -m migration.oracle.run --fixture p0-v2 --database p0_python_oracle
+.migration-artifacts/p0/venv/bin/python -m migration.oracle.run --fixture p0-v2 --database p0_candidate_oracle
+.migration-artifacts/p0/venv/bin/python -m migration.oracle.freeze --fixture p0-v2
+.migration-artifacts/p0/venv/bin/python -m migration.oracle.verify --fixture p0-v2 --candidate .migration-artifacts/p0/candidate-trace-p0-v2.json
+.migration-artifacts/p0/venv/bin/python -m migration.oracle.check_account_disable --database p0_candidate_oracle
+```
 
-真实链为 REST/auth → Session/RagProductService/Task → LangGraph → kb_search → HybridDpdkRetriever → RetrievalService → LiNodeRetrievalStore → PG 1024维vector/FTS → RRF/MMR → 确定性校验 → 事务落库。只替换模型构造端口、embedding端口和MCP调用端口；不替换业务模型、受理、权限、计分或任务完成逻辑。
+`run`重置指定专用库合成表，不得与同库或正式负载并发。运行产物仅在 `.migration-artifacts/p0`。v2尚未生成黄金时freeze应失败，不可用候选填补。
 
-固定语料包含同文件两个片段、历史legacy引用和三条1024维单位向量。语义并列沿冻结SQL `node_id ASC`，RRF/MMR记录原排序和score；当前同机同依赖差分逐值比较score，算法实测报告另记 `1e-12` 观察容差，不自动放宽比较。六条同文件引用直接调用真实 `citations_from_chunks`，确认不截断。
+## 隔离与真实链路
 
-上游故障通过真实 `OpenAICompatibleClient` 的 HTTPX MockTransport 和真实 `HarnessMcpClient` 的传输/会话替身执行：工具调用ID、多片段、坏JSON、断流、429、timeout、usage缺失/重复、建连/initialize失败、提交后响应丢失和job finished/running/unknown/账本清空。账本不保存源码或模型原始请求。
+`safety.configure`先清空ambient、禁用Settings.env_file，再导入app；验证显式URL/host/port/role/database/comment/data_directory，socket拒绝非回环出网。每连接 `PGOPTIONS=-c timezone=UTC`，不修改PG全局设置。空库走冻结init_db→Alembic0015→init_db，li表经PGVectorStore建立；已有库需head匹配。空库证据不代替schema0013升级演练。
 
-固定业务时钟起点 `2026-10-24T04:00:00+00:00`，每次读推进1微秒，保留原monotonic耗时。时间字段逐值比较，校验UTC、0或6位微秒、created≤updated和expires>created，不以删除时间断言消除差异。
+ASGITransport不跑startup维护或真实预热。真实链为REST/auth→Session/RagProduct/Task→LangGraph→kb_search→HybridDpdkRetriever→RetrievalService→LiNodeRetrievalStore→PG1024维vector/FTS→RRF/MMR→确定性校验→事务保存。仅模型/embedding/MCP端口替身，不替换业务模型、权限、计分、受理或完成逻辑。真实客户端的HTTPX/MCP传输故障脚本独立验证重试、unknown和usage语义。
 
-## 黄金与比较规则
+HTTP组使用固定逻辑UTC时钟，每读推进1微秒，源now_iso单调保护仍执行，monotonic耗时保留。专门PG事务组以固定wallclock消除12并发时间读取调度噪声；该组不验证消息时钟递增，HTTP组继续承担时间格式/顺序。时间不归一化，保留UTC/精度/局部时序及逐值比较。
 
-黄金在 `migration/fixtures/p0-v1/python-golden.json`；manifest逐文件SHA256保护。`freeze` 无候选参数，只读固定的 `python-trace.json`，已有黄金即拒绝覆盖。修订2由主Agent审查要求固定对象key遍历后，仅从原Python trace重冻；旧草稿仍保存在运行产物目录，manifest登记上一摘要。后续扩展须新fixture版本并经owner审阅。
+## p0-v2 业务状态
 
-`verify` 只读黄金和候选：通过退出0、差分退出1、manifest/输入损坏退出2。候选不能提供 `<identity:n>` 或 `<duration>` 占位符。仅显式声明实体字段且符合生成格式的ID可双射归一化，调用方固定request_id保持原值；跨响应、帧和表引用必须一致。对象key稳定排序，数组顺序不改。实际154个归一化路径见 `normalization-review.json`，其中无时间字段。
+`business_state.py`逐表显式SELECT非秘密业务列，存一次完整初态，每个HTTP与事务case记录各表实际removed/added行及前后count，最后完整终态。未变表也声明空delta；`validate_business_chain`可顺序重建每步前置状态。总行数与表hash不能替代业务值。
 
-SSE按UTF8增量及事件解析，允许传输分块不同；按冻结 `frontend/src/api/client.js:162` 的EOF行为，未由空行终止的尾帧不flush。done JSON闭合但空行前截断不能成为终态；校验sources累计前缀、身份关联、done后无事件。实测常规成功done没有terminal；数据库终态重建附terminal:true，pending必须显式terminal:false。各类完整字段仍精确比较，不能把这三种帧合并成同一种。
+投影覆盖账号角色/树/enabled及令牌生命周期元信息，session/release/message字段指纹/metadata/citation rank，usage真实扣次，upstream usage_source/NULL/费用类型，assignment/items与成绩score/accepted快照，task status/purpose/input存在/长度/时限/jobs结果/submission_done/grade关联，knowledge/revisions。密码、令牌及其hash、运行源码、原始上游输出不导出。消息内容仅字段指纹与字节数，临时输入仅元信息；这些字段级指纹不替代其他业务列。
 
-## 证据边界
+HTTP after明确为“消费响应并等待已受理任务收口后”的settled checkpoint；受理回执仍保持真实started形态。专门PG原语另测受理与完成失败回滚。逐请求前置状态由初态与之前delta重建，不能用后台调度竞态或删列消除差异。
 
-每端184条HTTP观测映射66条路由的成功分支；account模式52条无权反例、44条无效输入/资源反例，14/22条分别有明确不适用理由。最小local/token向量另测，不代表66端点全部认证组合。有效token转停用的独立PG向量尚未覆盖；已覆盖logout令牌在停用/恢复后不复活。
+源码标记按基线+版本在运行时确定性生成；实际输入字节的sha256须与PG成绩/受理身份相同。code_hash/input_hash不归一化，即使全部关联一致替换也失败。固定NFC/strip摘要向量逐值比较。
 
-路由retry/concurrency栏：4项引用已执行PG任务原语，34项只读不适用，28项仍未执行，明确交给对应业务卡/J5-01扩展。逐路由数据库副作用目前由最终快照、专门PG事务断言及上游调用计数支撑，未为每条路由单独采集完整表级前后快照。不能将此基础覆盖称为全功能场景验收。
+10项PG关键结果、清理checkpoint、raw1024向量顺序/RRF/MMR分数、六条同文件引用内容进入可比较trace。当前分数exact；观察性1e-12未启用为容差，未来需要用户确认与新manifest明示。citation.round4和业务得分始终exact。
 
-10个PG专例覆盖12并发受理、受理回滚、真实FK导致完成事务回滚、完成一次/重放、取消幂等/取消后成绩禁写、12并发job成绩去重、12并发恢复认领、24h输入窗口/到期、1024维排序/RRF/MMR、六引用保持。源码运行输入仅运行时随机生成，长期表扫描零命中，收口零pending/零临时输入。
+## 比较器与冻结
 
-合成性能/恢复证据由 `performance/` worker独占，不由本入口冒充；阈值需要实测和用户确认，真实质量保持未验证。已知兼容差异见J0-02证据目录的 `known-differences.md`。
+CLI必选`--fixture`；通过0、业务差分1、manifest/JSON/schema/资源上限/非法日历2，稳定JSON错误输出。先验证trace容器和嵌套深度，再比较业务值；候选不能提供归一化占位符。
 
-批准的Java安全差异COMP003单独保存于 `migration/fixtures/p0-approved-differences/comp003.json`，不改变Python黄金；running只等/查，unknown或查询失败不再提交grade。有效token停用补验命令：`python -m migration.oracle.check_account_disable --database p0_candidate_oracle`，须正式长测结束后执行。
+ID先按字段和实体命名校验，再作全trace双射：task为32hex，session为sess_12hex或explain-grade_16hex，message为32hex/msg_12hex，assignment为asg_16hex，grade为grade_16hex，knowledge为32hex。固定用户和调用者request_id保留。跨类型替换即使全关联一致也失败。对象key稳定遍历；数组不重排。
+
+SSE按冻结React `frontend/src/api/client.js:162`的LF空行分帧和首event/data行语义解析，EOF不flush未终止尾帧；CRLF/CR失败。允许UTF8任意分块。sources累计前缀/身份关联保持；成功done、pending/terminal:false和合法error结束流分别判定，不能把error当done成功。结束后事件、坏done、缺结束帧和截断done失败。
+
+freeze仅接受p0-v2及固定Python trace路径，无候选输入参数；存在即拒绝覆盖。p0-v1历史黄金不重写。manifest按文件SHA256保护，实际归一化路径与格式表独立审阅。
+
+COMP003批准的Java安全目标仍在 `migration/fixtures/p0-approved-differences/comp003.json`，不改Python实际重投黄金；Java目标尚未执行。28条完整重试/并发分支与全认证角色组合仍有未执行项，不能把基础覆盖宣称全功能用户验收。修复证据见 `docs/java-migration/evidence/J0-02/review-fixes.md`。

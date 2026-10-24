@@ -3,17 +3,18 @@ from __future__ import annotations
 import asyncio
 import hashlib
 import json
-import secrets
 import re
 from uuid import NAMESPACE_URL, uuid5
 from .compare import parse_sse
 from .ports import MCP_LEDGER, LLM_LEDGER
 from .runtime import IDS
+from .safety import BASELINE
+from .business_state import snapshot,step
 
 
 class Cases:
     def __init__(self,client):
-        self.client=client;self.tokens={};self.observations=[];self.source_marker=secrets.token_hex(16)
+        self.client=client;self.tokens={};self.observations=[];self.business_initial=None;self.business_latest=None;self.source_marker=hashlib.sha256((BASELINE+':p0-v2-runtime-source').encode()).hexdigest()[:32]
         self.source='/* P0 '+self.source_marker+' */\nint plugin_main(void){return 0;}\n'
     async def request(self,route,kind,path=None,*,who='leader',body=None,status=None,headers=None,params=None,precondition='seeded-synthetic-tree'):
         method,template=route.split(' ',1)
@@ -22,8 +23,29 @@ class Cases:
         if who in self.tokens:hdr['Authorization']='Bearer '+self.tokens[who]
         if who=='maintenance':hdr['X-Maintenance-Key']='p0-synthetic-maintenance'
         if headers:hdr.update(headers)
+        business_before=await asyncio.to_thread(snapshot)
+        if self.business_initial is None:self.business_initial=business_before
+        if self.business_latest is not None:assert business_before==self.business_latest,'请求间出现未登记业务变更'
         before=(len(MCP_LEDGER),len(LLM_LEDGER))
         response=await self.client.request(method,path,json=body,headers=hdr,params=params)
+        # 异步讲解受理回执保持原样；业务after明确在已受理任务收口后采集，避免调度竞态。
+        from app.services import task_service
+        for managed in list(task_service.TASKS.values()):
+            if not managed.done.is_set():await asyncio.wait_for(managed.done.wait(),20)
+        business_after=await asyncio.to_thread(snapshot)
+        identity_assertions={}
+        if isinstance(body,dict) and 'code' in body and 200<=response.status_code<300:
+            expected_hash=hashlib.sha256(body['code'].encode()).hexdigest()
+            old={row['submission_id'] for row in business_before['tables']['grading_submissions']}
+            new=[row for row in business_after['tables']['grading_submissions'] if row['submission_id'] not in old]
+            assert new and all(row['code_hash']==expected_hash for row in new),'执行源码hash与成绩身份不符'
+            identity_assertions['runtime_source_sha256_persisted']=True
+        if route in {'POST /api/chat','POST /api/chat/stream'} and response.status_code==200 and isinstance(body,dict):
+            from app.services.rag_issue_service import input_hash
+            expected_hash=input_hash(body['message'])
+            rows=[row for row in business_after['tables']['rag_requests'] if row['request_id']==body.get('request_id')]
+            assert rows and all(row['input_hash']==expected_hash for row in rows),'受理input_hash与实际输入不符'
+            identity_assertions['request_input_hash_persisted']=True
         media=response.headers.get('content-type','').split(';')[0]
         if method=='HEAD' or response.status_code==204:payload=None
         elif media=='text/event-stream':payload=parse_sse([response.content])
@@ -38,11 +60,20 @@ class Cases:
             'request':{'method':method,'path_template':template,'path_parameters':dict(zip(re.findall(r'{([^}]+)}',template),[b for a,b in zip(template.split('/'),path.split('/')) if a.startswith('{')])),'actor':who,'input':self._safe(body),'params':params},
             'upstream_script':'fixed-kb-tool-call-and-answer/mcp-grade-80',
             'status':response.status_code,'expected_status':status,'media_type':media,'headers':selected,'body':payload,
+            **step(business_before,business_after),'after_boundary':'response-consumed-and-accepted-tasks-settled',
+            'input_identity_assertions':identity_assertions,
             'side_effect_counts':{'mcp':len(MCP_LEDGER)-before[0],'llm':len(LLM_LEDGER)-before[1]}}
+        if media=='text/event-stream':
+            from .compare import validate_sse
+            record['sse_end']=validate_sse(payload)
+            record['wire_contract']='frozen-react-LF-empty-line-v1'
+        self.business_latest=business_after
         self.observations.append(record)
         if status is not None:assert response.status_code==status,(route,kind,response.status_code,response.text[:500])
         return payload
     def _safe(self,value):
+        if isinstance(value,dict) and 'code' in value:
+            value={**value,'code_sha256':hashlib.sha256(value['code'].encode()).hexdigest()}
         if isinstance(value,dict):return {k:('<runtime-source>' if k=='code' else '<synthetic-credential>' if k in {'password','old_password','new_password','token'} else self._safe(v)) for k,v in value.items()}
         return value
 
@@ -89,6 +120,14 @@ async def success(c,seeds):
     await c.request('GET /api/assignments/{assignment_id}','success',f'/api/assignments/{aid}',who='student_a',status=200)
     await c.request('PATCH /api/assignments/{assignment_id}','success',f'/api/assignments/{aid}',who='teacher_a',body={'title':'合成DNS作业修订'},status=200)
     submission=await c.request('POST /api/assignments/{assignment_id}/submit','success',f'/api/assignments/{aid}/submit',who='student_a',body={'protocol':'dns','code':c.source},status=200)
+    manager_list=await c.request('GET /api/assignments','success-nonempty-manager',who='teacher_a',status=200)
+    manager_row=next(row for row in manager_list['assignments'] if row['id']==aid)
+    assert {'submission_count','student_count'}<=set(manager_row)
+    assert manager_row['submission_count']==1 and manager_row['student_count']>=1
+    student_list=await c.request('GET /api/assignments','success-nonempty-student',who='student_a',status=200)
+    student_row=next(row for row in student_list['assignments'] if row['id']==aid)
+    assert student_row['submission_count']==1 and student_row['items'][0]['best_score']==80
+    assert student_row['items'][0]['earned']==16.0
     for suffix in ['grades','export']:
         await c.request(f'GET /api/assignments/{{assignment_id}}/{suffix}','success',f'/api/assignments/{aid}/{suffix}',who='teacher_a',status=200)
     explain=await c.request('POST /api/assignments/{assignment_id}/submissions/{submission_id}/explain','success',f"/api/assignments/{aid}/submissions/{submission['submission_id']}/explain",who='student_a',status=200)

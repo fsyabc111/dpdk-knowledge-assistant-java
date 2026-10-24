@@ -58,7 +58,15 @@ P0 已获授权，Java 业务实现、P1 和生产切换仍未获授权。下表
 ### P0-D13 / COMP-003（已获用户确认）
 
 - 证据：`evidence/J0-02/performance/recovery.json` 的跨进程提交响应丢失场景：外部 grade 调用2次，本地 quota/grade各1；running同样重投，finished复用。源码位置见 `migration/contracts/compatibility-differences.json`。外部同job幂等未经验证。
-- 选择：Python oracle如实保留；Java对running仅轮询/等待并受既有任务硬时限约束；unknown/查询失败不得自动再次grade提交。沿用现有system_error终态和failure_code提示结果待核对，保留submitted job账本，按终态清理临时输入，避免引入永不终态pending。此为主Agent对已批准安全策略的契约化，不新增对外状态枚举或自动重评入口。
+- 选择：Python oracle如实保留；Java对running仅轮询/等待并受既有任务硬时限约束；unknown/查询失败不得自动再次grade提交。沿用现有system_error终态，failure_code固定为 `harness_result_unknown` 提示结果待核对，保留submitted job账本，按终态清理临时输入，避免引入永不终态pending。此为主Agent对已批准安全策略的契约化，不新增对外状态枚举或自动重评入口。
 - 代价：部分任务需核对外部执行结果，自动成功恢复比例可能低于Python；不以潜在重复执行换自动恢复。未来如有经授权harness合同实证，可另行评审。
 - 消费者：J1-02保留submitted/unknown失败分类；J3-02/J3-03实现安全状态转换及有意差异fixture；真实harness调用仍需另获授权。
 - 验证：P0仅确认源行为和安全目标；Java尚未实现，不能写Java已通过。回退此决定需用户明确改变兼容策略，不能在失败后自动恢复盲重投。
+
+### P0-D14 / D03、D05、D06（技术选择，P1待构建验证）
+
+- 主Agent在本轮P0常规技术范围内选定：Java 21（release=21）+ Spring Boot `4.0.9` + Spring AI BOM `2.0.2`；Spring JDBC/Flyway/PG JDBC分别由Boot BOM管理为 `7.0.10` / `11.14.1` / `42.7.14`。官方文档、版本化源码和Central POM证据见 [java-stack-selection.md](evidence/J0-01/java-stack-selection.md)。这不是已完成Maven解析或Java测试。
+- Spring AI只用于model/harness边界；业务授权、Agent循环、任务、事务与LI检索仍显式编排。使用Spring JDBC适配原表，不引入MyBatis/第二套持久化框架，不启用Spring AI默认VectorStore DDL或ORM自动改表。框架的JSON/MCP默认行为不能替代冻结契约。
+- 单一Flyway链设计：`B0015`为完整当前schema baseline，`V0014/V0015`为对应增量；空库选B15；合成0013完整catalog核验后显式baseline13并执行V14/V15；等价0015完整catalog核验后显式baseline15。保持baselineOnMigrate=false、validateOnMigrate=true、cleanDisabled=true。Alembic历史仅作溯源，不能同时自动升库。
+- P1前置：唯一迁移owner在任何Flyway写入前执行DB身份预检，核验完整列/索引/约束/扩展，空库/合成13/等价15/重复启动四路径均须实际验证；不得只看版本号或盲stamp。JDK补丁/发行商、Maven Wrapper、有效POM/依赖树/插件锁定、协议适配及三路径执行均未验证，归获授权后的J1-01。
+- 若P1构建或契约验证发现不可用，保留失败证据并在同一兼容目标下评审受支持GA组合；不自动降回已知受维护/安全约束的旧版本。生产切换、真实上游和P1授权均未因此扩大。

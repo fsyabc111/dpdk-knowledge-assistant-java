@@ -11,9 +11,9 @@
   },
   "java_target_cases":[
     {"case_id":"COMP003-running","precondition":{"ledger":"submitted","status_query":"running"},"action":"仅等待或查询；受任务硬墙约束","expected_new_grade_submissions":0},
-    {"case_id":"COMP003-unknown","precondition":{"ledger":"submitted","status_query":"unknown"},"action":"停止重投，保存system_error终态及failure_code","expected_new_grade_submissions":0,"expected_terminal":"system_error","expected_failure_code_present":true,"expected_submitted_ledger_retained":true,"expected_task_inputs":0},
-    {"case_id":"COMP003-query-failed","precondition":{"ledger":"submitted","status_query":"timeout/disconnect/invalid response"},"action":"停止重投，保存system_error终态及failure_code","expected_new_grade_submissions":0,"expected_terminal":"system_error","expected_failure_code_present":true,"expected_submitted_ledger_retained":true,"expected_task_inputs":0}
+    {"case_id":"COMP003-unknown","precondition":{"ledger":"submitted","status_query":"unknown"},"action":"停止重投，保存system_error终态及failure_code","expected_new_grade_submissions":0,"expected_terminal":"system_error","expected_failure_code":"harness_result_unknown","expected_submitted_ledger_retained":true,"expected_task_inputs":0},
+    {"case_id":"COMP003-query-failed","precondition":{"ledger":"submitted","status_query":"timeout/disconnect/invalid response"},"action":"停止重投，保存system_error终态及failure_code","expected_new_grade_submissions":0,"expected_terminal":"system_error","expected_failure_code":"harness_result_unknown","expected_submitted_ledger_retained":true,"expected_task_inputs":0}
   ],
   "comparison_rule":"未来Java此三例按批准安全目标判定；不得直接用Python重投结果反向覆盖目标，也不得改写Python黄金掩盖有意差异",
-  "failure_code_exact_values":"待共享契约owner明确，不自行发明"
+  "failure_code_exact_values":"harness_result_unknown，由主Agent在P0公共契约集成窗口明确；不新增对外状态枚举"
 }

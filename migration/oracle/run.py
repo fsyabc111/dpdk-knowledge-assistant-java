@@ -36,8 +36,14 @@ async def execute(database):
         routes=[r['id'] for r in json.loads((ROOT/'migration/baseline/static-inventory.json').read_text())['routes']]
         mapping=await negatives(cases,routes,state,seeds)
         from .auth_checks import run as auth_checks
+        from .business_state import snapshot,step
+        auth_before=snapshot()
         auth_results=await auth_checks(cases)
+        auth_after=snapshot()
+        auth_state_step={'case_id':'auth-vector-group',**step(auth_before,auth_after)}
     tx=await transactions()
+    from .business_state import snapshot,step
+    business_final=snapshot()
     from app.db import get_conn,close_database_provider
     with get_conn() as conn:
         counts={name:conn.execute(f'SELECT COUNT(*) AS n FROM {name}').fetchone()['n'] for name in [
@@ -57,8 +63,10 @@ async def execute(database):
             assert row['task_id']==state['chat']['task_id'] and row['session_id']==state['chat']['session_id']
     assert counts['rag_task_inputs']==0 and all(row['status']!='pending' for row in associations)
     schema=schema_report()
-    trace={'version':'p0-v1','baseline_id':BASELINE,'fixture_version':'p0-v1',
-           'observations':cases.observations,'state':{'counts':counts,'associations':associations,'source_marker_hits':marker_hits}}
+    trace={'version':'p0-v2','baseline_id':BASELINE,'fixture_version':'p0-v2',
+           'business_initial':cases.business_initial,'observations':cases.observations,
+           'auth_state_step':auth_state_step,'transaction_cases':tx,
+           'state':{'counts':counts,'associations':associations,'source_marker_hits':marker_hits,'business':business_final}}
     report={'identity':{k:v for k,v in identity.items() if k not in {'data_directory'}},'schema':schema,'routes':mapping,
             'upstream':upstream_results,'auth':auth_results,'transactions':tx,'privacy':{'runtime_source_marker_hits':0,'pending_tasks':0,'transient_inputs':0},
             'ledger':{'llm_calls':len(LLM_LEDGER),'mcp_calls':len(MCP_LEDGER),'mcp':MCP_LEDGER,
@@ -73,12 +81,12 @@ async def execute(database):
 
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--database',choices=['p0_python_oracle','p0_candidate_oracle'],required=True)
+    parser=argparse.ArgumentParser();parser.add_argument('--fixture',choices=['p0-v2'],required=True);parser.add_argument('--database',choices=['p0_python_oracle','p0_candidate_oracle'],required=True)
     args=parser.parse_args()
     trace,report=asyncio.run(execute(args.database))
-    target=ROOT/'.migration-artifacts/p0'/('python-trace.json' if args.database=='p0_python_oracle' else 'candidate-trace.json')
+    target=ROOT/'.migration-artifacts/p0'/('python-trace-p0-v2.json' if args.database=='p0_python_oracle' else 'candidate-trace-p0-v2.json')
     write(target,trace)
-    write(ROOT/'docs/java-migration/evidence/J0-02/auto'/f'{args.database}.json',report)
+    write(ROOT/'docs/java-migration/evidence/J0-02/auto'/f'{args.database}-p0-v2.json',report)
     print(json.dumps({'database':args.database,'observations':len(trace['observations']),'routes':len(report['routes']),'upstream':len(report['upstream']),'pg_cases':len(report['transactions']),'tables':len(report['schema']['actual_tables'])}))
 
 if __name__=='__main__':main()

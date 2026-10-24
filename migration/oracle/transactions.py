@@ -11,16 +11,22 @@ from .ports import RELEASE,fixed_vector
 from .runtime import IDS,CLOCK
 
 
-async def run():
+async def _run_cases():
     from app.db import get_conn
     from app.services.rag_issue_service import RagIssueService,input_hash
     from app.services.session_service import SessionService
     from app.services.grading_service import GradingService
+    from .business_state import snapshot,step
     issues=RagIssueService();sessions=SessionService();results=[]
+    previous_state=snapshot()
     def scalar(sql,args=()):
         with get_conn() as conn:return next(iter(conn.execute(sql,args).fetchone().values()))
     async def session(title):return await sessions.ensure_session(None,title,IDS['student_a'])
-    def result(name,assertion,**extra):results.append({'case_id':name,'status':'通过','assertion':assertion,**extra})
+    def result(name,assertion,**extra):
+        nonlocal previous_state
+        after=snapshot()
+        results.append({'case_id':name,'status':'通过','assertion':assertion,**step(previous_state,after),**extra})
+        previous_state=after
     sid=await session('PG受理并发');rid=str(uuid4())
     before=scalar("SELECT COALESCE(SUM(chat_count),0) FROM usage_counters WHERE subject=%s AND kind='chat'",(IDS['student_a'],))
     def admit():return issues.begin_admitted(rid,IDS['student_a'],sid,'PG受理并发','','synthetic',input_digest=input_hash('PG受理并发'),initial_request=False,quota=10000)
@@ -101,13 +107,27 @@ async def run():
     assert len({c.id for c in chunks})==len(chunks)
     result('pg-vector-rrf-mmr','1024维PG exact cosine→FTS/path融合→冻结RRF/MMR；保留排序及score',
            semantic_ids=vector_ids,ranked=[{'chunk_id':c.id,'score':c.score,'source_path':c.source_path} for c in chunks],
-           tolerance={'score_absolute':1e-12,'order':'exact; semantic ties node_id ASC'})
+           tolerance={'comparison':'exact','future_tolerance':'requires explicit user confirmation and manifest version','order':'exact; semantic ties node_id ASC'})
     from app.services.citation_service import citations_from_chunks
     from app.rag.types import RetrievedChunk
     six=[RetrievedChunk(id=f'li_six_{i}',source_path='synthetic/same.md',section=str(i),title='同文件片段',content='合成片段',metadata={},score=1.0-i/10) for i in range(6)]
     citations=citations_from_chunks(six)
     assert len(citations)==6 and [c.chunk_id for c in citations]==[c.id for c in six]
-    result('citation-six-same-file','同文件6片段逐个保留、次序不变、不截断为4条')
+    result('citation-six-same-file','同文件6片段逐个保留、次序不变、不截断为4条',citations=[c.model_dump() for c in citations])
     # 收口所有直接原语测试pending，禁止永不终态任务。
     issues.mark_interrupted(gtid,'p0-synthetic-end')
+    result('pg-cleanup-terminal','专例收口零pending与输入清理')
     return results
+
+
+async def run():
+    # 事务原语组使用固定wallclock，避免12个线程的时间读取先后变成差分噪声。
+    # HTTP组仍走源now_iso单调保护；此组不声称验证消息时钟递增行为。
+    class TransactionDatetime(datetime):
+        @classmethod
+        def now(cls,tz=None):
+            value=cls.fromisoformat('2026-10-24T04:10:00+00:00')
+            return value.astimezone(tz) if tz else value.replace(tzinfo=None)
+    fixed=lambda:'2026-10-24T04:10:00+00:00'
+    with patch('app.services.rag_issue_service.now',fixed),patch('app.services.rag_issue_service.datetime',TransactionDatetime),patch('app.services.session_service.now_iso',fixed),patch('app.services.grading_service.now_iso',fixed):
+        return await _run_cases()

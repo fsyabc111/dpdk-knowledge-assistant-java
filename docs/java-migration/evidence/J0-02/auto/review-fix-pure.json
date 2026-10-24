@@ -1,0 +1,9 @@
+{
+  "stage": "pure_memory_no_app_no_pg",
+  "unittest_groups": 7,
+  "result": "通过",
+  "v1_raw_candidate_reverify": "通过",
+  "v1_golden_unchanged": true,
+  "dynamic": "待正式长测退出后统一执行",
+  "raw_output": ".migration-artifacts/p0/review-fix-pure.log"
+}

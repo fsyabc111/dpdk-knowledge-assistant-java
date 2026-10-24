@@ -56,6 +56,62 @@ class InventoryGuardTest(unittest.TestCase):
             _,_,unknown=inventory.route_inventory(trees)
             self.assertTrue(unknown)
 
+    def test_real_manager_assignment_includes_own_and_traceable_inherited_fields(self):
+        models = {m["name"]:m for m in self.actual["models"]}
+        manager = models["ManagerAssignment"]
+        self.assertEqual(manager["bases"],["AssignmentInfo"])
+        self.assertEqual([f["name"] for f in manager["fields"]],["submission_count","student_count"])
+        self.assertEqual(len(manager["inherited_fields"]),10)
+        self.assertEqual(len(manager["effective_fields"]),12)
+        self.assertTrue(all(f["declared_in"]==models["AssignmentInfo"]["id"] for f in manager["inherited_fields"]))
+        self.assertTrue(all(f["path"]=="backend/app/schemas/assignments.py" and f["line"]<manager["line"] for f in manager["inherited_fields"]))
+        listing = models["ManagerAssignmentListResponse"]
+        self.assertIn(manager["id"],{r["model_id"] for r in listing["field_model_references"]})
+        mapping = next(m for m in self.contracts["models"] if m["id"]==manager["id"])
+        self.assertEqual(mapping["owner_task"],"J2-03")
+        self.assertTrue(mapping["java_target"].endswith(".ManagerAssignment"))
+
+    def test_transitive_models_resolve_aliases_modules_relative_imports_and_reexports(self):
+        sources = {
+            "backend/app/schemas/base.py": "from pydantic import BaseModel as Model\nimport pydantic as pd\nclass Parent(Model):\n id: str\n title: str='parent'\nclass OtherRoot(pd.BaseModel):\n other: int\nclass BaseModel:\n ignored: int\nclass Plain(BaseModel):\n ignored_too: str\n",
+            "backend/app/schemas/middle.py": "from . import base as parent_module\nclass Middle(parent_module.Parent):\n title: str='middle'\n count: int\n",
+            "backend/app/schemas/__init__.py": "from .middle import Middle as PublicModel\n",
+            "backend/app/api/example.py": "from app.schemas import PublicModel as Alias\nclass Leaf(Alias):\n enabled: bool=True\n"}
+        models = {m["name"]:m for m in inventory.schemas_inventory({Path(p):ast.parse(s) for p,s in sources.items()})}
+        self.assertEqual(set(models),{"Parent","OtherRoot","Middle","Leaf"})
+        leaf = models["Leaf"]
+        self.assertEqual(leaf["bases"],["Alias"])
+        self.assertEqual(leaf["resolved_bases"][0]["model_id"],models["Middle"]["id"])
+        fields = {f["name"]:f for f in leaf["effective_fields"]}
+        self.assertEqual(set(fields),{"id","title","count","enabled"})
+        self.assertEqual(fields["title"]["declared_in"],models["Middle"]["id"])
+        self.assertEqual(fields["title"]["default"],"'middle'")
+        self.assertEqual(fields["id"]["path"],"backend/app/schemas/base.py")
+        self.assertFalse(fields["enabled"]["inherited"])
+
+    def test_diamond_inheritance_uses_local_c3_precedence(self):
+        source = "from pydantic import BaseModel\nclass Root(BaseModel):\n shared: int=1\nclass Left(Root):\n shared: int=2\nclass Right(Root):\n shared: int=3\nclass Leaf(Left,Right):\n leaf: str\n"
+        models = {m["name"]:m for m in inventory.schemas_inventory({Path("backend/app/schemas/example.py"):ast.parse(source)})}
+        self.assertEqual(models["Leaf"]["inheritance_mro"],
+                         [models[n]["id"] for n in ["Leaf","Left","Right","Root"]]+["pydantic.BaseModel"])
+        shared = next(f for f in models["Leaf"]["inherited_fields"] if f["name"]=="shared")
+        self.assertEqual(shared["declared_in"],models["Left"]["id"])
+        self.assertEqual(shared["default"],"2")
+
+    def test_model_mapping_missing_subclass_or_inherited_field_fails(self):
+        mapping = copy.deepcopy(self.contracts)
+        mapping["models"] = [m for m in mapping["models"] if not m["id"].endswith("::ManagerAssignment")]
+        self.assertFalse(inventory.coverage(self.actual,mapping)["passed"])
+        mapping = copy.deepcopy(self.contracts)
+        next(m for m in mapping["models"] if m["id"].endswith("::ManagerAssignment"))["inherited_fields"].pop()
+        result = inventory.coverage(self.actual,mapping)
+        self.assertIn("model_inheritance",result["failed_categories"])
+
+    def test_invalid_inheritance_cycle_is_rejected_without_imports(self):
+        source = "class First(Second):\n pass\nclass Second(First):\n pass\n"
+        with self.assertRaisesRegex(ValueError,"模型继承循环"):
+            inventory.schemas_inventory({Path("backend/app/schemas/example.py"):ast.parse(source)})
+
 
 if __name__ == "__main__":
     unittest.main()

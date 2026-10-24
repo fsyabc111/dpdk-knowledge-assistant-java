@@ -14,7 +14,7 @@
 
 ## SSE
 
-唯一线格式：`event: <name>\ndata: <json>\n\n`；JSON 使用 ensure_ascii=false，响应 `Content-Type:text/event-stream`、`Cache-Control:no-cache`、`X-Accel-Buffering:no`。TCP read chunk 不等于事件边界，消费者必须逐行/空行解析，可跨 UTF-8 字节边界。框架可能补 charset，fixture 以真实响应为准。源：`api/chat.py:178`、`api/tasks.py:79`。
+唯一冻结线格式：`event: <name>\ndata: <json>\n\n`，帧间空行为**两个LF**。冻结React客户端 `frontend/src/api/client.js:169` 直接按 `buffer.split("\n\n")` 分帧，没有把CRLF/CR改写为LF；因此不能把SSE标准允许CRLF当作本客户端已兼容，也不能在wire→trace时先归一化换行后判等。TCP read chunk 不等于事件边界，可跨UTF-8字节边界，传输分块变化仍可兼容。JSON 使用 ensure_ascii=false，响应 `Content-Type:text/event-stream`、`Cache-Control:no-cache`、`X-Accel-Buffering:no`；框架可能补 charset，fixture 以真实响应为准。源：`api/chat.py:178`、`api/tasks.py:79`。
 
 | event | data 契约 | 来源 |
 |---|---|---|
@@ -23,10 +23,12 @@
 | tool / 其他进度 | 由 product/Agent 实际 emit 冻结；不能只允许三种终态帧 | `rag_product_service.py:_candidate` / `task_service.py:ManagedTask` |
 | sources | citations 数组，字段与 Citation schema 一致 | `task_service.py:208` |
 | delta | delta=正文；持久终态重放可以一次发完整正文 | `task_service.py:208` |
-| done | ChatResponse 去 answer/citations，终态 DB 重建额外 status/terminal=true；不可恢复的 pending 分支仅 task_id/status=pending/terminal=false | `task_service.py:225`、`:304` |
+| done | 常规ChatResponse去answer/citations，**可以不含terminal**；终态DB重建额外status/terminal=true。暂不可重驱动的pending分支为task_id/status=pending/terminal=false，不表示任务结束 | `task_service.py:208`、`:225`、`:304` |
 | error | message=`服务暂时不可用，请稍后重试`、retryable=true；流开始后出错用事件，不能再改 HTTP 状态 | `api/tasks.py:79`、`api/chat.py:178` |
 
 断线只移除订阅者，不取消后台任务。显式 cancel 和停号才取消；重复 cancel/终态返回现状。task events GET 的 pending 恢复会触发副作用，不能视为纯读。内存进度日志最多500，丢最旧；终态注册表保留300秒；恢复 grace 30秒、心跳10秒。重连回放不实现 Last-Event-ID 游标或逐帧 exactly-once，前端允许重复进度和整段正文。源：`task_service.py:37`—`:41`、`:244`、`:304`、`:452`。
+
+流结束必须区分三类：成功结果通常由done结束（terminal可省略），pending/nonterminal done必须明确 `status=pending,terminal=false` 并保持task_id关联，错误分支可仅有error或start→error后结束。**error-only是合法的错误结束，不是成功done**，其payload/顺序需要比较，error后不再接受后续业务帧；不能要求源码故障流补一个不存在的done。只有EOF且没有done或error属于截断，不能归一化为成功；`terminal=false` 也不能被误读为客户端应停止轮询。
 
 引用必须按提供给模型的 chunks 顺序一一绑定；同文件不同 chunk 各占编号，score 按 Python round(...,4)。持久 citation 的 engine+chunk_id 读回历史节点，release 切换不应让旧引用漂移。源：`citation_service.py:9`、`rag_issue_service.py:383`、`api/chat.py:188`。
 

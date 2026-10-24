@@ -1,6 +1,6 @@
 # 目标架构与接口约束
 
-状态：设计建议；P0冻结接口与数据策略，P1验证框架组合。Java 代码尚未建立。
+状态：P0契约收口中；Java代码尚未建立，P1仍未获授权。已选择Java21 / Spring Boot4.0.9 / Spring AI2.0.2及Spring JDBC / Flyway，依据见DECISIONS/P0-D14；实际构建与协议适配待P1验证。可消费接口语义见 `../../migration/contracts/transaction-ports.json`，不得把拟议签名当已实现类。
 
 ## 模块结构
 
@@ -48,9 +48,9 @@ flowchart TD
 
 P0生成schema inventory：每张表的来源revision、主键/唯一约束/索引、旧版兼容、所有者及字段序列化。Java实现保留现有ID、bcrypt与token摘要格式；旧的NULL hash保持拒绝重放规则。
 
-推荐新库以经过测试的完整baseline SQL建立，再由单一Java迁移工具（候选Flyway）管理新revision。既有库只有在核对实际表/约束和migration版本后才能登记baseline。保留alembic历史作为对照，不机械把SQL复制后stamp，不让两套迁移器同时拥有DDL。
+新库采用单一Flyway链设计（B0015全量、V0014/V0015增量）；三路径实际执行留J1-01。既有库只有在核对实际表/约束和migration版本后才能登记baseline。保留alembic历史作为对照，不机械把SQL复制后stamp，不让两套迁移器同时拥有DDL。迁移唯一owner为主Agent（后续J1-01集成窗口）。
 
-正式采用哪一套迁移器、baseline版本和0013→目标版路径由P0决定，J1-01实现测试库流程，J5-03才处理授权的接管演练。所有schema脚本由集成者串行集成。
+完整路径与失败前置见 `../../migration/contracts/schema-migration.md`。J1-01实现测试库流程，J5-03才处理授权的接管演练。所有schema脚本由集成者串行集成；任何自动迁移前先执行数据库身份预检。
 
 ## 必须冻结的跨模块契约
 

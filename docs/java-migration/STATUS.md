@@ -19,8 +19,8 @@
 
 | ID | 状态 | 实现owner | 实现 | 自动验证 | 场景/用户验收 | 证据 |
 |---|---|---|---|---|---|---|
-| J0-01 | review | p0_contracts，共享分支 codex/p0-baseline-oracle | p0-v1 待审查；待合成测量最终冻结 | 静态枚举覆盖通过 | 未执行 / 用户未验收 | evidence/J0-01/coverage-report.json |
-| J0-02 | running | p0_oracle；性能子任务 p0_performance | 功能框架完成，正式容量测量中 | 双库184观测/66路由/14客户端脚本/10PG用例/29表通过 | 未执行 / 用户未验收 | handoffs/J0-02.md（待交付） |
+| J0-01 | running | p0_contracts；主Agent公共集成 | 独立审查回修：继承模型漏项；待最终冻结 | 初版静态通过，审查发现需补模型护栏 | 未执行 / 用户未验收 | evidence/P0/review-standards.md、review-spec.md |
+| J0-02 | running | p0_oracle；性能子任务 p0_performance | 业务状态投影/SSE/ID/CLI回修为p0-v2；正式负载第三轮中 | p0-v1双库184观测通过；独立审查1项P1及其余P2待关闭 | 部分合成证据已取得 / 用户未验收 | handoffs/J0-02.md、evidence/P0/review-spec.md |
 | J1-01 | planned | — | 未开始 | 未执行 | 未执行 | — |
 | J1-02 | planned | — | 未开始 | 未执行 | 未执行 | — |
 | J1-03 | planned | — | 未开始 | 未执行 | 未执行 | — |
@@ -59,6 +59,8 @@
 - COMP-003 已动态复现并获用户明确接受 Java 安全差异，见 DECISIONS/P0-D13；首次/重放引用元数据、删除后的悬挂引用按源场景保留。合成量化阈值仍待完整测量和用户确认。
 - 外部 DPDK/harness、真实模型/embedding 质量和旧部署状态均未验证；不在本轮授权内。
 - Java 工具链和版本实际构建留到获准 P1；P0 只冻结选择与待验证项。
+- 技术栈已选Java21/Boot4.0.9/AI2.0.2、Spring JDBC、Flyway11.14.1，官方依据与未验证项见DECISIONS/P0-D14；Java仍未构建。
+- 独立审查已完成初轮，修复后须复审。当前正式长测未结束，不运行额外PG补验；长测后重跑p0-v2双库、自对照/业务值反例、非空管理列表与有效token停用补验。
 
 ## 下一动作
 

@@ -52,8 +52,8 @@
     "unowned": []
   },
   "models": {
-    "enumerated": 63,
-    "mapped": 63,
+    "enumerated": 64,
+    "mapped": 64,
     "coverage_percent": 100.0,
     "missing": [],
     "extra": [],
@@ -65,6 +65,12 @@
     "enumerated": 96,
     "mapped": 96,
     "unmapped": []
+  },
+  "model_inheritance": {
+    "checked": 64,
+    "inherited_models": 1,
+    "definition_differences": [],
+    "dangling_model_references": []
   },
   "route_semantics": {
     "unmapped": [],

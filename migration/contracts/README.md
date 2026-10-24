@@ -8,8 +8,8 @@
 
 - `migration/baseline/static-inventory.json`：JSON object，`version=p0-v1`。稳定集合：`routes[]`（主键 `id = METHOD + 空格 + path_template`）、`production_tables[]`（主键 `name`）、`settings[]`（主键 `name`）、`models[]`（主键 `id = source_path::ClassName`）、`alembic_revisions[]`、`ddl_operations[]`、`dependencies`、`manifest`。
 - `migration/contracts/coverage-map.json`：同版 JSON object；`routes[]/tables[]/settings[]/models[]` 的主键分别对应上项。每项恰有一个 `owner_task` 与 `java_target`；数据表另有唯一 `migration_owner_task=J1-01`。初版补充语义会保留主键和字段类型；破坏性调整须升级版本并通知消费者。
-- 所有源码位置均为仓库相对 `path`、1-based `line/end_line`。`models[].fields` 保存 Python 注解与 Field 约束表达式，子类通过 `bases` 继承。`routes[].parameters` 是签名表达式，非 OpenAPI 生成物；Request 手工解析、多态字典返回须按源代码/fixture 补完，不能据此假装自动 DTO 已验证。
-- 校验：`python3 migration/baseline/inventory.py`。`--write` 仅重建源码枚举，不覆盖契约映射。报告：`docs/java-migration/evidence/J0-01/coverage-report.json`。当前 66 项 HTTP method/path（57 项装饰器、1 项 metrics 动态注册、8 项文档 GET/HEAD）、29 项生产/元数据表、103 项 Settings、63 项 Pydantic 模型均已单 owner 映射；精确数量以报告为准。
+- 所有源码位置均为仓库相对 `path`、1-based `line/end_line`。`models[].bases/fields` 保留原基类表达式和**自有字段**，字段格式保持不变。新增 `resolved_bases` 解析导入别名/跨模块/re-export；`inheritance_mro` 给出本地C3顺序（外部类保持不透明）；`inherited_fields/effective_fields` 分别为未被覆盖的继承字段/最终字段，每项含 `declared_in`、`inherited` 和原声明 `path/line/end_line`；`field_model_references` 为可静态解析的模型类型引用。覆盖校验同时核对这些定义与引用，不能只比模型个数。`routes[].parameters` 是签名表达式，非 OpenAPI 生成物；Request 手工解析、多态字典返回须按源代码/fixture 补完，不能据此假装自动 DTO 已验证。
+- 校验：`python3 migration/baseline/inventory.py`。`--write` 仅重建源码枚举，不覆盖人工契约映射。报告：`docs/java-migration/evidence/J0-01/coverage-report.json`。当前 66 项 HTTP method/path（57 项装饰器、1 项 metrics 动态注册、8 项文档 GET/HEAD）、29 项生产/元数据表、103 项 Settings、**64 项 Pydantic 模型**均已单 owner 映射；精确数量以报告为准。初版63项的完整性声明被独立审查S-02/S2纠正：漏掉了 `ManagerAssignment(AssignmentInfo)`；当前修复保留2个自有字段、10个可追溯继承字段、12个最终字段。初版记录留在 `docs/java-migration/evidence/J0-01/coverage-report-initial-reviewed.json`，不把旧63项结果继续当作全量证明。
 
 ## 路由分类
 
@@ -40,6 +40,6 @@ J0-02 可立即以主键稳定的初版清单建立场景映射；尚未实测�
 | `compatibility-differences.json` | COMP-001..010；无fencing、正式submit无业务幂等、恢复业务重投待harness证据/批准、first/replay元数据差异等 |
 | `thresholds.json` | 确定性100%/未解释差异0，合成容量/恢复与固定向量数值待J0-02；真实质量未授权 |
 
-`coverage-report.json` 还检查96项 `.env.example` 键均有 Settings去向、4项知识YAML键均有去向、依赖需求/import映射无遗漏。`python3 -m unittest discover -s migration/baseline -p 'test_*.py' -v` 用合成AST/映射突变检查漏项、重复owner、未知动态注册、隐藏/框架面分类的失败退出。脚本在系统Python3.9与专用Python3.11.15均通过；不需要安装/导入应用依赖。
+`coverage-report.json` 还检查96项 `.env.example` 键均有 Settings去向、4项知识YAML键均有去向、依赖需求/import映射无遗漏。`python3 -m unittest discover -s migration/baseline -p 'test_*.py' -v` 用合成AST/映射突变检查漏项、重复owner、未知动态注册、隐藏/框架面分类、别名/跨模块/多层/菱形继承及真实ManagerAssignment。当前10项护栏通过，原初版为5项；脚本在系统Python3.9与专用Python3.11.15均验证，不需要安装/导入应用依赖。
 
 本次交付为 `review-ready / final-freeze-awaits-J0-02`。没有Java实现、部署/外部探测或阶段放行；主Agent收齐oracle、合成性能/恢复测量与独立审查后，再完成最终阈值/差异冻结。

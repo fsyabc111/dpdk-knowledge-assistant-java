@@ -1,0 +1,23 @@
+{
+  "status": "review-fixes-ready",
+  "version": "p0-v1",
+  "models_before": 63,
+  "models_after": 64,
+  "inherited_models": 1,
+  "manager_assignment": {
+    "id": "backend/app/schemas/assignments.py::ManagerAssignment",
+    "own_fields": 2,
+    "inherited_fields": 10,
+    "effective_fields": 12
+  },
+  "existing_model_ids_and_fields_bases_preserved": true,
+  "model_definition_differences": [],
+  "dangling_model_references": [],
+  "app_fastapi_psycopg_imported": false,
+  "database_or_external_calls": false,
+  "baseline_files_checked": 378,
+  "manifest_passed": true,
+  "tests_python39": 10,
+  "tests_python311": 10,
+  "java_stack_research_sha256": "f9c154bd9218df385f48a7627de8cfbf5e480ef7f1f569346e7e0aa095d52faa"
+}

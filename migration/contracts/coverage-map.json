@@ -7453,7 +7453,72 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/api/rag.py::IssueUpdate",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/api/rag.py",
+          "line": 80,
+          "end_line": 80,
+          "name": "status",
+          "annotation": "Literal['open', 'in_progress', 'awaiting_verification', 'resolved', 'ignored']",
+          "default": null,
+          "declared_in": "backend/app/api/rag.py::IssueUpdate",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/api/rag.py",
+          "line": 81,
+          "end_line": 81,
+          "name": "note",
+          "annotation": "str",
+          "default": "Field(default='', max_length=4000)",
+          "declared_in": "backend/app/api/rag.py::IssueUpdate",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/api/rag.py",
+          "line": 82,
+          "end_line": 82,
+          "name": "claim",
+          "annotation": "bool",
+          "default": "False",
+          "declared_in": "backend/app/api/rag.py::IssueUpdate",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/api/rag.py",
+          "line": 83,
+          "end_line": 83,
+          "name": "merged_into",
+          "annotation": "str | None",
+          "default": "None",
+          "declared_in": "backend/app/api/rag.py::IssueUpdate",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/api/rag.py",
+          "line": 84,
+          "end_line": 84,
+          "name": "knowledge_id",
+          "annotation": "str | None",
+          "default": "None",
+          "declared_in": "backend/app/api/rag.py::IssueUpdate",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/api/rag.py::Feedback",
@@ -7488,7 +7553,52 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/api/rag.py::Feedback",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/api/rag.py",
+          "line": 120,
+          "end_line": 120,
+          "name": "message_id",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/api/rag.py::Feedback",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/api/rag.py",
+          "line": 121,
+          "end_line": 121,
+          "name": "reason",
+          "annotation": "Literal['unresolved', 'incorrect']",
+          "default": null,
+          "declared_in": "backend/app/api/rag.py::Feedback",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/api/rag.py",
+          "line": 122,
+          "end_line": 122,
+          "name": "detail",
+          "annotation": "str",
+          "default": "Field(default='', max_length=2000)",
+          "declared_in": "backend/app/api/rag.py::Feedback",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/api/rag.py::KnowledgeWrite",
@@ -7539,7 +7649,72 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/api/rag.py::KnowledgeWrite",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/api/rag.py",
+          "line": 136,
+          "end_line": 136,
+          "name": "title",
+          "annotation": "str",
+          "default": "Field(min_length=1, max_length=200)",
+          "declared_in": "backend/app/api/rag.py::KnowledgeWrite",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/api/rag.py",
+          "line": 137,
+          "end_line": 137,
+          "name": "body",
+          "annotation": "str",
+          "default": "Field(min_length=1, max_length=20000)",
+          "declared_in": "backend/app/api/rag.py::KnowledgeWrite",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/api/rag.py",
+          "line": 138,
+          "end_line": 138,
+          "name": "revision",
+          "annotation": "int",
+          "default": "Field(default=0, ge=0)",
+          "declared_in": "backend/app/api/rag.py::KnowledgeWrite",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/api/rag.py",
+          "line": 139,
+          "end_line": 139,
+          "name": "status",
+          "annotation": "Literal['published', 'withdrawn']",
+          "default": "'published'",
+          "declared_in": "backend/app/api/rag.py::KnowledgeWrite",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/api/rag.py",
+          "line": 140,
+          "end_line": 140,
+          "name": "shared_confirmed",
+          "annotation": "bool",
+          "default": "False",
+          "declared_in": "backend/app/api/rag.py::KnowledgeWrite",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/assignments.py::AssignmentItemIn",
@@ -7566,7 +7741,42 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/assignments.py::AssignmentItemIn",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 15,
+          "end_line": 15,
+          "name": "protocol",
+          "annotation": "str",
+          "default": "Field(min_length=1, max_length=64)",
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentItemIn",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 16,
+          "end_line": 16,
+          "name": "points",
+          "annotation": "int",
+          "default": "Field(ge=1, le=1000)",
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentItemIn",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/assignments.py::AssignmentCreateRequest",
@@ -7609,6 +7819,68 @@
       ],
       "bases": [
         "BaseModel"
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/assignments.py::AssignmentCreateRequest",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 20,
+          "end_line": 20,
+          "name": "title",
+          "annotation": "str",
+          "default": "Field(min_length=1, max_length=200)",
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentCreateRequest",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 21,
+          "end_line": 21,
+          "name": "description",
+          "annotation": "str",
+          "default": "''",
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentCreateRequest",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 22,
+          "end_line": 22,
+          "name": "deadline",
+          "annotation": "datetime",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentCreateRequest",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 23,
+          "end_line": 23,
+          "name": "items",
+          "annotation": "List[AssignmentItemIn]",
+          "default": "Field(min_length=1, max_length=50)",
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentCreateRequest",
+          "inherited": false
+        }
+      ],
+      "field_model_references": [
+        {
+          "field": "items",
+          "model_id": "backend/app/schemas/assignments.py::AssignmentItemIn",
+          "path": "backend/app/schemas/assignments.py",
+          "line": 23
+        }
       ]
     },
     {
@@ -7652,6 +7924,68 @@
       ],
       "bases": [
         "BaseModel"
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/assignments.py::AssignmentUpdateRequest",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 27,
+          "end_line": 27,
+          "name": "title",
+          "annotation": "Optional[str]",
+          "default": "Field(default=None, min_length=1, max_length=200)",
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentUpdateRequest",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 28,
+          "end_line": 28,
+          "name": "description",
+          "annotation": "Optional[str]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentUpdateRequest",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 29,
+          "end_line": 29,
+          "name": "deadline",
+          "annotation": "Optional[datetime]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentUpdateRequest",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 30,
+          "end_line": 30,
+          "name": "items",
+          "annotation": "Optional[List[AssignmentItemIn]]",
+          "default": "Field(default=None, min_length=1, max_length=50)",
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentUpdateRequest",
+          "inherited": false
+        }
+      ],
+      "field_model_references": [
+        {
+          "field": "items",
+          "model_id": "backend/app/schemas/assignments.py::AssignmentItemIn",
+          "path": "backend/app/schemas/assignments.py",
+          "line": 30
+        }
       ]
     },
     {
@@ -7679,7 +8013,42 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/assignments.py::AssignmentSubmitRequest",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 36,
+          "end_line": 36,
+          "name": "protocol",
+          "annotation": "str",
+          "default": "Field(min_length=1, max_length=64)",
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentSubmitRequest",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 37,
+          "end_line": 37,
+          "name": "code",
+          "annotation": "str",
+          "default": "Field(min_length=1)",
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentSubmitRequest",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/assignments.py::AssignmentItem",
@@ -7706,7 +8075,42 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/assignments.py::AssignmentItem",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 41,
+          "end_line": 41,
+          "name": "protocol",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentItem",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 42,
+          "end_line": 42,
+          "name": "points",
+          "annotation": "int",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentItem",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/assignments.py::AssignmentInfo",
@@ -7797,6 +8201,128 @@
       ],
       "bases": [
         "BaseModel"
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/assignments.py::AssignmentInfo",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 46,
+          "end_line": 46,
+          "name": "id",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentInfo",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 47,
+          "end_line": 47,
+          "name": "title",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentInfo",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 48,
+          "end_line": 48,
+          "name": "description",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentInfo",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 49,
+          "end_line": 49,
+          "name": "created_by",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentInfo",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 50,
+          "end_line": 50,
+          "name": "scope",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentInfo",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 51,
+          "end_line": 51,
+          "name": "deadline",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentInfo",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 52,
+          "end_line": 52,
+          "name": "status",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentInfo",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 53,
+          "end_line": 53,
+          "name": "created_at",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentInfo",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 54,
+          "end_line": 54,
+          "name": "updated_at",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentInfo",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 55,
+          "end_line": 55,
+          "name": "items",
+          "annotation": "List[AssignmentItem]",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentInfo",
+          "inherited": false
+        }
+      ],
+      "field_model_references": [
+        {
+          "field": "items",
+          "model_id": "backend/app/schemas/assignments.py::AssignmentItem",
+          "path": "backend/app/schemas/assignments.py",
+          "line": 55
+        }
       ]
     },
     {
@@ -7816,6 +8342,38 @@
       ],
       "bases": [
         "BaseModel"
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/assignments.py::ManagerAssignmentListResponse",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 64,
+          "end_line": 64,
+          "name": "assignments",
+          "annotation": "List[ManagerAssignment]",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::ManagerAssignmentListResponse",
+          "inherited": false
+        }
+      ],
+      "field_model_references": [
+        {
+          "field": "assignments",
+          "model_id": "backend/app/schemas/assignments.py::ManagerAssignment",
+          "path": "backend/app/schemas/assignments.py",
+          "line": 64
+        }
       ]
     },
     {
@@ -7867,7 +8425,72 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/assignments.py::StudentItemGrade",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 68,
+          "end_line": 68,
+          "name": "protocol",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::StudentItemGrade",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 69,
+          "end_line": 69,
+          "name": "points",
+          "annotation": "int",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::StudentItemGrade",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 70,
+          "end_line": 70,
+          "name": "best_score",
+          "annotation": "Optional[int]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/assignments.py::StudentItemGrade",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 73,
+          "end_line": 73,
+          "name": "earned",
+          "annotation": "Optional[float]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/assignments.py::StudentItemGrade",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 74,
+          "end_line": 74,
+          "name": "submission_count",
+          "annotation": "int",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::StudentItemGrade",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/assignments.py::StudentAssignment",
@@ -7958,6 +8581,128 @@
       ],
       "bases": [
         "BaseModel"
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/assignments.py::StudentAssignment",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 78,
+          "end_line": 78,
+          "name": "id",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::StudentAssignment",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 79,
+          "end_line": 79,
+          "name": "title",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::StudentAssignment",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 80,
+          "end_line": 80,
+          "name": "description",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::StudentAssignment",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 81,
+          "end_line": 81,
+          "name": "created_by",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::StudentAssignment",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 82,
+          "end_line": 82,
+          "name": "deadline",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::StudentAssignment",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 83,
+          "end_line": 83,
+          "name": "status",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::StudentAssignment",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 84,
+          "end_line": 84,
+          "name": "items",
+          "annotation": "List[StudentItemGrade]",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::StudentAssignment",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 85,
+          "end_line": 85,
+          "name": "total_points",
+          "annotation": "int",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::StudentAssignment",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 86,
+          "end_line": 86,
+          "name": "total_earned",
+          "annotation": "float",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::StudentAssignment",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 87,
+          "end_line": 87,
+          "name": "submission_count",
+          "annotation": "int",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::StudentAssignment",
+          "inherited": false
+        }
+      ],
+      "field_model_references": [
+        {
+          "field": "items",
+          "model_id": "backend/app/schemas/assignments.py::StudentItemGrade",
+          "path": "backend/app/schemas/assignments.py",
+          "line": 84
+        }
       ]
     },
     {
@@ -7977,6 +8722,38 @@
       ],
       "bases": [
         "BaseModel"
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/assignments.py::StudentAssignmentListResponse",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 91,
+          "end_line": 91,
+          "name": "assignments",
+          "annotation": "List[StudentAssignment]",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::StudentAssignmentListResponse",
+          "inherited": false
+        }
+      ],
+      "field_model_references": [
+        {
+          "field": "assignments",
+          "model_id": "backend/app/schemas/assignments.py::StudentAssignment",
+          "path": "backend/app/schemas/assignments.py",
+          "line": 91
+        }
       ]
     },
     {
@@ -8012,7 +8789,52 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/assignments.py::AssignmentProtocol",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 95,
+          "end_line": 95,
+          "name": "name",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentProtocol",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 96,
+          "end_line": 96,
+          "name": "cases",
+          "annotation": "int",
+          "default": "0",
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentProtocol",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 97,
+          "end_line": 97,
+          "name": "categories",
+          "annotation": "Dict[str, Any]",
+          "default": "Field(default_factory=dict)",
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentProtocol",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/assignments.py::AssignmentProtocolsResponse",
@@ -8039,6 +8861,48 @@
       ],
       "bases": [
         "BaseModel"
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/assignments.py::AssignmentProtocolsResponse",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 101,
+          "end_line": 101,
+          "name": "protocols",
+          "annotation": "List[AssignmentProtocol]",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentProtocolsResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 102,
+          "end_line": 102,
+          "name": "error",
+          "annotation": "Optional[str]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentProtocolsResponse",
+          "inherited": false
+        }
+      ],
+      "field_model_references": [
+        {
+          "field": "protocols",
+          "model_id": "backend/app/schemas/assignments.py::AssignmentProtocol",
+          "path": "backend/app/schemas/assignments.py",
+          "line": 101
+        }
       ]
     },
     {
@@ -8114,7 +8978,102 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/assignments.py::AssignmentSubmitResponse",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 106,
+          "end_line": 106,
+          "name": "score",
+          "annotation": "int",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentSubmitResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 107,
+          "end_line": 107,
+          "name": "passed",
+          "annotation": "int",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentSubmitResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 108,
+          "end_line": 108,
+          "name": "total",
+          "annotation": "int",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentSubmitResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 109,
+          "end_line": 109,
+          "name": "results",
+          "annotation": "List[Dict[str, Any]]",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentSubmitResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 110,
+          "end_line": 110,
+          "name": "points",
+          "annotation": "int",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentSubmitResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 111,
+          "end_line": 111,
+          "name": "earned",
+          "annotation": "float",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentSubmitResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 112,
+          "end_line": 112,
+          "name": "best_earned",
+          "annotation": "float",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentSubmitResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 114,
+          "end_line": 114,
+          "name": "submission_id",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentSubmitResponse",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/assignments.py::ExplainResponse",
@@ -8149,7 +9108,52 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/assignments.py::ExplainResponse",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 125,
+          "end_line": 125,
+          "name": "session_id",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::ExplainResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 126,
+          "end_line": 126,
+          "name": "task_id",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::ExplainResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 127,
+          "end_line": 127,
+          "name": "status",
+          "annotation": "Literal['started', 'attached', 'replayed']",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::ExplainResponse",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/assignments.py::AssignmentGradeRow",
@@ -8208,7 +9212,82 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/assignments.py::AssignmentGradeRow",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 131,
+          "end_line": 131,
+          "name": "user_id",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentGradeRow",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 133,
+          "end_line": 133,
+          "name": "class_teacher",
+          "annotation": "Optional[str]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentGradeRow",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 136,
+          "end_line": 136,
+          "name": "scores",
+          "annotation": "Dict[str, float]",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentGradeRow",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 137,
+          "end_line": 137,
+          "name": "total_earned",
+          "annotation": "float",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentGradeRow",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 138,
+          "end_line": 138,
+          "name": "submission_count",
+          "annotation": "int",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentGradeRow",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 139,
+          "end_line": 139,
+          "name": "last_submitted_at",
+          "annotation": "Optional[str]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentGradeRow",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/assignments.py::AssignmentGradesResponse",
@@ -8235,6 +9314,54 @@
       ],
       "bases": [
         "BaseModel"
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/assignments.py::AssignmentGradesResponse",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 143,
+          "end_line": 143,
+          "name": "assignment",
+          "annotation": "AssignmentInfo",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentGradesResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 144,
+          "end_line": 144,
+          "name": "rows",
+          "annotation": "List[AssignmentGradeRow]",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentGradesResponse",
+          "inherited": false
+        }
+      ],
+      "field_model_references": [
+        {
+          "field": "assignment",
+          "model_id": "backend/app/schemas/assignments.py::AssignmentInfo",
+          "path": "backend/app/schemas/assignments.py",
+          "line": 143
+        },
+        {
+          "field": "rows",
+          "model_id": "backend/app/schemas/assignments.py::AssignmentGradeRow",
+          "path": "backend/app/schemas/assignments.py",
+          "line": 144
+        }
       ]
     },
     {
@@ -8262,7 +9389,42 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/auth.py::LoginRequest",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 7,
+          "end_line": 7,
+          "name": "username",
+          "annotation": "str",
+          "default": "Field(..., min_length=1, max_length=64)",
+          "declared_in": "backend/app/schemas/auth.py::LoginRequest",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 8,
+          "end_line": 8,
+          "name": "password",
+          "annotation": "str",
+          "default": "Field(..., min_length=1, max_length=256)",
+          "declared_in": "backend/app/schemas/auth.py::LoginRequest",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/auth.py::LoginResponse",
@@ -8313,7 +9475,72 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/auth.py::LoginResponse",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 12,
+          "end_line": 12,
+          "name": "token",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/auth.py::LoginResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 13,
+          "end_line": 13,
+          "name": "subject",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/auth.py::LoginResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 14,
+          "end_line": 14,
+          "name": "roles",
+          "annotation": "List[str]",
+          "default": null,
+          "declared_in": "backend/app/schemas/auth.py::LoginResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 15,
+          "end_line": 15,
+          "name": "expires_at",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/auth.py::LoginResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 16,
+          "end_line": 16,
+          "name": "must_change_password",
+          "annotation": "bool",
+          "default": null,
+          "declared_in": "backend/app/schemas/auth.py::LoginResponse",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/auth.py::ChangePasswordRequest",
@@ -8340,7 +9567,42 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/auth.py::ChangePasswordRequest",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 20,
+          "end_line": 20,
+          "name": "old_password",
+          "annotation": "str",
+          "default": "Field(..., min_length=1, max_length=256)",
+          "declared_in": "backend/app/schemas/auth.py::ChangePasswordRequest",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 21,
+          "end_line": 21,
+          "name": "new_password",
+          "annotation": "str",
+          "default": "Field(..., min_length=1, max_length=256)",
+          "declared_in": "backend/app/schemas/auth.py::ChangePasswordRequest",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/auth.py::SetPasswordRequest",
@@ -8359,7 +9621,32 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/auth.py::SetPasswordRequest",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 25,
+          "end_line": 25,
+          "name": "new_password",
+          "annotation": "str",
+          "default": "Field(..., min_length=1, max_length=256)",
+          "declared_in": "backend/app/schemas/auth.py::SetPasswordRequest",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/auth.py::PasswordResetRequestCreate",
@@ -8378,7 +9665,32 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/auth.py::PasswordResetRequestCreate",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 29,
+          "end_line": 29,
+          "name": "username",
+          "annotation": "str",
+          "default": "Field(..., min_length=1, max_length=64)",
+          "declared_in": "backend/app/schemas/auth.py::PasswordResetRequestCreate",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/auth.py::PasswordResetConfirm",
@@ -8405,7 +9717,42 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/auth.py::PasswordResetConfirm",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 33,
+          "end_line": 33,
+          "name": "token",
+          "annotation": "str",
+          "default": "Field(..., min_length=1, max_length=256)",
+          "declared_in": "backend/app/schemas/auth.py::PasswordResetConfirm",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 34,
+          "end_line": 34,
+          "name": "new_password",
+          "annotation": "str",
+          "default": "Field(..., min_length=1, max_length=256)",
+          "declared_in": "backend/app/schemas/auth.py::PasswordResetConfirm",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/auth.py::PasswordResetRequestInfo",
@@ -8440,7 +9787,52 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/auth.py::PasswordResetRequestInfo",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 38,
+          "end_line": 38,
+          "name": "id",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/auth.py::PasswordResetRequestInfo",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 39,
+          "end_line": 39,
+          "name": "user_id",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/auth.py::PasswordResetRequestInfo",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 40,
+          "end_line": 40,
+          "name": "created_at",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/auth.py::PasswordResetRequestInfo",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/auth.py::PasswordResetRequestListResponse",
@@ -8459,6 +9851,38 @@
       ],
       "bases": [
         "BaseModel"
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/auth.py::PasswordResetRequestListResponse",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 44,
+          "end_line": 44,
+          "name": "requests",
+          "annotation": "List[PasswordResetRequestInfo]",
+          "default": null,
+          "declared_in": "backend/app/schemas/auth.py::PasswordResetRequestListResponse",
+          "inherited": false
+        }
+      ],
+      "field_model_references": [
+        {
+          "field": "requests",
+          "model_id": "backend/app/schemas/auth.py::PasswordResetRequestInfo",
+          "path": "backend/app/schemas/auth.py",
+          "line": 44
+        }
       ]
     },
     {
@@ -8486,7 +9910,42 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/auth.py::PasswordResetApproveResponse",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 48,
+          "end_line": 48,
+          "name": "reset_token",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/auth.py::PasswordResetApproveResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 49,
+          "end_line": 49,
+          "name": "expires_at",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/auth.py::PasswordResetApproveResponse",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/auth.py::CreateUsersRequest",
@@ -8521,7 +9980,52 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/auth.py::CreateUsersRequest",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 53,
+          "end_line": 53,
+          "name": "ids",
+          "annotation": "List[str]",
+          "default": "Field(..., min_length=1, max_length=500)",
+          "declared_in": "backend/app/schemas/auth.py::CreateUsersRequest",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 54,
+          "end_line": 54,
+          "name": "roles",
+          "annotation": "Optional[List[str]]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/auth.py::CreateUsersRequest",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 55,
+          "end_line": 55,
+          "name": "daily_quota",
+          "annotation": "Optional[int]",
+          "default": "Field(default=None, ge=0)",
+          "declared_in": "backend/app/schemas/auth.py::CreateUsersRequest",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/auth.py::CreateUsersResponse",
@@ -8548,7 +10052,42 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/auth.py::CreateUsersResponse",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 59,
+          "end_line": 59,
+          "name": "created",
+          "annotation": "List[str]",
+          "default": null,
+          "declared_in": "backend/app/schemas/auth.py::CreateUsersResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 60,
+          "end_line": 60,
+          "name": "skipped",
+          "annotation": "List[str]",
+          "default": null,
+          "declared_in": "backend/app/schemas/auth.py::CreateUsersResponse",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/auth.py::UserStatusRequest",
@@ -8567,7 +10106,32 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/auth.py::UserStatusRequest",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 64,
+          "end_line": 64,
+          "name": "enabled",
+          "annotation": "bool",
+          "default": null,
+          "declared_in": "backend/app/schemas/auth.py::UserStatusRequest",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/auth.py::UpdateUserRequest",
@@ -8602,7 +10166,52 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/auth.py::UpdateUserRequest",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 68,
+          "end_line": 68,
+          "name": "roles",
+          "annotation": "Optional[List[str]]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/auth.py::UpdateUserRequest",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 69,
+          "end_line": 69,
+          "name": "daily_quota",
+          "annotation": "Optional[int]",
+          "default": "Field(default=None, ge=0)",
+          "declared_in": "backend/app/schemas/auth.py::UpdateUserRequest",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 70,
+          "end_line": 70,
+          "name": "created_by",
+          "annotation": "Optional[str]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/auth.py::UpdateUserRequest",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/auth.py::UserInfo",
@@ -8669,7 +10278,92 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/auth.py::UserInfo",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 74,
+          "end_line": 74,
+          "name": "id",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/auth.py::UserInfo",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 75,
+          "end_line": 75,
+          "name": "roles",
+          "annotation": "List[str]",
+          "default": null,
+          "declared_in": "backend/app/schemas/auth.py::UserInfo",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 76,
+          "end_line": 76,
+          "name": "daily_quota",
+          "annotation": "Optional[int]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/auth.py::UserInfo",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 77,
+          "end_line": 77,
+          "name": "enabled",
+          "annotation": "bool",
+          "default": null,
+          "declared_in": "backend/app/schemas/auth.py::UserInfo",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 78,
+          "end_line": 78,
+          "name": "must_change_password",
+          "annotation": "bool",
+          "default": null,
+          "declared_in": "backend/app/schemas/auth.py::UserInfo",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 79,
+          "end_line": 79,
+          "name": "created_at",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/auth.py::UserInfo",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 80,
+          "end_line": 80,
+          "name": "created_by",
+          "annotation": "Optional[str]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/auth.py::UserInfo",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/auth.py::UserListResponse",
@@ -8688,6 +10382,38 @@
       ],
       "bases": [
         "BaseModel"
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/auth.py::UserListResponse",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 84,
+          "end_line": 84,
+          "name": "users",
+          "annotation": "List[UserInfo]",
+          "default": null,
+          "declared_in": "backend/app/schemas/auth.py::UserListResponse",
+          "inherited": false
+        }
+      ],
+      "field_model_references": [
+        {
+          "field": "users",
+          "model_id": "backend/app/schemas/auth.py::UserInfo",
+          "path": "backend/app/schemas/auth.py",
+          "line": 84
+        }
       ]
     },
     {
@@ -8715,7 +10441,42 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/auth.py::DeleteUsersRequest",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 89,
+          "end_line": 89,
+          "name": "ids",
+          "annotation": "List[str]",
+          "default": "Field(..., min_length=1, max_length=500)",
+          "declared_in": "backend/app/schemas/auth.py::DeleteUsersRequest",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 90,
+          "end_line": 90,
+          "name": "password",
+          "annotation": "str",
+          "default": "Field(..., min_length=1, max_length=256)",
+          "declared_in": "backend/app/schemas/auth.py::DeleteUsersRequest",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/auth.py::DeleteUsersResponse",
@@ -8742,7 +10503,42 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/auth.py::DeleteUsersResponse",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 94,
+          "end_line": 94,
+          "name": "deleted",
+          "annotation": "List[str]",
+          "default": null,
+          "declared_in": "backend/app/schemas/auth.py::DeleteUsersResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 95,
+          "end_line": 95,
+          "name": "skipped",
+          "annotation": "List[str]",
+          "default": null,
+          "declared_in": "backend/app/schemas/auth.py::DeleteUsersResponse",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/auth.py::AssignStudentsRequest",
@@ -8769,7 +10565,42 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/auth.py::AssignStudentsRequest",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 100,
+          "end_line": 100,
+          "name": "ids",
+          "annotation": "List[str]",
+          "default": "Field(..., min_length=1, max_length=500)",
+          "declared_in": "backend/app/schemas/auth.py::AssignStudentsRequest",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 101,
+          "end_line": 101,
+          "name": "created_by",
+          "annotation": "str",
+          "default": "Field(..., min_length=1, max_length=64)",
+          "declared_in": "backend/app/schemas/auth.py::AssignStudentsRequest",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/auth.py::AssignStudentsResponse",
@@ -8796,7 +10627,42 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/auth.py::AssignStudentsResponse",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 105,
+          "end_line": 105,
+          "name": "assigned",
+          "annotation": "List[str]",
+          "default": null,
+          "declared_in": "backend/app/schemas/auth.py::AssignStudentsResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 106,
+          "end_line": 106,
+          "name": "skipped",
+          "annotation": "List[str]",
+          "default": null,
+          "declared_in": "backend/app/schemas/auth.py::AssignStudentsResponse",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/auth.py::AuditLogInfo",
@@ -8847,7 +10713,72 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/auth.py::AuditLogInfo",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 110,
+          "end_line": 110,
+          "name": "id",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/auth.py::AuditLogInfo",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 111,
+          "end_line": 111,
+          "name": "actor",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/auth.py::AuditLogInfo",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 112,
+          "end_line": 112,
+          "name": "action",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/auth.py::AuditLogInfo",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 113,
+          "end_line": 113,
+          "name": "targets",
+          "annotation": "List[str]",
+          "default": null,
+          "declared_in": "backend/app/schemas/auth.py::AuditLogInfo",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 114,
+          "end_line": 114,
+          "name": "created_at",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/auth.py::AuditLogInfo",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/auth.py::AuditLogListResponse",
@@ -8866,6 +10797,38 @@
       ],
       "bases": [
         "BaseModel"
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/auth.py::AuditLogListResponse",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/auth.py",
+          "line": 118,
+          "end_line": 118,
+          "name": "entries",
+          "annotation": "List[AuditLogInfo]",
+          "default": null,
+          "declared_in": "backend/app/schemas/auth.py::AuditLogListResponse",
+          "inherited": false
+        }
+      ],
+      "field_model_references": [
+        {
+          "field": "entries",
+          "model_id": "backend/app/schemas/auth.py::AuditLogInfo",
+          "path": "backend/app/schemas/auth.py",
+          "line": 118
+        }
       ]
     },
     {
@@ -8909,7 +10872,62 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/chat.py::ChatRequest",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 9,
+          "end_line": 9,
+          "name": "session_id",
+          "annotation": "Optional[str]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/chat.py::ChatRequest",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 10,
+          "end_line": 10,
+          "name": "request_id",
+          "annotation": "Optional[UUID]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/chat.py::ChatRequest",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 12,
+          "end_line": 12,
+          "name": "message",
+          "annotation": "str",
+          "default": "Field(..., min_length=1, max_length=12000)",
+          "declared_in": "backend/app/schemas/chat.py::ChatRequest",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 13,
+          "end_line": 13,
+          "name": "context",
+          "annotation": "Dict[str, Any]",
+          "default": "Field(default_factory=dict)",
+          "declared_in": "backend/app/schemas/chat.py::ChatRequest",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/chat.py::Citation",
@@ -8960,7 +10978,72 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/chat.py::Citation",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 32,
+          "end_line": 32,
+          "name": "chunk_id",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/chat.py::Citation",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 33,
+          "end_line": 33,
+          "name": "source_path",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/chat.py::Citation",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 34,
+          "end_line": 34,
+          "name": "title",
+          "annotation": "str",
+          "default": "''",
+          "declared_in": "backend/app/schemas/chat.py::Citation",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 35,
+          "end_line": 35,
+          "name": "section",
+          "annotation": "str",
+          "default": "''",
+          "declared_in": "backend/app/schemas/chat.py::Citation",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 36,
+          "end_line": 36,
+          "name": "score",
+          "annotation": "float",
+          "default": null,
+          "declared_in": "backend/app/schemas/chat.py::Citation",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/chat.py::NextStep",
@@ -8987,7 +11070,42 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/chat.py::NextStep",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 40,
+          "end_line": 40,
+          "name": "label",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/chat.py::NextStep",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 41,
+          "end_line": 41,
+          "name": "source_path",
+          "annotation": "str",
+          "default": "''",
+          "declared_in": "backend/app/schemas/chat.py::NextStep",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/chat.py::ChatResponse",
@@ -9094,6 +11212,154 @@
       ],
       "bases": [
         "BaseModel"
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/chat.py::ChatResponse",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 45,
+          "end_line": 45,
+          "name": "session_id",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/chat.py::ChatResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 46,
+          "end_line": 46,
+          "name": "message_id",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/chat.py::ChatResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 47,
+          "end_line": 47,
+          "name": "answer",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/chat.py::ChatResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 48,
+          "end_line": 48,
+          "name": "citations",
+          "annotation": "List[Citation]",
+          "default": null,
+          "declared_in": "backend/app/schemas/chat.py::ChatResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 49,
+          "end_line": 49,
+          "name": "next_steps",
+          "annotation": "List[NextStep]",
+          "default": null,
+          "declared_in": "backend/app/schemas/chat.py::ChatResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 50,
+          "end_line": 50,
+          "name": "confidence",
+          "annotation": "str",
+          "default": "'medium'",
+          "declared_in": "backend/app/schemas/chat.py::ChatResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 51,
+          "end_line": 51,
+          "name": "debug_trace",
+          "annotation": "Optional[Dict[str, Any]]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/chat.py::ChatResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 52,
+          "end_line": 52,
+          "name": "answer_status",
+          "annotation": "Optional[str]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/chat.py::ChatResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 53,
+          "end_line": 53,
+          "name": "answer_reason",
+          "annotation": "Optional[str]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/chat.py::ChatResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 54,
+          "end_line": 54,
+          "name": "issue_id",
+          "annotation": "Optional[str]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/chat.py::ChatResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 55,
+          "end_line": 55,
+          "name": "request_id",
+          "annotation": "Optional[str]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/chat.py::ChatResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 56,
+          "end_line": 56,
+          "name": "task_id",
+          "annotation": "Optional[str]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/chat.py::ChatResponse",
+          "inherited": false
+        }
+      ],
+      "field_model_references": [
+        {
+          "field": "citations",
+          "model_id": "backend/app/schemas/chat.py::Citation",
+          "path": "backend/app/schemas/chat.py",
+          "line": 48
+        },
+        {
+          "field": "next_steps",
+          "model_id": "backend/app/schemas/chat.py::NextStep",
+          "path": "backend/app/schemas/chat.py",
+          "line": 49
+        }
       ]
     },
     {
@@ -9193,6 +11459,138 @@
       ],
       "bases": [
         "BaseModel"
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/chat.py::SessionMessage",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 60,
+          "end_line": 60,
+          "name": "id",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/chat.py::SessionMessage",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 61,
+          "end_line": 61,
+          "name": "role",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/chat.py::SessionMessage",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 62,
+          "end_line": 62,
+          "name": "content",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/chat.py::SessionMessage",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 63,
+          "end_line": 63,
+          "name": "citations",
+          "annotation": "List[Citation]",
+          "default": "Field(default_factory=list)",
+          "declared_in": "backend/app/schemas/chat.py::SessionMessage",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 64,
+          "end_line": 64,
+          "name": "confidence",
+          "annotation": "str",
+          "default": "'medium'",
+          "declared_in": "backend/app/schemas/chat.py::SessionMessage",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 65,
+          "end_line": 65,
+          "name": "created_at",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/chat.py::SessionMessage",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 66,
+          "end_line": 66,
+          "name": "answer_status",
+          "annotation": "Optional[str]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/chat.py::SessionMessage",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 67,
+          "end_line": 67,
+          "name": "answer_reason",
+          "annotation": "Optional[str]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/chat.py::SessionMessage",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 68,
+          "end_line": 68,
+          "name": "issue_id",
+          "annotation": "Optional[str]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/chat.py::SessionMessage",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 69,
+          "end_line": 69,
+          "name": "request_id",
+          "annotation": "Optional[str]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/chat.py::SessionMessage",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 70,
+          "end_line": 70,
+          "name": "task_id",
+          "annotation": "Optional[str]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/chat.py::SessionMessage",
+          "inherited": false
+        }
+      ],
+      "field_model_references": [
+        {
+          "field": "citations",
+          "model_id": "backend/app/schemas/chat.py::Citation",
+          "path": "backend/app/schemas/chat.py",
+          "line": 63
+        }
       ]
     },
     {
@@ -9236,6 +11634,68 @@
       ],
       "bases": [
         "BaseModel"
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/chat.py::SessionHistoryResponse",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 74,
+          "end_line": 74,
+          "name": "session_id",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/chat.py::SessionHistoryResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 75,
+          "end_line": 75,
+          "name": "title",
+          "annotation": "str",
+          "default": "''",
+          "declared_in": "backend/app/schemas/chat.py::SessionHistoryResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 76,
+          "end_line": 76,
+          "name": "messages",
+          "annotation": "List[SessionMessage]",
+          "default": null,
+          "declared_in": "backend/app/schemas/chat.py::SessionHistoryResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 77,
+          "end_line": 77,
+          "name": "truncated",
+          "annotation": "bool",
+          "default": "False",
+          "declared_in": "backend/app/schemas/chat.py::SessionHistoryResponse",
+          "inherited": false
+        }
+      ],
+      "field_model_references": [
+        {
+          "field": "messages",
+          "model_id": "backend/app/schemas/chat.py::SessionMessage",
+          "path": "backend/app/schemas/chat.py",
+          "line": 76
+        }
       ]
     },
     {
@@ -9271,7 +11731,52 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/chat.py::SessionSummary",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 81,
+          "end_line": 81,
+          "name": "id",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/chat.py::SessionSummary",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 82,
+          "end_line": 82,
+          "name": "title",
+          "annotation": "str",
+          "default": "''",
+          "declared_in": "backend/app/schemas/chat.py::SessionSummary",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 83,
+          "end_line": 83,
+          "name": "updated_at",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/chat.py::SessionSummary",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/chat.py::SessionListResponse",
@@ -9290,6 +11795,38 @@
       ],
       "bases": [
         "BaseModel"
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/chat.py::SessionListResponse",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 87,
+          "end_line": 87,
+          "name": "sessions",
+          "annotation": "List[SessionSummary]",
+          "default": null,
+          "declared_in": "backend/app/schemas/chat.py::SessionListResponse",
+          "inherited": false
+        }
+      ],
+      "field_model_references": [
+        {
+          "field": "sessions",
+          "model_id": "backend/app/schemas/chat.py::SessionSummary",
+          "path": "backend/app/schemas/chat.py",
+          "line": 87
+        }
       ]
     },
     {
@@ -9333,7 +11870,62 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/chat.py::TemplateRequest",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 91,
+          "end_line": 91,
+          "name": "protocol",
+          "annotation": "str",
+          "default": "Field(..., min_length=1)",
+          "declared_in": "backend/app/schemas/chat.py::TemplateRequest",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 92,
+          "end_line": 92,
+          "name": "template_type",
+          "annotation": "str",
+          "default": "'port_text_protocol'",
+          "declared_in": "backend/app/schemas/chat.py::TemplateRequest",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 93,
+          "end_line": 93,
+          "name": "difficulty",
+          "annotation": "str",
+          "default": "'basic'",
+          "declared_in": "backend/app/schemas/chat.py::TemplateRequest",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 94,
+          "end_line": 94,
+          "name": "requirements",
+          "annotation": "str",
+          "default": "''",
+          "declared_in": "backend/app/schemas/chat.py::TemplateRequest",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/chat.py::TemplateResponse",
@@ -9376,7 +11968,62 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/chat.py::TemplateResponse",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 98,
+          "end_line": 98,
+          "name": "template",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/chat.py::TemplateResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 99,
+          "end_line": 99,
+          "name": "explanation",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/chat.py::TemplateResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 100,
+          "end_line": 100,
+          "name": "checklist",
+          "annotation": "List[str]",
+          "default": null,
+          "declared_in": "backend/app/schemas/chat.py::TemplateResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 101,
+          "end_line": 101,
+          "name": "references",
+          "annotation": "List[str]",
+          "default": null,
+          "declared_in": "backend/app/schemas/chat.py::TemplateResponse",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/chat.py::TaskStatusResponse",
@@ -9451,7 +12098,102 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/chat.py::TaskStatusResponse",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 106,
+          "end_line": 106,
+          "name": "task_id",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/chat.py::TaskStatusResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 107,
+          "end_line": 107,
+          "name": "status",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/chat.py::TaskStatusResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 108,
+          "end_line": 108,
+          "name": "reason",
+          "annotation": "str",
+          "default": "''",
+          "declared_in": "backend/app/schemas/chat.py::TaskStatusResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 109,
+          "end_line": 109,
+          "name": "request_id",
+          "annotation": "Optional[str]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/chat.py::TaskStatusResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 110,
+          "end_line": 110,
+          "name": "session_id",
+          "annotation": "Optional[str]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/chat.py::TaskStatusResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 111,
+          "end_line": 111,
+          "name": "message_id",
+          "annotation": "Optional[str]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/chat.py::TaskStatusResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 112,
+          "end_line": 112,
+          "name": "created_at",
+          "annotation": "str",
+          "default": "''",
+          "declared_in": "backend/app/schemas/chat.py::TaskStatusResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/chat.py",
+          "line": 113,
+          "end_line": 113,
+          "name": "elapsed_ms",
+          "annotation": "int",
+          "default": "0",
+          "declared_in": "backend/app/schemas/chat.py::TaskStatusResponse",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/grading.py::GradingSubmission",
@@ -9518,7 +12260,92 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/grading.py::GradingSubmission",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/grading.py",
+          "line": 12,
+          "end_line": 12,
+          "name": "id",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/grading.py::GradingSubmission",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/grading.py",
+          "line": 13,
+          "end_line": 13,
+          "name": "user_id",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/grading.py::GradingSubmission",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/grading.py",
+          "line": 14,
+          "end_line": 14,
+          "name": "protocol",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/grading.py::GradingSubmission",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/grading.py",
+          "line": 15,
+          "end_line": 15,
+          "name": "score",
+          "annotation": "int",
+          "default": null,
+          "declared_in": "backend/app/schemas/grading.py::GradingSubmission",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/grading.py",
+          "line": 16,
+          "end_line": 16,
+          "name": "passed",
+          "annotation": "int",
+          "default": null,
+          "declared_in": "backend/app/schemas/grading.py::GradingSubmission",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/grading.py",
+          "line": 17,
+          "end_line": 17,
+          "name": "total",
+          "annotation": "int",
+          "default": null,
+          "declared_in": "backend/app/schemas/grading.py::GradingSubmission",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/grading.py",
+          "line": 18,
+          "end_line": 18,
+          "name": "created_at",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/grading.py::GradingSubmission",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/grading.py::GradingSubmissionListResponse",
@@ -9537,6 +12364,38 @@
       ],
       "bases": [
         "BaseModel"
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/grading.py::GradingSubmissionListResponse",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/grading.py",
+          "line": 22,
+          "end_line": 22,
+          "name": "submissions",
+          "annotation": "List[GradingSubmission]",
+          "default": null,
+          "declared_in": "backend/app/schemas/grading.py::GradingSubmissionListResponse",
+          "inherited": false
+        }
+      ],
+      "field_model_references": [
+        {
+          "field": "submissions",
+          "model_id": "backend/app/schemas/grading.py::GradingSubmission",
+          "path": "backend/app/schemas/grading.py",
+          "line": 22
+        }
       ]
     },
     {
@@ -9588,7 +12447,72 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/grading.py::GradingUserSummary",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/grading.py",
+          "line": 26,
+          "end_line": 26,
+          "name": "user_id",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/grading.py::GradingUserSummary",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/grading.py",
+          "line": 27,
+          "end_line": 27,
+          "name": "submission_count",
+          "annotation": "int",
+          "default": null,
+          "declared_in": "backend/app/schemas/grading.py::GradingUserSummary",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/grading.py",
+          "line": 28,
+          "end_line": 28,
+          "name": "avg_score",
+          "annotation": "float",
+          "default": null,
+          "declared_in": "backend/app/schemas/grading.py::GradingUserSummary",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/grading.py",
+          "line": 29,
+          "end_line": 29,
+          "name": "best_score",
+          "annotation": "int",
+          "default": null,
+          "declared_in": "backend/app/schemas/grading.py::GradingUserSummary",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/grading.py",
+          "line": 30,
+          "end_line": 30,
+          "name": "last_submitted_at",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/grading.py::GradingUserSummary",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/grading.py::GradingProtocolSummary",
@@ -9647,7 +12571,82 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/grading.py::GradingProtocolSummary",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/grading.py",
+          "line": 34,
+          "end_line": 34,
+          "name": "protocol",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/grading.py::GradingProtocolSummary",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/grading.py",
+          "line": 35,
+          "end_line": 35,
+          "name": "submission_count",
+          "annotation": "int",
+          "default": null,
+          "declared_in": "backend/app/schemas/grading.py::GradingProtocolSummary",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/grading.py",
+          "line": 36,
+          "end_line": 36,
+          "name": "avg_score",
+          "annotation": "float",
+          "default": null,
+          "declared_in": "backend/app/schemas/grading.py::GradingProtocolSummary",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/grading.py",
+          "line": 39,
+          "end_line": 39,
+          "name": "passed_total",
+          "annotation": "int",
+          "default": null,
+          "declared_in": "backend/app/schemas/grading.py::GradingProtocolSummary",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/grading.py",
+          "line": 40,
+          "end_line": 40,
+          "name": "total_total",
+          "annotation": "int",
+          "default": null,
+          "declared_in": "backend/app/schemas/grading.py::GradingProtocolSummary",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/grading.py",
+          "line": 42,
+          "end_line": 42,
+          "name": "student_count",
+          "annotation": "int",
+          "default": null,
+          "declared_in": "backend/app/schemas/grading.py::GradingProtocolSummary",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/grading.py::GradingSummaryResponse",
@@ -9674,6 +12673,54 @@
       ],
       "bases": [
         "BaseModel"
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/grading.py::GradingSummaryResponse",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/grading.py",
+          "line": 46,
+          "end_line": 46,
+          "name": "by_user",
+          "annotation": "List[GradingUserSummary]",
+          "default": null,
+          "declared_in": "backend/app/schemas/grading.py::GradingSummaryResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/grading.py",
+          "line": 47,
+          "end_line": 47,
+          "name": "by_protocol",
+          "annotation": "List[GradingProtocolSummary]",
+          "default": null,
+          "declared_in": "backend/app/schemas/grading.py::GradingSummaryResponse",
+          "inherited": false
+        }
+      ],
+      "field_model_references": [
+        {
+          "field": "by_protocol",
+          "model_id": "backend/app/schemas/grading.py::GradingProtocolSummary",
+          "path": "backend/app/schemas/grading.py",
+          "line": 47
+        },
+        {
+          "field": "by_user",
+          "model_id": "backend/app/schemas/grading.py::GradingUserSummary",
+          "path": "backend/app/schemas/grading.py",
+          "line": 46
+        }
       ]
     },
     {
@@ -9701,7 +12748,42 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/usage.py::UsageDay",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 7,
+          "end_line": 7,
+          "name": "day",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/usage.py::UsageDay",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 8,
+          "end_line": 8,
+          "name": "chat_count",
+          "annotation": "int",
+          "default": null,
+          "declared_in": "backend/app/schemas/usage.py::UsageDay",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/usage.py::MyUsageResponse",
@@ -9752,6 +12834,84 @@
       ],
       "bases": [
         "BaseModel"
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/usage.py::MyUsageResponse",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 12,
+          "end_line": 12,
+          "name": "subject",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/usage.py::MyUsageResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 13,
+          "end_line": 13,
+          "name": "roles",
+          "annotation": "List[str]",
+          "default": null,
+          "declared_in": "backend/app/schemas/usage.py::MyUsageResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 15,
+          "end_line": 15,
+          "name": "daily_quota",
+          "annotation": "int",
+          "default": null,
+          "declared_in": "backend/app/schemas/usage.py::MyUsageResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 16,
+          "end_line": 16,
+          "name": "today",
+          "annotation": "UsageDay",
+          "default": null,
+          "declared_in": "backend/app/schemas/usage.py::MyUsageResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 18,
+          "end_line": 18,
+          "name": "recent_days",
+          "annotation": "List[UsageDay]",
+          "default": null,
+          "declared_in": "backend/app/schemas/usage.py::MyUsageResponse",
+          "inherited": false
+        }
+      ],
+      "field_model_references": [
+        {
+          "field": "recent_days",
+          "model_id": "backend/app/schemas/usage.py::UsageDay",
+          "path": "backend/app/schemas/usage.py",
+          "line": 18
+        },
+        {
+          "field": "today",
+          "model_id": "backend/app/schemas/usage.py::UsageDay",
+          "path": "backend/app/schemas/usage.py",
+          "line": 16
+        }
       ]
     },
     {
@@ -9811,7 +12971,82 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/usage.py::SubjectUsage",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 22,
+          "end_line": 22,
+          "name": "subject",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/usage.py::SubjectUsage",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 23,
+          "end_line": 23,
+          "name": "roles",
+          "annotation": "List[str]",
+          "default": null,
+          "declared_in": "backend/app/schemas/usage.py::SubjectUsage",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 24,
+          "end_line": 24,
+          "name": "daily_quota",
+          "annotation": "int",
+          "default": null,
+          "declared_in": "backend/app/schemas/usage.py::SubjectUsage",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 25,
+          "end_line": 25,
+          "name": "today_count",
+          "annotation": "int",
+          "default": null,
+          "declared_in": "backend/app/schemas/usage.py::SubjectUsage",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 26,
+          "end_line": 26,
+          "name": "total_count",
+          "annotation": "int",
+          "default": null,
+          "declared_in": "backend/app/schemas/usage.py::SubjectUsage",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 27,
+          "end_line": 27,
+          "name": "last_active_day",
+          "annotation": "Optional[str]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/usage.py::SubjectUsage",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/usage.py::SubjectUsageResponse",
@@ -9830,6 +13065,38 @@
       ],
       "bases": [
         "BaseModel"
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/usage.py::SubjectUsageResponse",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 31,
+          "end_line": 31,
+          "name": "subjects",
+          "annotation": "List[SubjectUsage]",
+          "default": null,
+          "declared_in": "backend/app/schemas/usage.py::SubjectUsageResponse",
+          "inherited": false
+        }
+      ],
+      "field_model_references": [
+        {
+          "field": "subjects",
+          "model_id": "backend/app/schemas/usage.py::SubjectUsage",
+          "path": "backend/app/schemas/usage.py",
+          "line": 31
+        }
       ]
     },
     {
@@ -9921,7 +13188,122 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/usage.py::UsageBucket",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 42,
+          "end_line": 42,
+          "name": "key",
+          "annotation": "Optional[str]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/usage.py::UsageBucket",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 43,
+          "end_line": 43,
+          "name": "entries",
+          "annotation": "int",
+          "default": null,
+          "declared_in": "backend/app/schemas/usage.py::UsageBucket",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 44,
+          "end_line": 44,
+          "name": "calls",
+          "annotation": "int",
+          "default": null,
+          "declared_in": "backend/app/schemas/usage.py::UsageBucket",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 45,
+          "end_line": 45,
+          "name": "prompt_tokens",
+          "annotation": "Optional[int]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/usage.py::UsageBucket",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 46,
+          "end_line": 46,
+          "name": "completion_tokens",
+          "annotation": "Optional[int]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/usage.py::UsageBucket",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 47,
+          "end_line": 47,
+          "name": "total_tokens",
+          "annotation": "Optional[int]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/usage.py::UsageBucket",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 48,
+          "end_line": 48,
+          "name": "known_entries",
+          "annotation": "int",
+          "default": "0",
+          "declared_in": "backend/app/schemas/usage.py::UsageBucket",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 49,
+          "end_line": 49,
+          "name": "unknown_entries",
+          "annotation": "int",
+          "default": "0",
+          "declared_in": "backend/app/schemas/usage.py::UsageBucket",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 50,
+          "end_line": 50,
+          "name": "duration_ms",
+          "annotation": "Optional[int]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/usage.py::UsageBucket",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 52,
+          "end_line": 52,
+          "name": "cost_micros_by_currency",
+          "annotation": "Dict[str, int]",
+          "default": "{}",
+          "declared_in": "backend/app/schemas/usage.py::UsageBucket",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/usage.py::UsageOperations",
@@ -9964,7 +13346,62 @@
       ],
       "bases": [
         "BaseModel"
-      ]
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/usage.py::UsageOperations",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 58,
+          "end_line": 58,
+          "name": "entries",
+          "annotation": "int",
+          "default": null,
+          "declared_in": "backend/app/schemas/usage.py::UsageOperations",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 59,
+          "end_line": 59,
+          "name": "calls",
+          "annotation": "int",
+          "default": null,
+          "declared_in": "backend/app/schemas/usage.py::UsageOperations",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 60,
+          "end_line": 60,
+          "name": "duration_ms",
+          "annotation": "Optional[int]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/usage.py::UsageOperations",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 61,
+          "end_line": 61,
+          "name": "priced",
+          "annotation": "bool",
+          "default": "False",
+          "declared_in": "backend/app/schemas/usage.py::UsageOperations",
+          "inherited": false
+        }
+      ],
+      "field_model_references": []
     },
     {
       "id": "backend/app/schemas/usage.py::UsageCostResponse",
@@ -10103,6 +13540,483 @@
       ],
       "bases": [
         "BaseModel"
+      ],
+      "resolved_bases": [
+        {
+          "expression": "BaseModel",
+          "symbol": "pydantic.BaseModel",
+          "model_id": null
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/usage.py::UsageCostResponse",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 68,
+          "end_line": 68,
+          "name": "days",
+          "annotation": "int",
+          "default": null,
+          "declared_in": "backend/app/schemas/usage.py::UsageCostResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 69,
+          "end_line": 69,
+          "name": "since",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/usage.py::UsageCostResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 70,
+          "end_line": 70,
+          "name": "subject",
+          "annotation": "Optional[str]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/usage.py::UsageCostResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 72,
+          "end_line": 72,
+          "name": "subjects",
+          "annotation": "Optional[List[str]]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/usage.py::UsageCostResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 73,
+          "end_line": 73,
+          "name": "stage",
+          "annotation": "Optional[str]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/usage.py::UsageCostResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 75,
+          "end_line": 75,
+          "name": "request_id",
+          "annotation": "Optional[str]",
+          "default": "None",
+          "declared_in": "backend/app/schemas/usage.py::UsageCostResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 77,
+          "end_line": 77,
+          "name": "totals",
+          "annotation": "UsageBucket",
+          "default": null,
+          "declared_in": "backend/app/schemas/usage.py::UsageCostResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 78,
+          "end_line": 78,
+          "name": "operations",
+          "annotation": "UsageOperations",
+          "default": null,
+          "declared_in": "backend/app/schemas/usage.py::UsageCostResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 79,
+          "end_line": 79,
+          "name": "by_stage",
+          "annotation": "List[UsageBucket]",
+          "default": null,
+          "declared_in": "backend/app/schemas/usage.py::UsageCostResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 80,
+          "end_line": 80,
+          "name": "by_model",
+          "annotation": "List[UsageBucket]",
+          "default": null,
+          "declared_in": "backend/app/schemas/usage.py::UsageCostResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 81,
+          "end_line": 81,
+          "name": "by_day",
+          "annotation": "List[UsageBucket]",
+          "default": null,
+          "declared_in": "backend/app/schemas/usage.py::UsageCostResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 83,
+          "end_line": 83,
+          "name": "unpriced_models",
+          "annotation": "List[str]",
+          "default": null,
+          "declared_in": "backend/app/schemas/usage.py::UsageCostResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 84,
+          "end_line": 84,
+          "name": "unknown_entries",
+          "annotation": "int",
+          "default": null,
+          "declared_in": "backend/app/schemas/usage.py::UsageCostResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 86,
+          "end_line": 86,
+          "name": "cost_currency_mixed",
+          "annotation": "bool",
+          "default": null,
+          "declared_in": "backend/app/schemas/usage.py::UsageCostResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 87,
+          "end_line": 87,
+          "name": "truncated",
+          "annotation": "bool",
+          "default": null,
+          "declared_in": "backend/app/schemas/usage.py::UsageCostResponse",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/usage.py",
+          "line": 88,
+          "end_line": 88,
+          "name": "row_limit",
+          "annotation": "int",
+          "default": null,
+          "declared_in": "backend/app/schemas/usage.py::UsageCostResponse",
+          "inherited": false
+        }
+      ],
+      "field_model_references": [
+        {
+          "field": "by_day",
+          "model_id": "backend/app/schemas/usage.py::UsageBucket",
+          "path": "backend/app/schemas/usage.py",
+          "line": 81
+        },
+        {
+          "field": "by_model",
+          "model_id": "backend/app/schemas/usage.py::UsageBucket",
+          "path": "backend/app/schemas/usage.py",
+          "line": 80
+        },
+        {
+          "field": "by_stage",
+          "model_id": "backend/app/schemas/usage.py::UsageBucket",
+          "path": "backend/app/schemas/usage.py",
+          "line": 79
+        },
+        {
+          "field": "operations",
+          "model_id": "backend/app/schemas/usage.py::UsageOperations",
+          "path": "backend/app/schemas/usage.py",
+          "line": 78
+        },
+        {
+          "field": "totals",
+          "model_id": "backend/app/schemas/usage.py::UsageBucket",
+          "path": "backend/app/schemas/usage.py",
+          "line": 77
+        }
+      ]
+    },
+    {
+      "id": "backend/app/schemas/assignments.py::ManagerAssignment",
+      "owner_task": "J2-03",
+      "java_target": "io.dpdk.assistant.assignment.dto.ManagerAssignment",
+      "definition_reference": "migration/baseline/static-inventory.json#/models",
+      "fields": [
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 59,
+          "end_line": 59,
+          "name": "submission_count",
+          "annotation": "int",
+          "default": null
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 60,
+          "end_line": 60,
+          "name": "student_count",
+          "annotation": "int",
+          "default": null
+        }
+      ],
+      "bases": [
+        "AssignmentInfo"
+      ],
+      "resolved_bases": [
+        {
+          "expression": "AssignmentInfo",
+          "symbol": "app.schemas.assignments.AssignmentInfo",
+          "model_id": "backend/app/schemas/assignments.py::AssignmentInfo"
+        }
+      ],
+      "inheritance_mro": [
+        "backend/app/schemas/assignments.py::ManagerAssignment",
+        "backend/app/schemas/assignments.py::AssignmentInfo",
+        "pydantic.BaseModel"
+      ],
+      "inherited_fields": [
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 46,
+          "end_line": 46,
+          "name": "id",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentInfo",
+          "inherited": true
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 47,
+          "end_line": 47,
+          "name": "title",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentInfo",
+          "inherited": true
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 48,
+          "end_line": 48,
+          "name": "description",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentInfo",
+          "inherited": true
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 49,
+          "end_line": 49,
+          "name": "created_by",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentInfo",
+          "inherited": true
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 50,
+          "end_line": 50,
+          "name": "scope",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentInfo",
+          "inherited": true
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 51,
+          "end_line": 51,
+          "name": "deadline",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentInfo",
+          "inherited": true
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 52,
+          "end_line": 52,
+          "name": "status",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentInfo",
+          "inherited": true
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 53,
+          "end_line": 53,
+          "name": "created_at",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentInfo",
+          "inherited": true
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 54,
+          "end_line": 54,
+          "name": "updated_at",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentInfo",
+          "inherited": true
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 55,
+          "end_line": 55,
+          "name": "items",
+          "annotation": "List[AssignmentItem]",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentInfo",
+          "inherited": true
+        }
+      ],
+      "effective_fields": [
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 46,
+          "end_line": 46,
+          "name": "id",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentInfo",
+          "inherited": true
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 47,
+          "end_line": 47,
+          "name": "title",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentInfo",
+          "inherited": true
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 48,
+          "end_line": 48,
+          "name": "description",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentInfo",
+          "inherited": true
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 49,
+          "end_line": 49,
+          "name": "created_by",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentInfo",
+          "inherited": true
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 50,
+          "end_line": 50,
+          "name": "scope",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentInfo",
+          "inherited": true
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 51,
+          "end_line": 51,
+          "name": "deadline",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentInfo",
+          "inherited": true
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 52,
+          "end_line": 52,
+          "name": "status",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentInfo",
+          "inherited": true
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 53,
+          "end_line": 53,
+          "name": "created_at",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentInfo",
+          "inherited": true
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 54,
+          "end_line": 54,
+          "name": "updated_at",
+          "annotation": "str",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentInfo",
+          "inherited": true
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 55,
+          "end_line": 55,
+          "name": "items",
+          "annotation": "List[AssignmentItem]",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::AssignmentInfo",
+          "inherited": true
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 59,
+          "end_line": 59,
+          "name": "submission_count",
+          "annotation": "int",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::ManagerAssignment",
+          "inherited": false
+        },
+        {
+          "path": "backend/app/schemas/assignments.py",
+          "line": 60,
+          "end_line": 60,
+          "name": "student_count",
+          "annotation": "int",
+          "default": null,
+          "declared_in": "backend/app/schemas/assignments.py::ManagerAssignment",
+          "inherited": false
+        }
+      ],
+      "field_model_references": [
+        {
+          "field": "items",
+          "model_id": "backend/app/schemas/assignments.py::AssignmentItem",
+          "path": "backend/app/schemas/assignments.py",
+          "line": 55
+        }
       ]
     }
   ]

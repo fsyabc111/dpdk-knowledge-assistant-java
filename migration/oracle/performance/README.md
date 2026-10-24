@@ -25,11 +25,15 @@
 .migration-artifacts/p0/venv/bin/python migration/oracle/performance/run.py queue > .migration-artifacts/p0/performance/queue.log 2>&1
 .migration-artifacts/p0/venv/bin/python migration/oracle/performance/run.py recovery > .migration-artifacts/p0/performance/recovery.log 2>&1
 .migration-artifacts/p0/venv/bin/python migration/oracle/performance/run.py benchmark --rounds 3 --warmup 120 --measurement 600 --label baseline > .migration-artifacts/p0/performance/baseline.log 2>&1
+.migration-artifacts/p0/venv/bin/python migration/oracle/performance/summarize.py > .migration-artifacts/p0/performance/summary.log 2>&1
+.migration-artifacts/p0/venv/bin/python migration/oracle/performance/audit.py > .migration-artifacts/p0/performance/final-pg-audit.log 2>&1
 ```
 
 长测为 3 轮，每轮先预热 120s、测量 600s；在窗口截止前启动的请求允许完成，另报含排空的墙钟时长。60 账号每阶段各登录一次、每 5s 读作业；10 个问答 worker 连续发起独立会话，轮转 60 账号。正式提交每完成一轮后等 10s，再发起下一次；每次成功提交随后发起讲解并等待终态。问答和讲解共用 10 个请求槽上限，避免讲解另增峰值。提交/讲解各自分组，处于同一固定 mix 的资源竞争环境，不视为隔离的纯端点最大吞吐。
 
 这是固定并发闭环负载。端点耗时从发起 ASGI 请求计算，讲解终态从讲解请求发起计到终态查询完成；不包括负载生成器在10槽信号量前的等待和读作业/提交间隔。`active/waiting` 记录生产 Admission 的槽位，不能把闭环等待峰值0解释为开放到达流量不排队。
+
+CPU/RSS 的比较域为应用+负载器+统计/采样器合计，当前都在同一 Python 进程，不是应用独占资源。资源采样在同一事件循环内同步读取 `ps`/PG，其开销已计入请求延迟，未作扣除。未来Java若独立进程，比较Java应用+等价Python负载/统计/采样进程之和：先对齐每个时间样本求和，再算组合CPU p95与组合RSS峰值，不相加不同时刻的峰值或百分位。布局/采样域未对齐时只观察、不判通过；P1须交付等价候选adapter或另采独立server基线，并明确当前ASGI不含TCP的网络差异。这是P0 synthetic门禁，不能代替P5生产部署容量验收。
 
 保持真实默认 bcrypt 12、每主体每分钟 20、PG 连接池 32、20 活动/20 等待/10s 队列超时/600s 任务外墙。合成账号 daily_quota=100000，仅避免测试总量触顶；原子扣次仍真实执行。正式评测日配额保持 20。
 
@@ -37,7 +41,9 @@
 
 `docs/java-migration/evidence/J0-02/performance/` 保存每轮分组统计、1s 资源样本、环境/版本、队列和恢复断言；运行日志和逐请求耗时数组只保存在 `.migration-artifacts/p0/performance/`。
 
-分组耗时包含成功、拒绝与异常，总分母及每状态数明确保留。p50/p95 使用最近秩；仅 n≥1000 时报告 p99，其他填 null。背压 429 与异常错误分开。资源只采本运行器进程、专用 PG 主进程和直接子进程；CPU 是累计 CPU 的相邻采样差，100% 表示一核；PG 子进程退出可能导致低估。PG RSS 求和含共享页重复，也包括同实例其他 oracle 库，不可解释为 benchmark 独占内存。资源样本附 UTC 和每库活动会话，便于标识功能测试交叠。
+分组耗时包含成功、拒绝与异常，总分母及每状态数明确保留。p50/p95 使用最近秩；仅 n≥1000 时报告 p99，其他填 null。背压 429 与异常错误分开。资源只采本运行器进程、专用 PG 主进程和直接子进程；采样目标间隔1s，实际为采样耗时再加1s，原始时间戳和汇总间隔分布保留。CPU使用实际时间差计算累计CPU增量，100%表示一核；PG子进程退出可能导致低估。PG RSS求和含共享页重复，也包括同实例其他oracle库，不可解释为benchmark独占内存。资源样本附UTC和每库活动会话，便于标识功能测试交叠。
+
+正式 submit 负载每次只发一个新请求，不自动重试。该端点没有业务幂等键；本次负载的“一个成功请求一条成绩”不能扩展为网络重试或所有正式提交绝不重复。SIGKILL/MCP作业恢复证据属于带 task/job 账本的聊天评测链。
 
 SIGKILL 恢复分别在受理持久化后、成绩落库后而答案终态前、MCP提交进入后而响应返回前中断新子进程。恢复控制器把合成行 `updated_at` 拨老后调用真实 `ensure_managed`。恢复故障用例为加速脚本，每个模型调用/检索/MCP 均 10ms，另列在恢复证据；与正常性能负载的 1s/50ms/200ms 分开解释。实测值是**重驱动执行耗时**，未含默认 30s grace、最长 300s 扫描间隔；按实现推导调度等待上界为 330s，自动循环的实际最坏 RTO 仍需后续集成验证。600s 外墙使用真实 TaskService/PG，将事件循环时钟推进至 599s 和 600.5s，并在终态写入前挂起工作线程；不改变 600 配置，也不等同于实际 10 分钟墙钟容量试验。
 

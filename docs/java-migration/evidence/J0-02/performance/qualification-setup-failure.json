@@ -1,0 +1,11 @@
+{
+  "stage": "首次资格运行的数据库身份检查",
+  "status": "失败，未开始性能采样",
+  "observed": "共享safety.validate_target使用inet_server_addr()::text，PG返回127.0.0.1/32，与预期127.0.0.1严格比较失败",
+  "expected_database": "p0_benchmark_oracle",
+  "confirmed_fields": ["database", "role", "port", "database_comment", "data_directory"],
+  "effect": "隔离门禁先行拒绝，未应用schema或发起业务请求，没有读取旧配置回退",
+  "correction_owner": "p0_oracle，改为host(inet_server_addr())，保留精确127.0.0.1检查",
+  "subsequent_evidence": "qualification-final-summary.json",
+  "scope": "只修本轮新增oracle安全入口；未改冻结Python"
+}
