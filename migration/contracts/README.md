@@ -1,6 +1,6 @@
-# P0 初版可消费契约（p0-v1）
+# P0 冻结契约（p0-v1；当前fixture p0-v2）
 
-状态：**可供 J0-02 开发与采集合成 oracle；尚未最终冻结或获得 P0 用户验收。**
+状态：**源码、契约、fixture与合成门槛已最终冻结，自动验证与独立审查通过；等待P0用户阶段验收，P1未授权。**
 
 源码功能目标是新仓库冻结提交 `80b29135faddd16d5e39fdbf0633291ea6a20489`，其复制内容为原 `a47a1bc9d23c0a8e625a79ff7cfbd096dcb3071c` 加复制时 dirty/untracked 文件。逐文件以原 manifest 的 `copied_path` 为准，三项有意映射见 COPY_REPORT；不访问旧源码目录。旧部署镜像/schema0013 不是本次功能目标。
 
@@ -26,7 +26,7 @@
 5. harness 提交后超时/断线视为结果未知，P0 替身必须覆盖这一情况；不盲重试提交。受理事务不能跨越模型/MCP 调用。恢复不等同于多副本 fencing；正式 submit 没有业务幂等键。
 6. 可提交 evidence 只保留合成输入、脱敏摘要与断言。原始命令输出/测试日志存 `.migration-artifacts/p0/`，禁止提交运行产物或凭据。
 
-J0-02 可立即以主键稳定的初版清单建立场景映射；尚未实测的容量/恢复阈值保持 `pending_measurement`，真实质量数值保持 `live_not_authorized`。
+当前消费fixture为p0-v2，历史p0-v1保持不变；容量/恢复/向量阈值由用户确认并固定在thresholds.json（U09/P0-D15），真实质量仍为live_not_authorized。P1消费顺序与限制见P1_HANDOFF.md；最终证据见docs/java-migration/evidence/P0/phase-report.md。
 
 ## 审查与 P1 消费入口
 

@@ -1,0 +1,23 @@
+{
+  "source_baseline": "80b29135faddd16d5e39fdbf0633291ea6a20489",
+  "verified_core_commit": "a207a4ad30597cb395744856667fd569f87fa882",
+  "changed_file_count": 120,
+  "scope_or_sensitive_findings": [],
+  "broken_local_markdown_links": [],
+  "fixture_sha_checks": {
+    "python-golden.json": true,
+    "route-case-map.json": true,
+    "normalization-review.json": true,
+    "business-projection.json": true
+  },
+  "backend_frontend_changed": [],
+  "owned_pg_stopped": true,
+  "pg_status_exit": 3,
+  "retained_assets": {
+    ".migration-artifacts/p0/pgdata": true,
+    ".migration-artifacts/p0/venv": true,
+    "migration/fixtures/p0-v1/python-golden.json": true
+  },
+  "limitations": "高置信模式扫描不等于穷尽所有潜在秘密；未执行真实上游/Java/生产验证",
+  "passed": true
+}

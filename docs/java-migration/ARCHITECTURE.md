@@ -1,6 +1,6 @@
 # 目标架构与接口约束
 
-状态：P0契约收口中；Java代码尚未建立，P1仍未获授权。已选择Java21 / Spring Boot4.0.9 / Spring AI2.0.2及Spring JDBC / Flyway，依据见DECISIONS/P0-D14；实际构建与协议适配待P1验证。可消费接口语义见 `../../migration/contracts/transaction-ports.json`，不得把拟议签名当已实现类。
+状态：P0契约已最终冻结、工程审查通过，阶段用户验收待定；Java代码尚未建立，P1仍未获授权。已选择Java21 / Spring Boot4.0.9 / Spring AI2.0.2及Spring JDBC / Flyway，依据见DECISIONS/P0-D14；实际构建与协议适配待P1验证。可消费接口语义见 `../../migration/contracts/transaction-ports.json`，不得把拟议签名当已实现类。
 
 ## 模块结构
 
