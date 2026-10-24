@@ -1,6 +1,6 @@
 # P0 Python 差分 oracle
 
-调用本仓库冻结 `backend/` 真实业务逻辑，基线 `80b29135faddd16d5e39fdbf0633291ea6a20489`。`p0-v1` 修订2是历史基础fixture，黄金/manifest保持不变；两轴审查修复扩展到 `p0-v2`。p0-v2动态双库采集、冻结、停用补验和34项真实CLI回归已通过，等待主Agent独立复审与P0阶段用户验收。Java尚未实现，真实模型/embedding/harness质量未验证。
+调用本仓库冻结 `backend/` 真实业务逻辑，基线 `80b29135faddd16d5e39fdbf0633291ea6a20489`。`p0-v1` 修订2是历史基础fixture，黄金/manifest保持不变；两轴审查修复扩展到 `p0-v2`。p0-v2动态双库采集、冻结、停用补验和40项真实CLI回归已通过，等待主Agent独立复审与P0阶段用户验收。Java尚未实现，真实模型/embedding/harness质量未验证。
 
 ## 显式版本命令
 
@@ -60,4 +60,4 @@ freeze仅接受p0-v2及固定Python trace路径，无候选输入参数；存在
 
 COMP003批准的Java安全目标仍在 `migration/fixtures/p0-approved-differences/comp003.json`，不改Python实际重投黄金；Java目标尚未执行。28条完整重试/并发分支与全认证角色组合仍有未执行项，不能把基础覆盖宣称全功能用户验收。修复证据见 `docs/java-migration/evidence/J0-02/review-fixes.md`。
 
-最终执行证据：每库186观测、66路由、29表schema、25表业务投影、14上游故障脚本、11PG case；非空ManagerAssignment有12字段，student视角10字段。9组纯内存/CLI测试通过；实际v2 CLI 34/34通过（0×2、1×20、2×12），嵌套state/request/transaction容器、非法日历、深度和非有限数值均稳定JSON/无traceback。有效token停用补验4断言已通过。失败资格比较日志保留，未计入通过；具体命令和记录见review-fixes.md。
+最终执行证据：每库186观测、66路由、29表schema、25表业务投影、14上游故障脚本、11PG case；非空ManagerAssignment有12字段，student视角10字段。9组纯内存/CLI测试通过；实际v2 CLI 40/40通过（0×2、1×20、2×12），嵌套state/request/transaction容器、非法日历、深度和非有限数值均稳定JSON/无traceback。有效token停用补验4断言已通过。失败资格比较日志保留，未计入通过；具体命令和记录见review-fixes.md。

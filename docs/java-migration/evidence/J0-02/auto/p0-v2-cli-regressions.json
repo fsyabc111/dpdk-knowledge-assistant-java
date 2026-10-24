@@ -334,6 +334,66 @@
       }
     },
     {
+      "case_id": "sse-done-status-object",
+      "status": "通过",
+      "expected_exit": 2,
+      "actual_exit": 2,
+      "output": {
+        "status": "invalid_manifest_or_input",
+        "detail": "SSE done状态必须是string"
+      }
+    },
+    {
+      "case_id": "sse-done-status-array",
+      "status": "通过",
+      "expected_exit": 2,
+      "actual_exit": 2,
+      "output": {
+        "status": "invalid_manifest_or_input",
+        "detail": "SSE done状态必须是string"
+      }
+    },
+    {
+      "case_id": "sse-done-status-null",
+      "status": "通过",
+      "expected_exit": 2,
+      "actual_exit": 2,
+      "output": {
+        "status": "invalid_manifest_or_input",
+        "detail": "SSE done状态必须是string"
+      }
+    },
+    {
+      "case_id": "sse-done-status-bool",
+      "status": "通过",
+      "expected_exit": 2,
+      "actual_exit": 2,
+      "output": {
+        "status": "invalid_manifest_or_input",
+        "detail": "SSE done状态必须是string"
+      }
+    },
+    {
+      "case_id": "sse-done-status-integer",
+      "status": "通过",
+      "expected_exit": 2,
+      "actual_exit": 2,
+      "output": {
+        "status": "invalid_manifest_or_input",
+        "detail": "SSE done状态必须是string"
+      }
+    },
+    {
+      "case_id": "sse-done-status-float",
+      "status": "通过",
+      "expected_exit": 2,
+      "actual_exit": 2,
+      "output": {
+        "status": "invalid_manifest_or_input",
+        "detail": "SSE done状态必须是string"
+      }
+    },
+    {
       "case_id": "json-parser-depth",
       "status": "通过",
       "expected_exit": 2,

@@ -86,6 +86,12 @@ def main():
     for _ in range(70):nested={'nested':nested}
     value['malicious']=nested;run_case('depth-limit',value,2)
     value=copy.deepcopy(base);event_record=next(o for o in value['observations'] if o['media_type']=='text/event-stream');event_record['body']=[{'event':'error','data':[]}];run_case('sse-data-container',value,2)
+    for label,bad_status in [('object',{}),('array',[]),('null',None),('bool',True),('integer',7),('float',1.5)]:
+        value=copy.deepcopy(base)
+        stream=next(o for o in value['observations'] if o['media_type']=='text/event-stream')
+        done=next(event for event in stream['body'] if event['event']=='done')
+        done['data']['answer_status']=bad_status
+        run_case('sse-done-status-'+label,value,2)
     deep=folder/'json-parser-depth.json';deep.write_text('{"observations":[],"attack":'+'['*2000+'0'+']'*2000+'}')
     result=subprocess.run([sys.executable,'-m','migration.oracle.verify','--fixture','p0-v2','--candidate',str(deep)],cwd=ROOT,capture_output=True,text=True)
     assert result.returncode==2 and not result.stderr

@@ -129,6 +129,7 @@ def validate_sse(events: list[dict]) -> str:
             ended='error'
         elif event=='done':
             status=data.get('answer_status',data.get('status'));terminal=data.get('terminal')
+            if type(status) is not str:raise InvalidTrace('SSE done状态必须是string')
             if terminal is not None and type(terminal) is not bool:raise Difference('terminal必须是bool')
             if status=='pending':
                 if terminal is not False:raise Difference('pending必须显式terminal:false')

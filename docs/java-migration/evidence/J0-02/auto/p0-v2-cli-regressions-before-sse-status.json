@@ -1,0 +1,349 @@
+{
+  "fixture_version": "p0-v2",
+  "cases": [
+    {
+      "case_id": "unchanged",
+      "status": "通过",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "output": {
+        "status": "pass",
+        "fixture": "p0-v2",
+        "observations": 186
+      }
+    },
+    {
+      "case_id": "quota",
+      "status": "通过",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "output": {
+        "status": "difference",
+        "detail": "$.observations[58].business_delta.tables.usage_counters.added[0].chat_count: 值不同"
+      }
+    },
+    {
+      "case_id": "grade-score",
+      "status": "通过",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "output": {
+        "status": "difference",
+        "detail": "$.observations[53].business_delta.tables.grading_submissions.added[0].score: 值不同"
+      }
+    },
+    {
+      "case_id": "job-submission-flag",
+      "status": "通过",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "output": {
+        "status": "difference",
+        "detail": "$.state.business.tables.rag_task_jobs[1].submission_done: 值不同"
+      }
+    },
+    {
+      "case_id": "permission-role",
+      "status": "通过",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "output": {
+        "status": "difference",
+        "detail": "$.business_initial.tables.users[3].roles[0]: 值不同"
+      }
+    },
+    {
+      "case_id": "permission-tree",
+      "status": "通过",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "output": {
+        "status": "difference",
+        "detail": "$.business_initial.tables.users[3].created_by: 值不同"
+      }
+    },
+    {
+      "case_id": "enabled",
+      "status": "通过",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "output": {
+        "status": "difference",
+        "detail": "$.business_initial.tables.users[3].enabled: 值不同"
+      }
+    },
+    {
+      "case_id": "fee-null-zero",
+      "status": "通过",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "output": {
+        "status": "difference",
+        "detail": "$.observations[58].business_delta.tables.upstream_usage_records.added[0].cost_micros: 类型不同 NoneType/int"
+      }
+    },
+    {
+      "case_id": "fee-type",
+      "status": "通过",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "output": {
+        "status": "difference",
+        "detail": "$.observations[58].business_delta.tables.upstream_usage_records.added[0].cost_micros: 类型不同 NoneType/str"
+      }
+    },
+    {
+      "case_id": "citation-rank",
+      "status": "通过",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "output": {
+        "status": "difference",
+        "detail": "$.business_initial.tables.assistant_citations[0].rank: 值不同"
+      }
+    },
+    {
+      "case_id": "citation-round4-exact",
+      "status": "通过",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "output": {
+        "status": "difference",
+        "detail": "$.business_initial.tables.assistant_citations[0].score: 值不同"
+      }
+    },
+    {
+      "case_id": "knowledge-revision",
+      "status": "通过",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "output": {
+        "status": "difference",
+        "detail": "$.observations[61].business_delta.tables.rag_knowledge.added[0].revision: 值不同"
+      }
+    },
+    {
+      "case_id": "job-entire-link-replacement",
+      "status": "通过",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "output": {
+        "status": "difference",
+        "detail": "$.state.business.tables.grading_submissions[1].job_id: 值不同"
+      }
+    },
+    {
+      "case_id": "source-all-hash-replacement",
+      "status": "通过",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "output": {
+        "status": "difference",
+        "detail": "$.observations[53].business_delta.tables.grading_submissions.added[0].code_hash: 值不同"
+      }
+    },
+    {
+      "case_id": "task-all-cross-type-replacement",
+      "status": "通过",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "output": {
+        "status": "difference",
+        "detail": "$.observations[68].body.task_id: task身份格式不符"
+      }
+    },
+    {
+      "case_id": "manager-missing-submission_count",
+      "status": "通过",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "output": {
+        "status": "difference",
+        "detail": "$.observations[54].body.assignments[0]: 字段/缺省不同"
+      }
+    },
+    {
+      "case_id": "manager-missing-student_count",
+      "status": "通过",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "output": {
+        "status": "difference",
+        "detail": "$.observations[54].body.assignments[0]: 字段/缺省不同"
+      }
+    },
+    {
+      "case_id": "raw-score-within",
+      "status": "通过",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "output": {
+        "status": "pass",
+        "fixture": "p0-v2",
+        "observations": 186
+      }
+    },
+    {
+      "case_id": "raw-score-outside",
+      "status": "通过",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "output": {
+        "status": "difference",
+        "detail": "$.transaction_cases[8].ranked[0].score: raw检索分数超过绝对容差"
+      }
+    },
+    {
+      "case_id": "raw-rank-order",
+      "status": "通过",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "output": {
+        "status": "difference",
+        "detail": "$.transaction_cases[8].ranked[0].chunk_id: 值不同"
+      }
+    },
+    {
+      "case_id": "usage-unknown-zero",
+      "status": "通过",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "output": {
+        "status": "difference",
+        "detail": "$.upstream_vectors[1].total_tokens: 类型不同 NoneType/int"
+      }
+    },
+    {
+      "case_id": "redaction-numeric-vector",
+      "status": "通过",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "output": {
+        "status": "difference",
+        "detail": "$.semantic_vectors.redaction[0].actual: 值不同"
+      }
+    },
+    {
+      "case_id": "state-array",
+      "status": "通过",
+      "expected_exit": 2,
+      "actual_exit": 2,
+      "output": {
+        "status": "invalid_manifest_or_input",
+        "detail": "state必须是object"
+      }
+    },
+    {
+      "case_id": "transactions-null",
+      "status": "通过",
+      "expected_exit": 2,
+      "actual_exit": 2,
+      "output": {
+        "status": "invalid_manifest_or_input",
+        "detail": "transaction_cases必须是object数组"
+      }
+    },
+    {
+      "case_id": "request-array",
+      "status": "通过",
+      "expected_exit": 2,
+      "actual_exit": 2,
+      "output": {
+        "status": "invalid_manifest_or_input",
+        "detail": "observation.request必须是object"
+      }
+    },
+    {
+      "case_id": "request-input-array",
+      "status": "通过",
+      "expected_exit": 2,
+      "actual_exit": 2,
+      "output": {
+        "status": "invalid_manifest_or_input",
+        "detail": "request.input必须是object或NULL"
+      }
+    },
+    {
+      "case_id": "request-params-array",
+      "status": "通过",
+      "expected_exit": 2,
+      "actual_exit": 2,
+      "output": {
+        "status": "invalid_manifest_or_input",
+        "detail": "request.params必须是object或NULL"
+      }
+    },
+    {
+      "case_id": "auth-step-array",
+      "status": "通过",
+      "expected_exit": 2,
+      "actual_exit": 2,
+      "output": {
+        "status": "invalid_manifest_or_input",
+        "detail": "auth_state_step必须是object"
+      }
+    },
+    {
+      "case_id": "top-array",
+      "status": "通过",
+      "expected_exit": 2,
+      "actual_exit": 2,
+      "output": {
+        "status": "invalid_manifest_or_input",
+        "detail": "trace顶层必须是object"
+      }
+    },
+    {
+      "case_id": "invalid-calendar",
+      "status": "通过",
+      "expected_exit": 2,
+      "actual_exit": 2,
+      "output": {
+        "status": "invalid_manifest_or_input",
+        "detail": "expires_at: 非法日历值"
+      }
+    },
+    {
+      "case_id": "nonfinite-json",
+      "status": "通过",
+      "expected_exit": 2,
+      "actual_exit": 2,
+      "output": {
+        "status": "invalid_manifest_or_input",
+        "detail": "JSON读取/解析失败: InvalidTrace"
+      }
+    },
+    {
+      "case_id": "depth-limit",
+      "status": "通过",
+      "expected_exit": 2,
+      "actual_exit": 2,
+      "output": {
+        "status": "invalid_manifest_or_input",
+        "detail": "trace嵌套或节点数量超过限制"
+      }
+    },
+    {
+      "case_id": "sse-data-container",
+      "status": "通过",
+      "expected_exit": 2,
+      "actual_exit": 2,
+      "output": {
+        "status": "invalid_manifest_or_input",
+        "detail": "SSE event/data容器损坏"
+      }
+    },
+    {
+      "case_id": "json-parser-depth",
+      "status": "通过",
+      "expected_exit": 2,
+      "actual_exit": 2,
+      "output": {
+        "status": "invalid_manifest_or_input",
+        "detail": "JSON读取/解析失败: RecursionError"
+      }
+    }
+  ],
+  "frozen_overwrite_exit": 1,
+  "comparison": "all mutated business cases retain HTTP status and total row counts; explicit actual business values are compared"
+}

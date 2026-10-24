@@ -113,6 +113,10 @@ class ReviewFixTests(unittest.TestCase):
               ('observations-object',{'observations':{}},2)]
             bad_date=copy.deepcopy(original);bad_date['observations'][0]['body']['expires_at']='2026-99-24T04:00:00+00:00'
             variants.append(('calendar',bad_date,2))
+            for label,bad_status in [('object',{}),('array',[]),('null',None),('bool',True),('integer',7),('float',1.5)]:
+                broken=copy.deepcopy(original)
+                broken['observations'][0].update(media_type='text/event-stream',body=[{'event':'done','data':{'answer_status':bad_status,'terminal':True}}])
+                variants.append(('sse-done-status-'+label,broken,2))
             for name,mutate in [
                 ('state-array',lambda x:x.update(state=[])),
                 ('transaction-null',lambda x:x.update(transaction_cases=None)),

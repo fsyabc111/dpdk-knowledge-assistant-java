@@ -9,10 +9,10 @@
     "business_tables": 25
   },
   "cli": {
-    "cases": 34,
+    "cases": 40,
     "exit_0": 2,
     "exit_1": 20,
-    "exit_2": 12,
+    "exit_2": 18,
     "stderr_or_traceback": false
   },
   "pure_tests": 9,
@@ -24,5 +24,6 @@
   "phase_acceptance": "pending_main_independent_review_and_user",
   "threshold_authority": "migration/contracts/thresholds.json",
   "qualification_failures": "preserved; not counted as passed",
-  "evidence": "review-fixes.md"
+  "evidence": "review-fixes.md",
+  "final_cli_addendum": "sse-status-closure.md"
 }
