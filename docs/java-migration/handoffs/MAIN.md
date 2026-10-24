@@ -7,6 +7,14 @@
 - 当前源码目标：本仓库冻结Python副本；原目录仅来源，不同步变化；backend/前端原件未改。
 - 验证代码/证据提交：08158c6初版、c94f43d修复、099dca2最终v2数据、a207a4a最后CLI类型守卫；之后仅文档/状态/审查收口。用户已验收交付7c76c31；验收记录提交d96bf4c已推送到同名origin分支，本地/远程SHA一致，证据evidence/P0/push-verification.json；其后仅补发布记录。
 
+## J1-01 进行中（切片1已交付，提交 f84d2c9 已推送）
+
+- backend-java 可构建：JDK21.0.12.1 + Boot4.0.9 + Maven Wrapper 3.9.12；`./backend-java/mvnw -f backend-java/pom.xml -B verify` 26/26 通过（含三路径迁移集成测试）。
+- 三路径迁移链实测：空库B0015 / 合成0013→V0014+V0015（讲解回填+伪造反例）/ 等价0015空转 / 重复启动无变化 / 部分表拒绝；catalog 差分对 P0 oracle 真实结构清零。
+- P1 独立测试PG运行中：127.0.0.1:55481，角色 p1_java（SUPERUSER，合成实例），data_directory=.migration-artifacts/p1/pgdata，测试库动态建删，comment=java-migration-p1-test。参考schema与完整日志在 .migration-artifacts/p1/（不提交）。
+- 契约接口：contracts 下 18 端口全部落地；占位类型由 owner 经接口变更登记补全。
+- 下一步：git worktree 派工 J1-02（main:model|harness + test 同名）与 J1-03（main:retrieval + test 同名）并行；两者只读契约/fixture，不改公共文件；主Agent 单写 pom/契约/DDL。完成后集成并跑 J1-04。
+
 ## 最终冻结与证据
 
 - J0-01 accepted：378文件一致，66路由/29表/103设置/64模型/96环境键/4YAML键/依赖映射；10静态护栏通过。最终记录evidence/J0-01/final-freeze.md。
