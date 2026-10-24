@@ -34,11 +34,17 @@ public class MinimalQaSlice {
     }
 
     public PocAnswer ask(String releaseId, String question) {
+        return ask(releaseId, question, null);
+    }
+
+    /** 带固定查询向量的入口（J1-04 全链路集成用；替身检索可忽略向量）。 */
+    public PocAnswer ask(String releaseId, String question,
+                         io.dpdk.assistant.contracts.model.Vector1024 queryVector) {
         List<RetrievedChunk> chunks;
         try {
             ReleaseSnapshot snapshot = releaseReader.pin(releaseId);
             SearchResult result = releaseReader.searchPinned(snapshot,
-                    new SearchInput(question, null /* 固定向量由检索替身决定，POC 不生成 */));
+                    new SearchInput(question, queryVector));
             chunks = result.chunks();
         } catch (RuntimeException e) {
             return PocAnswer.unanswered("system_error");

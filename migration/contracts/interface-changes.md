@@ -1,0 +1,35 @@
+# P1 接口变更登记（集成者账本）
+
+本文件由 J1-01 集成者维护，登记各卡对 `transaction-ports.json@p0-v1` 拟议签名的语义固化与增补。只做加法/澄清，不做破坏性调整；破坏性调整须升级契约版本并通知消费者。
+
+## J1-02（模型/embedding/harness）已接受
+
+- `contracts.model.ChatInput(model, jsonPayload)`：`jsonPayload` 约定为
+  `{"messages":[{ "role":..., "content":... }...], "model"?:...}` 的 JSON 字符串；
+  富接口由 `model.ModelClients` 提供（`chat(List<ChatMessage>, ...)`、`streamChat(...)`、`embedTexts(...)`）。
+- `contracts.model.HarnessReply(submissionPhase, payloadJson, error)`：`payloadJson` 恒为规范化 JSON
+  （成功=工具结果 JSON；失败=`{"ok":false,"error":...,"detail":...}`）；`error` 为错误码或 null。
+  错误码集合新增：`harness_bad_request`（参数不可序列化，NOT_SUBMITTED）、
+  `harness_deadline_exceeded`（期限前到期，NOT_SUBMITTED）。
+- 有意差异（源更保守方向）：参数序列化提前到建连前（畸形参数 NOT_SUBMITTED、零 HTTP）；
+  取消为 shield 模型（不伪称远端已取消、账记 unknown）；异常日志不回显 payload/源码哨兵。
+  全表见 `evidence/J1-02/unverified.md`。
+- 工程注意：classpath 同时存在 Jackson 2/3，RestClient 优先 Jackson 3；Jackson 2 树作 RestClient
+  body 会被按 POJO 展开——统一以 UTF-8 字节数组或 Jackson 3 树发送。
+
+## J1-03（只读检索）已接受
+
+- `contracts.retrieval.SearchInput(question, queryVector)`：POC/测试允许 queryVector=null
+  （由替身决定）；富参数（rewrite/conversationContext/limit）经实现类重载
+  `PgReleaseReader.searchPinned(snapshot, input, limit)` 提供，暂不扩展契约字段。
+- `RetrievedChunk`/`SourceChunk` 的 source_path/section/title/metadata 富字段由
+  `retrieval.RetrievalTrace.nodes` 交付，契约 record 暂不扩展（J3-03 接管时再评估）。
+- `ReleaseSnapshot` 的 blockedReason/成员完整性由实现侧 fail-closed 异常表达，暂不扩展。
+- 固定向量容差：仅 raw score 绝对误差 ≤1e-12（U09）；顺序/引用 round4/业务得分精确。
+  J1-03 实测差值为 0。
+
+## 消费指引（P1 内）
+
+- J1-04/P2 消费模型端口：经 `io.dpdk.assistant.model.ModelClients` / `harness.HarnessClients` 入口。
+- J1-04 消费检索：经 `retrieval.PgReleaseReader`（limit 重载）。
+- Spring Bean/配置接线（settings 绑定与单例装配）由集成者在 P2 集成窗口统一完成。
