@@ -1,6 +1,6 @@
 {
   "fixture_id": "p0-v2",
-  "status": "frozen-python-oracle; user acceptance pending",
+  "status": "frozen-python-oracle; user accepted P0 U10",
   "baseline_id": "80b29135faddd16d5e39fdbf0633291ea6a20489",
   "contract_version": "p0-v1",
   "golden_provenance": "仅从p0_python_oracle冻结Python trace；候选无写入口；p0-v1 rev2保持不变",
@@ -32,7 +32,13 @@
   "performance_thresholds": {
     "authority": "migration/contracts/thresholds.json",
     "authorization": "U09/P0-D15",
-    "status": "numeric thresholds accepted; P0 phase user acceptance pending"
+    "status": "numeric thresholds accepted U09; P0 accepted U10"
   },
-  "live_quality": "live_not_authorized"
+  "live_quality": "live_not_authorized",
+  "user_acceptance": {
+    "decision": "DECISIONS U10",
+    "date": "2026-10-25",
+    "accepted_delivery_commit": "7c76c31f5d80da2b4e76c469d22131d7532e6f25",
+    "next_phase_authorized": false
+  }
 }

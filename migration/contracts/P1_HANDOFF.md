@@ -1,6 +1,6 @@
 # P1消费交接（当前未授权实施）
 
-P0工程、合成验证与独立审查已收口；P1仍需用户直接放行，不能因本文件开始Java实现。状态以docs/java-migration/STATUS.md为准。
+P0工程、合成验证与独立审查已收口且用户验收通过（U10）；P1仍需用户直接放行，不能因本文件开始Java实现。状态以docs/java-migration/STATUS.md为准。
 
 ## 固定输入
 

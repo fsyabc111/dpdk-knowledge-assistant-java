@@ -21,7 +21,7 @@
   "privacy_marker_hits": 0,
   "pending_tasks": 0,
   "temporary_inputs": 0,
-  "phase_acceptance": "pending_main_independent_review_and_user",
+  "phase_acceptance": "accepted_by_user_U10",
   "threshold_authority": "migration/contracts/thresholds.json",
   "qualification_failures": "preserved; not counted as passed",
   "evidence": "review-fixes.md",

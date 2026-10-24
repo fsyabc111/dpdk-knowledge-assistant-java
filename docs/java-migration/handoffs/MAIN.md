@@ -1,10 +1,10 @@
 # 主 Agent 恢复点
 
-- 日期：2026-10-24；目标：Java主后端迁移。P0工程完成，自动/合成/两轴审查通过，用户阶段验收与P1放行仍待。
+- 日期：2026-10-25；目标：Java主后端迁移。P0工程完成，自动/合成/两轴审查通过，用户已验收P0通过（U10），P1放行仍待。
 - 目录：`/Volumes/study/code/new_project/dpdk-knowledge-assistant-java`；分支`codex/p0-baseline-oracle`；初始基线`80b29135faddd16d5e39fdbf0633291ea6a20489`。
-- 当前授权：仅J0-01/J0-02、多Agent、合成PG/替身/依赖/测试/本地提交。禁止P1/真实上游/旧环境写入/push/main合并/部署/删除恢复资产。新提交习惯不覆盖本轮明确不推送。
+- 当前授权：仅J0-01/J0-02、多Agent、合成PG/替身/依赖/测试/本地提交；U10现已直接授权推送同名开发分支。禁止P1/真实上游/旧环境写入/main合并/部署/删除恢复资产。
 - 当前源码目标：本仓库冻结Python副本；原目录仅来源，不同步变化；backend/前端原件未改。
-- 验证代码/证据提交：08158c6初版、c94f43d修复、099dca2最终v2数据、a207a4a最后CLI类型守卫；之后仅文档/状态/审查收口。本地最终提交可由git log读取，未推送。
+- 验证代码/证据提交：08158c6初版、c94f43d修复、099dca2最终v2数据、a207a4a最后CLI类型守卫；之后仅文档/状态/审查收口。用户已验收交付7c76c31；验收记录提交后推送同名origin分支，最终提交与远程一致性以git log/ls-remote核验。
 
 ## 最终冻结与证据
 
@@ -22,7 +22,7 @@
 - P0-D14：Java21/Boot4.0.9/AI2.0.2、BOM管理JDBC7.0.10/Flyway11.14.1/PGJDBC42.7.14；仅官方资料核对，实际构建留P1。
 - 单一DDL owner主Agent/root（后续J1-01窗口）；B15/V14/V15三路径设计须PG身份与完整catalog前置，实际Java迁移未验。
 - 28路由完整重试并发、全auth角色组合、React/TCP、zhparser、真实DPDK/harness/模型质量、旧部署/schema均未验证，仍按后续任务卡验收。
-- 下一动作：等待用户验收P0并直接放行P1；再从STATUS和migration/contracts/P1_HANDOFF.md恢复，不自动推进。
+- 下一动作：按U10完成分支推送及SHA核验；等待用户直接放行P1后，从STATUS和migration/contracts/P1_HANDOFF.md恢复，不自动推进。
 
 ## 所有权、进程与恢复
 
