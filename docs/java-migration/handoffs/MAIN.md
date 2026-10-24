@@ -1,6 +1,7 @@
 # 主 Agent 恢复点
 
-- 日期：2026-10-25；目标：Java主后端迁移。P0工程完成，自动/合成/两轴审查通过，用户已验收P0通过（U10），P1放行仍待。
+- 日期：2026-10-25（U11批次启动）；目标：P1+P2连续批次（J1-01～J2-05），集成分支 `codex/p1-p2-longrun`（自 d982f3a 创建）。P1工程门禁通过自动进P2；不进P3、不合并main、不部署。及时提交推送为强制要求；批次结束统一用户验收。
+- 上一轮P0已完成并用户验收（U10）；P0证据/evidence/P0/phase-report.md，恢复资产保留。
 - 目录：`/Volumes/study/code/new_project/dpdk-knowledge-assistant-java`；分支`codex/p0-baseline-oracle`；初始基线`80b29135faddd16d5e39fdbf0633291ea6a20489`。
 - 当前授权：仅J0-01/J0-02、多Agent、合成PG/替身/依赖/测试/本地提交；U10现已直接授权推送同名开发分支。禁止P1/真实上游/旧环境写入/main合并/部署/删除恢复资产。
 - 当前源码目标：本仓库冻结Python副本；原目录仅来源，不同步变化；backend/前端原件未改。
