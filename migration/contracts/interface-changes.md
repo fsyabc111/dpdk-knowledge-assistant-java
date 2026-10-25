@@ -38,6 +38,18 @@
 - S4：cause 链遍历深度无上限（Python 递归同样无上限）；S5：`explain-` 空尾后缀按非讲解处理（与源一致）。
 - S6（待办）：后续 Spring 接线消费模型端口时补 cache_hit/replay 记账路径（P2 集成时关闭）。
 
+## J2-01（认证）已接受（2026-10-25）
+
+- `contracts.identity.AuthSettings` 维持占位 record；运行期设置经 auth 包 `AuthSettingsProvider`
+  （环境同名变量 + config.py 同款校验）。后续若需要下沉为契约字段再走版本化变更。
+- **有意差异（卡片验收 D 授权）**：重置令牌消费 Java 加 status 守卫保证并发严格一次
+  （Python 顺序流一致、并发存在双消费窗口）；golden 19 条 auth observation 逐字段零差异。
+- change-password 求值序以 golden 为准修正：401（认证）→422（体）→404（目标）。
+- J2-02 消费端口（auth 包内）：`CredentialInvalidationPort`（管理员改密/停号撤销）、
+  `PasswordResetApprovalPort`（审批签发/驳回/树隔离列表）。
+- 平台差异登记：secure-headers 中间件头未实现（归平台层，J4-03 前评估）；JSON 极端输入
+  NaN/Infinity 字面量行为差异（Java 拒绝，Python 容忍；已列 evidence/J2-01 差异表）。
+
 ## 消费指引（P1 内）
 
 - J1-04/P2 消费模型端口：经 `io.dpdk.assistant.model.ModelClients` / `harness.HarnessClients` 入口。
