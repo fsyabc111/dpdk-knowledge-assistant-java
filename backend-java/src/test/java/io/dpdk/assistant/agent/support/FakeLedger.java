@@ -15,7 +15,7 @@ import java.util.Map;
  * 故障注点（find/reserve/finish/record/updateSource 各自可注入 RuntimeException）
  * 覆盖 reserve/提交/finish/成绩落库之间的崩溃窗口。
  */
-public final class FakeLedger implements TaskJobLedgerPort {
+public class FakeLedger implements TaskJobLedgerPort {
 
     /** 行 = {job_id, status, result_json, protocol, code_hash, task_id}。 */
     public final List<Map<String, Object>> rows = new ArrayList<>();

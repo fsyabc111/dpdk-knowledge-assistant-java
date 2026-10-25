@@ -86,7 +86,7 @@ public final class AgentTools {
                 context.searchAttempted = true;
                 List<KbChunk> chunks;
                 try {
-                    chunks = context.retriever.search(query, 8, context.conversationContext);
+                    chunks = context.retriever.search(query, 8, context.conversationContext());
                 } catch (Exception exc) {
                     log.warn(PythonJson.dumps(Map.of(
                             "event", "agent_tool_error", "tool", "kb_search",

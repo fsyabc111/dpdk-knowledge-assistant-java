@@ -56,7 +56,7 @@ public final class AgentToolContext {
     public final String pastedSource;
     /** B7 同请求评测去重表：key = protocol:sha256(执行源字节)。只缓存成功结果。 */
     public final Map<String, Map<String, Object>> gradedSources = new HashMap<>();
-    public final String conversationContext;
+    private String conversationContext;
     public boolean searchAttempted;
     public final AgentUsageSink usage;
     /** S3-c 任务账本锚点；null 表示普通聊天路径。 */
@@ -213,6 +213,15 @@ public final class AgentToolContext {
             }
         }
         return false;
+    }
+
+    /** 追问指代消解的检索语境（对位 _build_run 后的 context.conversation_context 赋值）。 */
+    public void setConversationContext(String conversationContext) {
+        this.conversationContext = conversationContext;
+    }
+
+    public String conversationContext() {
+        return conversationContext;
     }
 
     /** S3-d 讲解模式的元数据装配点（对位 _build_run 的 explain 分支）。 */

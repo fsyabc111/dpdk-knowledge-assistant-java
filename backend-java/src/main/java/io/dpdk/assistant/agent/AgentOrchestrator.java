@@ -191,6 +191,8 @@ public final class AgentOrchestrator {
         if (taskContext != null && taskContext.explain() != null) {
             toolContext.seedExplainContext(taskContext.explain());
         }
+        // 与产品路径（rag_product_service）一致：追问指代消解依赖会话上下文。
+        toolContext.setConversationContext(conversationContext);
         PromptBuild build = new PromptBuild(toolContext, question, userId);
         List<AgentTool> tools = AgentTools.buildTools(toolContext);
         AgentGraph graph = AgentGraph.builder()
