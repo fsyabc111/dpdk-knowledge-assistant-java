@@ -36,19 +36,23 @@ public final class ManagedTaskRegistry {
         return tasks.get(taskId);
     }
 
+    /** 注册结果：created=false 表示并发起步的败方（调用方需归还占槽）。 */
+    public record Registration(ManagedTask task, boolean created) {
+    }
+
     /** 命中即返回；absent 时在注册锁内执行 spawn，注册竞态败方拿到既有句柄。 */
-    public ManagedTask registerIfAbsent(String taskId, java.util.function.Supplier<ManagedTask> spawn) {
+    public Registration registerIfAbsent(String taskId, java.util.function.Supplier<ManagedTask> spawn) {
         synchronized (this) {
             ManagedTask existing = tasks.get(taskId);
             if (existing != null) {
-                return existing;
+                return new Registration(existing, false);
             }
             ManagedTask created = spawn.get();
             ManagedTask winner = tasks.putIfAbsent(taskId, created);
             if (winner != null) {
-                return winner; // 理论不可达（注册锁内）；防御返回既有句柄
+                return new Registration(winner, false); // 理论不可达（注册锁内）；防御返回既有句柄
             }
-            return created;
+            return new Registration(created, true);
         }
     }
 

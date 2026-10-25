@@ -16,6 +16,7 @@ import java.util.concurrent.Flow;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * SSE 事件流（对齐 task_service.response_frames/terminal_row_frames/subscribe/
@@ -253,48 +254,73 @@ public final class TaskEventStreams implements EventStreamPort {
 
         @Override
         public void subscribe(Flow.Subscriber<? super SseEvent> subscriber) {
-            subscriber.onSubscribe(new Flow.Subscription() {
-                final AtomicLong demand = new AtomicLong();
-                final AtomicBoolean done = new AtomicBoolean();
-                volatile int cursor;
+            SubscriptionImpl subscription = new SubscriptionImpl(subscriber);
+            subscriber.onSubscribe(subscription);
+        }
 
-                @Override
-                public void request(long n) {
-                    while (!done.get()) {
-                        long current = demand.get();
-                        if (current <= 0) {
-                            if (demand.compareAndSet(current, current + n)) {
-                                break;
-                            }
-                            continue;
-                        }
-                        long granted = Math.min(current, n);
-                        if (!demand.compareAndSet(current, current - granted)) {
-                            continue;
-                        }
-                        for (long i = 0; i < granted && !done.get(); i++) {
-                            if (cursor < frames.size()) {
-                                subscriber.onNext(render(frames.get(cursor++)));
-                            } else if (done.compareAndSet(false, true)) {
+        /** 静态序列订阅：demand 累计，发射游标推进到 demand 上限后 onComplete。 */
+        private final class SubscriptionImpl implements Flow.Subscription {
+
+            private final Flow.Subscriber<? super SseEvent> subscriber;
+            private final AtomicLong demand = new AtomicLong();
+            private final AtomicLong emitted = new AtomicLong();
+            private final AtomicBoolean completed = new AtomicBoolean();
+            private final ReentrantLock drainLock = new ReentrantLock();
+
+            SubscriptionImpl(Flow.Subscriber<? super SseEvent> subscriber) {
+                this.subscriber = subscriber;
+            }
+
+            @Override
+            public void request(long n) {
+                if (n <= 0) {
+                    if (completed.compareAndSet(false, true)) {
+                        subscriber.onError(new IllegalArgumentException("non-positive request"));
+                    }
+                    return;
+                }
+                demand.addAndGet(n);
+                drain();
+            }
+
+            private void drain() {
+                drainLock.lock();
+                try {
+                    while (!completed.get()) {
+                        long allowed = demand.get();
+                        long emittedNow = emitted.get();
+                        if (emittedNow >= frames.size()) {
+                            if (completed.compareAndSet(false, true)) {
                                 subscriber.onComplete();
                             }
+                            return;
                         }
-                        break;
+                        if (emittedNow >= allowed) {
+                            return;   // 需求耗尽，等下一次 request
+                        }
+                        if (emitted.compareAndSet(emittedNow, emittedNow + 1)) {
+                            subscriber.onNext(render(frames.get((int) emittedNow)));
+                        }
                     }
+                } finally {
+                    drainLock.unlock();
                 }
+            }
 
-                @Override
-                public void cancel() {
-                    done.set(true);
-                }
-            });
+            @Override
+            public void cancel() {
+                completed.set(true);
+            }
         }
     }
 
     /**
-     * 在跑/已收口任务的订阅发布者。发射由订阅方 request 驱动（阻塞 SSE 写线程
-     * 与源 async-for 语义同构）；空闲等待每 1s 补 status 帧；队列无界，detached
-     * 订阅者不反压执行；cancel 只移除订阅者，绝不取消任务。
+     * 在跑/已收口任务的订阅发布者：每笔订阅一个泵线程按需求量发射。
+     *
+     * - subscribe 立即返回（onSubscribe 后由泵线程推进），不阻塞订阅调用方；
+     * - 序：start → 回放快照 → 实时帧（空闲每 1s 补 status{processing}）→ 终态帧；
+     * - 队列无界（detached 订阅者不反压执行）；demand 控制发射节奏；
+     * - cancel 只移除订阅者，绝不取消任务（断线续跑语义）。
      */
     final class ManagedEventPublisher implements Flow.Publisher<SseEvent> {
 
@@ -309,6 +335,7 @@ public final class TaskEventStreams implements EventStreamPort {
             ManagedTask.SubscriptionView view = managed.subscribeView(clock.monotonicNanos());
             Subscription subscription = new Subscription(subscriber, view);
             subscriber.onSubscribe(subscription);
+            subscription.start();
         }
 
         private enum Phase { START, SNAPSHOT, LIVE, TERMINAL }
@@ -317,12 +344,18 @@ public final class TaskEventStreams implements EventStreamPort {
 
             private final Flow.Subscriber<? super SseEvent> subscriber;
             private final ManagedTask.SubscriptionView view;
-            private final BlockingQueue<Object> live = new LinkedBlockingQueue<>();
+            // 实时帧源：注册时登记进 ManagedTask 的订阅者队列（emit/哨兵扇出目标）。
+            private final java.util.concurrent.BlockingQueue<Object> live;
             private final ArrayDeque<TaskEvent> ready = new ArrayDeque<>();
-            private final AtomicLong demand = new AtomicLong();
+            private final ReentrantLock demandLock = new ReentrantLock();
+            private final java.util.concurrent.locks.Condition demandAvailable =
+                    demandLock.newCondition();
             private final AtomicBoolean finished = new AtomicBoolean();
+            private final AtomicLong demand = new AtomicLong();
             private volatile boolean cancelled;
+            private volatile Thread pumpThread;
 
+            // 发射状态（仅泵线程访问）
             private Phase phase = Phase.START;
             private int snapshotCursor;
             private List<TaskEvent> tail = List.of();
@@ -332,23 +365,25 @@ public final class TaskEventStreams implements EventStreamPort {
                          ManagedTask.SubscriptionView view) {
                 this.subscriber = subscriber;
                 this.view = view;
+                this.live = view.subscriber().queue;
+            }
+
+            void start() {
+                pumpThread = Thread.ofVirtual().name("task-sse-" + managed.taskId).start(this::pump);
             }
 
             @Override
             public void request(long n) {
                 if (n <= 0) {
-                    subscriber.onError(new IllegalArgumentException("non-positive request"));
+                    fail(new IllegalArgumentException("non-positive request"));
                     return;
                 }
-                demand.addAndGet(n);
+                demandLock.lock();
                 try {
-                    pump();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    if (finished.compareAndSet(false, true)) {
-                        managed.removeSubscriber(view.subscriber());
-                        subscriber.onError(e);
-                    }
+                    demand.addAndGet(n);
+                    demandAvailable.signalAll();
+                } finally {
+                    demandLock.unlock();
                 }
             }
 
@@ -357,23 +392,62 @@ public final class TaskEventStreams implements EventStreamPort {
                 cancelled = true;
                 // 断开只移除订阅者（绝不取消任务）；阻塞的 poll 最迟 1s 后退出。
                 managed.removeSubscriber(view.subscriber());
+                demandLock.lock();
+                try {
+                    demandAvailable.signalAll();
+                } finally {
+                    demandLock.unlock();
+                }
             }
 
-            private void pump() throws InterruptedException {
-                while (!cancelled && !finished.get() && demand.get() > 0) {
-                    demand.decrementAndGet();
-                    TaskEvent frame = nextFrame();
-                    if (frame == null) {
-                        return;
-                    }
-                    subscriber.onNext(render(frame));
-                    if (phase == Phase.TERMINAL && frame.name().equals("done")) {
-                        if (finished.compareAndSet(false, true)) {
-                            managed.removeSubscriber(view.subscriber());
-                            subscriber.onComplete();
+            private void fail(Throwable error) {
+                if (finished.compareAndSet(false, true)) {
+                    managed.removeSubscriber(view.subscriber());
+                    subscriber.onError(error);
+                }
+            }
+
+            private void complete() {
+                if (finished.compareAndSet(false, true)) {
+                    managed.removeSubscriber(view.subscriber());
+                    subscriber.onComplete();
+                }
+            }
+
+            /** 泵线程主循环：等需求 → 取下一帧（实时段 1s 空闲补 status）→ 发射。 */
+            private void pump() {
+                try {
+                    while (!cancelled) {
+                        awaitDemand();
+                        if (cancelled || finished.get()) {
+                            return;
                         }
-                        return;
+                        TaskEvent frame = nextFrame();
+                        if (frame == null) {
+                            return;
+                        }
+                        subscriber.onNext(render(frame));
+                        if (phase == Phase.TERMINAL && "done".equals(frame.name())) {
+                            complete();
+                            return;
+                        }
                     }
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    fail(e);
+                } catch (RuntimeException e) {
+                    fail(e);
+                }
+            }
+
+            private void awaitDemand() throws InterruptedException {
+                demandLock.lock();
+                try {
+                    while (demand.get() <= 0 && !cancelled) {
+                        demandAvailable.await(1, TimeUnit.SECONDS);
+                    }
+                } finally {
+                    demandLock.unlock();
                 }
             }
 

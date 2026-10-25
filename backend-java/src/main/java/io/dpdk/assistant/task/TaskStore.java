@@ -310,7 +310,7 @@ public class TaskStore {
                     }
                     try (PreparedStatement ps = conn.prepareStatement(
                             "UPDATE assistant_sessions SET updated_at=? WHERE id=?")) {
-                        ps.setString(1, clock.nextSessionIso());
+                        ps.setObject(1, java.time.OffsetDateTime.parse(clock.nextSessionIso()));
                         ps.setString(2, sessionId);
                         ps.executeUpdate();
                     }
@@ -496,7 +496,7 @@ public class TaskStore {
                 if (sessionId != null && !sessionId.isEmpty()) {
                     try (PreparedStatement ps = conn.prepareStatement(
                             "UPDATE assistant_sessions SET updated_at=? WHERE id=?")) {
-                        ps.setString(1, clock.nextSessionIso());
+                        ps.setObject(1, java.time.OffsetDateTime.parse(clock.nextSessionIso()));
                         ps.setString(2, sessionId);
                         ps.executeUpdate();
                     }

@@ -23,9 +23,10 @@ public final class ManagedTask {
     /** 订阅者收口哨兵（poll 到即进入终帧段）。 */
     public static final TaskEvent DONE_SENTINEL = new TaskEvent("__done__", java.util.Map.of());
 
-    /** 每个活跃订阅者一个无界队列。 */
+    /** 每个活跃订阅者一个无界队列（泵线程据此 poll；detached 不反压执行）。 */
     public static final class Subscriber {
-        public final Queue<Object> queue = new ArrayDeque<>();
+        public final java.util.concurrent.BlockingQueue<Object> queue =
+                new java.util.concurrent.LinkedBlockingQueue<>();
         public final long registeredAtNanos;
         public boolean detached;
 

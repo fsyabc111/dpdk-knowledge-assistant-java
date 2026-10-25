@@ -75,7 +75,7 @@ public final class TaskRunner {
 
     /**
      * start_task：幂等起步。注册表命中直接返回；否则占槽（429 原样抛出）后再查，
-     * 注册与 spawn 在注册锁内完成；spawn 失败回吐槽位。
+     * 注册与 spawn 在注册锁内完成；并发起步败方（含注册竞态）归还占槽。
      */
     public ManagedTask startTask(String subject, String requestId, String sessionId,
                                  TaskExecutor.TaskExecutionContext context, TaskExecutor executor) {
@@ -90,7 +90,12 @@ public final class TaskRunner {
             return existing;
         }
         try {
-            return spawn(subject, requestId, sessionId, context, executor);
+            ManagedTaskRegistry.Registration registration =
+                    spawn(subject, requestId, sessionId, context, executor);
+            if (!registration.created()) {
+                gate.release();   // 注册竞态败方：槽位归还，执行由赢家负责
+            }
+            return registration.task();
         } catch (RuntimeException e) {
             gate.release();
             throw e;
@@ -103,11 +108,13 @@ public final class TaskRunner {
         if (context.taskId() == null || registry.get(context.taskId()) != null) {
             throw new IllegalStateException("任务未受理或已启动");
         }
-        return spawn(subject, requestId, sessionId, context, executor);
+        return spawn(subject, requestId, sessionId, context, executor).task();
     }
 
-    private ManagedTask spawn(String subject, String requestId, String sessionId,
-                              TaskExecutor.TaskExecutionContext context, TaskExecutor executor) {
+    private ManagedTaskRegistry.Registration spawn(String subject, String requestId,
+                                                   String sessionId,
+                                                   TaskExecutor.TaskExecutionContext context,
+                                                   TaskExecutor executor) {
         return registry.registerIfAbsent(context.taskId(), () -> {
             ManagedTask managed = new ManagedTask(context.taskId(), subject, requestId, sessionId,
                     context, settings.eventLogCap());
@@ -122,11 +129,9 @@ public final class TaskRunner {
 
     private void scheduleDeadlineWatch(ManagedTask managed, long startedNanos) {
         long delayMs = Math.max(1, settings.ragTaskMaxSeconds().toMillis());
+        // 调度延迟即执行墙：到点若仍未收口则置超时归因并中断执行线程。
         watchdog.schedule(() -> {
-            if (managed.isTerminal()) {
-                return;
-            }
-            if (clock.monotonicNanos() - startedNanos >= settings.ragTaskMaxSeconds().toNanos()) {
+            if (!managed.isTerminal()) {
                 managed.setDeadlineFired();
                 java.util.concurrent.Future<?> future = managed.future();
                 if (future != null) {
@@ -156,6 +161,15 @@ public final class TaskRunner {
         } catch (InterruptedException cancelled) {
             // 取消路径先落库再中断；这里不吞也不重复写终态。
             error = cancelled;
+            if (managed.isDeadlineFired()) {
+                // 执行墙到点的中断：行仍 pending 时判死（timeout 归因与源一致）。
+                // 先做 DB 判死再恢复中断标记（PG 驱动对中断敏感，不能带标记连库）。
+                try {
+                    store.markInterrupted(managed.taskId, "timeout");
+                } catch (RuntimeException markFailure) {
+                    LOG.warning("[task_mark_timeout_failed] task_id=" + managed.taskId);
+                }
+            }
             Thread.currentThread().interrupt();
         } catch (Exception exc) {
             error = exc;
