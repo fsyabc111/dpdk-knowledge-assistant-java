@@ -84,8 +84,8 @@ class OperationsBootJarAcceptance {
     }
 
     private static Execution run(TaskTestHarness h, Map<String,String> overrides, String... args) throws Exception {
-        Path java = Path.of(System.getProperty("java.home"), "bin", "java");
-        List<String> command = new ArrayList<>(List.of(java.toString(),
+        Path javaCommand = Path.of(System.getProperty("java.home"), "bin", "java");
+        List<String> command = new ArrayList<>(List.of(javaCommand.toString(),
                 "-Dloader.main=io.dpdk.assistant.operations.OperationsMain", "-cp", jar().toString(),
                 "org.springframework.boot.loader.launch.PropertiesLauncher"));
         command.addAll(List.of(args));
@@ -95,7 +95,7 @@ class OperationsBootJarAcceptance {
         ProcessBuilder builder = new ProcessBuilder(command).redirectOutput(out.toFile()).redirectError(err.toFile());
         // 不继承任何模型/embedding/harness端点、JAVA_TOOL_OPTIONS或旧Spring配置。
         builder.environment().clear();
-        builder.environment().put("PATH", java.getParent()+":/usr/bin:/bin");
+        builder.environment().put("PATH", javaCommand.getParent()+":/usr/bin:/bin");
         builder.environment().put("LANG", "en_US.UTF-8");
         builder.environment().put("AUTH_MODE", "account");
         if (h != null) {

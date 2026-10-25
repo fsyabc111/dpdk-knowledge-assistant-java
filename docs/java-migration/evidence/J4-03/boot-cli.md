@@ -7,10 +7,11 @@
 
 ## 当前实际执行状态
 
-2026-10-25 20:20首轮：编译通过；两个测试方法中，无数据库help/非法参数方法通过，数据库方法在TestPg维护实例只读预检时连接127.0.0.1:55481被拒绝，未建库、零业务写入，**不能计作DB验收通过**。主Agent已收到环境阻塞报告，待其恢复明确的独立PG再执行。
+2026-10-25 20:20首轮：编译通过；两个测试方法中，无数据库help/非法参数方法通过，数据库方法在TestPg维护实例只读预检时连接127.0.0.1:55481被拒绝，未建库、零业务写入。主Agent随后核查专属PG已干净停止并按原pgdata恢复、只读核验身份后重新授权测试。
 
-原始失败证据：worker `.migration-artifacts/model/boot-cli-acceptance.log`；TestPg明确报connection refused。只读lsof无55481监听，专属pgdata无postmaster.pid。未切换默认库、旧.env或其他实例，也未自行启动旧服务。
+恢复后的当前阻断（20:23实测）：create-users默认dry-run子进程退出0，但stdout含Spring Boot banner、启动/Hikari/迁移禁用INFO与末尾JSON，严格结构化stdout解析失败。`OperationsMain` 在context initializer里才设置banner/logging已经晚于Boot早期输出。测试未筛掉日志或提取末尾JSON冒充通过；已报主Agent修复早期配置并重新package。
 
+原始失败证据：worker `.migration-artifacts/model/boot-cli-acceptance.log`（PG拒绝）、`boot-cli-acceptance-rerun-fixed.log`与 `boot-cli-rerun-fixed/01-stdout.log`（真实jar结构化stdout失败）。测试生成命令回执时曾出现局部变量java遮挡包名的编译问题，已重命名修正并实际编译执行；该失败日志也保留。当前业务DB验收仍未完成，不能计为通过。所有子进程和动态测试库均已finally清理，PG锁已交还主Agent。
 已通过的真实jar子进程断言：
 
 - 以JDK21 `PropertiesLauncher` 加载实际Boot jar并指定OperationsMain；不配置DB、不启动Spring业务容器也能 `--help` 退出0、stdout为中文CLI帮助、stderr空。
