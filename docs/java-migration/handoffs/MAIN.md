@@ -34,8 +34,8 @@
 ## 下一准确动作
 
 1. 审查源码已冻结3718d21（已推送并核验），构建jar SHA76ba685c77f1c80e34b2381561ca59a4f32bed636d52a7dbaccfcb5a50f78edf。阶段报告evidence/P3/phase-report.md与validation.json已写。
-2. 独立规范worker p3_review_standards与独立规格worker p3_review_spec运行中，比较19a2d47...3718d21，业务只读，各自仅写evidence/P3/review-*.md，不跑PG。
-3. 等审查结果，阻断交原owner或主Agent修复，针对复验后必要全量；不得仅以585绿色自动放行。
+2. 两轴审查完成：规范2阻断+1建议（results双包装、chat成绩SQL跨模块）；规格2阻断（产品预算太晚、追问语境丢失）。报告review-standards.md/review-spec.md；P3暂不放行。
+3. 规格代码修复14d756d已提交推送核验（SearchInput上下文兼容重载、每reply预算闸）；model_adapter独占新增P3ReviewRegressionTest+spec-regression证据。chat worker独占规范两阻断（AgentTools仅results序列化、grading/query新统计服务、ChatAgentPorts委托、RealAgentLedger结构回归），当前PG单卡归chat，完成后交model_adapter再主Agent全量。index预检已完成，仅handoffs/J4-01-PREFLIGHT.md，无P4业务实现。
 4. 报告与审查后提交推送/SHA核验；门禁通过才进入P4。最多3worker。
 5. P4 J4-01索引/index/**、J4-02知识/knowledge/workflow/**可并行，J4-03平台/运维与共享物料由主Agent单写或明确授权窗口。
 6. P5验收/容量/全新隔离部署/恢复及J5-04准备仍未执行；完成整个授权批次前持续推进，不因本轮中间结果而收口。

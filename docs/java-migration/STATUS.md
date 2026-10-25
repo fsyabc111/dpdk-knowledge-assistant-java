@@ -6,7 +6,7 @@
 
 - U12：用户已直接启动LONGRUN_P3_P5_DRAFT，并于本轮直接发送LONGRUN_P3_RESUME续接指令，解除暂停。允许P3→P4→P5隔离工程交付和J5-04准备；工程门禁通过自动推进，最多3个worker，小步提交推送、持续交接。
 - 禁止项：真实模型/embedding/真实harness验收、合并main、生产切换、Python退役、删除恢复资产、原项目/原部署/业务库写入。用户验收不由Agent代签。
-- 当前：P3集成/验证收口中；公共契约、Spring运行装配、J3-03和J3-04已实现，独立双轴审查尚未开始，P3未放行。P4/P5已获条件授权，尚未实施。
+- 当前：P3独立双轴审查已完成，规范轴2阻断+1建议、规格轴2阻断，工程门禁暂不放行。仅修这4阻断和必要回归；P4/P5已获条件授权，尚未实施。
 - R段已关闭ST-01～03/SP-01～05并通过独立双轴审查（19a2d47）；历史报告evidence/U12-R-segment-20261025/。P0用户验收通过保留；P1/P2/P3用户验收均未登记。
 - 当前Git：codex/p3-p5-longrun，origin为用户指定新仓库。最近已核验推送b760ea4；后续切片见MAIN，待本轮集成提交再次推送核验。
 - Python行为基线：本仓库初始80b29135faddd16d5e39fdbf0633291ea6a20489冻结副本；Python黄金只读，COMP-003按已批准Java安全差异另验。
@@ -53,7 +53,9 @@
 
 ## 当前阻塞与下一动作
 
-- P3全量r3和原前端client直连已通过；阶段报告和独立规范/规格双轴审查仍须完成后才放行P4。
+- P3审查快照3718d21的585/585和原前端client直连已通过；阶段报告见evidence/P3/phase-report.md。独立审查见review-standards.md/review-spec.md，4阻断关闭且复审通过后才放行P4。
+- 规格SP-P3-01/02：产品预算需每轮工具副作用前检查、真实检索需传会话语境。代码修复14d756d已推送，worker model_adapter补真实链回归（尚未运行PG）。
+- 规范ST-P3-01/02：任务成绩results重复包装为对象、chat跨模块SQL。chat owner修数组唯一序列化责任及grading统计服务边界，PG单卡验证中。主Agent不并写这些路径。
 - 新发现初发竞争、空账本、COMP003盲重投、TaskGrade装配等已实现修复，局部证据见MAIN；以最终集成树全量和审查为关闭依据。
 - P4平台缺口：框架404/405/500、安全头、CLI/就绪/留存/部署/CI待实施；不把“登记”当豁免。
 - 当前Docker context为colima-dpdk-ext，socket不存在，旧dpdk profile停止；P5只能建立全新隔离资源，不启动/迁动旧profile。
