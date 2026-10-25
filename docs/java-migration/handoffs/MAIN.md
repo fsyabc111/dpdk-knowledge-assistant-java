@@ -20,7 +20,7 @@
 - COMP003：running只get_task_status轮询；unknown/queryfail和首次SUBMITTED/UNKNOWN丢响应终态system_error+harness_result_unknown；消息/SSE failure_code、保留账本/清输入实测通过。Python黄金不变。
 - initial_request并发败方按初发身份查赢家、findJob空行null、TaskGradeLedger真实guard/tx已修。
 - r1全量581项5失败：前端探针强断言正常done必须terminal:true（契约允许省略，已显式修）；TaskIp测试硬编码8槽与未等待释放导致3连锁失败（改settings容量与释放闩）；SessionLifecycle旧端口占位抛错断言（改真实caller事务写入）。失败日志p3-full-verify.log。
-- r2测试编译缺throws（已修）；r3全量verify当前运行，日志.migration-artifacts/p3-full-verify-r3.log，exec session63097。禁止并行PG。
+- r2测试编译缺throws（已修）；r3全量verify已通过585/585（0失败/错误/跳过），日志.migration-artifacts/p3-full-verify-r3.log。原前端client直连也通过；测试进程已退出。
 - 原前端102/102与npm build通过，日志p3-frontend-tests.log/build.log。源码未改。
 - 新Node直连探针resources/migration/J3-03/frontend-client.mjs用esbuild替换构建期env后导入原client.js，验证JSON/replay/status/active/task-sse/chat-sse/multipart；由ProductApplicationHttpTest启动真实嵌入式Java与本机模型替身。
 
@@ -33,9 +33,9 @@
 
 ## 下一准确动作
 
-1. 读取/等待session63097全量r3结果；有失败按精确原因修复，不弱化断言。worker不得并发PG。
-2. 接收chat最终handoff/evidence；更新用量开关/价格配置与rate环境桥接测试结果。检查工作区未提交变更。
-3. 最终集成测试通过后commit/push/SHA核验，写P3阶段报告，固定比较基线19a2d47和当前审查SHA。
-4. 用独立只读worker做规范/规格双轴审查；阻断修复复验后才放行P4。最多3worker。
+1. 审查源码已冻结3718d21（已推送并核验），构建jar SHA76ba685c77f1c80e34b2381561ca59a4f32bed636d52a7dbaccfcb5a50f78edf。阶段报告evidence/P3/phase-report.md与validation.json已写。
+2. 独立规范worker p3_review_standards与独立规格worker p3_review_spec运行中，比较19a2d47...3718d21，业务只读，各自仅写evidence/P3/review-*.md，不跑PG。
+3. 等审查结果，阻断交原owner或主Agent修复，针对复验后必要全量；不得仅以585绿色自动放行。
+4. 报告与审查后提交推送/SHA核验；门禁通过才进入P4。最多3worker。
 5. P4 J4-01索引/index/**、J4-02知识/knowledge/workflow/**可并行，J4-03平台/运维与共享物料由主Agent单写或明确授权窗口。
 6. P5验收/容量/全新隔离部署/恢复及J5-04准备仍未执行；完成整个授权批次前持续推进，不因本轮中间结果而收口。

@@ -1,0 +1,652 @@
+{
+  "source_commit": "3718d21a0144f6a6fceb6cd416ba10e528778317",
+  "date": "2026-10-25",
+  "scope": "P3 isolated synthetic; no live providers",
+  "command": "JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./backend-java/mvnw -f backend-java/pom.xml -B verify; explicit DPDK_TEST_PG_* and identity preflight",
+  "result": {
+    "tests": 585,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "exit_code": 0
+  },
+  "artifact_sha256": "76ba685c77f1c80e34b2381561ca59a4f32bed636d52a7dbaccfcb5a50f78edf",
+  "pom_sha256": "26bc9dbcb5cd51dc6b9d6511ccc23e27061c148142e028ec07d5fcd88157b835",
+  "fixture_hashes": {
+    "backend-java/src/test/resources/migration/J1-02/wire-samples.json": "5573b5a58c58edb1c80f85c0eb5bd63042c7e23724f9d41e59c523e67b287182",
+    "backend-java/src/test/resources/migration/J1-03/fixture-spec.json": "71e2862053c81b8de3fc99d9787a22b06a66bfdbe3c9e96bd1bc9b84544f78ce",
+    "backend-java/src/test/resources/migration/J1-03/golden-retrieval.json": "81759cdb49e74488176664d1acb30530ece485d62a8963f68268ed7e752c5e65",
+    "backend-java/src/test/resources/migration/J1-03/legs.json": "66ad79db6a11e38dd911a89ce7f4c58f4ae51d7932c136270918a2c4c6af7185",
+    "backend-java/src/test/resources/migration/J1-03/python-json-expectations.json": "5ae7d892e8cf5b06d88ed9242bbd328b504d0085ff4e7b3f23ae949a7b8320ce",
+    "backend-java/src/test/resources/migration/J2-01/bcrypt-compat.json": "60492daf046a668dd1143f37f6a85a2a32154eff029310828ff1d0f1714649e8",
+    "backend-java/src/test/resources/migration/J2-01/golden-auth.json": "cce7d60b38a42cf8a874812571d696624b404408600c27ae9df5d5b7334540a3",
+    "backend-java/src/test/resources/migration/J2-02/golden-admin.json": "41d31f2cbc4603017bf7727f48a77a9272d684de6358ee78dcb2e8c482510bcb",
+    "backend-java/src/test/resources/migration/J2-03/golden-assignments.json": "823a6113f4dc31fed2367623a9341aacbfad28ee06101209b6c25b307aac7b84",
+    "backend-java/src/test/resources/migration/J2-04/golden-submit.json": "edd341dade9fb347423dfc6a4ce75d529c4ba4aa06bcaeaeb4611543861ba4b6",
+    "backend-java/src/test/resources/migration/J2-05/golden-j205.json": "c38de53219168a093b3081f89b65a15074b911607c12f27bbd552be6ebb81dea",
+    "backend-java/src/test/resources/migration/J3-02/README.md": "5ed71faabdc8c0ad1703cf5d0126e5dc573ab95f3df1ae5d7d76da659580a58e",
+    "backend-java/src/test/resources/migration/J3-02/harness-payloads.json": "c56bb6ae334e1dc97e740b311ae05e94175115676343b1dd6fd8399352b2fb14",
+    "backend-java/src/test/resources/migration/J3-03/frontend-client.mjs": "92cc56f0f1c354bdc38673f21d01e7a10fe0d2accd613467369ecc2c44cbf641",
+    "backend-java/src/test/resources/migration/J3-03/generate_request_golden.py": "576d0505aec58d6a8a07a09a2c4bd024227de9e4e65385547a820c911df3f8db",
+    "backend-java/src/test/resources/migration/J3-03/generate_validation_golden.py": "379a61f422edc863685a4dfe1a717b391924b4bcd798ef2d5528d54a2077ea5c",
+    "backend-java/src/test/resources/migration/J3-03/request-golden.json": "57ecf39a6c9a6bc58a6a08b1cb3461ea1851c2823ce5f2e37d9df15681e5df51",
+    "backend-java/src/test/resources/migration/J3-03/validation-golden.json": "febe49ec880e35845dc9b096ed3775bf03da44bc8afec60063289572063292ea",
+    "backend-java/src/test/resources/migration/J3-04/explain-golden.json": "33cc9a9a7cefaa59a80e4bd5723fc945d62620e3672467b05f1f2471e78836ab",
+    "backend-java/src/test/resources/migration/J3-04/generate_explain_golden.py": "20240aeabbe876c0d523be0118ecc4654f2c20167cab27228b95b643192e24ab"
+  },
+  "suites": [
+    {
+      "name": "io.dpdk.assistant.admin.AdminDeletionTransactionTest",
+      "tests": "10",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "1.026"
+    },
+    {
+      "name": "io.dpdk.assistant.admin.AdminTreeContractTest",
+      "tests": "20",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.921"
+    },
+    {
+      "name": "io.dpdk.assistant.admin.PasswordResetApprovalTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.508"
+    },
+    {
+      "name": "io.dpdk.assistant.agent.AgentGraphLoopTest",
+      "tests": "16",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.005"
+    },
+    {
+      "name": "io.dpdk.assistant.agent.AgentPromptsTest",
+      "tests": "14",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.002"
+    },
+    {
+      "name": "io.dpdk.assistant.agent.AgentToolsTest",
+      "tests": "30",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.005"
+    },
+    {
+      "name": "io.dpdk.assistant.agent.ContextBudgetTest",
+      "tests": "14",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.008"
+    },
+    {
+      "name": "io.dpdk.assistant.agent.GoldenScenarioTest",
+      "tests": "31",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.031"
+    },
+    {
+      "name": "io.dpdk.assistant.agent.TaskLedgerTest",
+      "tests": "20",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.267"
+    },
+    {
+      "name": "io.dpdk.assistant.assignment.AssignmentCatalogContractTest",
+      "tests": "13",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "1.466"
+    },
+    {
+      "name": "io.dpdk.assistant.assignment.AssignmentReportContractTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.611"
+    },
+    {
+      "name": "io.dpdk.assistant.assignment.CsvExportContractTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.57"
+    },
+    {
+      "name": "io.dpdk.assistant.assignment.explanation.ExplainDataIntegrationTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.481"
+    },
+    {
+      "name": "io.dpdk.assistant.assignment.explanation.ExplainRecoveryIntegrationTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "2.288"
+    },
+    {
+      "name": "io.dpdk.assistant.assignment.explanation.ExplainReplayIntegrationTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "1.257"
+    },
+    {
+      "name": "io.dpdk.assistant.assignment.explanation.SubmissionExplainContractTest",
+      "tests": "13",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.015"
+    },
+    {
+      "name": "io.dpdk.assistant.assignment.submission.AssignmentSubmitContractTest",
+      "tests": "13",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "1.046"
+    },
+    {
+      "name": "io.dpdk.assistant.assignment.submission.GradingPersistenceRaceTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.673"
+    },
+    {
+      "name": "io.dpdk.assistant.assignment.submission.GradingQuotaIntegrationTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "3.385"
+    },
+    {
+      "name": "io.dpdk.assistant.assignment.submission.SubmissionWiringEnvBridgeTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.014"
+    },
+    {
+      "name": "io.dpdk.assistant.auth.AuthContractTest",
+      "tests": "13",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.554"
+    },
+    {
+      "name": "io.dpdk.assistant.auth.CredentialLifecycleTest",
+      "tests": "14",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "1.292"
+    },
+    {
+      "name": "io.dpdk.assistant.auth.LoginThrottleTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.472"
+    },
+    {
+      "name": "io.dpdk.assistant.chat.AnswerValidatorGoldenTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.008"
+    },
+    {
+      "name": "io.dpdk.assistant.chat.ChatInputGoldenTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.01"
+    },
+    {
+      "name": "io.dpdk.assistant.chat.ChatSseContractTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.004"
+    },
+    {
+      "name": "io.dpdk.assistant.chat.ProductChatIntegrationTest",
+      "tests": "9",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "3.912"
+    },
+    {
+      "name": "io.dpdk.assistant.chat.ProductExecutionModeTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.002"
+    },
+    {
+      "name": "io.dpdk.assistant.chat.RealAgentLedgerIntegrationTest",
+      "tests": "10",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "3.257"
+    },
+    {
+      "name": "io.dpdk.assistant.chat.poc.MinimalQaChainIntegrationTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.354"
+    },
+    {
+      "name": "io.dpdk.assistant.chat.poc.MinimalQaSliceTest",
+      "tests": "9",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.01"
+    },
+    {
+      "name": "io.dpdk.assistant.grading.query.GradingQueryContractTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "1.538"
+    },
+    {
+      "name": "io.dpdk.assistant.harness.HarnessClientHttpTest",
+      "tests": "15",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.26"
+    },
+    {
+      "name": "io.dpdk.assistant.model.AgentModelAdapterHttpTest",
+      "tests": "16",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.049"
+    },
+    {
+      "name": "io.dpdk.assistant.model.ChatClientHttpTest",
+      "tests": "15",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "3.067"
+    },
+    {
+      "name": "io.dpdk.assistant.model.ChatClientStreamHttpTest",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.448"
+    },
+    {
+      "name": "io.dpdk.assistant.model.EmbeddingClientHttpTest",
+      "tests": "11",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "2.131"
+    },
+    {
+      "name": "io.dpdk.assistant.model.ModelClientsRegistryTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.003"
+    },
+    {
+      "name": "io.dpdk.assistant.model.ModelFailureClassifierTest",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.002"
+    },
+    {
+      "name": "io.dpdk.assistant.model.ModelUsageLedgerTest",
+      "tests": "11",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.002"
+    },
+    {
+      "name": "io.dpdk.assistant.model.SingleFlightTtlCacheTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.168"
+    },
+    {
+      "name": "io.dpdk.assistant.model.UpstreamGateTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.37"
+    },
+    {
+      "name": "io.dpdk.assistant.model.WireSamplesTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.002"
+    },
+    {
+      "name": "io.dpdk.assistant.platform.config.ConfigValidatorTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.004"
+    },
+    {
+      "name": "io.dpdk.assistant.platform.errors.ApiExceptionHandlerTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.019"
+    },
+    {
+      "name": "io.dpdk.assistant.platform.ids.PythonUuid5Test",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.001"
+    },
+    {
+      "name": "io.dpdk.assistant.platform.migration.MigrationThreePathsIntegrationTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "1.15"
+    },
+    {
+      "name": "io.dpdk.assistant.platform.pg.DatabaseIdentityGuardNegativeTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.517"
+    },
+    {
+      "name": "io.dpdk.assistant.platform.pg.TestPgIdentityGuardTest",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.292"
+    },
+    {
+      "name": "io.dpdk.assistant.platform.time.SystemClockAdapterTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.001"
+    },
+    {
+      "name": "io.dpdk.assistant.platform.wiring.ModelWiringCombinationsTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.172"
+    },
+    {
+      "name": "io.dpdk.assistant.platform.wiring.ProductApplicationHttpTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "5.695"
+    },
+    {
+      "name": "io.dpdk.assistant.platform.wiring.RetrievalWiringTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.023"
+    },
+    {
+      "name": "io.dpdk.assistant.platform.wiring.TaskSettingsBridgeTest",
+      "tests": "13",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.586"
+    },
+    {
+      "name": "io.dpdk.assistant.platform.wiring.TaskWiringIntegrationTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.383"
+    },
+    {
+      "name": "io.dpdk.assistant.platform.wiring.UsageRecordingPolicyTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.004"
+    },
+    {
+      "name": "io.dpdk.assistant.retrieval.HeuristicQueryRewriterTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.008"
+    },
+    {
+      "name": "io.dpdk.assistant.retrieval.IndexConfigurationFingerprintTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.001"
+    },
+    {
+      "name": "io.dpdk.assistant.retrieval.PgRetrievalIntegrationTest",
+      "tests": "10",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.614"
+    },
+    {
+      "name": "io.dpdk.assistant.retrieval.PythonJsonTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.003"
+    },
+    {
+      "name": "io.dpdk.assistant.retrieval.RetrievalFeaturesGoldenTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.007"
+    },
+    {
+      "name": "io.dpdk.assistant.retrieval.RetrievalPipelineGoldenTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.014"
+    },
+    {
+      "name": "io.dpdk.assistant.session.SessionLifecycleTest",
+      "tests": "9",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.744"
+    },
+    {
+      "name": "io.dpdk.assistant.session.SessionQueryContractTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.519"
+    },
+    {
+      "name": "io.dpdk.assistant.source.SourceTemplateContractTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.34"
+    },
+    {
+      "name": "io.dpdk.assistant.task.TaskAdmissionTransactionTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.33"
+    },
+    {
+      "name": "io.dpdk.assistant.task.TaskGradeLedgerTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.368"
+    },
+    {
+      "name": "io.dpdk.assistant.task.TaskInputHashTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.002"
+    },
+    {
+      "name": "io.dpdk.assistant.task.TaskIpClosureTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.572"
+    },
+    {
+      "name": "io.dpdk.assistant.task.TaskLifecycleLedgerTest",
+      "tests": "11",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.48"
+    },
+    {
+      "name": "io.dpdk.assistant.task.TaskProbeReplayTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.281"
+    },
+    {
+      "name": "io.dpdk.assistant.task.TaskRecoveryTwoProcessTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "1.557"
+    },
+    {
+      "name": "io.dpdk.assistant.task.TaskRunnerConcurrencyTest",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "1.28"
+    },
+    {
+      "name": "io.dpdk.assistant.usage.QuotaTransactionTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.274"
+    },
+    {
+      "name": "io.dpdk.assistant.usage.UsageQueryContractTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.434"
+    }
+  ],
+  "frontend": {
+    "test_count": 102,
+    "build_exit_code": 0,
+    "client_source_sha256": "05c199c89c02ecd135f94a285d12ec0357a97889b6faf23a6f01a742e500ebcf",
+    "integration": "ProductApplicationHttpTest launches frontend-client.mjs with esbuild env substitution against real embedded Java HTTP"
+  },
+  "logs_gitignored": [
+    ".migration-artifacts/p3-full-verify.log",
+    ".migration-artifacts/p3-full-verify-r2.log",
+    ".migration-artifacts/p3-full-verify-r3.log",
+    ".migration-artifacts/p3-frontend-tests.log",
+    ".migration-artifacts/p3-frontend-build.log"
+  ]
+}
