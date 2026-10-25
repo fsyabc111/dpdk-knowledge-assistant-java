@@ -53,6 +53,7 @@ public final class HeuristicQueryRewriter implements QueryRewritePort {
     }
 
     /** 带追问上下文（Python rewrite(original, conversation_context)）。 */
+    @Override
     public String rewrite(String original, String conversationContext) {
         String resolved = original;
         boolean isFollowUp = conversationContext != null && !conversationContext.isEmpty()

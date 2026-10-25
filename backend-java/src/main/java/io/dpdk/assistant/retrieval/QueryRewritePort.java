@@ -15,6 +15,11 @@ public interface QueryRewritePort {
 
     String rewrite(String original);
 
+    /** 兼容纯改写器；支持追问的实现覆写此入口。 */
+    default String rewrite(String original, String conversationContext) {
+        return rewrite(original);
+    }
+
     /**
      * LLM 腿客户端（可选注入）：对应 Python chat_model.generate 的两处调用
      * （追问消解与关键词改写）。抛异常/返回 null 等价于上游失败 → 启发式回退。

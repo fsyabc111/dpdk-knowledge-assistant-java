@@ -141,3 +141,8 @@ J3-01 已交付（worker/j3-01@40cb46c，自有测试 8类50/50；真双JVM+合�
 - 模型适配受理：model.AgentModelAdapter(OpenAiCompatibleChatClient,String)实现AgentChatModel；client添加富工具调用出口，旧chat/stream兼容。只扩展模型协议，不改变产品SSE/权限/扣次；固定HTTP替身验证，不做真实验收。
 - 核查发现TaskSettings默认8 active/32 waiting/30s排队与冻结config.py:77-79不符；本窗口纠正20/20/10s，纳入配置桥接验证，不改变Python基线和阈值。
 - COMP-003实施：已有submitted作业running仅轮询，unknown/查询失败由HarnessResultUnknown穿透图层，在产品层保存system_error/answer_reason=harness_result_unknown，消息元数据及JSON/SSE附failure_code同值；保留submitted账本，终态清理输入。首次缺账本仍可首次受理。现有Python黄金不变，按p0-approved-differences/comp003.json单独验收。
+
+## P3规格轴阻断修复窗口（2026-10-25）
+
+- SearchInput增加conversationContext，保留question/queryVector两参构造兼容；QueryRewritePort新增默认上下文重载，HeuristicQueryRewriter覆写，PgReleaseReader正式消费会话上下文。J3-03传递真实会话检索语境，补端到端追问消解回归；不改变排序/向量/发布版本配置。
+- 产品RAG_REQUEST_TOKEN_BUDGET必须在每次planner/finalize模型回复后、工具副作用前执行，不能仅在完整Agent结束后检查；AGENT独立预算不代替产品预算。补高AGENT预算+低RAG预算的真实账本零MCP/零grading扣次/零成绩回归。

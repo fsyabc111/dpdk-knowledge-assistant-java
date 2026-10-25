@@ -127,7 +127,7 @@ public final class PgReleaseReader implements ReleaseReader {
         }
 
         String query = input.question();
-        String rewritten = rewriter.rewrite(query);
+        String rewritten = rewriter.rewrite(query, input.conversationContext());
 
         double[] queryEmbedding;
         if (input.queryVector() != null) {

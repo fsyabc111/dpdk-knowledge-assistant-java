@@ -234,7 +234,7 @@ public final class ChatTaskExecutor implements TaskExecutor {
                         SearchResult result =
                                 retrieval.searchPinned(
                                         retrieval.pin(release),
-                                        new SearchInput(query, null),
+                                        new SearchInput(query, null, conversation),
                                         limit);
                         if (result.trace() instanceof RetrievalTrace trace) {
                             retrievalFailure[0] = trace.blockedReason();
@@ -318,6 +318,7 @@ public final class ChatTaskExecutor implements TaskExecutor {
         }
         List<Map<String, Object>> evidenceTools = new ArrayList<>();
         Set<String> seenTools = new HashSet<>();
+        final long[] productTokens = {0};
         AgentChatModel recordingModel =
                 (messages, names) -> {
                     for (AgentMessage message : messages) {
@@ -342,6 +343,11 @@ public final class ChatTaskExecutor implements TaskExecutor {
                     AgentChatModel.AgentReply reply = null;
                     try {
                         reply = model.call(messages, names);
+                        productTokens[0] += reply.usage().totalOrZero();
+                        if (productTokens[0] > settings.requestTokenBudget()) {
+                            // 先执行产品预算闸，再把planner回复交图层执行工具。
+                            throw new IllegalStateException("request_token_budget");
+                        }
                         return reply;
                     } finally {
                         sink.recordLlm(
