@@ -7,6 +7,7 @@
 - 当前授权：2026-10-25 用户以 LONGRUN_P3_P5_DRAFT.md 任务书正式启动长时批次（U12）：先关闭验收8项问题（ST-01～03、SP-01～05）并完成P1/P2工程复验，再连续完成P3（J3-01～04）、P4（J4-01～03）、P5隔离工程交付（J5-01～03隔离/合成范围验收）与J5-04交付准备。工程门禁通过后自动推进；主Agent统筹、最多3个worker；小步提交及时推送、持续交接。用户启动指令与任务书§建议启动指令一致，已登记为本批次实施授权。
 - 明确不授权：真实模型/embedding/真实harness调用验收、合并main、生产切换、Python退役、删除恢复资产、原项目/原部署/业务库写入。P5仅限隔离/合成范围；J5-04只做交付准备。
 - 当前实施阶段：U12批次**P3实现暂停于用户指令交接点（2026-10-25）**。R段已收口（8项关闭+双轴审查通过）。P3已完成J3-01+J3-02实现并合并：合并树全量verify **490/490**（316基础+124 Agent+50 task）。J3-01（worker/j3-01@40cb46c）：任务受理/账本/进程托管/事件流/恢复+真双JVM认领+integration_pending三项闭环（IP-1停号取消、IP-J205-2会话删除、TaskGradeParticipant）。J3-02（worker/j3-02@3d426e9）：Agent五工具受控循环+黄金场景对齐。六项+三项接口变更申请已裁决登记（migration/contracts/interface-changes.md）。**未做**：契约字段补全、Spring装配接线、J3-03 chat/SSE、J3-04讲解、P3阶段报告与双轴审查、P4/P5——下一会话按MAIN交接继续。
+- 本轮恢复授权：2026-10-25 用户直接发送 LONGRUN_P3_RESUME.md 启动指令，解除此前暂停；从P3集成窗口继续，门禁通过后自动推进P4/P5隔离工程交付与J5-04准备，原禁止项不变。以下暂停记录为恢复前历史。
 - 下一阶段：P3集成窗口待办（见interface-changes.md J3-01裁决节汇总）→ J3-03 → J3-04 → P3阶段报告+双轴审查 → P4。
 - 既有历史：U11批次（P1+P2实现，工程门禁当时通过）及2026-10-25独立验收复核（P0保留通过；P1/P2暂不通过，8项待关闭）保留为下方历史与阶段放行记录；”工程门禁通过/0阻断”不代表本轮验收结论。
 - 功能 oracle：本仓库冻结 Python 副本；初始 HEAD `80b29135faddd16d5e39fdbf0633291ea6a20489`，源来源 manifest 见 COPY_REPORT。不持续吸收原目录变化。
@@ -35,8 +36,8 @@
 | J2-05 | implemented | j2-05 worker；主Agent集成 | 完成并已集成（含MessageInput扩展） | 通过（本卡37/37；全量277/277；golden 33条含模板字节级） | 未执行 | evidence/J2-05/ |
 | J3-01 | implemented | j3-01 worker（主Agent集成） | 完成并已合并（d927fb1）：任务账本/受理事务/进程托管/事件流/恢复+真双JVM认领；Spring装配未接线 | 本卡8类50/50；合并树全量490/490 | integration_pending三项闭环（卡内实测）；端到端待J3-03装配 | docs/java-migration/handoffs/J3-01.md |
 | J3-02 | implemented | j3-02 worker（主Agent集成） | 完成并已合并（3d426e9）：五工具受控循环/上下文预算/执行源与账本规则；真实模型适配器未写（J3-03） | 本卡124/124；合并树全量490/490 | 黄金场景Python可达子集对齐；HTTP/DB持久化部分待J3-03 | docs/java-migration/handoffs/J3-02.md |
-| J3-03 | planned | — | 未开始 | 未执行 | 未执行 | — |
-| J3-04 | planned | — | 未开始 | 未执行 | 未执行 | — |
+| J3-03 | running | chat worker；主Agent装配 | 契约/装配先行，chat独占 | 待本轮验证 | 未执行 | handoffs/J3-03.md（交付时） |
+| J3-04 | running | explain worker | 独立准备；依赖J3-03门禁后闭环 | 待本轮验证 | 未执行 | handoffs/J3-04.md（交付时） |
 | J4-01 | planned | — | 未开始 | 未执行 | 未执行 | — |
 | J4-02 | planned | — | 未开始 | 未执行 | 未执行 | — |
 | J4-03 | planned | — | 未开始 | 未执行 | 未执行 | — |

@@ -1,5 +1,7 @@
 package io.dpdk.assistant.contracts.task;
 
-/** 受理结果（attach/replay/created 分类由 J3-01 实现）；本类型为端口占位，字段后续登记。 */
-public record AdmissionResult(String outcome) {
+import java.util.Optional;
+
+/** 分类与同笔提交的行/消息快照；miss 时快照为空。 */
+public record AdmissionResult(String outcome, Optional<TaskRow> row, Optional<TaskMessage> message) {
 }

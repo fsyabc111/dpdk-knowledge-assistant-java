@@ -25,6 +25,13 @@ public record TaskRecordRow(
         String createdAt,
         String updatedAt) {
 
+    /** 冻结端口快照（不暴露 task 仓储内部类型）。 */
+    public io.dpdk.assistant.contracts.task.TaskRow toContract() {
+        return new io.dpdk.assistant.contracts.task.TaskRow(id, requestId, inputHash,
+                initialRequest, purpose, userId, sessionId, messageId, question, contextText,
+                status, reason, releaseId, evidenceJson, modelVersion, elapsedMs, createdAt, updatedAt);
+    }
+
     /** 终态判定：status != pending。 */
     public boolean isTerminal() {
         return !"pending".equals(status);

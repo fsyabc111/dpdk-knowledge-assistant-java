@@ -183,7 +183,28 @@
           "context",
           "model",
           "rawTemporaryInput",
-          "dailyQuota"
+          "dailyQuota",
+          "temporaryInput:TaskTemporaryInput"
+        ],
+        "TaskTemporaryInput": [
+          "attachmentName",
+          "attachmentSuffix",
+          "sourceText",
+          "sourceOrigin"
+        ],
+        "Probe": [
+          "state",
+          "row:Optional<TaskRow>",
+          "message:Optional<TaskMessage>"
+        ],
+        "AdmissionResult": [
+          "outcome",
+          "row:Optional<TaskRow>",
+          "message:Optional<TaskMessage>"
+        ],
+        "TaskMessage": [
+          "content",
+          "metadataJson"
         ]
       },
       "semantics": "probe miss/in_progress/terminal/replay；hash/用户不匹配409。admit 原子账号锁+唯一请求+临时输入+用户消息+session touch+chat quota；冲突返回 attach/replay。无模型/外部调用在此事务内。",

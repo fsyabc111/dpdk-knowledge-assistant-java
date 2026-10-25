@@ -9,5 +9,18 @@ public record AdmissionInput(
         String context,
         String model,
         String rawTemporaryInput,
-        int dailyQuota) {
+        int dailyQuota,
+        TaskTemporaryInput temporaryInput) {
+
+    public AdmissionInput {
+        temporaryInput = temporaryInput == null ? TaskTemporaryInput.empty() : temporaryInput;
+    }
+
+    /** 兼容无附件消费者。 */
+    public AdmissionInput(RequestIdentity identity, String subject, String sessionId,
+                          String redactedQuestion, String context, String model,
+                          String rawTemporaryInput, int dailyQuota) {
+        this(identity, subject, sessionId, redactedQuestion, context, model,
+                rawTemporaryInput, dailyQuota, TaskTemporaryInput.empty());
+    }
 }

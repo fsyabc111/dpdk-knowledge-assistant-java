@@ -7,17 +7,7 @@ import io.dpdk.assistant.contracts.session.SessionPort;
 import java.util.Map;
 import java.util.Optional;
 
-/**
- * contracts.session.SessionPort 的实现（契约 transaction-ports.json：session.SessionPort）。
- *
- * - ensureOwned / touch / discardEmpty 完整落地（委托 {@link SessionService}）；
- * - appendUser 受阻于冻结契约 {@link MessageInput} 仅有 content 字段（缺
- *   sessionId/role/metadata，无法表达受理事务内的用户消息写入）：本适配器抛出
- *   指向登记的 IllegalStateException；过渡期消费方（J3-01/J3-03/J3-04）使用
- *   {@link SessionService#appendMessage}。接口变更请求（MessageInput 补字段：
- *   sessionId、role、metadata）已登记 handoffs/J2-05.md，集成者更新契约后
- *   本方法单点改为委托 appendMessage。
- */
+/** 会话冻结端口；消息写入参与调用方受理事务。 */
 public class SessionPortAdapter implements SessionPort {
 
     private final SessionService service;
@@ -33,10 +23,11 @@ public class SessionPortAdapter implements SessionPort {
 
     @Override
     public void appendUser(DbTx tx, MessageInput input) {
-        throw new IllegalStateException(
-                "SessionPort.MessageInput 契约字段不足（缺 sessionId/role/metadata）：接口变更请求"
-                        + "已登记 handoffs/J2-05.md；过渡期请使用 SessionService.appendMessage(tx, "
-                        + "sessionId, role, content, metadata)（同为参与 caller 事务的实现）");
+        try {
+            service.appendMessage(tx, input.sessionId(), input.role(), input.content(), input.metadata());
+        } catch (java.sql.SQLException e) {
+            throw new IllegalStateException("session append failure", e);
+        }
     }
 
     @Override

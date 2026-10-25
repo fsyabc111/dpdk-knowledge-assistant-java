@@ -151,7 +151,10 @@ public final class RagTaskService implements AdmissionPort, LifecyclePort, Answe
 
     @Override
     public Probe probe(RequestIdentity identity, String subject, Optional<String> sessionId) {
-        return new Probe(probeDetail(identity, subject, sessionId).state());
+        var result = probeDetail(identity, subject, sessionId);
+        return new Probe(result.state(), result.row().map(TaskRecordRow::toContract),
+                result.message().map(m -> new io.dpdk.assistant.contracts.task.TaskMessage(
+                        m.content(), m.metadataJson())));
     }
 
     /* ------------------------------------------------------------------ */
@@ -181,7 +184,10 @@ public final class RagTaskService implements AdmissionPort, LifecyclePort, Answe
 
     @Override
     public AdmissionResult admit(AdmissionInput input) {
-        return new AdmissionResult(admitDetail(input).outcome());
+        var result = admitDetail(input);
+        return new AdmissionResult(result.outcome(), result.row().map(TaskRecordRow::toContract),
+                result.message().map(m -> new io.dpdk.assistant.contracts.task.TaskMessage(
+                        m.content(), m.metadataJson())));
     }
 
     private TaskAdmitOutcome admitWithinTx(AdmissionInput input) {
@@ -204,7 +210,9 @@ public final class RagTaskService implements AdmissionPort, LifecyclePort, Answe
                     return null;   // 冲突接续：tx 内无业务写入，提交无害
                 }
                 // 3. 临时输入（恢复重驱动的权威字节）。
-                store.storeInputs(tx, taskId, input.rawTemporaryInput(), null, null, null, null);
+                var temporary = input.temporaryInput();
+                store.storeInputs(tx, taskId, input.rawTemporaryInput(), temporary.attachmentName(),
+                        temporary.attachmentSuffix(), temporary.sourceText(), temporary.sourceOrigin());
                 // 4. 用户消息（共享事务；不能让嵌套独立事务先提交）。
                 Map<String, Object> metadata = new LinkedHashMap<>();
                 metadata.put("request_id", identity.requestId());
@@ -235,7 +243,7 @@ public final class RagTaskService implements AdmissionPort, LifecyclePort, Answe
 
     @Override
     public Optional<TaskRow> getOwned(String taskId, String subject) {
-        return store.findOwned(taskId, subject).map(row -> new TaskRow(row.id(), row.status()));
+        return store.findOwned(taskId, subject).map(TaskRecordRow::toContract);
     }
 
     /** 富 get_task：全行视图（404 语义由消费方按 empty 映射）。 */
@@ -271,7 +279,7 @@ public final class RagTaskService implements AdmissionPort, LifecyclePort, Answe
 
     public record CancelOutcome(TaskRecordRow row, boolean changed) {
         public TaskRow rowView() {
-            return new TaskRow(row.id(), row.status());
+            return row.toContract();
         }
     }
 
@@ -330,7 +338,7 @@ public final class RagTaskService implements AdmissionPort, LifecyclePort, Answe
                 .toList();
         String messageId = store.finish(input.taskId(), input.sessionId(), input.answer(),
                 citations, input.verdict(), input.reason(), input.releaseId(), input.elapsedMs());
-        return new CompletedAnswer(input.taskId(), input.verdict());
+        return new CompletedAnswer(input.taskId(), input.verdict(), messageId);
     }
 
     /** 富 finish：messageId + metadata 随行（重复终态抛 IllegalStateException 同源）。 */

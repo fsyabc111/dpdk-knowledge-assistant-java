@@ -1,5 +1,16 @@
 # 主 Agent 恢复点
 
+## 当前：2026-10-25 U12续接执行中
+
+- 用户已直接发送LONGRUN_P3_RESUME启动指令；P3→P4→P5工程门禁自动推进，live/合并main/生产/退役/删除恢复资产仍禁止。
+- 本轮恢复基线codex/p3-p5-longrun@90fae3d，origin一致；旧树490/490需在本轮集成后重新验证。
+- 主Agent单写contracts/platform/wiring/STATUS/MAIN/DDL/共享配置；先补契约与Spring装配。
+- worker：codex/p3-model-adapter（model/**）；codex/j3-03-chat（chat/**）；codex/j3-04-explain（assignment/explanation/**）；独立工作树位于.migration-artifacts/worktrees/。
+- PG55481监听已实查；写入必须显式环境+TestPg身份预检，PG单卡排队，全量主Agent统一执行。
+- 待办：契约字段和附件临时输入→Spring单Bean取消、TaskSettings、heartbeat→模型适配集成→J3-03→J3-04→P3报告/双轴审查。
+- P3门禁前不进入P4业务；源码输入、原始日志、口令、恢复资产禁止提交。
+- 下一步：核对本轮diff及worker消息；装配后执行任务受理和Spring上下文验证。
+
 ## 当前：2026-10-25 U12 P3交接点（用户指令：J3-01完成后暂停交接）
 
 **本会话最终状态。恢复本批次从这里开始。**

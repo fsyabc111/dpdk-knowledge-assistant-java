@@ -1,5 +1,7 @@
 package io.dpdk.assistant.contracts.task;
 
-/** 受理探查结果（miss/in_progress/terminal/replay）；字段由 J3-01 登记补全。 */
-public record Probe(String state) {
+import java.util.Optional;
+
+/** 分类与同笔提交的行/消息快照；miss 时快照为空。 */
+public record Probe(String state, Optional<TaskRow> row, Optional<TaskMessage> message) {
 }

@@ -132,3 +132,11 @@ J3-01 已交付（worker/j3-01@40cb46c，自有测试 8类50/50；真双JVM+合�
 6. **端口语义澄清（claim 先于占槽；finish 失败执行体 result 不成立）**：登记为冻结语义（测试钉死），无签名变化。
 
 **P3 集成窗口待办汇总**（集成者，下一会话）：契约字段补全（1/2）→ SessionPortAdapter 委托（4）→ NoOp 替换（5）→ AgentChatModel 真实模型适配器（承 J3-02 裁决）→ J3-03 chat/SSE 集成。
+
+## U12 续接集成窗口（2026-10-25）
+
+- AdmissionInput保留无附件8参构造，新增TaskTemporaryInput(attachmentName,attachmentSuffix,sourceText,sourceOrigin)，同一受理事务仅寄存rag_task_inputs，终态/TTL清理不变。消费者J3-01/J3-03/J3-04；补真实PG寄存与重放断言。
+- Probe/AdmissionResult补Optional<TaskRow>/Optional<TaskMessage>；TaskRow镜像完整任务行（主键taskId）；CompletedAnswer补messageId。task内部富接口保持兼容；冻结端口不依赖task仓储类型。
+- SessionPortAdapter.appendUser真实委托；取消单Bean改为TaskLocalCancellation；TaskWiring管理设置和心跳生命周期。
+- 模型适配受理：model.AgentModelAdapter(OpenAiCompatibleChatClient,String)实现AgentChatModel；client添加富工具调用出口，旧chat/stream兼容。只扩展模型协议，不改变产品SSE/权限/扣次；固定HTTP替身验证，不做真实验收。
+- 核查发现TaskSettings默认8 active/32 waiting/30s排队与冻结config.py:77-79不符；本窗口纠正20/20/10s，纳入配置桥接验证，不改变Python基线和阈值。

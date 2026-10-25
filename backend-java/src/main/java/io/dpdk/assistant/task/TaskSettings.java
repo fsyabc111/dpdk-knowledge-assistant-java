@@ -25,13 +25,25 @@ public record TaskSettings(
     public static TaskSettings defaults() {
         return new TaskSettings(
                 Duration.ofSeconds(600),
-                Duration.ofSeconds(30),
-                8,
-                32,
+                Duration.ofSeconds(10),
+                20,
+                20,
                 Duration.ofSeconds(10),
                 Duration.ofSeconds(30),
                 Duration.ofSeconds(300),
                 500,
                 Duration.ofHours(24));
+    }
+
+    public TaskSettings {
+        if (ragTaskMaxSeconds == null || ragTaskMaxSeconds.isNegative() || ragTaskMaxSeconds.isZero()
+                || admissionQueueTimeout == null || admissionQueueTimeout.isNegative()
+                || admissionQueueTimeout.isZero() || maxActiveRequests < 1 || maxWaitingRequests < 0
+                || heartbeatInterval == null || heartbeatInterval.isNegative() || heartbeatInterval.isZero()
+                || orphanGrace == null || orphanGrace.isNegative()
+                || finishedTtl == null || finishedTtl.isNegative()
+                || inputTtl == null || inputTtl.isNegative() || inputTtl.isZero() || eventLogCap < 1) {
+            throw new IllegalArgumentException("任务设置超出允许范围");
+        }
     }
 }
