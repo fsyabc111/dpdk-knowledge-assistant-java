@@ -117,6 +117,14 @@ public final class ChatTaskExecutor implements TaskExecutor {
                     "");
         } catch (ExecutionException failed) {
             Throwable cause = failed.getCause();
+            if (cause instanceof HarnessResultUnknown) {
+                return new TaskExecutionResult(
+                        "评测结果待核对，请稍后联系教师确认；系统不会自动重新提交。",
+                        "system_error",
+                        "harness_result_unknown",
+                        List.of(),
+                        "");
+            }
             if (cause instanceof RetryableTaskFailure retry) throw retry;
             if (cause instanceof InterruptedException interrupted) throw interrupted;
             return new TaskExecutionResult(

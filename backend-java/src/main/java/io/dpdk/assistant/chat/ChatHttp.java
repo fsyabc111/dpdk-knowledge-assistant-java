@@ -41,6 +41,8 @@ public final class ChatHttp {
         out.put("issue_id", v.issueId());
         out.put("request_id", v.requestId());
         out.put("task_id", v.taskId());
+        if ("harness_result_unknown".equals(v.answerReason()))
+            out.put("failure_code", "harness_result_unknown");
         return out;
     }
 
