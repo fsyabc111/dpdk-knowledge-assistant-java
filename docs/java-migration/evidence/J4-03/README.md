@@ -16,3 +16,12 @@
 原始构建输出保留本机 `/tmp/j4-03-test.log`（不提交），JUnit结果在worker `backend-java/target/surefire-reports/`（ignore）。证书试验产物仅在本轮 `/tmp/j4-03-cert.hzVkrZ/certs/`，不入库，不属于恢复资产。
 
 真实PG、OperationsPort业务适配、启动后无DDL/后台写、CLI boot jar、健康/就绪负例、指标HTTP端点、真实nginx HTTPS/SSE、容器权限、CI远程执行和备份恢复均未在本worker执行；这些必须由主集成者/J5绑定集成提交验证。未执行项不能算通过。
+
+## MCP固定替身追加验证（2026-10-25）
+
+主Agent追加授权固定MCP外部替身，替代早期“fake没有MCP”的限制；原有真实harness/live未验证声明继续有效。
+
+- `node --test deploy-java/fake-upstream/server.test.mjs`：5/5，零失败/跳过。覆盖JSONRPC初始化、Mcp-Session-Id、initialized通知、tools/list、五工具、grade并发同job只建1条、finished回放、unknown、源哨兵不进入响应/固定账本/子进程stdout与stderr；模型/向量仅loopback固定响应。
+- Java21 `StreamableHttpHarnessClient` 通过同一loopback临时服务调用全部五种工具，规范化payload `ok=true`，grade后status=finished，提交的 `JAVA_SMOKE_SOURCE_SENTINEL` 不在任何回复中。实际输出 `PASS: Java StreamableHttpHarnessClient five-tool MCP loopback smoke; no PG/real upstream`。可复现调用源 `deploy-java/fake-upstream/J4FakeHarnessSmoke.java`（仅允许loopback HTTP），classpath由现有Maven dependency:build-classpath取得；没有PG连接或真实调用。
+- Compose只读展开通过：fake默认服务、backend的DPDK_HARNESS_URL明确指向fake /mcp且依赖fake healthy，真实harness-authorized仍默认off/pull never；无Docker/Colima启动。
+- 备份脚本只读核查：参数为 `pg_dump --format=custom --exclude-table-data=public.rag_task_inputs`，没有`--exclude-table`或`--schema-only`。这会保留表结构并排除该表数据；实际custom dump目录/恢复后表存在且空、其余业务表完整由主Agent J5-03实跑，当前不据静态检查宣称恢复通过。

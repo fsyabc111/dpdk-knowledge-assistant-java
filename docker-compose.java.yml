@@ -42,10 +42,14 @@ services:
       DPDK_JAVA_INDEX_WORKING_DIRECTORY: /sources
       DPDK_MIGRATION_RUN_ON_STARTUP: "true"
       DPDK_TASK_BACKGROUND_ENABLED: "true"
+      # 本轮仅固定结果、绝不执行源码的MCP替身；不是旧/真实harness。
+      DPDK_HARNESS_URL: http://fake-upstream:18091/mcp
     volumes:
       - ${DPDK_JAVA_SOURCE_SNAPSHOT_DIR:?必须显式给出外部源只读目录}:/sources:ro
     depends_on:
       postgres-java:
+        condition: service_healthy
+      fake-upstream:
         condition: service_healthy
     networks: [java-edge, java-data, java-harness]
     user: "10001:10001"
@@ -76,13 +80,17 @@ services:
     mem_limit: 128m
     cpus: 0.5
     restart: "no"
-  # 默认不启动；只用于隔离演练，不可冒充真实模型或 harness 验收。
+  # 默认仅启用不执行代码的固定替身；不能冒充真实模型/harness质量验收。
   fake-upstream:
-    profiles: [rehearsal]
     image: node:22-alpine
     command: [node, /app/server.mjs]
     volumes: [./deploy-java/fake-upstream/server.mjs:/app/server.mjs:ro]
     networks: [java-harness]
+    healthcheck:
+      test: [CMD, node, -e, "fetch('http://127.0.0.1:18091/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
     user: "1000:1000"
     read_only: true
     tmpfs: [/tmp:rw,noexec,nosuid,size=32m,uid=1000,gid=1000]

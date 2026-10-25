@@ -23,17 +23,17 @@ scripts-java/compose.sh                     # 默认只做配置展开，零容�
 export DPDK_JAVA_DOCKER_CONTEXT='<本轮独立 context 名>'
 export DPDK_JAVA_DOCKER_ENDPOINT='<只读核对所得 endpoint>'
 scripts-java/compose.sh --apply build
-DPDK_JAVA_COMPOSE_PROFILES=rehearsal scripts-java/compose.sh --apply up -d
+scripts-java/compose.sh --apply up -d
 ```
 
 `compose.sh --apply` 先只读核对 context endpoint、项目名及非 root 代理。只启动主应用可使用：
 
 ```bash
 scripts-java/compose.sh --apply up -d postgres-java backend-java frontend-java
-# 替身服务使用 profile，仅显式演练时通过 DPDK_JAVA_COMPOSE_PROFILES=rehearsal 开启（见脚本）。
+# 固定fake服务默认启用，backend依赖其健康；真实harness profile仍关闭。
 ```
 
-主后端默认不配置任何真实模型。合成替身路由为 `http://fake-upstream:18091/v1/embeddings` 和 `/v1/chat/completions`；固定 1024 维向量和固定回答只用于部署路径。通过本轮显式配置 `dpdk.model.*` 后才可使用；缺配置不能当质量通过。替身没有实现 MCP 评测语义，不能把它当真实 harness。已提供 `harness-java` 的 `harness-authorized` profile：只接受另行审查的本地镜像（pull_policy=never），UID10001、read_only、tmpfs、资源受限且无宿主端口，使用 `java-harness` 专网及18100端口。该profile默认关闭，当前 compose.sh 不开启它；真实评测仍须独立授权，不得把旧 harness 暴露到公网。
+主后端默认不配置任何真实模型。合成替身路由为 `http://fake-upstream:18091/v1/embeddings` 和 `/v1/chat/completions`；固定 1024 维向量和固定回答只用于部署路径。通过本轮显式配置 `dpdk.model.*` 后才可使用；缺配置不能当质量通过。替身现在提供 `/mcp` 的五种固定工具，grade_plugin只返回合成PASS，不编译/执行/保留源码；进程内job固定结果支持同job回放和unknown状态。它不是live质量或真实harness恢复验收，详见 fake-upstream/README.md。已提供 `harness-java` 的 `harness-authorized` profile：只接受另行审查的本地镜像（pull_policy=never），UID10001、read_only、tmpfs、资源受限且无宿主端口，使用 `java-harness` 专网及18100端口。该profile默认关闭，当前 compose.sh 不开启它；真实评测仍须独立授权，不得把旧 harness 暴露到公网。
 
 ```bash
 curl --cacert .migration-artifacts/java-isolated-certs/server.crt https://localhost:18443/api/health
