@@ -6,6 +6,8 @@ import io.dpdk.assistant.assignment.explanation.ExplainDataService;
 import io.dpdk.assistant.chat.ChatSettings;
 import io.dpdk.assistant.chat.ChatTaskExecutor;
 import io.dpdk.assistant.chat.ProductChatService;
+import io.dpdk.assistant.chat.GroundedQuestionVerifier;
+import io.dpdk.assistant.knowledge.workflow.OriginalQuestionVerifier;
 import io.dpdk.assistant.contracts.model.HarnessPort;
 import io.dpdk.assistant.contracts.platform.ClockPort;
 import io.dpdk.assistant.contracts.platform.TransactionRunner;
@@ -75,5 +77,12 @@ public class ChatWiring {
     ProductChatService productChatService(RagTaskService tasks, AdmissionGate gate,
             SessionService sessions, ChatTaskExecutor executor, ChatSettings settings, ClockPort clock) {
         return new ProductChatService(tasks, gate, sessions, executor, settings, clock);
+    }
+
+    @Bean
+    OriginalQuestionVerifier originalQuestionVerifier(ProductChatService product, UsageCounterStore quotas,
+            AdmissionGate gate, ObjectProvider<PgReleaseReader> retrieval,
+            ObjectProvider<AgentChatModel> model, ChatSettings settings) {
+        return new GroundedQuestionVerifier(product, quotas, gate, retrieval.getIfAvailable(), model.getIfAvailable(), settings);
     }
 }

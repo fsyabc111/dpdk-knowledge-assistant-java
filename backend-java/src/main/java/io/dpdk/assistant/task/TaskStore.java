@@ -524,7 +524,7 @@ public class TaskStore {
                 "INSERT INTO rag_task_jobs(id,task_id,job_id,tool,protocol,code_hash,status,"
                         + "created_at,updated_at) VALUES (?,?,?,?,?,?,'submitted',?,?) "
                         + "ON CONFLICT(task_id, job_id) DO NOTHING")) {
-            ps.setString(1, UUID.randomUUID().toString().replace("-", ""));
+            ps.setString(1, taskId);
             ps.setString(2, taskId);
             ps.setString(3, jobId);
             ps.setString(4, tool);

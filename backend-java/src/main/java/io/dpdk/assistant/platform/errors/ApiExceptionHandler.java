@@ -16,6 +16,20 @@ public class ApiExceptionHandler {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
+    @ExceptionHandler({org.springframework.web.servlet.resource.NoResourceFoundException.class,
+            org.springframework.web.servlet.NoHandlerFoundException.class})
+    public ResponseEntity<?> handleNotFound(Exception ex) {
+        return ResponseEntity.status(404).body(java.util.Map.of("detail", "Not Found"));
+    }
+
+    @ExceptionHandler(org.springframework.web.HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<?> handleMethodNotAllowed(org.springframework.web.HttpRequestMethodNotSupportedException ex) {
+        String[] allowed = ex.getSupportedMethods();
+        return ResponseEntity.status(405)
+                .header("Allow", allowed == null ? "" : String.join(", ", allowed))
+                .body(java.util.Map.of("detail", "Method Not Allowed"));
+    }
+
     @ExceptionHandler(ApiDetailException.class)
     public ResponseEntity<String> handleApiDetail(ApiDetailException ex) throws Exception {
         String body = MAPPER.writeValueAsString(java.util.Map.of("detail", ex.detail()));

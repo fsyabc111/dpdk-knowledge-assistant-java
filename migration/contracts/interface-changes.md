@@ -154,3 +154,4 @@ J3-01 已交付（worker/j3-01@40cb46c，自有测试 8类50/50；真双JVM+合�
 - 索引富批量消费面放index.IndexBatchEmbedding(List<String>,UsageCore.UsageRecorder)，集成装配适配已有OpenAiCompatibleEmbeddingClient.embedTexts和ModelUsageLedger；不修改公共单文本EmbeddingPort。IndexUsageSink finally刷账、失败告警降级，复用用量开关/价格版本。
 - J4-02 OriginalQuestionVerifier分prepareAdmission（共享chat限流+日配额，先于issue读取）和verify（admission+当前release检索/生成/强制judge/总墙）；不创建普通chat任务、不复制task仓储。知识作者title/body保留Python字节语义，不新增脱敏安全差异；H的正文脱敏适用于运行输入/问题/反馈/note/事件。
 - CLI增加dpdk.task.background-enabled开关，默认true兼容服务；CLI最高优先级false并关闭启动迁移，防dry-run触发孤儿恢复/DDL。Boot mainClass显式Application以免新增OperationsMain产生歧义。
+- J4-02真实跨链发现TaskStore.insertIssue错误地随机id，而Python使用task/request主键且消息issue_id已为taskId。集成者窄修id=taskId；保持request_id唯一闸、不改DDL，不迁动旧库，新增问题反馈真实链回归验证。
