@@ -1,0 +1,170 @@
+=== S2.1 批量创建学生：1 新 + 1 重复 → 部分失败契约（created/skipped） ===
+### batch create: 1 new + 1 duplicate
+$ curl -s -i -X POST http://127.0.0.1:8090/api/admin/users -H Authorization: Bearer <TOKEN_MASKED> -H Content-Type: application/json -d {"ids":["U90000000006","U90000000003"],"roles":["viewer"]}
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 55
+Date: Sun, 25 Oct 2026 03:57:21 GMT
+
+{"created":["U90000000006"],"skipped":["U90000000003"]}
+
+db check: U90000000003 created_by=U90000000002
+db check: U90000000006 created_by=U90000000002
+=== S2.2 停号 U90000000006 → 其登录 401；恢复 → 可登录 ===
+### disable U90000000006
+$ curl -s -i -X POST http://127.0.0.1:8090/api/admin/users/U90000000006/status -H Authorization: Bearer <TOKEN_MASKED> -H Content-Type: application/json -d {"enabled":false}
+HTTP/1.1 204 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Date: Sun, 25 Oct 2026 03:57:21 GMT
+
+
+
+### disabled login attempt
+$ curl -s -i -X POST http://127.0.0.1:8090/api/auth/login -H Content-Type: application/json -d {"username":"U90000000006","password":"<PW_MASKED>"}
+HTTP/1.1 401 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 41
+Date: Sun, 25 Oct 2026 03:57:21 GMT
+
+{"detail":"invalid username or password"}
+
+### re-enable U90000000006
+$ curl -s -i -X POST http://127.0.0.1:8090/api/admin/users/U90000000006/status -H Authorization: Bearer <TOKEN_MASKED> -H Content-Type: application/json -d {"enabled":true}
+HTTP/1.1 204 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Date: Sun, 25 Oct 2026 03:57:21 GMT
+
+
+
+### re-enabled login
+$ curl -s -i -X POST http://127.0.0.1:8090/api/auth/login -H Content-Type: application/json -d {"username":"U90000000006","password":"<PW_MASKED>"} -o /dev/null
+
+
+tokens for 06: 1
+=== S2.3 改密审批流：学生申请 → admin 审批 → 一次性令牌重置 → 新密码登录、旧 token 失效 ===
+### student03 login (pre-reset)
+$ curl -s -i -X POST http://127.0.0.1:8090/api/auth/login -H Content-Type: application/json -d {"username":"U90000000003","password":"<PW_MASKED>"}
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 175
+Date: Sun, 25 Oct 2026 03:57:22 GMT
+
+{"token":"<TOKEN_MASKED>","subject":"U90000000003","roles":["viewer"],"expires_at":"2026-11-01T03:57:22.243744+00:00","must_change_password":true}
+
+
+### student password-reset-requests
+$ curl -s -i -X POST http://127.0.0.1:8090/api/auth/password-reset-requests -H Content-Type: application/json -d {"username":"U90000000003"}
+HTTP/1.1 202 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Length: 0
+Date: Sun, 25 Oct 2026 03:57:22 GMT
+
+
+
+### admin list reset requests
+$ curl -s -i -H Authorization: Bearer <TOKEN_MASKED> http://127.0.0.1:8090/api/admin/password-reset-requests
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 129
+Date: Sun, 25 Oct 2026 03:57:22 GMT
+
+{"requests":[{"id":"5364fe511c3848a99a8f3edd9a3c265e","user_id":"U90000000003","created_at":"2026-10-25 03:57:22.277775+00:00"}]}
+
+
+request_id=5364fe511c3848a99a8f3edd9a3c265e (日志中已打码形式另见)
+### admin approve
+$ curl -s -i -X POST http://127.0.0.1:8090/api/admin/password-reset-requests/5364fe511c3848a99a8f3edd9a3c265e/approve -H Authorization: Bearer <TOKEN_MASKED>
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 109
+Date: Sun, 25 Oct 2026 03:57:22 GMT
+
+{"reset_token":"<TOKEN_MASKED>","expires_at":"2026-10-25T04:27:22.322198+00:00"}
+
+
+reset_token len=43
+### password-reset with one-time token
+$ curl -s -i -X POST http://127.0.0.1:8090/api/auth/password-reset -H Content-Type: application/json -d {"token":"<TOKEN_MASKED>","new_password":"<PW_MASKED>"}
+HTTP/1.1 204 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Date: Sun, 25 Oct 2026 03:57:22 GMT
+
+
+
+### old password rejected
+$ curl -s -i -X POST http://127.0.0.1:8090/api/auth/login -H Content-Type: application/json -d {"username":"U90000000003","password":"<PW_MASKED>"}
+HTTP/1.1 401 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 41
+Date: Sun, 25 Oct 2026 03:57:22 GMT
+
+{"detail":"invalid username or password"}
+
+### new password login
+$ curl -s -i -X POST http://127.0.0.1:8090/api/auth/login -H Content-Type: application/json -d {"username":"U90000000003","password":"<PW_MASKED>"}
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 176
+Date: Sun, 25 Oct 2026 03:57:23 GMT
+
+{"token":"<TOKEN_MASKED>","subject":"U90000000003","roles":["viewer"],"expires_at":"2026-11-01T03:57:23.186305+00:00","must_change_password":false}
+
+
+post-reset must_change_password: False
+### old bearer token after reset (should 401)
+$ curl -s -i -H Authorization: Bearer <TOKEN_MASKED> http://127.0.0.1:8090/api/usage/me
+HTTP/1.1 401 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+WWW-Authenticate: Bearer
+Content-Type: application/json
+Content-Length: 26
+Date: Sun, 25 Oct 2026 03:57:23 GMT
+
+{"detail":"invalid token"}
+
+### reuse one-time token (should 4xx)
+$ curl -s -i -X POST http://127.0.0.1:8090/api/auth/password-reset -H Content-Type: application/json -d {"token":"<TOKEN_MASKED>","new_password":"<PW_MASKED>"}
+HTTP/1.1 400 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 43
+Date: Sun, 25 Oct 2026 03:57:23 GMT
+Connection: close
+
+{"detail":"invalid or expired reset token"}
+
+student03 password restored to initial (SQL, 回归状态复位)
+scenario 02 done
