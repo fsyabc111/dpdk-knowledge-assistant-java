@@ -15,3 +15,10 @@
 - 新2项明确断言终态内唯一账、已知token或unknown、单调用和单终态。原stream8项（含400兼容与提前取消）、模型富消息16项、账本11项共 **37/37通过，0失败/错误/跳过**，日志.migration-artifacts/p4-stream-ledger-green.log。
 - OperationsBootJarAcceptance.iso仅在测试夹具先截断MICROS；生产SystemClockAdapter的纳秒拒绝护栏未修改。补显式123456789ns→123456微秒断言，覆盖Mac原生时钟未暴露的Linux粒度。
 - 下一步新源码完整verify、新jar native CLI和远程CI复验；以上局部通过不代替这些门禁。
+
+## 后续真实Linux清理入口
+
+- run40196930220的unit/frontend/deployment-materials已过，postgres走到真jar `purge-sessions` 才exit1。此前只修测试iso虽让夹具可运行，却进一步暴露生产SystemClockAdapter.nowUtc直接返回Linux纳秒值，SessionService.purgeExpired随后按Python微秒格式化而拒绝。
+- 新确定性反馈环使用Clock.fixed(123456789ns)与真实SessionService+PG：修复前纯端口断言失败、清理入口报“微秒精度溢出”，格式化器拒绝测试通过（3项为1失败1错误）。日志p4-linux-clock-red.log。
+- 仅在生产墙钟端口边界截断MICROS，匹配已冻结Python datetime；monotonicNanos预算与两个格式化器严格护栏未放宽。修复后同一3项全过（含dry-run保留/apply清理、原纳秒直接格式化仍拒绝），日志p4-linux-clock-green.log。
+- 新完整verify/native/远程CI仍需重新绑定后才可关闭此跨平台补修；不把本机微秒时钟下通过当Linux证明。

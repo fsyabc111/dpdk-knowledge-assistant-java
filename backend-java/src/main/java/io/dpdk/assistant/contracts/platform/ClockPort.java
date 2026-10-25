@@ -11,6 +11,7 @@ import java.time.Instant;
  */
 public interface ClockPort {
 
+    /** UTC墙钟按冻结Python datetime提供微秒精度；单调预算仍使用纳秒端口。 */
     Instant nowUtc();
 
     long monotonicNanos();

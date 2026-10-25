@@ -161,3 +161,4 @@ J3-01 已交付（worker/j3-01@40cb46c，自有测试 8类50/50；真双JVM+合�
 - ST-P4-02：已发布知识读取收回knowledge/workflow，新增contracts.knowledge.PublishedKnowledgeReader（有序id/title/body/revision快照）；IndexService显式构造注入并删除index内rag_knowledge SQL。不允许隐式空来源构造，纯测试需明确提供published fixtures，PG用真实知识仓储。
 - ST-P4-01：CI真实jar验收显式传dpdk.acceptance.jar绝对路径；保持与本机成功命令相同，不用脚本exit0替代测试。
 - SP-P4-01：工作流请求先严格验证完整JSON文档，尾随对象/垃圾返回冻结422且零知识/修订写入，补合法空白与Unicode位置反例。
+- 真实CI跨平台补修：SystemClockAdapter.nowUtc在端口边界截断MICROS以匹配Python datetime；Linux纳秒墙钟曾令SessionService.purgeExpired的严格格式化失败。预算monotonicNanos与格式化器拒绝非法纳秒护栏不变；新增固定纳秒时钟纯契约与真实PG dry-run/apply红绿回归。

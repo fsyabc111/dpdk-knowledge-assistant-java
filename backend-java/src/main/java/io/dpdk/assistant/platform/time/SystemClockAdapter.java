@@ -34,7 +34,8 @@ public class SystemClockAdapter implements ClockPort {
 
     @Override
     public Instant nowUtc() {
-        return wallClock.instant();
+        // Python datetime墙钟只有微秒；Linux/JDK可返回纳秒，必须在端口边界归一。
+        return wallClock.instant().truncatedTo(java.time.temporal.ChronoUnit.MICROS);
     }
 
     @Override
