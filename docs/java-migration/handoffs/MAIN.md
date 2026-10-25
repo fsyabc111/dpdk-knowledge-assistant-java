@@ -1,6 +1,15 @@
 # 主 Agent 恢复点
 
-## 当前：2026-10-25 独立验收复核
+## 当前：2026-10-25 U12 长时批次启动（R段）
+
+- 用户以 LONGRUN_P3_P5_DRAFT.md 正式启动长时任务（U12授权）：先关闭验收8项问题（ST-01～03、SP-01～05）并完成P1/P2工程复验，再连续P3（J3-01～04）→P4（J4-01～03）→P5隔离工程交付+J5-04交付准备。工程门禁通过自动推进；最多3个worker；小步提交推送、持续交接。**不在本批次**：真实调用验收、合并main、生产切换、Python退役、删除恢复资产。
+- 集成分支：`codex/p3-p5-longrun`（自 f06ae18 建立）；`codex/p1-p2-longrun` 保留为P1/P2验收状态存档。环境核对：工作区干净、PG55481/18090/18100/5173无运行进程、磁盘74GB可用。
+- 8项问题定义：evidence/P0-P2-acceptance-20261025/README.md。修复顺序按任务书R段：先ST-01（TestPg身份预检）+SP-01（ModelWiring四组合），再ST-02/03+SP-02/03/04+SP-05。
+- 约束提醒：ST-01关闭前不得重跑PG全量测试；PG启动/写操作前先核验身份（pgdata=.migration-artifacts/p1/pgdata，恢复命令见下文历史段）；Java输出不得反向改黄金。
+- 资源：沿用P1专属PG（55481，p1_java，comment=java-migration-p1-test）。验收遗留5个guard库待ST-01修复时按before/after清单审查清理，不全局删除。
+- 下一动作：R段实现修复 → 全量复验 → 独立审查 → R段报告 → 自动进入P3。
+
+## 历史：2026-10-25 独立验收复核
 
 - 用户要求先验收P0/P1/P2；对象 `codex/p1-p2-longrun@c916e2d4f8e642cd163bcc0808a5bd20b224f339`。结论：**P0保留通过，P1/P2暂不通过**；8项需关闭，用户验收未登记通过，P3仍未授权。
 - 入口：`evidence/P0-P2-acceptance-20261025/README.md`。规范轴ST-01测试辅助入口先写库后验身份、ST-02重放可假通过、ST-03回归不可独立复现；规格轴SP-01 embedding单独启动、SP-02提交JSON边界、SP-03 results假值丢成绩、SP-04 GRADING_*失效、SP-05 Vite/CORS端口错配。
