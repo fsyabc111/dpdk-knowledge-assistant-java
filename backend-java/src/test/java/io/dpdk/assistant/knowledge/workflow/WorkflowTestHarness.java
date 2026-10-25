@@ -65,6 +65,10 @@ final class WorkflowTestHarness implements AutoCloseable {
     record Issue(String id, String messageId, String sessionId) {}
 
     Issue issue(String owner, String question, boolean unresolved) throws Exception {
+        return admitQuestion(task,owner,question,unresolved);
+    }
+
+    static Issue admitQuestion(TaskTestHarness task,String owner,String question,boolean unresolved) throws Exception {
         String request = UUID.randomUUID().toString();
         String session = "session-" + request;
         task.seedSession(session, owner);

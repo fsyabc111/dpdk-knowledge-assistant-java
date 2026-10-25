@@ -42,8 +42,9 @@ public final class KnowledgeWorkflowService {
                     messageId, principal.subject());
             if (request == null) throw error(404, "not found");
             String id = (String) request.get("id");
+            // id 与 request_id 同为任务主键；双连接同时首次反馈须同时覆盖两个唯一键。
             execute(tx, "INSERT INTO rag_issues(id,request_id,updated_at) VALUES (?,?,?) "
-                    + "ON CONFLICT(request_id) DO NOTHING", id, id, timestamp(null));
+                    + "ON CONFLICT DO NOTHING", id, id, timestamp(null));
             // 锁行后计算版本，跨进程/同微秒反馈也必须推进 CAS 标记。
             var old = one(tx, "SELECT updated_at FROM rag_issues WHERE request_id=? FOR UPDATE", id);
             String feedback = Redact.redact(reason + ": " + detail);

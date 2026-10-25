@@ -1,0 +1,48 @@
+{
+  "task": "J4-02",
+  "java_base": "5d0d6a3",
+  "implementation_commit": "c1b4a7e",
+  "shared_verifier_commit": "cab2bdf",
+  "corrected_task_identity_commit": "ada65f6",
+  "environment": {
+    "jdk": "21",
+    "host": "127.0.0.1",
+    "port": 55481,
+    "role": "p1_java",
+    "identity_guard": "TestPg create/drop role+data_directory; per-case dynamic isolated DB"
+  },
+  "command": "JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./backend-java/mvnw -f backend-java/pom.xml -B -Dtest=KnowledgeWorkflowContractTest,IssueConcurrencyIntegrationTest,KnowledgePublicationIntegrationTest test; DPDK_TEST_PG_* explicit",
+  "exit_code": 0,
+  "tests": {
+    "run": 19,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "classes": {
+      "IssueConcurrencyIntegrationTest": 4,
+      "KnowledgePublicationIntegrationTest": 6,
+      "KnowledgeWorkflowContractTest": 9
+    }
+  },
+  "external_boundaries": {
+    "model": "synthetic deterministic script",
+    "embedding": "synthetic fixed 1024 vector",
+    "mcp": "no calls"
+  },
+  "not_verified": [
+    "J4-01 publication+withdrawal actual retrieval visibility",
+    "180-day task/workflow combined transaction retention",
+    "Spring full assembly",
+    "user acceptance"
+  ],
+  "source_sha256": {
+    "backend-java/src/main/java/io/dpdk/assistant/knowledge/workflow/KnowledgeWorkflowController.java": "06829744daf0228b68aa528f74f149b3d69d9a2ff50b32fb85e7c79c1bee8e3c",
+    "backend-java/src/main/java/io/dpdk/assistant/knowledge/workflow/KnowledgeWorkflowService.java": "c3b6210a4aa76e0a84b3d27f111fb438b717add5157b298255de82ceb27fe20d",
+    "backend-java/src/main/java/io/dpdk/assistant/knowledge/workflow/OriginalQuestionVerifier.java": "b4ee928637d531b2a848dcdc40ba1a23f873064d4257609a7f015b78611407da",
+    "backend-java/src/main/java/io/dpdk/assistant/knowledge/workflow/WorkflowBody.java": "367f01b2b0e7374072777be73e7f5fe015ed1e9cdcb245512d754c33c585be6c",
+    "backend-java/src/test/java/io/dpdk/assistant/knowledge/workflow/IssueConcurrencyIntegrationTest.java": "51bf133830be92d390e5c4ec4b49b0fa605ba658d578c1567c557769f9fb02fa",
+    "backend-java/src/test/java/io/dpdk/assistant/knowledge/workflow/KnowledgePublicationIntegrationTest.java": "b4bb9129543817dd5f04782b40a0a434c2f30feb7398d90ff8b2e1270f880c06",
+    "backend-java/src/test/java/io/dpdk/assistant/knowledge/workflow/KnowledgeWorkflowContractTest.java": "1ec324770cf5dbf6006610b8a5eb27dcd4b0ed879873c5fb5b2534795ef1b524",
+    "backend-java/src/test/java/io/dpdk/assistant/knowledge/workflow/WorkflowTestHarness.java": "eaac8c61a60ec500f8dffa1edd898e8f4eaa0dc9e28cd219913a924967355995"
+  }
+}
