@@ -1,0 +1,108 @@
+{
+  "date": "2026-10-25",
+  "source_commit": "c916e2d4f8e642cd163bcc0808a5bd20b224f339",
+  "branch": "codex/p1-p2-longrun",
+  "baseline": "80b29135faddd16d5e39fdbf0633291ea6a20489",
+  "conclusion": {
+    "P0": "previous acceptance retained; bounded recheck passed",
+    "P1": "recheck failed",
+    "P2": "recheck failed",
+    "user_acceptance": "not granted for P1/P2",
+    "P3": "not authorized"
+  },
+  "p0_unit": {
+    "tests": 19,
+    "passed": 19
+  },
+  "p0_cli": {
+    "tests": 40,
+    "passed": 40,
+    "freeze_overwrite_rejected": true
+  },
+  "java_verify": {
+    "tests": 298,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "frontend_unit": {
+    "tests": 102,
+    "passed": 102
+  },
+  "frontend_build": "passed",
+  "strict_http": {
+    "total": 32,
+    "passed": 25,
+    "differences": 7
+  },
+  "findings": {
+    "standards": [
+      "ST-01",
+      "ST-02",
+      "ST-03"
+    ],
+    "spec": [
+      "SP-01",
+      "SP-02",
+      "SP-03",
+      "SP-04",
+      "SP-05"
+    ]
+  },
+  "embedding_only_startup": {
+    "exit": 1,
+    "reason": "missing ModelClients bean"
+  },
+  "test_pg_identity_mutation": {
+    "wrong_expected_data_dir": "create succeeded",
+    "probe_database": "dropped"
+  },
+  "golden_mutations": {
+    "wrong_status": "PASS",
+    "reversed_rows": "PASS",
+    "wrong_score": "STATE-DIFF",
+    "expected": "all DIFF"
+  },
+  "fixture_sha256": "8d0658661fedb31c6a0690ea97cb3167534504049c65861b3c67e6691337de14",
+  "jar_sha256": "7de0c0d225e4084ac0218471a00116a24b9b9891a5ba827e3354d58aa1fc5eb9",
+  "isolation": {
+    "database": "p1_java_accept_20261025",
+    "postgres_port": 55481,
+    "database_comment": "java-migration-p1-test",
+    "java_port": 18090,
+    "fake_mcp_port": 18100,
+    "vite_port": 5173,
+    "real_services_called": false,
+    "original_environment_modified": false
+  },
+  "raw_artifacts": ".migration-artifacts/acceptance-20261025/",
+  "browser": {
+    "teacher_login": "passed",
+    "teacher_user_management": "passed",
+    "teacher_assignment_list": "passed",
+    "teacher_grades": "16.0/50.0 total, dns16.0/20",
+    "student_login": "passed",
+    "student_assignment_list": "passed",
+    "student_submit": "passed",
+    "student_result": "score80 passed4/5 earned16 best16",
+    "scope": "synthetic Java+PG+fake MCP; explicit Vite port5173; no explain/chat tested",
+    "protocol_selection": "native select keyboard ineffective; DOM change event used, actual submit button clicked"
+  },
+  "cleanup": {
+    "java": "stopped",
+    "fake_mcp": "stopped",
+    "vite": "stopped",
+    "isolated_chrome": "stopped",
+    "postgres_55481": "stopped",
+    "acceptance_database": "retained",
+    "guard_databases_created_by_suite": [
+      "p1_t_guard_nocomment_30c3f653e47b",
+      "p1_t_guard_ok_30c3f2ff6dd9",
+      "p1_t_guard_wrongdb_30c3f95423b4",
+      "p1_t_guard_wrongdir_30c3ef7d4095",
+      "p1_t_guard_wronguser_30c3eb4ebb08"
+    ],
+    "wrong_identity_probe_database": "dropped",
+    "previous_databases_and_recovery_assets": "retained"
+  }
+}

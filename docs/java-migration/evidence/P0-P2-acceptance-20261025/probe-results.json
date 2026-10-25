@@ -1,0 +1,254 @@
+[
+  {
+    "case": "login_U88000000001",
+    "actual": 200,
+    "expected": 200,
+    "pass": true
+  },
+  {
+    "case": "login_U88000000002",
+    "actual": 200,
+    "expected": 200,
+    "pass": true
+  },
+  {
+    "case": "login_U88000000003",
+    "actual": 200,
+    "expected": 200,
+    "pass": true
+  },
+  {
+    "case": "login_U88000000011",
+    "actual": 200,
+    "expected": 200,
+    "pass": true
+  },
+  {
+    "case": "login_U88000000021",
+    "actual": 200,
+    "expected": 200,
+    "pass": true
+  },
+  {
+    "case": "missing_auth",
+    "actual": [
+      401,
+      "Bearer",
+      {
+        "detail": "missing or malformed bearer token"
+      }
+    ],
+    "expected": [
+      401,
+      "Bearer",
+      {
+        "detail": "missing or malformed bearer token"
+      }
+    ],
+    "pass": true
+  },
+  {
+    "case": "wrong_password_unknown_same",
+    "actual": [
+      401,
+      true,
+      401
+    ],
+    "expected": [
+      401,
+      true,
+      401
+    ],
+    "pass": true
+  },
+  {
+    "case": "viewer_admin_hidden",
+    "actual": 404,
+    "expected": 404,
+    "pass": true
+  },
+  {
+    "case": "assignment_create",
+    "actual": 201,
+    "expected": 201,
+    "pass": true
+  },
+  {
+    "case": "assignment_visible",
+    "actual": [
+      "asg_5dfc51494f034823"
+    ],
+    "expected": [
+      "asg_5dfc51494f034823"
+    ],
+    "pass": true
+  },
+  {
+    "case": "cross_class_hidden",
+    "actual": 404,
+    "expected": 404,
+    "pass": true
+  },
+  {
+    "case": "normal_submit",
+    "actual": [
+      200,
+      80,
+      16.0
+    ],
+    "expected": [
+      200,
+      80,
+      16.0
+    ],
+    "pass": true
+  },
+  {
+    "case": "grades",
+    "actual": [
+      200,
+      16.0
+    ],
+    "expected": [
+      200,
+      16.0
+    ],
+    "pass": true
+  },
+  {
+    "case": "csv_bom_crlf",
+    "actual": [
+      200,
+      true,
+      true,
+      true
+    ],
+    "expected": [
+      200,
+      true,
+      true,
+      true
+    ],
+    "pass": true
+  },
+  {
+    "case": "student_grades_hidden",
+    "actual": 404,
+    "expected": 404,
+    "pass": true
+  },
+  {
+    "case": "withdraw_hidden",
+    "actual": 404,
+    "expected": 404,
+    "pass": true
+  },
+  {
+    "case": "reactivate_visible",
+    "actual": 200,
+    "expected": 200,
+    "pass": true
+  },
+  {
+    "case": "env_quota_two_third_submit",
+    "actual": 200,
+    "expected": 429,
+    "pass": false
+  },
+  {
+    "case": "submit_json_empty",
+    "actual": 500,
+    "expected": 422,
+    "pass": false
+  },
+  {
+    "case": "submit_json_whitespace",
+    "actual": 500,
+    "expected": 422,
+    "pass": false
+  },
+  {
+    "case": "submit_json_trailing_garbage",
+    "actual": 200,
+    "expected": 422,
+    "pass": false
+  },
+  {
+    "case": "harness_results_False",
+    "actual": [
+      500,
+      null
+    ],
+    "expected": [
+      200,
+      []
+    ],
+    "pass": false
+  },
+  {
+    "case": "harness_results_0",
+    "actual": [
+      500,
+      null
+    ],
+    "expected": [
+      200,
+      []
+    ],
+    "pass": false
+  },
+  {
+    "case": "source_not_persisted",
+    "actual": 0,
+    "expected": 0,
+    "pass": true
+  },
+  {
+    "case": "source_hash_correct",
+    "actual": "f953c6d5ef5244a07bd7459e086adfb4d97ca1b996dec990eac3195fb2834443",
+    "expected": "f953c6d5ef5244a07bd7459e086adfb4d97ca1b996dec990eac3195fb2834443",
+    "pass": true
+  },
+  {
+    "case": "usage_cost_empty_null",
+    "actual": null,
+    "expected": null,
+    "pass": true
+  },
+  {
+    "case": "disable_status",
+    "actual": 204,
+    "expected": 204,
+    "pass": true
+  },
+  {
+    "case": "disabled_old_token",
+    "actual": 401,
+    "expected": 401,
+    "pass": true
+  },
+  {
+    "case": "reenable_old_token_still_invalid",
+    "actual": 401,
+    "expected": 401,
+    "pass": true
+  },
+  {
+    "case": "other_class_unaffected",
+    "actual": 200,
+    "expected": 200,
+    "pass": true
+  },
+  {
+    "case": "cors_vite_5173",
+    "actual": 200,
+    "expected": 200,
+    "pass": true
+  },
+  {
+    "case": "cors_vite_5174",
+    "actual": 403,
+    "expected": 200,
+    "pass": false
+  }
+]

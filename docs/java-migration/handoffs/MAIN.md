@@ -1,5 +1,16 @@
 # 主 Agent 恢复点
 
+## 当前：2026-10-25 独立验收复核
+
+- 用户要求先验收P0/P1/P2；对象 `codex/p1-p2-longrun@c916e2d4f8e642cd163bcc0808a5bd20b224f339`。结论：**P0保留通过，P1/P2暂不通过**；8项需关闭，用户验收未登记通过，P3仍未授权。
+- 入口：`evidence/P0-P2-acceptance-20261025/README.md`。规范轴ST-01测试辅助入口先写库后验身份、ST-02重放可假通过、ST-03回归不可独立复现；规格轴SP-01 embedding单独启动、SP-02提交JSON边界、SP-03 results假值丢成绩、SP-04 GRADING_*失效、SP-05 Vite/CORS端口错配。
+- 本轮实测：PG下Java verify 298/298、P0单元19/19、CLI40/40、React102/102及build；独立HTTP25/32，7项差异；真实浏览器教师/学生基本路径和学生提交80分/折算16分通过。embedding启动失败、错误PG期望仍建库、判定器三个假通过反例均已复现。原始日志/探针在 `.migration-artifacts/acceptance-20261025/`，不提交原始输入/凭据/日志。
+- 本轮不改业务代码/DDL/黄金；只更新验收证据、STATUS和本交接，按仓库约定正常提交推送。原Python/React/部署相对main无源码改动。
+- 资源：本轮Java18090/fake MCP18100/Vite5173/独立Chrome19222已停止；PG55481已正常停止。保留 `.migration-artifacts/p1/pgdata`、验收库 `p1_java_accept_20261025` 与本轮套件遗留的5个guard库；显式错误身份探针库已删除；未清理历史库/恢复资产。恢复专属PG命令（仓库根）：`/opt/homebrew/opt/postgresql@17/bin/pg_ctl -D .migration-artifacts/p1/pgdata -l .migration-artifacts/p1/postgres.log -o '-p 55481 -h 127.0.0.1 -k /tmp/dpdk-java-p1-80b29135' start`；任何测试写入前先人工核验身份，直至ST-01修复。
+- 下一步：按8项问题修复复验，先P1隔离/装配，再P2和严格差分；不扩到P3，不把历史“0阻断”当作当前结论。以下U11收口内容保留为历史。
+
+## 历史：U11 批次工程收口
+
 - 日期：2026-10-25（**U11 批次工程收口**）；集成分支 `codex/p1-p2-longrun`，收口提交见 git log（全程 SSH 通路推送，每次 ls-remote 核对本地/远程 SHA 一致）。会话与子 Agent 均在 GLM-5.3 Flash。
 - **P1 工程门禁通过**（双轴 0 阻断，ef728cb）：四卡 150/150、三路径迁移链实测、身份预检负例、最小问答全链路。
 - **P2 工程门禁通过**（双轴 0 阻断）：五卡集成 298/298；启动端到端（9ba2378 装配修复批次后 health UP/迁移完成/422 形态）；集成回归零阻塞（c7cbab3：场景 1-7、契约 DIFF=0、React 联调接线）；规格建议 D2/S1/S3 已关闭（060a185，500 兜底 Starlette 平价+断言更新+SKIP 分类）；规范建议 S-1/S-2/S-4 已处理（口令脱敏、STATUS 更正、DECISIONS P2-D1 差异登记），S-3/S-5 说明入报告。

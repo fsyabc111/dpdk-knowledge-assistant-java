@@ -1,0 +1,20 @@
+[
+  {
+    "mutation": "wrong_http_status",
+    "verdict": "PASS",
+    "detail": "结构+格式类逐字段一致；live body 摘要={\"score\": 80}",
+    "expected": "DIFF"
+  },
+  {
+    "mutation": "reversed_rows",
+    "verdict": "PASS",
+    "detail": "结构+格式类逐字段一致；live body 摘要={\"rows\": [{\"score\": 20}, {\"score\": 10}]}",
+    "expected": "DIFF"
+  },
+  {
+    "mutation": "wrong_score",
+    "verdict": "STATE-DIFF",
+    "detail": "格式类一致，取值/行数因环境状态不同（登记）：字段=['score']（行数 golden={} live={}）",
+    "expected": "DIFF"
+  }
+]
