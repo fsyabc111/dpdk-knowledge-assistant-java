@@ -1,6 +1,14 @@
 # 主 Agent 恢复点
 
-## 当前：2026-10-25 U12 R段完成（8项关闭），待独立审查
+## 当前：2026-10-25 U12 R段收口（双轴审查通过），进入P3
+
+- **R段正式收口**：双轴独立审查——规范轴通过（0阻断5建议）、规格轴1阻断B-1（SP-04实测证据缺口）**已关闭**（补齐GRADING_MAX_CODE_BYTES=100→413/边界200、GRADING_TIMEOUT_SEC=1慢初始化→504+零成绩行、慢tools/call→200不中断语义、非法值真实进程启动失败×2；全部sp04b探针存证 .migration-artifacts/u12-rerun/）。审查处置全记录：evidence/U12-R-segment-20261025/README.md（含S-1～S-5与规范轴①②⑤处置）。审查后全量verify复跑316/316。
+- R段最终证据链：Java修复 f38aff9 → ST-02/03 worker 9b4de06（合并8c89318）→ 重放集成 d9364ed → R段报告 4debf9f → 审查处置（本提交）。严格重放DIFF=0（PASS72/ALLOWED-DIFF25/SKIP89）、探针32/32、--selftest 17/17、guard库150条清理。
+- **P3 启动（U12授权自动推进）**：J3-01（任务生命周期/恢复）∥J3-02（Agent五工具，用冻结接口先行）→ J3-03（chat/SSE集成）→ J3-04（讲解）。integration_pending 三项（IP-1停号取消、IP-J205-2活动会话删除、TaskGradeParticipant）由J3-01真实实现闭环。worker策略：最多2-3个并行，集成者（本Agent）单写契约/pom/公共装配。
+- 资源：PG 55481运行中；探针实例/MCP已全部停止。P3共享PG纪律不变（TestPg身份预检已闭环，可安全动态建删库）。
+- 下一动作：派发J3-01/J3-02 worker（独立worktree+分支），集成者准备J3-03契约接线。
+
+## 历史：U12 R段完成（2026-10-25）
 
 - **R段（验收8项修复+P1/P2工程复验）实现与验证完成**：Java修复 f38aff9（ST-01 TestPg身份预检+8负例、SP-01 AnyNestedCondition四组合、SP-02 FAIL_ON_TRAILING_TOKENS严格JSON、SP-03 resultsOf truthy falsy链、SP-04 GRADING_*桥接、SP-05 CORS默认5174+README）、ST-02/03 worker分支 9b4de06 合并 8c89318、重放集成收口 d9364ed（声明表补齐+五轮端到端）。全量verify **316/316**、strict probe **32/32**、SP-04真实进程探针7/7、SP-05浏览器README原样全通过（teacher-grades-u12.png）、严格重放 **DIFF=0**（PASS72/ALLOWED-DIFF25/SKIP89，--selftest 17/17）。报告：evidence/U12-R-segment-20261025/README.md。
 - 150个历史guard库按before/after清单清除（仅p1_t_*命名空间；验收库与恢复资产保留）。重放轮临时库已DROP。

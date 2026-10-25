@@ -32,13 +32,20 @@ if [ -n "${DPDK_TEST_PG_DATABASE:-}" ]; then
   PGDATABASE="$DPDK_TEST_PG_DATABASE"
 else
   PGDATABASE="$(python3 -c 'import json,sys;print(json.load(open(sys.argv[1])).get("pg",{}).get("database","") or "")' "$STATE_FILE" 2>/dev/null || true)"
-  PGDATABASE="${PGDATABASE:-p1_java_candidate}"
 fi
+# PGDATABASE 允许为空（run_00_setup 在身份文件写入前运行且不经 psqlq 写库）；
+# psqlq 内 fail-fast：无目标库名即拒绝，杜绝回退固定名静默打错库。
 # 合成实例口令从环境读取（不提交字面量、不设默认；实例为仓库专属合成PG，见 .env.example）
 export PGPASSWORD="${DPDK_TEST_PG_PASSWORD:?需要 DPDK_TEST_PG_PASSWORD（不设默认口令）}"
 export REPLAY_TMP STATE_FILE
 
-psqlq() { psql -h "$PGHOST" -p "$PGPORT" -U "$PGUSER" -d "$PGDATABASE" -tAc "$1"; }
+psqlq() {
+  if [ -z "$PGDATABASE" ]; then
+    echo "FATAL: 目标库名未解析（设 DPDK_TEST_PG_DATABASE 或先跑 run_00_setup.sh 生成身份文件）" >&2
+    return 2
+  fi
+  psql -h "$PGHOST" -p "$PGPORT" -U "$PGUSER" -d "$PGDATABASE" -tAc "$1"
+}
 
 # —— 身份文件（replay-state.json）读写：本轮动态 token/账号/作业 id 的唯一交换点 ——
 # state_get <dotted.key>：打印值，缺失输出空并返回 1

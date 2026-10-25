@@ -46,7 +46,13 @@
 ### SP-04 [P2] GRADING_* 环境变量未消费 → 已关闭
 
 - 修复：`SubmissionWiring` 桥接冻结环境键 GRADING_TIMEOUT_SEC/GRADING_MAX_CODE_BYTES/GRADING_DAILY_QUOTA（static-inventory direct_environment_access）。唯一兼容优先级：`dpdk.grading.*` 显式配置 > GRADING_* 环境变量 > 源默认；非法值（负数/非数字）启动失败（record 紧凑构造器 + 类型转换）。
-- 验证：装配测试 4/4（env 消费/缺省回退/显式属性优先/非法值 hasFailed，`SubmissionWiringEnvBridgeTest`）；真实进程探针（`GRADING_DAILY_QUOTA=2` 环境启动 18092 实例）：第3次有效提交 **429** detail "今日评测配额已用完（2 次/天）…"，429 后失败计数保留（counter=3）——修复前同一探针返回 200。存证 `.migration-artifacts/u12-rerun/sp04-probe.json` 7/7。
+- 验证（规格轴审查 B-1 复验后补齐，全部为真实进程端到端）：
+  - quota：真实进程 `GRADING_DAILY_QUOTA=2`（18092 实例）→ 第3次有效提交 **429** detail "今日评测配额已用完（2 次/天）…"，429 后失败计数保留（counter=3）。存证 `sp04-probe.json` 7/7。
+  - max bytes：真实进程 `GRADING_MAX_CODE_BYTES=100`（18093 实例）→ 101字节代码 **413** detail 含"100 字节"；恰100字节边界 → **200** score 80；counter=1/成绩行=1。存证 `sp04b-probe-bytes.json` 7/7。
+  - timeout：真实进程 `GRADING_TIMEOUT_SEC=1`（18094 实例）+ 慢 initialize（fake MCP --delay-init-sec 3）→ deadline 在 tools/call 提交前到期 → **504** detail "评测超过 1 秒未完成"，零成绩行（未提交任何评测）。存证 `sp04b-probe-timeout-init.json` 5/5。
+  - 不中断语义：`GRADING_TIMEOUT_SEC=1`（18095 实例）+ 慢 tools/call（--delay-sec 3）→ 已发出请求不被 deadline 中断，迟到响应仍被接受 → **200** score 80（冻结语义：StreamableHttpHarnessClient 头注释"deadline 不中断已发出的请求"）。存证 `sp04b-probe-timeout-inflight.json` 4/4。
+  - 非法值启动失败（真实进程）：`GRADING_TIMEOUT_SEC=abc` 与 `GRADING_MAX_CODE_BYTES=abc` → submissionSettings Bean 转换失败（"Failed to convert … For input string: \"abc\""）→ 应用启动失败退出。日志 `app-sp04b-invalid-{timeout,bytes}.log`；装配断言覆盖 quota -1/abc、timeout 0/abc、max bytes 0/abc（`SubmissionWiringEnvBridgeTest` 4/4）。
+  - fake MCP 替身新增 `--delay-sec`/`--delay-init-sec` 参数（延迟注入仅用于本探针）。
 
 ### SP-05 [P2] README 默认联调被 CORS 拒绝 → 已关闭
 
@@ -81,3 +87,17 @@
 - chat/RAG/tasks/internal 与平台 docs/metrics/health 路由未实施：J3+/J5 范围（重放 SKIP 登记）。
 - 登录限流锁定状态为内存态，重启即清（Python 同语义）；重放工具以节拍参数适配冻结限流。
 - 本报告为工程门禁口径；用户验收、真实模型/embedding/真实harness、生产切换等按任务书独立放行。
+
+## 独立审查与处置（2026-10-25，双轴只读）
+
+- **规范轴（review-standards.md）：通过，0阻断、5建议**；**规格轴（review-spec.md）：1阻断（B-1 SP-04实测证据缺口）、5建议**，其余7项通过。
+- **B-1 处置（阻断关闭）**：按上文 SP-04 节补齐真实进程端到端实测——max bytes 非默认 413/边界200（7/7）、timeout 非默认 504+零成绩行（5/5）、不中断语义 200（4/4）、非法值启动失败×2（真实进程日志）；装配断言补 max bytes 非法值。修复后全量 verify 复跑（316/316）。
+- 建议处置：
+  - S-1（ST-01 标记维度零写入直接化）：`hostileTagYieldsSafeIdentifierOnly` 增加 p1_guard 不存在 + 计数不变断言。
+  - S-2（SP-01 探针自描述）：探针日志含完整启动命令与 health 响应（app-sp04b-*.log / sp01-embedding-only.log）；本报告补实例端口与生效环境变量。
+  - S-3（状态面 ALLOW(BODY) 残余风险）：在此显式登记——10个状态相关列表端点的 BODY 值级回归会被声明吞掉（HTTP状态仍硬前置；行形态/键集由场景日志兜底）。收窄声明为"结构一致+行数对账"列入 P5 全矩阵复核范围，本批次不静默视为豁免。
+  - S-4（逐轮重放记录）：五轮库名与结果——161030（common.sh DB解析缺陷，半污染废弃）、161252（限流429致token空，废弃）、162011（同161030，废弃）、162928（声明表不全，DIFF=1→补声明）、终轮 DIFF=0 入库；前四轮库已DROP，无证据留存（本行即登记）。
+  - S-5（PGDATABASE 兜底）：common.sh psqlq 内 fail-fast（空库名拒绝执行），run_00（不经psqlq）不受影响。
+  - 规范轴①（CORS顺序）：yml 默认对齐 config.py:116 逐字符顺序（127.0.0.1 在前）。
+  - 规范轴②（FRONTEND_ORIGINS 桥接）：cors-origins 解析链 DPDK_JAVA_CORS_ORIGINS > FRONTEND_ORIGINS（冻结环境键）> 源默认。
+  - 规范轴⑤（REPLAYED 分支）：保留——它是合法声明种类（EXPECT_STATUS），当前声明表未使用该种类而非死代码；留作 J4-03/J5-01 修复后平台路由的精确断言语义。

@@ -27,9 +27,11 @@ logging:
 # 只接受独立测试/受控目标；禁止回退 .env、宿主机默认库或旧部署。
 dpdk:
   # React 联调来源（vite dev server）；逗号分隔，空=不放开任何来源。
-  # SP-05（2026-10-25 验收修复）：默认对齐冻结 Python 基线 FRONTEND_ORIGINS
-  # （config.py:116 = 5174，与 frontend/vite.config.js dev 端口一致）。
-  cors-origins: ${DPDK_JAVA_CORS_ORIGINS:http://localhost:5174,http://127.0.0.1:5174}
+  # SP-05（2026-10-25 验收修复）+R段审查建议：默认对齐冻结 Python 基线
+  # FRONTEND_ORIGINS（config.py:116，含顺序），与 frontend/vite.config.js dev 端口一致；
+  # FRONTEND_ORIGINS 为 P0 冻结环境键（同 GRADING_* 桥接口径）。
+  # 优先级：DPDK_JAVA_CORS_ORIGINS > FRONTEND_ORIGINS > 源默认。
+  cors-origins: ${DPDK_JAVA_CORS_ORIGINS:${FRONTEND_ORIGINS:http://127.0.0.1:5174,http://localhost:5174}}
   datasource:
     url: ${DPDK_JAVA_DB_URL:}
     username: ${DPDK_JAVA_DB_USER:}

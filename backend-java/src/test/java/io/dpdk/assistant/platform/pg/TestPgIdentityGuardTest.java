@@ -114,12 +114,17 @@ class TestPgIdentityGuardTest {
 
     @Test
     void hostileTagYieldsSafeIdentifierOnly() throws SQLException {
+        int before = p1DbCount();
         String db = TestPg.createDatabase("x'); DROP DATABASE p1_guard;--", TestPg.COMMENT);
         try {
             assertThat(db).matches("p1_t_[a-z0-9_]+_[0-9a-f]+");
+            // 零写入直接证明：注入目标库名未被创建，库计数不变。
+            assertThat(dbExists("p1_guard")).isFalse();
+            assertThat(p1DbCount()).isEqualTo(before + 1); // 仅本测试自己的一个库
         } finally {
             TestPg.dropDatabase(db);
         }
+        assertThat(p1DbCount()).isEqualTo(before);
     }
 
     @Test

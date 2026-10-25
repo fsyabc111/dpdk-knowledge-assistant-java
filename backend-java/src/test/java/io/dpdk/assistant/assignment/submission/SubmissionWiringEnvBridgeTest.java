@@ -72,5 +72,11 @@ class SubmissionWiringEnvBridgeTest {
                 .run(ctx -> assertThat(ctx).hasFailed());
         withEnv(Map.of("GRADING_TIMEOUT_SEC", "0"))
                 .run(ctx -> assertThat(ctx).hasFailed());
+        withEnv(Map.of("GRADING_TIMEOUT_SEC", "abc"))
+                .run(ctx -> assertThat(ctx).hasFailed());
+        withEnv(Map.of("GRADING_MAX_CODE_BYTES", "0"))
+                .run(ctx -> assertThat(ctx).hasFailed());
+        withEnv(Map.of("GRADING_MAX_CODE_BYTES", "abc"))
+                .run(ctx -> assertThat(ctx).hasFailed());
     }
 }

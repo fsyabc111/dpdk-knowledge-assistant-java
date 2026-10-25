@@ -83,6 +83,8 @@ class Handler(BaseHTTPRequestHandler):
             with LOCK:
                 STATE["initializes"] += 1
                 n = STATE["initializes"]
+            if ARGS.delay_init_sec > 0:
+                time.sleep(ARGS.delay_init_sec)  # deadline 提交前到期实测（SP-04）
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
             self.send_header("Mcp-Session-Id", "fake-session-%d" % n)
@@ -116,6 +118,8 @@ class Handler(BaseHTTPRequestHandler):
                 "at": time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime()),
             }
             if name == "grade_plugin":
+                if ARGS.delay_sec > 0:
+                    time.sleep(ARGS.delay_sec)  # SP-04 timeout 实测：慢上游模拟
                 payload = load_payload(ARGS.payload_file) if ARGS.payload_file else None
                 if payload is None:
                     payload = dict(DEFAULT_PAYLOAD)
@@ -171,6 +175,10 @@ def main():
     ap.add_argument("--state-file", default=os.path.join(tmp_dir, "harness_state.json"))
     ap.add_argument("--payload-file", default=os.path.join(tmp_dir, "grade_payload.json"))
     ap.add_argument("--protocols-file", default=os.path.join(tmp_dir, "protocols_payload.json"))
+    ap.add_argument("--delay-sec", type=float, default=0.0,
+                    help="tools/call(grade_plugin) 响应前延迟秒数（SP-04 timeout 链路实测用）")
+    ap.add_argument("--delay-init-sec", type=float, default=0.0,
+                    help="initialize 响应前延迟秒数（deadline 在提交前到期 → NOT_SUBMITTED → 504）")
     ARGS = ap.parse_args()
     os.makedirs(os.path.dirname(ARGS.state_file), exist_ok=True)
     persist(ARGS.state_file)
