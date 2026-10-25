@@ -1,0 +1,232 @@
+{
+  "synthetic": true,
+  "version": 1,
+  "original_manifest_sha256": "bd852d713e13b37cc6e351f9929f6e4127d6eae41fc31e02de264c95d0d00f5b",
+  "source_count": 10,
+  "include_count": 27,
+  "file_count": 27,
+  "roots": {
+    "dpdk": "dpdk",
+    "assistant": "assistant"
+  },
+  "coverage": [
+    {
+      "source": "docs",
+      "root": "dpdk",
+      "include": "README.md",
+      "kind": "file",
+      "generated": "dpdk/README.md"
+    },
+    {
+      "source": "docs",
+      "root": "dpdk",
+      "include": "docs/",
+      "kind": "directory",
+      "generated": "dpdk/docs/synthetic_docs_1.md"
+    },
+    {
+      "source": "docs",
+      "root": "dpdk",
+      "include": "plugin/README.md",
+      "kind": "file",
+      "generated": "dpdk/plugin/README.md"
+    },
+    {
+      "source": "docs",
+      "root": "dpdk",
+      "include": "plugin/PLUGIN_SYSTEM.md",
+      "kind": "file",
+      "generated": "dpdk/plugin/PLUGIN_SYSTEM.md"
+    },
+    {
+      "source": "docs",
+      "root": "dpdk",
+      "include": "plugin/plugins/README.md",
+      "kind": "file",
+      "generated": "dpdk/plugin/plugins/README.md"
+    },
+    {
+      "source": "docs",
+      "root": "dpdk",
+      "include": "api_server/README.md",
+      "kind": "file",
+      "generated": "dpdk/api_server/README.md"
+    },
+    {
+      "source": "docs",
+      "root": "dpdk",
+      "include": "capture/README.md",
+      "kind": "file",
+      "generated": "dpdk/capture/README.md"
+    },
+    {
+      "source": "docs",
+      "root": "dpdk",
+      "include": "session/README.md",
+      "kind": "file",
+      "generated": "dpdk/session/README.md"
+    },
+    {
+      "source": "docs",
+      "root": "dpdk",
+      "include": "stats/README.md",
+      "kind": "file",
+      "generated": "dpdk/stats/README.md"
+    },
+    {
+      "source": "knowledge_base",
+      "root": "assistant",
+      "include": "knowledge/",
+      "kind": "directory",
+      "generated": "assistant/knowledge/synthetic_knowledge_base_0.md"
+    },
+    {
+      "source": "core_root",
+      "root": "dpdk",
+      "include": "main.c",
+      "kind": "file",
+      "generated": "dpdk/main.c"
+    },
+    {
+      "source": "core_root",
+      "root": "dpdk",
+      "include": "capture_dpdk.c",
+      "kind": "file",
+      "generated": "dpdk/capture_dpdk.c"
+    },
+    {
+      "source": "core_root",
+      "root": "dpdk",
+      "include": "http_server.c",
+      "kind": "file",
+      "generated": "dpdk/http_server.c"
+    },
+    {
+      "source": "core_root",
+      "root": "dpdk",
+      "include": "http_server.h",
+      "kind": "file",
+      "generated": "dpdk/http_server.h"
+    },
+    {
+      "source": "core_root",
+      "root": "dpdk",
+      "include": "log.c",
+      "kind": "file",
+      "generated": "dpdk/log.c"
+    },
+    {
+      "source": "core_root",
+      "root": "dpdk",
+      "include": "log.h",
+      "kind": "file",
+      "generated": "dpdk/log.h"
+    },
+    {
+      "source": "capture_subsystem",
+      "root": "dpdk",
+      "include": "capture/",
+      "kind": "directory",
+      "generated": "dpdk/capture/synthetic_capture_subsystem_0.md"
+    },
+    {
+      "source": "session_subsystem",
+      "root": "dpdk",
+      "include": "session/",
+      "kind": "directory",
+      "generated": "dpdk/session/synthetic_session_subsystem_0.md"
+    },
+    {
+      "source": "stats_subsystem",
+      "root": "dpdk",
+      "include": "stats/",
+      "kind": "directory",
+      "generated": "dpdk/stats/synthetic_stats_subsystem_0.md"
+    },
+    {
+      "source": "logger_subsystem",
+      "root": "dpdk",
+      "include": "logger/",
+      "kind": "directory",
+      "generated": "dpdk/logger/synthetic_logger_subsystem_0.md"
+    },
+    {
+      "source": "plugin_core",
+      "root": "dpdk",
+      "include": "plugin/",
+      "kind": "directory",
+      "generated": "dpdk/plugin/synthetic_plugin_core_0.md"
+    },
+    {
+      "source": "api_server",
+      "root": "dpdk",
+      "include": "api_server/",
+      "kind": "directory",
+      "generated": "dpdk/api_server/synthetic_api_server_0.md"
+    },
+    {
+      "source": "flask_web",
+      "root": "dpdk",
+      "include": "Flask_network_new/app.py",
+      "kind": "file",
+      "generated": "dpdk/Flask_network_new/app.py"
+    },
+    {
+      "source": "flask_web",
+      "root": "dpdk",
+      "include": "Flask_network_new/app_config.py",
+      "kind": "file",
+      "generated": "dpdk/Flask_network_new/app_config.py"
+    },
+    {
+      "source": "flask_web",
+      "root": "dpdk",
+      "include": "Flask_network_new/app_smart.py",
+      "kind": "file",
+      "generated": "dpdk/Flask_network_new/app_smart.py"
+    },
+    {
+      "source": "flask_web",
+      "root": "dpdk",
+      "include": "Flask_network_new/core/",
+      "kind": "directory",
+      "generated": "dpdk/Flask_network_new/core/synthetic_flask_web_3.md"
+    },
+    {
+      "source": "flask_web",
+      "root": "dpdk",
+      "include": "Flask_network_new/services/",
+      "kind": "directory",
+      "generated": "dpdk/Flask_network_new/services/synthetic_flask_web_4.md"
+    }
+  ],
+  "files": {
+    "assistant/knowledge/synthetic_knowledge_base_0.md": "e70e26a9a8ea508b24f3a619e5b4d2dffdc9195f91a8ebb7108268877d6ecd0a",
+    "dpdk/Flask_network_new/app.py": "8ac02e9537231774644e2c5b786a8e5968fe3d87dcfd6d3c360b4440d707c598",
+    "dpdk/Flask_network_new/app_config.py": "338dfa8d9190d0ec7c188e7675b89c6df07c2c93511d203a75638b6698630853",
+    "dpdk/Flask_network_new/app_smart.py": "9d7798beb71dcc92a2932cfecd649956c68db144210c09c68a6699cf18db3e78",
+    "dpdk/Flask_network_new/core/synthetic_flask_web_3.md": "c846c05d8dffefea8a41cce45f12b34627f5803a76fb1b8b85e9ec862ac7c754",
+    "dpdk/Flask_network_new/services/synthetic_flask_web_4.md": "ddb23130bee726ae469ee824bd36d239e72e69a4bd1fcc5a8175e69037bf900c",
+    "dpdk/README.md": "9fc7c2ec0868d6f73da8f59ae7380e4a6130779999aac4e2476b669bad76abe9",
+    "dpdk/api_server/README.md": "e17ec67adf883e633bf3e32f7a9d827445bed70e5add961716b9961de20a2b2f",
+    "dpdk/api_server/synthetic_api_server_0.md": "edbc26328d56d911100659ef470688df78bd5abb0a32996a89863d0d7524261b",
+    "dpdk/capture/README.md": "e6787ff19581c285b4a8bd475394c6b885ae71de64d6c191a019613b80700a8a",
+    "dpdk/capture/synthetic_capture_subsystem_0.md": "85106f6c0b4299abf3b172bf6638be99b91b7930e4b00823c1e99dbda54edfb6",
+    "dpdk/capture_dpdk.c": "4bfb016abe83e94238b46e0dd544259e0f0c540ac073f5607d0441da54ab39da",
+    "dpdk/docs/synthetic_docs_1.md": "24a8e8d7c311342a5dcf6a1ea00be9ef4af86c61ed0c63186f945877adcc4778",
+    "dpdk/http_server.c": "ccfbb8e19ef52a0c79f5d5c4154602d1029637f4c1d79903837471aa92f450ba",
+    "dpdk/http_server.h": "f11245b233b0659fd796a7add9f7f04aa4648a534815f58c14cdf1f462e842c8",
+    "dpdk/log.c": "b5153da666befbc68aab51778805a1cc52e228ed4cdb2afab744343aa88e4603",
+    "dpdk/log.h": "933716eaa6dabdfdbedea14b13e6271feccc423737a19213b724964eaf447af2",
+    "dpdk/logger/synthetic_logger_subsystem_0.md": "8cff602d6745b9addfd4bc9798ece039340ee70ead4dc077da641ae2d5ba6402",
+    "dpdk/main.c": "b664b3be41d08b58b34bab0ce1712181eca2a6f22f0832f4ba30132d9c165246",
+    "dpdk/plugin/PLUGIN_SYSTEM.md": "45c6783bdfeb27f1fcbd1273d4766611c637ab74eb0843c96b842dd9debf19af",
+    "dpdk/plugin/README.md": "74da9d2bb9daeff4bcd2dd83384b4ba4c640e2138664db365969020bcd086380",
+    "dpdk/plugin/plugins/README.md": "17d9a74f519e41bad74d4f051d4cebf680d0e63d1ca21e8f7568e019da0d7c9a",
+    "dpdk/plugin/synthetic_plugin_core_0.md": "7a3b912446fa67c6b315fe2f37543481c891caf91897ec05a9b9fa9693d7b0ea",
+    "dpdk/session/README.md": "2a59c7b2a5560c165fbedbf437d345718cb6831ef12e3617aa93cfc2f2044599",
+    "dpdk/session/synthetic_session_subsystem_0.md": "1d28f24b2f56af3c118b566d1202decec1b522c686b63959aa71cc392cab1e57",
+    "dpdk/stats/README.md": "5b8d6370b56a896387ce31737af4a4617e6a5a5ed9f1c745771fd65b4dfbea60",
+    "dpdk/stats/synthetic_stats_subsystem_0.md": "15e78b26c70f1587db4364d1cd0e6a408d4ec06e65358107f54640807f8e21fd"
+  }
+}

@@ -5,3 +5,6 @@ frontend/node_modules/
 frontend/dist/
 frontend/.env*
 frontend/**/*.log
+!deploy-java/
+!deploy-java/nginx/
+!deploy-java/nginx/default.conf

@@ -1,0 +1,18 @@
+{
+  "source_revision": "f020efa",
+  "status": "preparation_only_not_rehearsed",
+  "guard_tests": {"run": 7, "failed": 0, "skipped": 0},
+  "docker": {
+    "context": "colima-java-u12",
+    "daemon_name": "colima-java-u12",
+    "daemon_id": "8f66e5ea-9c07-4379-b27d-7a5759cc2cd3",
+    "runtime_containers_started_by_worker": 0,
+    "database_operations": 0
+  },
+  "sources": {"synthetic": true, "source_count": 10, "include_count": 27, "file_count": 27},
+  "secrets": {"runtime_env_mode": "0600", "private_key_mode": "0600", "tracked": false},
+  "compose_expansion": "passed_explicit_new_context",
+  "application_images": {"backend_p4": "building", "frontend_p4": "built_pending_record"},
+  "cold_start": "pending_J5_01_J5_02_and_main_window",
+  "upgrade_restore_rollback": "pending_J5_01_J5_02_and_main_window"
+}
