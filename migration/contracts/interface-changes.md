@@ -147,3 +147,10 @@ J3-01 已交付（worker/j3-01@40cb46c，自有测试 8类50/50；真双JVM+合�
 - SearchInput增加conversationContext，保留question/queryVector两参构造兼容；QueryRewritePort新增默认上下文重载，HeuristicQueryRewriter覆写，PgReleaseReader正式消费会话上下文。J3-03传递真实会话检索语境，补端到端追问消解回归；不改变排序/向量/发布版本配置。
 - 产品RAG_REQUEST_TOKEN_BUDGET必须在每次planner/finalize模型回复后、工具副作用前执行，不能仅在完整Agent结束后检查；AGENT独立预算不代替产品预算。补高AGENT预算+低RAG预算的真实账本零MCP/零grading扣次/零成绩回归。
 - 规范轴成绩边界修复：TaskGradeInput.resultsJson明确为原始results数组JSON，TaskGradeLedger从临时输入取source_origin并只包一层。Agent侧不再嵌套来源对象；新增实际PG数组结构与失败用例画像回归。ChatAgentPorts成绩SQL迁入grading/query公开统计服务，chat仅委托；产品不存在的非task成绩写入路径明确拒绝，不绕过task参与者和账号锁。
+
+## P4公共接口先行（2026-10-25，P3门禁已通过）
+
+- PreparedIndex补releaseId/configuration/createdAt/desiredNodes/changedNodes，新增IndexNode(id,content,metadata,embedding)。复用节点可无向量，发布实现对changed节点严格验证1024维/finite/nonzero；PublishReceipt保持releaseId。消费者J4-01/J4-03，发布仍CAS+节点+release+成员一事务。
+- 索引富批量消费面放index.IndexBatchEmbedding(List<String>,UsageCore.UsageRecorder)，集成装配适配已有OpenAiCompatibleEmbeddingClient.embedTexts和ModelUsageLedger；不修改公共单文本EmbeddingPort。IndexUsageSink finally刷账、失败告警降级，复用用量开关/价格版本。
+- J4-02 OriginalQuestionVerifier分prepareAdmission（共享chat限流+日配额，先于issue读取）和verify（admission+当前release检索/生成/强制judge/总墙）；不创建普通chat任务、不复制task仓储。知识作者title/body保留Python字节语义，不新增脱敏安全差异；H的正文脱敏适用于运行输入/问题/反馈/note/事件。
+- CLI增加dpdk.task.background-enabled开关，默认true兼容服务；CLI最高优先级false并关闭启动迁移，防dry-run触发孤儿恢复/DDL。Boot mainClass显式Application以免新增OperationsMain产生歧义。

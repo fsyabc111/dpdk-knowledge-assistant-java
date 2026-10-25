@@ -1,5 +1,11 @@
 package io.dpdk.assistant.contracts.index;
 
-/** 待发布索引（changed nodes/release 记录/成员）；字段由 J4-01 登记补全。 */
-public record PreparedIndex(String releaseId) {
+/** embedding完成后的待发布快照；发布事务不跨外部调用。 */
+public record PreparedIndex(String releaseId, String configuration, String createdAt,
+                            java.util.List<IndexNode> desiredNodes,
+                            java.util.List<IndexNode> changedNodes) {
+    public PreparedIndex {
+        desiredNodes = java.util.List.copyOf(desiredNodes);
+        changedNodes = java.util.List.copyOf(changedNodes);
+    }
 }

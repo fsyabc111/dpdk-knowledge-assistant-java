@@ -90,6 +90,8 @@ public class TaskWiring {
     }
     @Bean LocalTaskCancellationPort localTaskCancellation(RagTaskService tasks) { return new TaskLocalCancellation(tasks); }
     @Bean(destroyMethod = "close")
+    @org.springframework.boot.autoconfigure.condition.ConditionalOnProperty(
+            name = "dpdk.task.background-enabled", havingValue = "true", matchIfMissing = true)
     TaskBackground taskBackground(TaskRecovery recovery, ObjectProvider<TaskExecutor> executor) {
         return new TaskBackground(recovery, executor);
     }

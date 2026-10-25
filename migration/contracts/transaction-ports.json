@@ -441,7 +441,14 @@
           "end_line": 152,
           "symbol": "_new_pgvector_store"
         }
-      ]
+      ],
+      "data_fields": {
+        "SearchInput": [
+          "question",
+          "queryVector",
+          "conversationContext"
+        ]
+      }
     },
     {
       "id": "index.ConfigurationFingerprint",
@@ -491,7 +498,25 @@
           "end_line": 205,
           "symbol": "rollback_release"
         }
-      ]
+      ],
+      "data_fields": {
+        "PreparedIndex": [
+          "releaseId",
+          "configuration",
+          "createdAt",
+          "desiredNodes:List<IndexNode>",
+          "changedNodes:List<IndexNode>"
+        ],
+        "IndexNode": [
+          "id",
+          "content",
+          "metadata",
+          "embedding:List<Float>|null"
+        ],
+        "PublishReceipt": [
+          "releaseId"
+        ]
+      }
     },
     {
       "id": "chat.CitationBinder",
