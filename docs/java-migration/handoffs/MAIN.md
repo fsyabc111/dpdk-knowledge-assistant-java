@@ -8,7 +8,7 @@
 
 ## Git/权属
 
-- 集成codex/p3-p5-longrun，origin用户新仓库；最近已核验推送81f3757。当前HEAD af0543e，后续集成待本轮验证后推送。
+- 集成codex/p3-p5-longrun，origin用户新仓库；最近已核验推送81f3757。当前已验证生产源码1ed547b，后续仅证据/CI物料；待P4审查快照推送。
 - 主Agent独占contracts/pom/配置/wiring/DDL/STATUS/MAIN/平台web/errors；root已装配Index/Knowledge/GroundedQuestionVerifier/OperationsPort/Metrics/health-ready。
 - J4-01 index worker已交付：c94bcbb→70e574e→b59c631→fcb3e26→ad277bf，已全cherry-pick；52/52（39单元黄金+13PG）。无运行任务，源码锁释放。
 - J4-02 knowledge worker已交付：7d9d1be→c1b4a7e→49b649a，已集成；19/19PG，含真实原题强制judge。无运行任务，锁释放。
@@ -29,7 +29,7 @@
 
 ## 当前验证/资源
 
-- P4首次完整显式PG verify已结束684项1失败（TaskIp并发恢复注册后立即断言执行次数的调度竞态）；已加executor.entered闩、保留恰好一次断言并收集线程异常，单组7/7复验通过，日志p4-recovery-latch.log。待离线judge新增片后重新完整verify，当前PG空闲。
+- P4首轮684项1调度测试失败已确定性修复；最终完整698/698，源码1ed547b，日志p4-final-full-verify.log；同jar f57f8045cafeab09a5d8098b5ebea09e6e7d188d15229b2879073bfa73e93bf3 额外native CLI2/2含16新JVM严格通过。阶段报告evidence/P4/phase-report.md，双轴待做。当前PG空闲。
 - PG55481专属实例运行；四DPDK_TEST_PG_*显式，口令只从主checkout .migration-artifacts/p1/local-credentials.txt解析，不输出。TestPg先验身份再动态建删，临时测试库finally清理；不删历史合成验收/恢复资产。
 - JAVA_HOME=/opt/homebrew/opt/openjdk@21。Node24.18.1本机测试，原frontend102+build P3已通过，未改前端源码。
 - 新隔离Colima java-u12（4CPU/4GiB/20GiB）启动中，仅本批次新profile，--activate=false --ssh-config=false --template=false，只挂当前repo；旧dpdk profile保持Stopped，原context仍colima-dpdk-ext。
@@ -43,3 +43,10 @@
 3. 当前代码与物料及时commit/push并核验SHA；更新STATUS/本文件。完成P4报告+独立双轴审查，阻断关闭后自动进P5。
 4. 新Colima继续等下载并核对profile/context，后续docker --context colima-java-u12显式运行，禁止动原profile。若硬阻塞继续其他独立工作。
 5. P5按acceptance J5-01全矩阵/原客户端与浏览器→J5-02故障/三轮120s+600s固定容量（thresholds.json）→J5-03独立Compose冷启0013升级/备份排除临时输入且实际恢复/回退→J5-04交付准备；未实现/未测/未授权分开。整个授权范围完成前不收口。
+
+### 最新资源补充
+
+- Colima下载已完成，java-u12 Running，Docker29.5.2/4CPU/4GiB；旧dpdk Stopped，docker context show仍colima-dpdk-ext。仅显式--context colima-java-u12使用新实例。PG镜像digest dd467f03...已拉取，独立无网只读version证明17.10；应用栈未启动。
+- 专属原PG20:10:36 smart shutdown来源未确定，已核对数据目录后恢复，p1_java/17.10/vector0.8.4只读身份复核通过。native CLI零写拒绝连接失败的原证据保留。
+- 真jar先发现stdout日志污染与错误teacher角色白名单，已1ed547b修复（early logging/io.dpdk off+stdout框架导stderr，复用权威4角色），已16命令通过。Boot CLI证据evidence/J4-03/boot-cli.md最新回执已集成。
+- P5预检handoffs/J5-01-PREFLIGHT.md、J5-02-PREFLIGHT.md只读准备完成；旧run_08薄轨迹不足完整oracle/full关联双射，必须新collector；容量旧ASGI布局不能直接对Java TCP，需新同环境Python TCP基线，冻结阈值不改。

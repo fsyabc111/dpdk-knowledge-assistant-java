@@ -69,6 +69,11 @@ jobs:
       - name: Explicit dedicated PG integration
         working-directory: backend-java
         run: ./mvnw -B test
+      - name: Build artifact then verify actual CLI JVMs against isolated PG
+        working-directory: backend-java
+        run: |
+          ./mvnw -B -DskipTests package
+          ./mvnw -B test -Dtest=OperationsBootJarAcceptance
   frontend:
     runs-on: ubuntu-latest
     steps:

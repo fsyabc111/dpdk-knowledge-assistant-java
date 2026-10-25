@@ -35,7 +35,7 @@
 | J3-04 | implemented | explain worker+主集成 | 23项通过+1黄金增补；真第二JVM恢复，grade0 | 未登记；handoffs/J3-04.md、evidence/J3-04/ |
 | J4-01 | review | index worker；主Agent集成 | 单卡52/52，合并树待最终复验 | 用户未验；evidence/J4-01/ |
 | J4-02 | review | knowledge worker；主Agent集成 | 单卡19/19+组合真实闭环4项通过 | 用户未验；evidence/J4-02/、P4/workflow-index.md |
-| J4-03 | running | operations/ops_integration+主Agent | 10基础+7真实PG+5Node；原题/ready/错误/头已测，offline judge补齐中 | 用户未验；evidence/J4-03/ |
+| J4-03 | review | operations/ops_integration+主Agent | 合并树698/698；真jar2/2含16新JVM；Node5/5；离线judge/运维真实接线 | 用户未验；evidence/J4-03/ |
 | J5-01 | planned | 待P4门禁 | 未执行 | 未验 |
 | J5-02 | planned | 待P5依赖 | 未执行 | 未验 |
 | J5-03 | planned | 待P5依赖 | 未执行 | 未验 |
@@ -62,3 +62,5 @@
 - P5浏览器、全矩阵、容量、冷启动/0013升级/真实备份恢复/回退尚未执行。live质量和生产资格不在本批次。
 
 - P4首次合并树684项1失败为旧并发测试未同步执行入口（不是放宽生产不变量），已用入口闩修复并单组7/7；最终全量与P4双轴审查仍未做。新Colima java-u12独立profile下载中，旧dpdk/context未动。
+
+- P4最新验证：源码1ed547b，完整698/698（0失败/错误/跳过），同jar f57f8045... 额外BootJar 2/2、16新JVM命令通过；CLI stdout/角色缺陷均修。P4报告evidence/P4/phase-report.md，双轴审查待做；P5尚未放行。新java-u12已启动、旧dpdk停止且原context未变，应用栈实际部署仍未执行。

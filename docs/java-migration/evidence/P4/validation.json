@@ -1,0 +1,774 @@
+{
+  "validated_production_source_commit": "1ed547b5691edd3b3e5b2486c7dcad24b97bcaf6",
+  "phase_base": "708128c",
+  "date": "2026-10-25",
+  "result": {
+    "tests": 698,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "exit_code": 0
+  },
+  "jar_sha256": "f57f8045cafeab09a5d8098b5ebea09e6e7d188d15229b2879073bfa73e93bf3",
+  "boot_cli": {
+    "test_count": 2,
+    "child_jvm_commands": 16,
+    "result": "passed",
+    "same_jar_sha256": true,
+    "detail": "../J4-03/boot-cli.md"
+  },
+  "node_fake_mcp": {
+    "tests": 5,
+    "failures": 0,
+    "live": false
+  },
+  "postgres": {
+    "native_version": "17.10",
+    "native_vector": "0.8.4",
+    "isolated_image": "pgvector/pgvector:0.8.4-pg17@sha256:dd467f03ca5c5581222490e5217e48a262864ccb659be559f8491bbafdc97da0",
+    "isolated_postgres_binary_version": "17.10",
+    "actual_app_stack_started": false
+  },
+  "suites": [
+    {
+      "name": "io.dpdk.assistant.admin.AdminDeletionTransactionTest",
+      "tests": "10",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.922"
+    },
+    {
+      "name": "io.dpdk.assistant.admin.AdminTreeContractTest",
+      "tests": "20",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.981"
+    },
+    {
+      "name": "io.dpdk.assistant.admin.PasswordResetApprovalTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.579"
+    },
+    {
+      "name": "io.dpdk.assistant.agent.AgentGraphLoopTest",
+      "tests": "16",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.005"
+    },
+    {
+      "name": "io.dpdk.assistant.agent.AgentPromptsTest",
+      "tests": "14",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.003"
+    },
+    {
+      "name": "io.dpdk.assistant.agent.AgentToolsTest",
+      "tests": "30",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.009"
+    },
+    {
+      "name": "io.dpdk.assistant.agent.ContextBudgetTest",
+      "tests": "14",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.005"
+    },
+    {
+      "name": "io.dpdk.assistant.agent.GoldenScenarioTest",
+      "tests": "31",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.029"
+    },
+    {
+      "name": "io.dpdk.assistant.agent.TaskLedgerTest",
+      "tests": "20",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.261"
+    },
+    {
+      "name": "io.dpdk.assistant.assignment.AssignmentCatalogContractTest",
+      "tests": "13",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "1.158"
+    },
+    {
+      "name": "io.dpdk.assistant.assignment.AssignmentReportContractTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.502"
+    },
+    {
+      "name": "io.dpdk.assistant.assignment.CsvExportContractTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.413"
+    },
+    {
+      "name": "io.dpdk.assistant.assignment.explanation.ExplainDataIntegrationTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.31"
+    },
+    {
+      "name": "io.dpdk.assistant.assignment.explanation.ExplainRecoveryIntegrationTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "2.186"
+    },
+    {
+      "name": "io.dpdk.assistant.assignment.explanation.ExplainReplayIntegrationTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "1.453"
+    },
+    {
+      "name": "io.dpdk.assistant.assignment.explanation.SubmissionExplainContractTest",
+      "tests": "13",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.006"
+    },
+    {
+      "name": "io.dpdk.assistant.assignment.submission.AssignmentSubmitContractTest",
+      "tests": "13",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "1.016"
+    },
+    {
+      "name": "io.dpdk.assistant.assignment.submission.GradingPersistenceRaceTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.548"
+    },
+    {
+      "name": "io.dpdk.assistant.assignment.submission.GradingQuotaIntegrationTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "3.298"
+    },
+    {
+      "name": "io.dpdk.assistant.assignment.submission.SubmissionWiringEnvBridgeTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.012"
+    },
+    {
+      "name": "io.dpdk.assistant.auth.AuthContractTest",
+      "tests": "13",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.534"
+    },
+    {
+      "name": "io.dpdk.assistant.auth.CredentialLifecycleTest",
+      "tests": "14",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "1.222"
+    },
+    {
+      "name": "io.dpdk.assistant.auth.LoginThrottleTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.421"
+    },
+    {
+      "name": "io.dpdk.assistant.chat.AnswerValidatorGoldenTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.008"
+    },
+    {
+      "name": "io.dpdk.assistant.chat.ChatInputGoldenTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.01"
+    },
+    {
+      "name": "io.dpdk.assistant.chat.ChatSseContractTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.004"
+    },
+    {
+      "name": "io.dpdk.assistant.chat.P3ReviewRegressionTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.999"
+    },
+    {
+      "name": "io.dpdk.assistant.chat.ProductChatIntegrationTest",
+      "tests": "9",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "4.154"
+    },
+    {
+      "name": "io.dpdk.assistant.chat.ProductExecutionModeTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.002"
+    },
+    {
+      "name": "io.dpdk.assistant.chat.RealAgentLedgerIntegrationTest",
+      "tests": "12",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "3.445"
+    },
+    {
+      "name": "io.dpdk.assistant.chat.poc.MinimalQaChainIntegrationTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.266"
+    },
+    {
+      "name": "io.dpdk.assistant.chat.poc.MinimalQaSliceTest",
+      "tests": "9",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.009"
+    },
+    {
+      "name": "io.dpdk.assistant.grading.query.GradingQueryContractTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "1.403"
+    },
+    {
+      "name": "io.dpdk.assistant.harness.HarnessClientHttpTest",
+      "tests": "15",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.227"
+    },
+    {
+      "name": "io.dpdk.assistant.index.BoundedLinesGoldenTest",
+      "tests": "21",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.024"
+    },
+    {
+      "name": "io.dpdk.assistant.index.IndexServiceTest",
+      "tests": "11",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.193"
+    },
+    {
+      "name": "io.dpdk.assistant.index.PgIndexIntegrationTest",
+      "tests": "13",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.983"
+    },
+    {
+      "name": "io.dpdk.assistant.index.YamlKnowledgeSourceTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.024"
+    },
+    {
+      "name": "io.dpdk.assistant.knowledge.workflow.IssueConcurrencyIntegrationTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.919"
+    },
+    {
+      "name": "io.dpdk.assistant.knowledge.workflow.KnowledgePublicationIntegrationTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "1.383"
+    },
+    {
+      "name": "io.dpdk.assistant.knowledge.workflow.KnowledgeWorkflowContractTest",
+      "tests": "9",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "2.141"
+    },
+    {
+      "name": "io.dpdk.assistant.knowledge.workflow.P4WorkflowIndexIntegrationTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.974"
+    },
+    {
+      "name": "io.dpdk.assistant.model.AgentModelAdapterHttpTest",
+      "tests": "16",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.043"
+    },
+    {
+      "name": "io.dpdk.assistant.model.ChatClientHttpTest",
+      "tests": "15",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "3.049"
+    },
+    {
+      "name": "io.dpdk.assistant.model.ChatClientStreamHttpTest",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.437"
+    },
+    {
+      "name": "io.dpdk.assistant.model.EmbeddingClientHttpTest",
+      "tests": "11",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "2.111"
+    },
+    {
+      "name": "io.dpdk.assistant.model.ModelClientsRegistryTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.004"
+    },
+    {
+      "name": "io.dpdk.assistant.model.ModelFailureClassifierTest",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.001"
+    },
+    {
+      "name": "io.dpdk.assistant.model.ModelUsageLedgerTest",
+      "tests": "11",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.002"
+    },
+    {
+      "name": "io.dpdk.assistant.model.SingleFlightTtlCacheTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.165"
+    },
+    {
+      "name": "io.dpdk.assistant.model.UpstreamGateTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.366"
+    },
+    {
+      "name": "io.dpdk.assistant.model.WireSamplesTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.001"
+    },
+    {
+      "name": "io.dpdk.assistant.operations.OfflineEvidenceJudgeTest",
+      "tests": "12",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.091"
+    },
+    {
+      "name": "io.dpdk.assistant.operations.OperationsCliTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.004"
+    },
+    {
+      "name": "io.dpdk.assistant.operations.OperationsMetricsTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.005"
+    },
+    {
+      "name": "io.dpdk.assistant.operations.adapter.OperationsAdaptersIntegrationTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.75"
+    },
+    {
+      "name": "io.dpdk.assistant.operations.adapter.OperationsBusinessAdapterTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.096"
+    },
+    {
+      "name": "io.dpdk.assistant.platform.config.ConfigValidatorTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.003"
+    },
+    {
+      "name": "io.dpdk.assistant.platform.errors.ApiExceptionHandlerTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.02"
+    },
+    {
+      "name": "io.dpdk.assistant.platform.ids.PythonUuid5Test",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.001"
+    },
+    {
+      "name": "io.dpdk.assistant.platform.migration.MigrationThreePathsIntegrationTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "1.148"
+    },
+    {
+      "name": "io.dpdk.assistant.platform.pg.DatabaseIdentityGuardNegativeTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.487"
+    },
+    {
+      "name": "io.dpdk.assistant.platform.pg.TestPgIdentityGuardTest",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.323"
+    },
+    {
+      "name": "io.dpdk.assistant.platform.time.SystemClockAdapterTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.003"
+    },
+    {
+      "name": "io.dpdk.assistant.platform.wiring.ModelWiringCombinationsTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.197"
+    },
+    {
+      "name": "io.dpdk.assistant.platform.wiring.P4PlatformHttpTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.793"
+    },
+    {
+      "name": "io.dpdk.assistant.platform.wiring.ProductApplicationHttpTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "5.713"
+    },
+    {
+      "name": "io.dpdk.assistant.platform.wiring.RetrievalWiringTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.026"
+    },
+    {
+      "name": "io.dpdk.assistant.platform.wiring.TaskSettingsBridgeTest",
+      "tests": "13",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.623"
+    },
+    {
+      "name": "io.dpdk.assistant.platform.wiring.TaskWiringIntegrationTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.341"
+    },
+    {
+      "name": "io.dpdk.assistant.platform.wiring.UsageRecordingPolicyTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.005"
+    },
+    {
+      "name": "io.dpdk.assistant.retrieval.HeuristicQueryRewriterTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.004"
+    },
+    {
+      "name": "io.dpdk.assistant.retrieval.IndexConfigurationFingerprintTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.001"
+    },
+    {
+      "name": "io.dpdk.assistant.retrieval.PgRetrievalIntegrationTest",
+      "tests": "10",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.539"
+    },
+    {
+      "name": "io.dpdk.assistant.retrieval.PythonJsonTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.002"
+    },
+    {
+      "name": "io.dpdk.assistant.retrieval.RetrievalFeaturesGoldenTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.006"
+    },
+    {
+      "name": "io.dpdk.assistant.retrieval.RetrievalPipelineGoldenTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.016"
+    },
+    {
+      "name": "io.dpdk.assistant.session.SessionLifecycleTest",
+      "tests": "9",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.677"
+    },
+    {
+      "name": "io.dpdk.assistant.session.SessionQueryContractTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.429"
+    },
+    {
+      "name": "io.dpdk.assistant.source.SourceTemplateContractTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.334"
+    },
+    {
+      "name": "io.dpdk.assistant.task.TaskAdmissionTransactionTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.309"
+    },
+    {
+      "name": "io.dpdk.assistant.task.TaskGradeLedgerTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.392"
+    },
+    {
+      "name": "io.dpdk.assistant.task.TaskInputHashTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.002"
+    },
+    {
+      "name": "io.dpdk.assistant.task.TaskIpClosureTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.563"
+    },
+    {
+      "name": "io.dpdk.assistant.task.TaskLifecycleLedgerTest",
+      "tests": "11",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.453"
+    },
+    {
+      "name": "io.dpdk.assistant.task.TaskProbeReplayTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.308"
+    },
+    {
+      "name": "io.dpdk.assistant.task.TaskRecoveryTwoProcessTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "1.447"
+    },
+    {
+      "name": "io.dpdk.assistant.task.TaskRunnerConcurrencyTest",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "1.377"
+    },
+    {
+      "name": "io.dpdk.assistant.task.TaskStoreIdentityIntegrationTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.251"
+    },
+    {
+      "name": "io.dpdk.assistant.usage.QuotaTransactionTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.233"
+    },
+    {
+      "name": "io.dpdk.assistant.usage.UsageQueryContractTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.389"
+    }
+  ],
+  "logs_gitignored": [
+    ".migration-artifacts/p4-full-verify.log",
+    ".migration-artifacts/p4-recovery-latch.log",
+    ".migration-artifacts/p4-final-full-verify.log",
+    ".migration-artifacts/p4-fake-upstream-test.log"
+  ],
+  "limits": [
+    "live providers not authorized",
+    "browser and complete route/oracle trace not executed",
+    "new Docker profile/image preparation only; cold start/upgrade/restore deferred to P5",
+    "process-domain metrics listed unavailable; persisted ledger samples explicitly gauge"
+  ]
+}
