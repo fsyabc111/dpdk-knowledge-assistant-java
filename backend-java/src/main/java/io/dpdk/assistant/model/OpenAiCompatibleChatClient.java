@@ -419,6 +419,8 @@ public final class OpenAiCompatibleChatClient implements ChatModelPort {
         AtomicInteger calls = new AtomicInteger();
         AtomicBoolean recorded = new AtomicBoolean();
         AtomicReference<Map<String, Object>> usageSink = new AtomicReference<>();
+        Throwable terminalError = null;
+        boolean completed = false;
         try {
             Map<String, Object> payload = basePayload(messages, model, true);
             calls.set(1);
@@ -436,18 +438,19 @@ public final class OpenAiCompatibleChatClient implements ChatModelPort {
                 calls.set(2);
                 pumpStream(payload, subscription, subscriber, usageSink);
             }
-            if (!subscription.cancelled()) {
-                subscriber.onComplete();
-            }
+            completed = !subscription.cancelled();
         } catch (StopStreamSignal cancelledByConsumer) {
             // 消费方提前取消：读取已停止；finally 以当前 sink（无尾帧 → null）记账。
         } catch (Throwable error) {
-            if (!subscription.cancelled()) {
-                subscriber.onError(error);
-            }
+            terminalError = error;
         } finally {
             recordOnce(usage, stage, model, usageSink.get(), elapsedMs(started),
                     Math.max(calls.get(), 1), ModelUsageLedger.KIND_LLM, recorded);
+        }
+        // 终态是调用方flush边界；先让唯一账目可见，不能在回调后才finally补账。
+        if (!subscription.cancelled()) {
+            if (terminalError != null) { subscriber.onError(terminalError); }
+            else if (completed) { subscriber.onComplete(); }
         }
     }
 

@@ -148,7 +148,9 @@ class OperationsBootJarAcceptance {
         }
         return result;
     }
-    private static String iso(Instant value) { return SystemClockAdapter.pythonIso(value); }
+    private static String iso(Instant value) {
+        return SystemClockAdapter.pythonIso(value.truncatedTo(java.time.temporal.ChronoUnit.MICROS));
+    }
     private static void request(TaskTestHarness h, String id, String status, Instant created, Instant updated) throws Exception {
         sql(h,"INSERT INTO rag_requests(id,question,status,created_at,updated_at) VALUES (?,'synthetic CLI question',?,?,?)",
                 id,status,iso(created),iso(updated));
@@ -160,6 +162,8 @@ class OperationsBootJarAcceptance {
 
     @Test
     void helpAndMalformedArgumentsUseActualJarWithoutOpeningDatabase() throws Exception {
+        assertThat(iso(Instant.parse("2026-10-25T12:59:10.123456789Z")))
+                .isEqualTo("2026-10-25T12:59:10.123456+00:00");
         assertJarMatchesCurrentOperationsClasses();
         var help = run(null,Map.of(),"--help");
         assertThat(help.exit()).isZero();
