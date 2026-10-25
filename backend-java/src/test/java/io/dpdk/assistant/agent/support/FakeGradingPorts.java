@@ -49,7 +49,7 @@ public final class FakeGradingPorts {
     }
 
     /** 非任务路径配额替身：独立事务先递增后检查的现状口径。 */
-    public static final class Quota implements GradingQuotaPort {
+    public static class Quota implements GradingQuotaPort {
         public final List<String> charges = new ArrayList<>();
         public int remaining = Integer.MAX_VALUE;
 

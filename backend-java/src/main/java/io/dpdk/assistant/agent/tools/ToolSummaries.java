@@ -291,12 +291,16 @@ public final class ToolSummaries {
         boolean ok = parsed instanceof Map<?, ?> result && Boolean.TRUE.equals(result.get("ok"));
         out.put("ok", ok);
         if (!ok) {
+            if (parsed == null) {
+                // JSON 解析失败：与 Python 分支一致，区别于业务失败的「未知错误」。
+                out.put("summary", "工具返回格式异常");
+                return out;
+            }
             String detail = "未知错误";
-            if (parsed instanceof Map<?, ?> result) {
-                Object d = result.get("detail") != null ? result.get("detail") : result.get("error");
-                if (d != null) {
-                    detail = GradeFacts.str(d);
-                }
+            Map<?, ?> result = (Map<?, ?>) parsed;
+            Object d = result.get("detail") != null ? result.get("detail") : result.get("error");
+            if (d != null) {
+                detail = GradeFacts.str(d);
             }
             out.put("summary", CodePoints.truncate(detail, 120));
             return out;

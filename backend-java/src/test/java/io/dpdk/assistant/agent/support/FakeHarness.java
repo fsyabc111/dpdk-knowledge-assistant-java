@@ -16,11 +16,13 @@ import java.util.Map;
  * get_reference_answer/list_cases 等返回不同 payload）；值为 RuntimeException
  * 时对该工具抛错（模拟 harness 不可达）。未列出的工具退回 payload 旧行为。
  */
-public final class FakeHarness implements HarnessPort {
+public class FakeHarness implements HarnessPort {
 
-    public Map<String, Object> payload;
+    protected Map<String, Object> payload;
     public RuntimeException error;
     public Map<String, Object> payloads = new LinkedHashMap<>();
+    /** 按工具名的响应序列（flaky 场景）：每次弹出队首，用尽后退回 payloads/payload。 */
+    public Map<String, List<Object>> sequences = new LinkedHashMap<>();
     public final List<Map<String, Object>> calls = new ArrayList<>();
 
     public FakeHarness() {
@@ -49,7 +51,13 @@ public final class FakeHarness implements HarnessPort {
         record.put("tool", tool);
         record.put("args", args);
         calls.add(record);
-        Object outcome = payloads.get(tool);
+        Object outcome = null;
+        List<Object> sequence = sequences.get(tool);
+        if (sequence != null && !sequence.isEmpty()) {
+            outcome = sequence.remove(0);
+        } else {
+            outcome = payloads.get(tool);
+        }
         if (outcome instanceof RuntimeException runtimeError) {
             throw runtimeError;
         }
