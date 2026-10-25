@@ -51,7 +51,7 @@ public class SubmissionGradeWriter {
                 "INSERT INTO grading_submissions"
                         + "(id,user_id,session_id,protocol,code_hash,score,passed,total,"
                         + "results_json,assignment_id,task_job_id,created_at)"
-                        + " VALUES (?,?,NULL,?,?,?,?,?,?,?,NULL,?)")) {
+                        + " VALUES (?,?,NULL,?,?,?,?,?,?::jsonb,?,NULL,?)")) {
             ps.setString(1, submissionId);
             ps.setString(2, input.userId());
             ps.setString(3, input.protocol());
