@@ -67,3 +67,19 @@ PG命令同 `backend-java/README.md`，四项 `DPDK_TEST_PG_*` 必须显式指�
 - 最新集成树PG全量、原前端client真实HTTP最终结果、J3-04完整恢复、独立双轴审查由主Agent统一排队，不能用worker历史通过替代。
 - 真实模型/embedding/真实harness、浏览器硬件行为、P5容量/部署故障、用户验收/切换/退役未在本卡执行。
 - `chat/poc/**`保留作为J1-04可重放测试入口，正式路由消费新的产品执行体，无双生产路径。
+
+## P3 规范轴阻断修复（2026-10-25，冻结后仅两项）
+
+依据主 Agent 分派和 `evidence/P3/review-standards.md` 两项阻断，固定修复提交 `5aedf33`（基于集成快照 `e92f604`，本工作树merge `6ec3ce4`）。没有处理非阻断工具schema去重建议，也未改ChatTaskExecutor/共享装配/DDL/任务锁序。
+
+1. **成绩results重复包装**：`AgentTools.recordTaskJobGrade`现在把原始 `results` 数组序列化为 `TaskGradeInput.resultsJson`；`TaskGradeLedger`保留唯一 `{source_origin,results}` 包装责任，来源仍从真实临时输入读取。TaskLedger单测改为检查传参是数组；真实Agent→任务账本→成绩落库检查数组类型、每项字段/顺序完全等值、来源正确且不含源码。另用含PASS+FAIL两用例的真实链证明失败case进入学习画像，不能再以字符串contains掩盖结构错误。
+2. **跨成绩域SQL**：查询和学习画像逻辑迁回公开 `grading.query.AgentGradingStatsService implements GradingStatsPort`，聊天适配器仅委托，构造签名不变（沿用已注入的TransactionRunner）。删除chat内非任务成绩INSERT；产品任务成绩只能经TaskGrade参与端口，非task入口明确拒绝，不绕开账号/pending/job锁。真实PG检查拒绝时成绩零行，并保留原任务锁/并发/配额/取消与COMP-003回归。
+
+实际执行（本worker独占PG窗口，结束已释放给主Agent）：
+
+| 命令 | 结果 | 证据 |
+|---|---|---|
+| `JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./backend-java/mvnw -f backend-java/pom.xml -B test -Dtest=TaskLedgerTest` | 退出0，**20/20**，0失败/错误/跳过 | `.migration-artifacts/p3-standards-unit.log` |
+| 显式专属 `DPDK_TEST_PG_*`，`... test -Dtest=RealAgentLedgerIntegrationTest,TaskGradeLedgerTest` | 退出0，**18/18**（12+6），0失败/错误/跳过；TestPg预检后动态合成库 | `.migration-artifacts/p3-standards-pg.log` |
+
+源码变化仅五文件：AgentTools序列化窄改、ChatAgentPorts委托/拒绝、grading域新只读服务、TaskLedgerTest形态断言、RealAgentLedgerIntegrationTest真实结构/画像/非task拒绝。公共契约字段说明由主Agent统一补充，最终全量和独立复审仍由主Agent执行，不把单卡18项当阶段放行。
