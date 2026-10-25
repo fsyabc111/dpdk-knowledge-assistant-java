@@ -101,6 +101,10 @@ class TaskWiringIntegrationTest {
         context().run(ctx -> {
             assertThat(ctx).hasSingleBean(LocalTaskCancellationPort.class);
             assertThat(ctx.getBean(LocalTaskCancellationPort.class)).isInstanceOf(TaskLocalCancellation.class);
+            assertThat(ctx.getBean(io.dpdk.assistant.task.TaskGradeLedger.class).recordTaskGrade(
+                    new io.dpdk.assistant.contracts.grading.TaskGradeInput("missing-task", "missing-job",
+                            "dns", "hash", 100, 1, 1, "{}")))
+                    .isEqualTo(io.dpdk.assistant.contracts.grading.TaskGradeResult.cancelled);
             assertThat(ctx).doesNotHaveBean(NoOpLocalTaskCancellation.class);
             SessionPort adapter = ctx.getBean(SessionPort.class);
             assertThat(adapter).isInstanceOf(SessionPortAdapter.class);

@@ -44,6 +44,13 @@ public final class HarnessCaller {
                     System.nanoTime() + timeoutSeconds * 1_000_000_000L);
             HarnessReply reply = harness.call(tool, args, deadline);
             Map<String, Object> payload = parse(reply.payloadJson());
+            boolean taskGrade = "grade_plugin".equals(tool) && args.get("job_id") instanceof String id
+                    && !id.isBlank();
+            if (taskGrade && reply.submissionPhase() != HarnessReply.SubmissionPhase.NOT_SUBMITTED
+                    && (reply.error() != null || "bad_payload".equals(payload.get("error")))) {
+                // 已出门却无法确认结果：保留submitted账本，禁止模型换工具参数重评。
+                throw new HarnessResultUnknown();
+            }
             if (reply.error() != null && "harness_deadline_exceeded".equals(reply.error())) {
                 if ("grade_plugin".equals(tool)) {
                     // Python asyncio.wait_for 超时口径：账本行保持 submitted，恢复扫描可接续。
