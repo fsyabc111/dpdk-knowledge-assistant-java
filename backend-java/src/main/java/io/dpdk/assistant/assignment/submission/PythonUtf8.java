@@ -85,27 +85,34 @@ public final class PythonUtf8 {
                     maxCont = 0xBF;
                 }
             }
-            if (i + expected >= len) {
-                // 序列在输入中途结束（lead/续字节缺失）：整段前缀 1 个 U+FFFD。
+            if (i + 1 >= len) {
+                // 只有 lead、续字节缺失：整段前缀 1 个 U+FFFD。
                 out.append(REPLACEMENT);
                 break;
             }
             boolean complete = true;
-            int failedAt = expected;
+            int consumed = expected;
             for (int k = 1; k <= expected; k++) {
+                if (i + k >= len) {
+                    // 序列在输入中途结束（后续字节缺失）：整段前缀 1 个 U+FFFD。
+                    out.append(REPLACEMENT);
+                    complete = false;
+                    consumed = len - i;
+                    break;
+                }
                 int cont = data[i + k] & 0xFF;
                 int lo = k == 1 ? minCont : 0x80;
                 int hi = k == 1 ? maxCont : 0xBF;
                 if (cont < lo || cont > hi) {
+                    // 已累积前缀（lead + 前续字节）记 1 个 U+FFFD；失败字节从起始态重新处理。
+                    out.append(REPLACEMENT);
                     complete = false;
-                    failedAt = k;
+                    consumed = k;
                     break;
                 }
             }
             if (!complete) {
-                // 已累积前缀（lead + 前续字节）记 1 个 U+FFFD；失败字节从起始态重新处理。
-                out.append(REPLACEMENT);
-                i += failedAt;
+                i += consumed;
                 continue;
             }
             int codePoint = switch (expected) {
