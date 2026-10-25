@@ -1,0 +1,5 @@
+# 启动证据（两次启动，首轮为从零迁移）
+- 2026-10-25T11:53:00.189+08:00 第一次启动（空库 p1_java_candidate，无 AUTH_MODE→local 模式）：Tomcat started on port 8090; Started Application in 0.842s; 启动迁移完成: path=EMPTY, applied=1, catalogVerified=true
+- 2026-10-25T11:55:07.476+08:00 第二次启动（补 AUTH_MODE=account 后重启，同一库）：Started Application in 0.823s; 启动迁移完成: path=HISTORY, applied=0, catalogVerified=true
+- /actuator/health 两次均 HTTP 200 {"groups":["liveness","readiness"],"status":"UP"}
+- 说明：首轮启动未设 AUTH_MODE 时全部业务端点 404（非 account 模式整组 404，见 AuthController.requireAccountMode），该行为本身也是兼容性证据；随后以 AUTH_MODE=account 重启完成正式回归。
