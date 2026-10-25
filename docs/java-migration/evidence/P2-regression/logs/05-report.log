@@ -1,0 +1,76 @@
+=== S5.1 admin 成绩汇总（GET /api/assignments/{id}/grades） ===
+### admin assignment grades
+$ curl -s -i -H Authorization: Bearer <TOKEN_MASKED> http://127.0.0.1:8090/api/assignments/asg_a03f90646f844013/grades
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 726
+Date: Sun, 25 Oct 2026 04:01:28 GMT
+
+{"assignment":{"id":"asg_a03f90646f844013","title":"回归DNS作业","description":"P2回归","created_by":"U90000000002","scope":"class","deadline":"2099-01-01 00:00:00+00:00","status":"active","created_at":"2026-10-25 03:58:33.055670+00:00","updated_at":"2026-10-25 03:58:33.287360+00:00","items":[{"protocol":"arp","points":30},{"protocol":"dns","points":20}]},"rows":[{"user_id":"U90000000003","class_teacher":"U90000000002","scores":{"dns":16.0},"total_earned":16.0,"submission_count":2,"last_submitted_at":"2026-10-25 04:00:01.196222+00:00"},{"user_id":"U90000000004","class_teacher":"U90000000002","scores":{"dns":16.0},"total_earned":16.0,"submission_count":20,"last_submitted_at":"2026-10-25 04:00:01.752405+00:00"}]}
+
+
+=== S5.2 admin 导出 CSV（检查 BOM/CRLF/表头/未分配学生行） ===
+$ curl -s -i -H 'Authorization: Bearer <TOKEN_MASKED>' http://127.0.0.1:8090/api/assignments/asg_a03f90646f844013/export
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Disposition: attachment; filename="<TOKEN_MASKED>2.csv"
+Content-Type: text/csv;charset=utf-8-sig
+Content-Length: 252
+Date: Sun, 25 Oct 2026 04:01:28 GMT
+
+
+=== S5.3 学生角色访问成绩端点（404 不泄露存在性） ===
+### student grades (404 expected)
+$ curl -s -i -H Authorization: Bearer <TOKEN_MASKED> http://127.0.0.1:8090/api/assignments/asg_a03f90646f844013/grades
+HTTP/1.1 404 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 22
+Date: Sun, 25 Oct 2026 04:01:28 GMT
+
+{"detail":"not found"}
+
+### student export (404 expected)
+$ curl -s -i -H Authorization: Bearer <TOKEN_MASKED> http://127.0.0.1:8090/api/assignments/asg_a03f90646f844013/export
+HTTP/1.1 404 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 22
+Date: Sun, 25 Oct 2026 04:01:28 GMT
+
+{"detail":"not found"}
+
+scenario 05 done
+=== S5.4 leader 视角导出：班级分组 + 未分配组（组间空行） ===
+-- SQL 追加无班级归属学生 U90000000007（created_by=NULL，bcrypt 同 cost10 生成）
+INSERT 0 1
+U90000000007 submit -> 404 (score=)
+$ curl -s -i -H 'Authorization: Bearer <TOKEN_MASKED>' http://127.0.0.1:8090/api/assignments/asg_a03f90646f844013/export
+HTTP/1.1 200 
+Content-Disposition: attachment; filename="assignment_asg_a03f90646f844013_grades.csv"
+Content-Type: text/csv;charset=utf-8-sig
+BOM: True
+   班级(老师学号),学生学号,arp(满分30),dns(满分20),总分,提交次数,最近提交时间
+   U90000000002,U90000000003,,16.0,16.0,2,2026-10-25 04:00:01.196222+00:00
+   U90000000002,U90000000004,,16.0,16.0,20,2026-10-25 04:00:01.752405+00:00
+   (blank line)
+-- 学生07 404 属正确语义：class 作业仅其创建者的学生可见（07 无班级）。改由 leader 建 scope=all 作业，07 提交后再以 leader 导出。
+leader created scope=all assignment id=asg_7c3531d30b294036
+U90000000007 submit -> 200 (score=80)
+$ curl -s -i -H 'Authorization: Bearer <TOKEN_MASKED>' http://127.0.0.1:8090/api/assignments/asg_7c3531d30b294036/export (leader)
+HTTP/1.1 200 
+Content-Disposition: attachment; filename="assignment_asg_7c3531d30b294036_grades.csv"
+Content-Type: text/csv;charset=utf-8-sig
+BOM: True CRLF: True
+   班级(老师学号),学生学号,dns(满分20),总分,提交次数,最近提交时间
+   未分配,U90000000007,16.0,16.0,1,2026-10-25 04:03:29.179921+00:00
+   (blank line)

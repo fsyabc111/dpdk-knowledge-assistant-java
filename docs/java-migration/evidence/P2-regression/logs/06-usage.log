@@ -1,0 +1,112 @@
+=== S6.1 会话：无公开创建端点 → SQL 造合成会话+消息 → 读接口 ===
+-- SQL：为学生03造 2 条合成会话（id 用 uuid 形态占位，无真实聊天内容）
+INSERT 0 2
+INSERT 0 2
+-- api_tokens 无 sid 冲突；sessions 计数
+sessions for 03: 2
+### student03 list sessions
+$ curl -s -i -H Authorization: Bearer <TOKEN_MASKED> http://127.0.0.1:8090/api/chat/sessions
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 212
+Date: Sun, 25 Oct 2026 04:04:07 GMT
+
+{"sessions":[{"id":"sess-p2reg-02","title":"P2回归会话乙","updated_at":"2026-10-25 04:04:07.370312+00:00"},{"id":"sess-p2reg-01","title":"P2回归会话甲","updated_at":"2026-10-25 04:04:07.370312+00:00"}]}
+
+
+### student03 session detail
+$ curl -s -i -H Authorization: Bearer <TOKEN_MASKED> http://127.0.0.1:8090/api/chat/sessions/sess-p2reg-01
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 616
+Date: Sun, 25 Oct 2026 04:04:07 GMT
+
+{"session_id":"sess-p2reg-01","title":"P2回归会话甲","messages":[{"id":"msg-p2reg-01","role":"user","content":"合成提问（回归占位文本）","citations":[],"confidence":"medium","created_at":"2026-10-25 04:04:07.390533+00:00","answer_status":null,"answer_reason":null,"issue_id":null,"request_id":null,"task_id":null},{"id":"msg-p2reg-02","role":"assistant","content":"合成回答（回归占位文本）","citations":[],"confidence":"medium","created_at":"2026-10-25 04:04:07.390533+00:00","answer_status":null,"answer_reason":null,"issue_id":null,"request_id":null,"task_id":null}],"truncated":false}
+
+
+### student03 other-user session (404 expected: admin's none, but cross-check unknown id)
+$ curl -s -i -H Authorization: Bearer <TOKEN_MASKED> http://127.0.0.1:8090/api/chat/sessions/sess-does-not-exist
+HTTP/1.1 404 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 30
+Date: Sun, 25 Oct 2026 04:04:07 GMT
+
+{"detail":"session not found"}
+
+=== S6.2 usage/me（学生；chat 计数 0，grading 不计入 fetchCounters） ===
+### student03 usage/me
+$ curl -s -i -H Authorization: Bearer <TOKEN_MASKED> http://127.0.0.1:8090/api/usage/me
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 375
+Date: Sun, 25 Oct 2026 04:04:07 GMT
+
+{"subject":"U90000000003","roles":["viewer"],"daily_quota":200,"today":{"day":"2026-10-25","chat_count":0},"recent_days":[{"day":"2026-10-19","chat_count":0},{"day":"2026-10-20","chat_count":0},{"day":"2026-10-21","chat_count":0},{"day":"2026-10-22","chat_count":0},{"day":"2026-10-23","chat_count":0},{"day":"2026-10-24","chat_count":0},{"day":"2026-10-25","chat_count":0}]}
+
+
+=== S6.3 usage/subjects（admin；空 upstream 账本形态） ===
+### admin usage subjects
+$ curl -s -i -H Authorization: Bearer <TOKEN_MASKED> http://127.0.0.1:8090/api/usage/subjects
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 608
+Date: Sun, 25 Oct 2026 04:04:07 GMT
+
+{"subjects":[{"subject":"U90000000002","roles":["admin"],"daily_quota":200,"today_count":0,"total_count":0,"last_active_day":null},{"subject":"U90000000003","roles":["viewer"],"daily_quota":200,"today_count":0,"total_count":0,"last_active_day":null},{"subject":"U90000000004","roles":["viewer"],"daily_quota":200,"today_count":0,"total_count":0,"last_active_day":null},{"subject":"U90000000005","roles":["viewer"],"daily_quota":200,"today_count":0,"total_count":0,"last_active_day":null},{"subject":"U90000000006","roles":["viewer"],"daily_quota":200,"today_count":0,"total_count":0,"last_active_day":null}]}
+
+
+=== S6.4 usage/cost（admin；空账：成本未知→null 非 0 的字段形态） ===
+### admin usage cost
+$ curl -s -i -H Authorization: Bearer <TOKEN_MASKED> http://127.0.0.1:8090/api/usage/cost?days=7
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 599
+Date: Sun, 25 Oct 2026 04:04:07 GMT
+
+{"days":7,"since":"2026-10-18T04:04:07.560475+00:00","subject":null,"subjects":["U90000000002","U90000000003","U90000000004","U90000000005","U90000000006"],"stage":null,"request_id":null,"totals":{"key":null,"entries":0,"calls":0,"prompt_tokens":null,"completion_tokens":null,"total_tokens":null,"known_entries":0,"unknown_entries":0,"duration_ms":null,"cost_micros_by_currency":{}},"operations":{"entries":0,"calls":0,"duration_ms":null,"priced":false},"by_stage":[],"by_model":[],"by_day":[],"unpriced_models":[],"unknown_entries":0,"cost_currency_mixed":false,"truncated":false,"row_limit":20000}
+
+
+cost body: {"by_day": [], "by_model": [], "by_stage": [], "cost_currency_mixed": false, "days": 7, "operations": {"calls": 0, "duration_ms": null, "entries": 0, "priced": false}, "request_id": null, "row_limit": 20000, "since": "2026-10-18T04:04:07.560475+00:00", "stage": null, "subject": null, "subjects": ["U90000000002", "U90000000003", "U90000000004", "U90000000005", "U90000000006"], "totals": {"calls": 0, "completion_tokens": null, "cost_micros_by_currency": {}, "duration_ms": null, "entries": 0, "key": null, "known_entries": 0, "prompt_tokens": null, "total_tokens": null, "unknown_entries": 0}, "truncated": false, "unknown_entries": 0, "unpriced_models": []}
+total_cost is None: False
+=== S6.5 会话删除（学生删自己的） ===
+### student03 delete session 02
+$ curl -s -i -X DELETE -H Authorization: Bearer <TOKEN_MASKED> http://127.0.0.1:8090/api/chat/sessions/sess-p2reg-02
+HTTP/1.1 204 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Date: Sun, 25 Oct 2026 04:04:07 GMT
+
+
+
+### deleted session detail (404 expected)
+$ curl -s -i -H Authorization: Bearer <TOKEN_MASKED> http://127.0.0.1:8090/api/chat/sessions/sess-p2reg-02
+HTTP/1.1 404 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 30
+Date: Sun, 25 Oct 2026 04:04:07 GMT
+
+{"detail":"session not found"}
+
+scenario 06 done
