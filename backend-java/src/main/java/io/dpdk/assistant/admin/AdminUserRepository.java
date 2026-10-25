@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Pattern;
+import org.springframework.stereotype.Repository;
 
 /**
  * 管理员用户仓储：users / admin_audit_log / 停号级联 / 删除级联（对齐
@@ -34,6 +35,7 @@ import java.util.regex.Pattern;
  * 本事务内执行同形 UPDATE，再调端口清 resolve 缓存——Python clear_token_cache
  * 同为提交后清缓存）。
  */
+@Repository
 public class AdminUserRepository {
 
     static final Pattern USER_ID_PATTERN = Pattern.compile("^U\\d{11}$");

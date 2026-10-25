@@ -1,5 +1,6 @@
 package io.dpdk.assistant.auth;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,7 @@ public class AuthSettingsProvider {
 
     private volatile AuthServerSettings current;
 
+    @Autowired
     public AuthSettingsProvider(Environment environment) {
         this.current = AuthServerSettings.of(
                 value(environment, "AUTH_MODE", "local"),
