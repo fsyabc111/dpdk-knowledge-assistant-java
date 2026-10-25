@@ -180,11 +180,19 @@ public final class AssignmentTestHarness {
         }
     }
 
+    /** 删除账号行（先删其 api_tokens，等价真实删除级联的终态：成绩保留、token 消失）。 */
     public void deleteUser(String id) throws Exception {
-        try (Connection conn = ds.getConnection();
-             PreparedStatement ps = conn.prepareStatement("DELETE FROM users WHERE id = ?")) {
-            ps.setString(1, id);
-            ps.executeUpdate();
+        try (Connection conn = ds.getConnection()) {
+            try (PreparedStatement ps = conn.prepareStatement(
+                    "DELETE FROM api_tokens WHERE user_id = ?")) {
+                ps.setString(1, id);
+                ps.executeUpdate();
+            }
+            try (PreparedStatement ps = conn.prepareStatement(
+                    "DELETE FROM users WHERE id = ?")) {
+                ps.setString(1, id);
+                ps.executeUpdate();
+            }
         }
     }
 
