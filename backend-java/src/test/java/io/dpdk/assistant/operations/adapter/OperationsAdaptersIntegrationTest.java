@@ -180,7 +180,8 @@ class OperationsAdaptersIntegrationTest {
         var config=new EmbeddingConfig("synthetic","http://127.0.0.1:1/v1",1024,"bounded-lines-v2");
         var fingerprint=new IndexConfigurationFingerprint();
         var index=new IndexService(h.ds,h.runner,RetrievalSettings.defaults(),config,fingerprint,h.clock,
-                (texts,usage)->{embedded.incrementAndGet();return texts.stream().map(t->vector()).toList();}, usage->flushed.incrementAndGet(),10);
+                (texts,usage)->{embedded.incrementAndGet();return texts.stream().map(t->vector()).toList();}, usage->flushed.incrementAndGet(),10,
+                new io.dpdk.assistant.knowledge.workflow.PublishedKnowledgeRepository(h.runner));
         var reader=new PgReleaseReader(h.ds,RetrievalSettings.defaults(),config,fingerprint,new HeuristicQueryRewriter(),
                 input->{throw new AssertionError("固定检索禁止调用 embedding 上游");});
         var configured=adapter(index,reader,Map.of("DPDK",vector()));

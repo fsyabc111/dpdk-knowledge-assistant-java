@@ -7,6 +7,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dpdk.assistant.contracts.index.EmbeddingConfig;
+import io.dpdk.assistant.contracts.knowledge.PublishedKnowledgeReader;
 import io.dpdk.assistant.contracts.index.IndexNode;
 import io.dpdk.assistant.contracts.model.Vector1024;
 import io.dpdk.assistant.contracts.platform.TransactionRunner;
@@ -42,6 +43,11 @@ class IndexServiceTest {
     static Vector1024 vector() { float[] values = new float[1024]; values[0] = 1; return new Vector1024(values); }
 
     private IndexService service(List<IndexNode> existing, String oldConfig, IndexBatchEmbedding embedding, int batch) throws Exception {
+        return service(existing, oldConfig, embedding, batch, () -> List.of());
+    }
+
+    private IndexService service(List<IndexNode> existing, String oldConfig, IndexBatchEmbedding embedding,
+                                 int batch, PublishedKnowledgeReader knowledgeReader) throws Exception {
         DataSource ds = mock(DataSource.class);
         Connection c = mock(Connection.class);
         when(ds.getConnection()).thenReturn(c);
@@ -63,7 +69,7 @@ class IndexServiceTest {
         AtomicInteger sequence = new AtomicInteger();
         return new IndexService(ds, runner, RetrievalSettings.defaults(), CONFIG, new IndexConfigurationFingerprint(),
                 new SystemClockAdapter(Clock.fixed(Instant.parse("2026-10-25T00:00:00Z"), ZoneOffset.UTC)), embedding,
-                usage -> flushed.addAll(usage.entries()), batch, () -> "%032x".formatted(sequence.incrementAndGet()));
+                usage -> flushed.addAll(usage.entries()), batch, knowledgeReader, () -> "%032x".formatted(sequence.incrementAndGet()));
     }
 
     @Test void identicalMetadataReusesIdsAndSkipsPublishEmbeddingAndUsage() throws Exception {
@@ -143,4 +149,19 @@ class IndexServiceTest {
         assertThatThrownBy(() -> service.plan(new SourceSnapshot(List.of()))).hasMessageContaining("知识源为空");
         verifyNoInteractions(runner);
     }
+    @Test void publishedKnowledgeReaderIsRequiredAndConsumedExplicitly(@org.junit.jupiter.api.io.TempDir java.nio.file.Path directory) throws Exception {
+        assertThatThrownBy(() -> service(List.of(), "", (texts, usage) -> List.of(), 10, null))
+                .isInstanceOf(NullPointerException.class).hasMessage("knowledgeReader");
+        PublishedKnowledgeReader reader = mock(PublishedKnowledgeReader.class);
+        when(reader.published()).thenReturn(List.of(
+                new PublishedKnowledgeReader.Entry("a", "甲", "正文甲", 2),
+                new PublishedKnowledgeReader.Entry("b", "乙", "正文乙", 1)));
+        var service = service(List.of(), "", (texts, usage) -> List.of(), 10, reader);
+        var yaml = directory.resolve("sources.yml"); java.nio.file.Files.writeString(yaml, "sources: []\n");
+        var snapshot = service.scan(new SourceSettings(yaml, directory, directory, directory));
+        assertThat(snapshot.nodes().stream().map(n -> n.metadata().get("knowledge_id"))).containsExactly("a", "b");
+        assertThat(snapshot.nodes().getFirst().metadata()).containsEntry("revision", 2);
+        verify(reader, times(1)).published();
+    }
+
 }

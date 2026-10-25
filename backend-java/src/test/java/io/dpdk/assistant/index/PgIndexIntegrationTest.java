@@ -3,6 +3,7 @@ package io.dpdk.assistant.index;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import io.dpdk.assistant.contracts.index.EmbeddingConfig;
+import io.dpdk.assistant.knowledge.workflow.PublishedKnowledgeRepository;
 import io.dpdk.assistant.contracts.index.IndexNode;
 import io.dpdk.assistant.contracts.index.PreparedIndex;
 import io.dpdk.assistant.contracts.model.Vector1024;
@@ -73,7 +74,7 @@ class PgIndexIntegrationTest {
         }, usage -> flushed.addAll(usage.entries()), 10);
     }
     private IndexService newService(IndexBatchEmbedding embedding, IndexUsageSink sink, int batch) {
-        return new IndexService(ds, transactions, RetrievalSettings.defaults(), CONFIG, new IndexConfigurationFingerprint(), CLOCK, embedding, sink, batch);
+        return new IndexService(ds, transactions, RetrievalSettings.defaults(), CONFIG, new IndexConfigurationFingerprint(), CLOCK, embedding, sink, batch, new PublishedKnowledgeRepository(transactions));
     }
     private SourceSnapshot snapshot(String text) {
         return new SourceSnapshot(List.of(IndexServiceTest.node(null, text, "repo/a.md", 0)));

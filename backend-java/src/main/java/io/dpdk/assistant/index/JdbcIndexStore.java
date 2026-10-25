@@ -25,7 +25,6 @@ final class JdbcIndexStore {
     private final RetrievalSettings settings;
     private final String table;
     record Existing(String configuration, List<IndexNode> nodes) {}
-    record Published(String id, String title, String body, int revision) {}
 
     JdbcIndexStore(DataSource dataSource, TransactionRunner transactions, RetrievalSettings settings) {
         this.dataSource = dataSource;
@@ -59,16 +58,6 @@ final class JdbcIndexStore {
             }
             return new Existing(config, List.copyOf(nodes));
         } catch (Exception e) { throw failure(e); }
-    }
-
-    List<Published> published() {
-        try (Connection c = dataSource.getConnection(); PreparedStatement s = c.prepareStatement(
-                "SELECT id,title,body,revision FROM rag_knowledge WHERE status='published' ORDER BY id");
-             ResultSet r = s.executeQuery()) {
-            List<Published> out = new ArrayList<>();
-            while (r.next()) out.add(new Published(r.getString(1), r.getString(2), r.getString(3), r.getInt(4)));
-            return List.copyOf(out);
-        } catch (SQLException e) { throw failure(e); }
     }
 
     void checkFts() {

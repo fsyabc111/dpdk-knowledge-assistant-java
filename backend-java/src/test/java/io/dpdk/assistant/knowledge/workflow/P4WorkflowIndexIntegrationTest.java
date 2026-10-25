@@ -91,7 +91,8 @@ class P4WorkflowIndexIntegrationTest {
             }
             index = new IndexService(h.task.ds, h.task.runner, RetrievalSettings.defaults(), CONFIG,
                     new IndexConfigurationFingerprint(), h.task.clock,
-                    (texts, usage) -> texts.stream().map(t -> vector()).toList(), usage -> {}, 10);
+                    (texts, usage) -> texts.stream().map(t -> vector()).toList(), usage -> {}, 10,
+                    new PublishedKnowledgeRepository(h.task.runner));
             reader = new PgReleaseReader(h.task.ds, RetrievalSettings.defaults(), CONFIG,
                     new IndexConfigurationFingerprint(), new HeuristicQueryRewriter(),
                     input -> List.of(vector()));

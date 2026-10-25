@@ -7,6 +7,7 @@ import io.dpdk.assistant.contracts.index.PreparedIndex;
 import io.dpdk.assistant.contracts.index.PublishPort;
 import io.dpdk.assistant.contracts.index.PublishReceipt;
 import io.dpdk.assistant.contracts.model.Vector1024;
+import io.dpdk.assistant.contracts.knowledge.PublishedKnowledgeReader;
 import io.dpdk.assistant.contracts.platform.ClockPort;
 import io.dpdk.assistant.contracts.platform.TransactionRunner;
 import io.dpdk.assistant.platform.time.SystemClockAdapter;
@@ -36,20 +37,23 @@ public final class IndexService implements PublishPort {
     private final ClockPort clock;
     private final IndexBatchEmbedding embedding;
     private final IndexUsageSink usageSink;
+    private final PublishedKnowledgeReader knowledgeReader;
     private final int batchSize;
     private final Supplier<String> ids;
     private record Position(Object source, Object ordinal) {}
 
     public IndexService(DataSource dataSource, TransactionRunner transactions, RetrievalSettings settings,
                         EmbeddingConfig config, ConfigurationFingerprint fingerprint, ClockPort clock,
-                        IndexBatchEmbedding embedding, IndexUsageSink usageSink, int embeddingBatchSize) {
+                        IndexBatchEmbedding embedding, IndexUsageSink usageSink, int embeddingBatchSize,
+                        PublishedKnowledgeReader knowledgeReader) {
         this(dataSource, transactions, settings, config, fingerprint, clock, embedding, usageSink,
-                embeddingBatchSize, () -> UUID.randomUUID().toString().replace("-", ""));
+                embeddingBatchSize, knowledgeReader, () -> UUID.randomUUID().toString().replace("-", ""));
     }
 
     IndexService(DataSource dataSource, TransactionRunner transactions, RetrievalSettings settings,
                  EmbeddingConfig config, ConfigurationFingerprint fingerprint, ClockPort clock,
-                 IndexBatchEmbedding embedding, IndexUsageSink usageSink, int batchSize, Supplier<String> ids) {
+                 IndexBatchEmbedding embedding, IndexUsageSink usageSink, int batchSize,
+                 PublishedKnowledgeReader knowledgeReader, Supplier<String> ids) {
         if (config.dimensions() != 1024 || !"bounded-lines-v2".equals(config.chunker())) {
             throw new IllegalArgumentException("索引维度/切块器必须使用冻结配置");
         }
@@ -60,6 +64,7 @@ public final class IndexService implements PublishPort {
         this.clock = clock;
         this.embedding = Objects.requireNonNull(embedding, "embedding");
         this.usageSink = Objects.requireNonNull(usageSink, "usageSink");
+        this.knowledgeReader = Objects.requireNonNull(knowledgeReader, "knowledgeReader");
         this.batchSize = Math.max(1, Math.min(batchSize, 10));
         this.ids = ids;
     }
@@ -71,7 +76,7 @@ public final class IndexService implements PublishPort {
             desired.add(new IndexNode(null, document.content(), document.metadata(), null));
         }
         BoundedLinesChunker chunker = new BoundedLinesChunker();
-        for (var knowledge : store.published()) {
+        for (var knowledge : knowledgeReader.published()) {
             String path = "knowledge/published/" + knowledge.id() + ".md";
             var chunks = chunker.chunk("# " + knowledge.title() + "\n\n" + knowledge.body(), path);
             for (int ordinal = 0; ordinal < chunks.size(); ordinal++) {
