@@ -1,0 +1,77 @@
+{
+  "code_commit": "fcb3e263f1cfcd1db0340241b5769ba1204e18b7",
+  "command": "JAVA_HOME=<explicit JDK21> DPDK_TEST_PG_{URL,USER,PASSWORD,DATA_DIR}=<explicit isolated instance> ./backend-java/mvnw -f backend-java/pom.xml -q -Dtest=BoundedLinesGoldenTest,YamlKnowledgeSourceTest,IndexServiceTest,PgIndexIntegrationTest test",
+  "exit_code": 0,
+  "suites": [
+    {
+      "suite": "io.dpdk.assistant.index.BoundedLinesGoldenTest",
+      "tests": 21,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.118
+    },
+    {
+      "suite": "io.dpdk.assistant.index.IndexServiceTest",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.593
+    },
+    {
+      "suite": "io.dpdk.assistant.index.PgIndexIntegrationTest",
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 1.441
+    },
+    {
+      "suite": "io.dpdk.assistant.index.YamlKnowledgeSourceTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.098
+    }
+  ],
+  "totals": {
+    "tests": 52,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "cleanup": {
+    "instance_identity_verified": true,
+    "j401_temporary_databases": 0,
+    "j401_connections": 0
+  },
+  "source_sha256": {
+    "backend-java/src/main/java/io/dpdk/assistant/index/BoundedLinesChunker.java": "9371c711b521207d97b7992651413081a57fd7355c456dcd632da3218b0e430c",
+    "backend-java/src/main/java/io/dpdk/assistant/index/IndexBatchEmbedding.java": "cc5902402fe935d4bee3583c75b783d62c6a5ea269ce709b7dd11fee6cc80ac3",
+    "backend-java/src/main/java/io/dpdk/assistant/index/IndexHealth.java": "5ef027b2056e2ca795f79d814f1e83b09ed5b1caabfcfb063d16993d3e72fa28",
+    "backend-java/src/main/java/io/dpdk/assistant/index/IndexPlan.java": "8d581aeab48914b51e87c32c9e88b0b805c3580bd20edf629e0da3a761bca072",
+    "backend-java/src/main/java/io/dpdk/assistant/index/IndexService.java": "170a28b3b5a98345de735b3e720c2009808413856fd3772415295b66d41bd629",
+    "backend-java/src/main/java/io/dpdk/assistant/index/IndexUsageSink.java": "246de6f10181794797b52f6bb20013a949b9d54ff582af3801ada1ce35b94190",
+    "backend-java/src/main/java/io/dpdk/assistant/index/IngestResult.java": "a5acacfa5ea712cc7876960d9553a84f16ae516add63039f3967000135019962",
+    "backend-java/src/main/java/io/dpdk/assistant/index/JdbcIndexStore.java": "52ef8223fa372bf79a3ce2559b2c89b7169c47cb66f313522a680aed0050bc37",
+    "backend-java/src/main/java/io/dpdk/assistant/index/SourceSettings.java": "094a88fe9220f79108dd5fa0452c400bd7236f54f6d1263de03b01c87b47ebeb",
+    "backend-java/src/main/java/io/dpdk/assistant/index/SourceSnapshot.java": "dbee4fee7a981a6bfece6c15304ffbab7ab18b48af73298fe5471bee1feda223",
+    "backend-java/src/main/java/io/dpdk/assistant/index/YamlKnowledgeSource.java": "40f9d00421e70243265f55d97b2752d4f8f9fe2ce4bcf3653316d0bd27124d94",
+    "backend-java/src/test/java/io/dpdk/assistant/index/BoundedLinesGoldenTest.java": "f6d6c78e620a3fc6afb9adf2f1572630e17f2f15c9ce57234180ebc1639357e9",
+    "backend-java/src/test/java/io/dpdk/assistant/index/IndexServiceTest.java": "da83378cb55b8affe30c97656979393c92dddb895abaf5a39ebc612dca42cc4b",
+    "backend-java/src/test/java/io/dpdk/assistant/index/PgIndexIntegrationTest.java": "1c54960b3bab248056d0a80498916dd290e7b05edd64f9cf79fadd144991054d",
+    "backend-java/src/test/java/io/dpdk/assistant/index/YamlKnowledgeSourceTest.java": "b159f2763af44866556d1324f422cd77d4a0ba52cece72cf4ebcf9850cb309f3",
+    "backend-java/src/test/resources/migration/J4-01/chunker-golden.json": "dc2f8871afc968b2dc2c3b2d7e6fbd0b7f77410854946878714ee54ff7cfb468",
+    "backend-java/src/test/resources/migration/J4-01/snapshot-golden.json": "b53311750b890f9cb29599f6bbb0de4135e62f58f71afee30365f0acb372899c"
+  },
+  "unverified": [
+    "real DPDK full snapshot",
+    "real embedding/model/MCP",
+    "live retrieval quality",
+    "main integration/full regression",
+    "P4 independent review and user acceptance"
+  ],
+  "raw_log": ".migration-artifacts/j4-01-index/final-single-card.log"
+}
