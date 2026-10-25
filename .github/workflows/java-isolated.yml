@@ -73,7 +73,7 @@ jobs:
         working-directory: backend-java
         run: |
           ./mvnw -B -DskipTests package
-          ./mvnw -B test -Dtest=OperationsBootJarAcceptance
+          ./mvnw -B test -Dtest=OperationsBootJarAcceptance -Ddpdk.acceptance.jar="$PWD/target/dpdk-assistant-backend-0.1.0-SNAPSHOT.jar"
   frontend:
     runs-on: ubuntu-latest
     steps:

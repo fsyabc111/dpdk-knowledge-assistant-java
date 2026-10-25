@@ -155,3 +155,9 @@ J3-01 已交付（worker/j3-01@40cb46c，自有测试 8类50/50；真双JVM+合�
 - J4-02 OriginalQuestionVerifier分prepareAdmission（共享chat限流+日配额，先于issue读取）和verify（admission+当前release检索/生成/强制judge/总墙）；不创建普通chat任务、不复制task仓储。知识作者title/body保留Python字节语义，不新增脱敏安全差异；H的正文脱敏适用于运行输入/问题/反馈/note/事件。
 - CLI增加dpdk.task.background-enabled开关，默认true兼容服务；CLI最高优先级false并关闭启动迁移，防dry-run触发孤儿恢复/DDL。Boot mainClass显式Application以免新增OperationsMain产生歧义。
 - J4-02真实跨链发现TaskStore.insertIssue错误地随机id，而Python使用task/request主键且消息issue_id已为taskId。集成者窄修id=taskId；保持request_id唯一闸、不改DDL，不迁动旧库，新增问题反馈真实链回归验证。
+
+## P4双轴阻断修复窗口（2026-10-25）
+
+- ST-P4-02：已发布知识读取收回knowledge/workflow，新增contracts.knowledge.PublishedKnowledgeReader（有序id/title/body/revision快照）；IndexService显式构造注入并删除index内rag_knowledge SQL。不允许隐式空来源构造，纯测试需明确提供published fixtures，PG用真实知识仓储。
+- ST-P4-01：CI真实jar验收显式传dpdk.acceptance.jar绝对路径；保持与本机成功命令相同，不用脚本exit0替代测试。
+- SP-P4-01：工作流请求先严格验证完整JSON文档，尾随对象/垃圾返回冻结422且零知识/修订写入，补合法空白与Unicode位置反例。
