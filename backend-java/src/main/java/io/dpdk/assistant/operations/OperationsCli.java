@@ -68,8 +68,8 @@ public final class OperationsCli {
                 for (String id : options.get("id")) if (!id.matches("U\\d{11}"))
                     throw new IllegalArgumentException("用户 ID 格式必须为 U 加 11 位数字");
                 List<String> roles = roles(c);
-                if (roles.isEmpty() || !Set.of("viewer", "teacher", "leader").containsAll(roles))
-                    throw new IllegalArgumentException("roles 必须为 viewer/teacher/leader 的非空子集");
+                if (roles.isEmpty() || !io.dpdk.assistant.auth.AuthServerSettings.ALLOWED_ROLES.containsAll(roles))
+                    throw new IllegalArgumentException("roles 必须为 viewer/operator/admin/leader 的非空子集");
                 if (options.containsKey("daily-quota")) number(c, "daily-quota", 0, Integer.MAX_VALUE, 0);
             }
             case "purge-sessions", "retain-issues" -> number(c, "retention-days", 1, 365000, 30);

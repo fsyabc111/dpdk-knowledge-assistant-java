@@ -36,13 +36,13 @@ class OperationsCliTest {
     @Test void createsUsersWithExactOptionsAndCopiesCallerLists() {
         SpyPort port = new SpyPort();
         OperationsCli.execute(OperationsCli.parse("create-users", "--id", "U00000000001", "--id", "U00000000002",
-                "--roles", "teacher,viewer", "--daily-quota", "0"), port);
+                "--roles", "operator,viewer", "--daily-quota", "0"), port);
         assertEquals(2, port.users.ids().size()); assertEquals(0, port.users.dailyQuota());
-        assertEquals(java.util.List.of("teacher", "viewer"), port.users.roles());
+        assertEquals(java.util.List.of("operator", "viewer"), port.users.roles());
         assertThrows(UnsupportedOperationException.class, () -> port.users.ids().add("anything"));
     }
     @Test void parametersRejectDuplicatesRangesAndMissingValues() {
-        for (String[] args : new String[][] {{"create-users", "--id", "U00000000001", "--roles", "admin"},
+        for (String[] args : new String[][] {{"create-users", "--id", "U00000000001", "--roles", "teacher"},
                 {"create-users", "--id", "U00000000001", "--roles", "viewer,"},
                 {"create-users", "--id", "U00000000001", "--daily-quota", "-1"},
                 {"audit-grading-jobs", "--limit", "10001"}, {"retrieve", "--query", "q", "--top-k", "0"},

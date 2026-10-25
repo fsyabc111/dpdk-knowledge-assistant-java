@@ -16,7 +16,7 @@ public final class OperationsMain {
         return Map.of("spring.main.web-application-type", "none", "spring.flyway.enabled", false,
                 "spring.sql.init.mode", "never", "dpdk.migration.run-on-startup", false,
                 "dpdk.task.background-enabled", false, "task.background-enabled", false,
-                "spring.main.banner-mode", "off", "logging.level.root", "OFF");
+                "spring.main.banner-mode", "off", "logging.level.root", "OFF", "logging.level.io.dpdk", "OFF");
     }
     public static void main(String[] args) {
         AtomicReference<ConfigurableApplicationContext> context = new AtomicReference<>();
@@ -31,7 +31,12 @@ public final class OperationsMain {
                 app.addListeners(new EarlySafety());
                 app.addInitializers(ctx -> ctx.getEnvironment().getPropertySources().addFirst(
                         new MapPropertySource("operations-safety", startupSafety())));
-                context.set(app.run());
+                // 即使外部日志配置为某子包单独启用，框架输出也不能污染JSON stdout。
+                java.io.PrintStream output = System.out;
+                try {
+                    System.setOut(System.err);
+                    context.set(app.run());
+                } finally { System.setOut(output); }
                 return context.get().getBean(OperationsPort.class);
             }, new PrintWriter(System.out, true), new PrintWriter(System.err, true));
         } finally {
