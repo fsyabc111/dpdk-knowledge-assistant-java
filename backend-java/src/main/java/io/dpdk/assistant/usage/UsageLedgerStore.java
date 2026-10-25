@@ -149,6 +149,32 @@ public class UsageLedgerStore {
         });
     }
 
+    public record MetricGroup(String stage, String kind, String source, String model, String currency,
+                              long rows, long calls, Long tokens, long unknownTokens, Long costMicros,
+                              long unknownCosts, Long durationMs) { }
+
+    /** 不截断的持久账本聚合；SQL SUM 的 NULL 保留未知，不转为零。 */
+    public List<MetricGroup> metricsSnapshot() {
+        return runner.required(tx -> {
+            String sql = "SELECT stage,kind,usage_source,model,currency,count(*),sum(call_count),sum(total_tokens), "
+                    + "count(*) FILTER (WHERE total_tokens IS NULL),sum(cost_micros), "
+                    + "count(*) FILTER (WHERE cost_micros IS NULL),sum(duration_ms) FROM upstream_usage_records "
+                    + "GROUP BY stage,kind,usage_source,model,currency";
+            try (PreparedStatement ps = tx.connection().prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+                List<MetricGroup> rows = new ArrayList<>();
+                while (rs.next()) rows.add(new MetricGroup(rs.getString(1), rs.getString(2), rs.getString(3),
+                        rs.getString(4), rs.getString(5), rs.getLong(6), rs.getLong(7), metricLong(rs,8),
+                        rs.getLong(9), metricLong(rs,10), rs.getLong(11), metricLong(rs,12)));
+                return List.copyOf(rows);
+            } catch (SQLException e) { throw new IllegalStateException("usage metrics failure", e); }
+        });
+    }
+
+    private static Long metricLong(ResultSet rs, int column) throws SQLException {
+        Object value = rs.getObject(column);
+        return value == null ? null : ((Number) value).longValue();
+    }
+
     private static Map<String, Object> emptyScopedSummary() {
         Map<String, Object> summary = UsageAggregate.aggregateUsage(List.of());
         summary.put("truncated", false);

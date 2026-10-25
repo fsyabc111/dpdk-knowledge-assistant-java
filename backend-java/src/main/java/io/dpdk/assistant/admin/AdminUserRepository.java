@@ -230,6 +230,31 @@ public class AdminUserRepository {
         return result;
     }
 
+    /** 创建预览：复用创建规则与 ID 模式，不哈希、不写库；请求内重复按已存在处理。 */
+    public record CreatePreview(List<String> wouldCreate, List<String> existing, List<String> invalid) { }
+
+    public CreatePreview previewCreateUsers(List<String> ids, List<String> roles, Integer dailyQuota) {
+        List<String> effectiveRoles = roles == null ? List.of("viewer") : roles;
+        if (effectiveRoles.isEmpty() || !AdminTreeRules.ALLOWED_ROLES.containsAll(effectiveRoles))
+            throw new AdminRuleException("roles must be a non-empty subset of " + AdminTreeRules.ALLOWED_ROLES_SORTED);
+        if (dailyQuota != null && dailyQuota < 0)
+            throw new AdminRuleException("daily_quota must be a non-negative integer or None");
+        return inTx(conn -> {
+            List<String> create = new ArrayList<>(), existing = new ArrayList<>(), invalid = new ArrayList<>();
+            var seen = new java.util.HashSet<String>();
+            for (String id : ids) {
+                if (!USER_ID_PATTERN.matcher(id).matches()) { invalid.add(id); continue; }
+                boolean present;
+                try (PreparedStatement ps = conn.prepareStatement("SELECT 1 FROM users WHERE id=?")) {
+                    ps.setString(1, id);
+                    try (ResultSet rs = ps.executeQuery()) { present = rs.next(); }
+                }
+                if (present || !seen.add(id)) existing.add(id); else create.add(id);
+            }
+            return new CreatePreview(List.copyOf(create), List.copyOf(existing), List.copyOf(invalid));
+        });
+    }
+
     /* ------------------------------------------------------------------ */
     /* 资料修改（PATCH）                                                     */
     /* ------------------------------------------------------------------ */

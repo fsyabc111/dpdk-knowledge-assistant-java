@@ -640,6 +640,134 @@ public class TaskStore {
         return Optional.ofNullable(selectInputs(conn, taskId));
     }
 
+    /** 运维事务扩展：业务 owner 在同一 DbTx 维护自己的表。预览时绝不调用写扩展。 */
+    @FunctionalInterface
+    public interface MaintenanceParticipant { Map<String, Integer> maintain(DbTx tx, int days); }
+
+    private static final String INPUT_CLEANUP = "expires_at<? OR task_id NOT IN (SELECT id FROM rag_requests WHERE status='pending')";
+    private static final String STALE_PENDING = "status='pending' AND updated_at<? AND NOT EXISTS "
+            + "(SELECT 1 FROM rag_task_inputs i WHERE i.task_id=rag_requests.id AND i.expires_at>?)";
+
+    /** 终态/孤儿立即清理，expires_at 为输入 TTL 的兜底；不修改恢复有效输入。 */
+    public Map<String, Object> purgeInputs(boolean dryRun) {
+        String now = pythonIso(clock.nowUtc());
+        return runner.required(tx -> {
+            try {
+                long eligible = operationCount(tx, "SELECT count(*) FROM rag_task_inputs WHERE " + INPUT_CLEANUP, now);
+                if (!dryRun) operationUpdate(tx, "DELETE FROM rag_task_inputs WHERE " + INPUT_CLEANUP, now);
+                return Map.of("dry_run", dryRun, "inputs", eligible);
+            } catch (SQLException e) { throw new IllegalStateException("input maintenance failure", e); }
+        });
+    }
+
+    /** 对齐 Python maintain：陈旧无有效输入判死、清输入、归一引用、扩展维护、子表先于请求删除。 */
+    public Map<String, Object> maintain(int days, boolean dryRun, MaintenanceParticipant participant) {
+        if (days < 1) throw new IllegalArgumentException("留存天数必须为正数");
+        java.util.Objects.requireNonNull(participant, "维护参与者");
+        Instant now = clock.nowUtc();
+        String when = pythonIso(now), cutoff = pythonIso(now.minus(Duration.ofDays(days)));
+        String stale = pythonIso(now.minus(Duration.ofMinutes(10)));
+        return runner.required(tx -> {
+            try {
+                Map<String, Object> out = new LinkedHashMap<>();
+                out.put("dry_run", dryRun); out.put("retention_days", days); out.put("cutoff", cutoff);
+                out.put("interrupted", operationCount(tx, "SELECT count(*) FROM rag_requests WHERE " + STALE_PENDING, stale, when));
+                out.put("expired", operationCount(tx, "SELECT count(*) FROM rag_requests WHERE created_at<?", cutoff));
+                out.put("inputs", operationCount(tx, "SELECT count(*) FROM rag_task_inputs WHERE (" + INPUT_CLEANUP
+                        + ") OR task_id IN (SELECT id FROM rag_requests WHERE created_at<?)", when, cutoff));
+                out.put("jobs", operationCount(tx, "SELECT count(*) FROM rag_task_jobs WHERE task_id IN "
+                        + "(SELECT id FROM rag_requests WHERE created_at<?)", cutoff));
+                for (String column : List.of("user_id", "session_id")) {
+                    String parent = column.equals("user_id") ? "users" : "assistant_sessions";
+                    String invalid = column + " IS NOT NULL AND NOT EXISTS (SELECT 1 FROM " + parent
+                            + " p WHERE p.id=rag_requests." + column + ")";
+                    out.put("normalized_" + column, operationCount(tx, "SELECT count(*) FROM rag_requests WHERE " + invalid));
+                }
+                if (dryRun) {
+                    out.put("workflow", "apply 时在同事务维护；预览不调用写入口");
+                    return out;
+                }
+                List<String> interrupted = new ArrayList<>();
+                try (PreparedStatement ps = tx.connection().prepareStatement("SELECT id FROM rag_requests WHERE " + STALE_PENDING)) {
+                    ps.setString(1, stale); ps.setString(2, when);
+                    try (ResultSet rs = ps.executeQuery()) { while (rs.next()) interrupted.add(rs.getString(1)); }
+                }
+                for (String id : interrupted) {
+                    operationUpdate(tx, "UPDATE rag_requests SET status='system_error',reason='interrupted',updated_at=? "
+                            + "WHERE id=? AND status='pending'", when, id);
+                    insertIssue(tx.connection(), id);
+                }
+                operationUpdate(tx, "DELETE FROM rag_task_inputs WHERE " + INPUT_CLEANUP, when);
+                operationUpdate(tx, "UPDATE rag_requests SET user_id=NULL WHERE user_id IS NOT NULL "
+                        + "AND NOT EXISTS (SELECT 1 FROM users WHERE users.id=rag_requests.user_id)");
+                operationUpdate(tx, "UPDATE rag_requests SET session_id=NULL WHERE session_id IS NOT NULL "
+                        + "AND NOT EXISTS (SELECT 1 FROM assistant_sessions s WHERE s.id=rag_requests.session_id)");
+                out.put("workflow", participant.maintain(tx, days));
+                for (String table : List.of("rag_task_inputs", "rag_task_jobs"))
+                    operationUpdate(tx, "DELETE FROM " + table + " WHERE task_id IN (SELECT id FROM rag_requests WHERE created_at<?)", cutoff);
+                operationUpdate(tx, "DELETE FROM rag_requests WHERE created_at<?", cutoff);
+                return out;
+            } catch (SQLException e) { throw new IllegalStateException("task maintenance failure", e); }
+        });
+    }
+
+    /** 审计只回读作业元数据与关联成绩数，不返回输入、代码、原始结果，不重评。 */
+    public List<Map<String, Object>> auditGradingJobs(int limit) {
+        if (limit < 1 || limit > 10000) throw new IllegalArgumentException("审计上限越界");
+        return runner.required(tx -> {
+            try (PreparedStatement ps = tx.connection().prepareStatement(
+                    "SELECT j.job_id,j.status,j.submission_done,j.created_at,j.updated_at, "
+                    + "(j.result_json IS NOT NULL) AS has_result, "
+                    + "(SELECT count(*) FROM grading_submissions g WHERE g.task_job_id=j.job_id) AS submissions "
+                    + "FROM rag_task_jobs j WHERE j.tool='grade_plugin' ORDER BY j.created_at DESC,j.id LIMIT ?")) {
+                ps.setInt(1, limit);
+                try (ResultSet rs = ps.executeQuery()) {
+                    List<Map<String, Object>> rows = new ArrayList<>();
+                    while (rs.next()) rows.add(Map.of("job_id", rs.getString(1), "status", rs.getString(2),
+                            "submission_done", rs.getInt(3) == 1, "created_at", rs.getString(4), "updated_at", rs.getString(5),
+                            "has_result", rs.getBoolean(6), "submissions", rs.getLong(7)));
+                    return List.copyOf(rows);
+                }
+            } catch (SQLException e) { throw new IllegalStateException("job audit failure", e); }
+        });
+    }
+
+    public record OutcomeMetric(String status, String reason, long count, long elapsedMs) { }
+    public record JobMetric(String tool, String status, long count) { }
+    public record MetricsSnapshot(List<OutcomeMetric> outcomes, List<JobMetric> jobs) { }
+
+    /** 全持久账本只读聚合；无进程 counter 或未经记录的耗时推断。 */
+    public MetricsSnapshot metricsSnapshot() {
+        return runner.required(tx -> {
+            try {
+                List<OutcomeMetric> outcomes = new ArrayList<>();
+                try (PreparedStatement ps = tx.connection().prepareStatement(
+                        "SELECT status,reason,count(*),sum(elapsed_ms) FROM rag_requests GROUP BY status,reason"); ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) outcomes.add(new OutcomeMetric(rs.getString(1), rs.getString(2), rs.getLong(3), rs.getLong(4)));
+                }
+                List<JobMetric> jobs = new ArrayList<>();
+                try (PreparedStatement ps = tx.connection().prepareStatement(
+                        "SELECT tool,status,count(*) FROM rag_task_jobs GROUP BY tool,status"); ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) jobs.add(new JobMetric(rs.getString(1), rs.getString(2), rs.getLong(3)));
+                }
+                return new MetricsSnapshot(List.copyOf(outcomes), List.copyOf(jobs));
+            } catch (SQLException e) { throw new IllegalStateException("task metrics failure", e); }
+        });
+    }
+
+    private static long operationCount(DbTx tx, String sql, Object... args) throws SQLException {
+        try (PreparedStatement ps = tx.connection().prepareStatement(sql)) {
+            for (int i=0; i<args.length; i++) ps.setObject(i+1, args[i]);
+            try (ResultSet rs = ps.executeQuery()) { rs.next(); return rs.getLong(1); }
+        }
+    }
+    private static int operationUpdate(DbTx tx, String sql, Object... args) throws SQLException {
+        try (PreparedStatement ps = tx.connection().prepareStatement(sql)) {
+            for (int i=0; i<args.length; i++) ps.setObject(i+1, args[i]);
+            return ps.executeUpdate();
+        }
+    }
+
     /* ------------------------------------------------------------------ */
     /* 内部工具                                                            */
     /* ------------------------------------------------------------------ */
