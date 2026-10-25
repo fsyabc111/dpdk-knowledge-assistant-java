@@ -109,3 +109,13 @@
 - J1-04/P2 消费模型端口：经 `io.dpdk.assistant.model.ModelClients` / `harness.HarnessClients` 入口。
 - J1-04 消费检索：经 `retrieval.PgReleaseReader`（limit 重载）。
 - Spring Bean/配置接线（settings 绑定与单例装配）由集成者在 P2 集成窗口统一完成。
+
+## J3-02（Agent 五工具/受控循环）集成裁决（2026-10-25，集成者）
+
+J3-02 已交付（worker/j3-02@3d426e9，自有测试 124/124；黄金场景 Python 可达子集对齐）。三项接口变更申请裁决如下：
+
+1. **TaskGradePort**：不新增 contracts 接口。`agent/port/TaskGradePort`（`TaskGradeResult recordTaskGrade(TaskGradeInput)`，签名与冻结 record 一致）定为聊天任务成绩参与的消费面；J3-01 的 TaskGradeParticipant 真实实现经适配实现该端口（归属 task/**，指向 contracts.grading.TaskGradeParticipant 语义）。
+2. **TaskJobLedgerPort**：不新增 contracts 接口。`agent/port/TaskJobLedgerPort`（findJob/recordJob/reserveGradingJob/finishJob/updateTaskSource，对位 rag_issue_service 同名方法）定为评测作业账本消费面；J3-01 的 task/** 仓储实现之（rag_task_jobs 建模、reserve 与配额同事务、find_job 幂等）。集成期以真实仓储替换 J3-02 的替身并回归 AgentScenario/TaskLedgerTest。
+3. **ChatModelPort 富接口**：暂不改 contracts。Agent 侧以 `agent/AgentChatModel` 为模型替身边界（W9 口径已在其契约注释声明）；真实模型（OpenAiCompatibleChatClient）到 AgentChatModel 的适配器由 J3-03 集成窗口由集成者编写。tool-calling 富接口（多消息/tool_calls/usage）若 J3-03 集成发现缺口，另行登记变更。
+
+行为差异备查（J3-02 申报，集成复核）：孤立代理项 getBytes 差异（实际不可达）、splitlines 全行界覆盖、get_reference_answer 固定 120s 期限、非流式 delta 粒度为整条消息（脚本化替身口径，SSE 细化归 J3-03）。
