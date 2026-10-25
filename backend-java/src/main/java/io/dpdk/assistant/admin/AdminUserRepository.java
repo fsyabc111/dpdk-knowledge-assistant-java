@@ -428,7 +428,7 @@ public class AdminUserRepository {
                 probe.check("audit-insert");
                 try (PreparedStatement ps = conn.prepareStatement(
                         "INSERT INTO admin_audit_log(id, actor, action, targets_json, created_at) "
-                                + "VALUES (?,?,?,?,?)")) {
+                                + "VALUES (?,?,?,?::jsonb,?)")) {
                     ps.setString(1, "aud_" + UUID.randomUUID().toString().replace("-", "")
                             .substring(0, 12));
                     ps.setString(2, actor.subject());
