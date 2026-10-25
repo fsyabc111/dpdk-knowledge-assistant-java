@@ -121,6 +121,18 @@ class Handler(BaseHTTPRequestHandler):
                     if isinstance(protocol, str):
                         payload["protocol"] = protocol
                 result = {"structuredContent": payload, "isError": False}
+            elif name == "list_protocols":
+                # p0 golden 冻结的 harness 协议清单（等价替身数据）
+                DEFAULT_PROTOCOLS = {
+                    "ok": True,
+                    "protocols": [
+                        {"name": "dns", "cases": 5, "categories": {"basic": 5}},
+                    ],
+                }
+                payload = DEFAULT_PROTOCOLS
+                if ARGS.protocols_file:
+                    payload = load_payload(ARGS.protocols_file) or DEFAULT_PROTOCOLS
+                result = {"structuredContent": payload, "isError": False}
             else:
                 result = {"isError": True,
                           "content": [{"type": "text", "text": "unknown tool"}]}
@@ -153,6 +165,7 @@ def main():
     ap.add_argument("--port", type=int, default=8100)
     ap.add_argument("--state-file", default="/tmp/p2reg/harness_state.json")
     ap.add_argument("--payload-file", default="/tmp/p2reg/grade_payload.json")
+    ap.add_argument("--protocols-file", default="/tmp/p2reg/protocols_payload.json")
     ARGS = ap.parse_args()
     os.makedirs(os.path.dirname(ARGS.state_file), exist_ok=True)
     persist(ARGS.state_file)

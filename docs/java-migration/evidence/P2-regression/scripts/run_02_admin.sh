@@ -59,8 +59,9 @@ req "old bearer token after reset (should 401)" -H "Authorization: Bearer $TOK_S
 req "reuse one-time token (should 4xx)" -X POST "$BASE/api/auth/password-reset" \
   -H 'Content-Type: application/json' \
   -d "{\"token\":\"$RESET_TOKEN\",\"new_password\":\"Again-9003\"}"
-# 把学生密码重置回学号，供后续场景使用（直接 SQL，回归内部状态复位）
-psqlq "UPDATE users SET password_hash='\$2a\$10\$FN3X5jYm6WiCTS3GefGmjudNAWuvBj9rgUgoj46oyxjCtMMDk9bJi' WHERE id='U90000000003'" >/dev/null
+# 把学生密码重置回学号，供后续场景使用（直接 SQL，回归内部状态复位；bcrypt 运行时生成，不提交哈希字面量）
+HASH03=$(/opt/homebrew/opt/openjdk@21/bin/java -cp "/Users/fsy/.m2/repository/org/springframework/security/spring-security-crypto/7.0.8/spring-security-crypto-7.0.8.jar:/Users/fsy/.m2/repository/commons-logging/commons-logging/1.3.6/commons-logging-1.3.6.jar" /tmp/p2reg/tools/BcryptGen.java U90000000003 2>/dev/null | cut -f2)
+psqlq "UPDATE users SET password_hash='$HASH03' WHERE id='U90000000003'" >/dev/null
 echo "student03 password restored to initial (SQL, 回归状态复位)" >> "$LOG_DIR/02-admin.log"
 
 echo "scenario 02 done" | tee -a "$LOG_DIR/02-admin.log"
