@@ -166,7 +166,8 @@ class OperationsBootJarAcceptance {
         assertThat(help.stdout()).startsWith("Java 独立运维 CLI").contains("retain-issues [--retention-days 180]","--apply");
         assertThat(help.stderr()).isEmpty();
         for(String[] args : List.of(new String[]{"not-a-command"}, new String[]{"create-users","--id","bad"},
-                new String[]{"retain-issues","--retention-days","0"})) {
+                new String[]{"retain-issues","--retention-days","0"},
+                new String[]{"create-users","--id",CREATED,"--roles","teacher"})) {
             var invalid = run(null,Map.of(),args);
             assertThat(invalid.exit()).isEqualTo(2);
             assertThat(invalid.stdout()).isEmpty();
@@ -187,19 +188,21 @@ class OperationsBootJarAcceptance {
             temporary(h,"cli-recoverable",now.plus(Duration.ofDays(1)));
             String pendingUpdated=h.columnValue("rag_requests","updated_at","id='cli-recoverable'");
             var before=snapshot(h);
-            var preview=run(h,Map.of(),"create-users","--id",CREATED,"--daily-quota","7").result("create-users",false);
+            var preview=run(h,Map.of(),"create-users","--id",CREATED,"--roles","viewer,operator","--daily-quota","7").result("create-users",false);
             assertThat(preview.path("dry_run").asBoolean()).isTrue();
             assertThat(preview.path("would_create").toString()).isEqualTo("[\""+CREATED+"\"]");
             assertThat(snapshot(h)).isEqualTo(before);
             assertThat(h.columnValue("rag_requests","updated_at","id='cli-recoverable'")).isEqualTo(pendingUpdated);
-            var applied=run(h,Map.of(),"create-users","--id",CREATED,"--daily-quota","7","--apply").result("create-users",true);
+            var applied=run(h,Map.of(),"create-users","--id",CREATED,"--roles","viewer,operator","--daily-quota","7","--apply").result("create-users",true);
             assertThat(applied.path("created").toString()).isEqualTo("[\""+CREATED+"\"]");
             assertThat(h.countRows("users","id=?",CREATED)).isEqualTo(1);
             assertThat(h.countRows("users",null)).isEqualTo(2);
             assertThat(h.columnValue("users","daily_quota","id=?",CREATED)).isEqualTo("7");
+            assertThat(JSON.readTree(h.columnValue("users","roles","id=?",CREATED)))
+                    .isEqualTo(JSON.readTree("[\"viewer\",\"operator\"]"));
             var after=snapshot(h); before.remove("users"); var afterOther=new TreeMap<>(after); afterOther.remove("users");
             assertThat(afterOther).isEqualTo(before);
-            var repeated=run(h,Map.of(),"create-users","--id",CREATED,"--daily-quota","7","--apply").result("create-users",true);
+            var repeated=run(h,Map.of(),"create-users","--id",CREATED,"--roles","viewer,operator","--daily-quota","7","--apply").result("create-users",true);
             assertThat(repeated.path("created").isEmpty()).isTrue();
             assertThat(repeated.path("skipped").toString()).isEqualTo("[\""+CREATED+"\"]");
             assertThat(snapshot(h)).isEqualTo(after);

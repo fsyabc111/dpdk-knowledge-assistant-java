@@ -11,7 +11,11 @@
 
 恢复后的当前阻断（20:23实测）：create-users默认dry-run子进程退出0，但stdout含Spring Boot banner、启动/Hikari/迁移禁用INFO与末尾JSON，严格结构化stdout解析失败。`OperationsMain` 在context initializer里才设置banner/logging已经晚于Boot早期输出。测试未筛掉日志或提取末尾JSON冒充通过；已报主Agent修复早期配置并重新package。
 
-原始失败证据：worker `.migration-artifacts/model/boot-cli-acceptance.log`（PG拒绝）、`boot-cli-acceptance-rerun-fixed.log`与 `boot-cli-rerun-fixed/01-stdout.log`（真实jar结构化stdout失败）。测试生成命令回执时曾出现局部变量java遮挡包名的编译问题，已重命名修正并实际编译执行；该失败日志也保留。当前业务DB验收仍未完成，不能计为通过。所有子进程和动态测试库均已finally清理，PG锁已交还主Agent。
+原始失败证据：worker `.migration-artifacts/model/boot-cli-acceptance.log`（PG拒绝）、`boot-cli-acceptance-rerun-fixed.log`与 `boot-cli-rerun-fixed/01-stdout.log`（真实jar结构化stdout失败）。测试生成命令回执时曾出现局部变量java遮挡包名的编译问题，已重命名修正并实际编译执行；该失败日志也保留。后续已合并早期启动修复 `8a46b44` 并改用新package jar（SHA256 `1add4aa0348dc72934b6618359e9b1df2b7bc4ebc680fcc156589e19f9cec9e0`）。20:26再次严格执行后banner/Boot/Hikari日志消失，但stdout仍有StartupMigrations INFO一行加JSON，依然失败；application.yml显式 `logging.level.io.dpdk=INFO` 独立于root=OFF，已报主Agent修复。证据为 `boot-cli-early-safety.log` 与 `boot-cli-early-safety/01-stdout.log`。
+
+同时静态核查发现OperationsCli硬编码viewer/teacher/leader与真实AdminTreeRules/AuthServerSettings允许角色viewer/operator/admin/leader不一致，导致新help中的viewer,operator示例无法通过parser。已报owner修复；本验收新增operator真实dry-run/apply与teacher参数拒绝断言，保持产品既有角色枚举，不自行修生产源码。
+
+当前业务DB验收仍未完成，不能计为通过。所有子进程和动态测试库均已finally清理，PG锁已交还主Agent。
 已通过的真实jar子进程断言：
 
 - 以JDK21 `PropertiesLauncher` 加载实际Boot jar并指定OperationsMain；不配置DB、不启动Spring业务容器也能 `--help` 退出0、stdout为中文CLI帮助、stderr空。
