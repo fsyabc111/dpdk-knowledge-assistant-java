@@ -18,7 +18,7 @@ public final class OperationsCli {
     public static final String HELP = """
             Java 独立运维 CLI（写操作默认 dry-run，只有 --apply 才写入）
             用法：scripts-java/operations.sh <命令> [参数]
-              create-users --id U00000000001 [--id ...] [--roles viewer,teacher] [--daily-quota N] [--apply]
+              create-users --id U00000000001 [--id ...] [--roles viewer,operator] [--daily-quota N] [--apply]
               purge-sessions [--retention-days 30] [--apply]
               purge-task-inputs [--apply]
               retain-issues [--retention-days 180] [--apply]

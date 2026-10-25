@@ -25,6 +25,10 @@ public final class OperationsMain {
             exit = OperationsCli.run(args, () -> {
                 SpringApplication app = new SpringApplication(Application.class);
                 app.setWebApplicationType(WebApplicationType.NONE);
+                app.setBannerMode(org.springframework.boot.Banner.Mode.OFF);
+                app.setLogStartupInfo(false);
+                // 日志初始化早于Context initializer，必须在环境事件阶段先锁住stdout。
+                app.addListeners(new EarlySafety());
                 app.addInitializers(ctx -> ctx.getEnvironment().getPropertySources().addFirst(
                         new MapPropertySource("operations-safety", startupSafety())));
                 context.set(app.run());
@@ -34,5 +38,15 @@ public final class OperationsMain {
             if (context.get() != null) context.get().close();
         }
         System.exit(exit);
+    }
+
+    private static final class EarlySafety implements
+            org.springframework.context.ApplicationListener<org.springframework.boot.context.event.ApplicationEnvironmentPreparedEvent>,
+            org.springframework.core.Ordered {
+        @Override public int getOrder() { return org.springframework.core.Ordered.HIGHEST_PRECEDENCE + 5; }
+        @Override public void onApplicationEvent(org.springframework.boot.context.event.ApplicationEnvironmentPreparedEvent event) {
+            event.getEnvironment().getPropertySources().addFirst(
+                    new MapPropertySource("operations-early-safety", startupSafety()));
+        }
     }
 }

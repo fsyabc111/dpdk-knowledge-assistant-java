@@ -33,7 +33,7 @@ scripts-java/compose.sh --apply up -d postgres-java backend-java frontend-java
 # 固定fake服务默认启用，backend依赖其健康；真实harness profile仍关闭。
 ```
 
-主后端默认不配置任何真实模型。合成替身路由为 `http://fake-upstream:18091/v1/embeddings` 和 `/v1/chat/completions`；固定 1024 维向量和固定回答只用于部署路径。通过本轮显式配置 `dpdk.model.*` 后才可使用；缺配置不能当质量通过。替身现在提供 `/mcp` 的五种固定工具，grade_plugin只返回合成PASS，不编译/执行/保留源码；进程内job固定结果支持同job回放和unknown状态。它不是live质量或真实harness恢复验收，详见 fake-upstream/README.md。已提供 `harness-java` 的 `harness-authorized` profile：只接受另行审查的本地镜像（pull_policy=never），UID10001、read_only、tmpfs、资源受限且无宿主端口，使用 `java-harness` 专网及18100端口。该profile默认关闭，当前 compose.sh 不开启它；真实评测仍须独立授权，不得把旧 harness 暴露到公网。
+主后端默认只配置内网固定替身，认证默认account，需用独立CLI创建合成账号。替身路由为 `http://fake-upstream:18091/v1/embeddings` 和 `/v1/chat/completions`；固定1024维向量和固定回答只用于部署/业务演练，不能当真实质量通过。`/mcp`提供五种固定工具，grade_plugin只返回合成PASS，不编译/执行/保留源码；进程内job固定结果支持同job回放和unknown状态。它不是live质量或真实harness恢复验收，详见fake-upstream/README.md。`harness-java`的`harness-authorized` profile只接受另行审查的本地镜像（pull_policy=never），UID10001、read_only、tmpfs、资源受限且无宿主端口，使用java-harness专网及18100端口；默认关闭，当前compose.sh不启用，真实评测须独立授权。
 
 ```bash
 curl --cacert .migration-artifacts/java-isolated-certs/server.crt https://localhost:18443/api/health

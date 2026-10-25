@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       java-ci-pg:
-        image: pgvector/pgvector:pg16
+        image: pgvector/pgvector:0.8.4-pg17@sha256:dd467f03ca5c5581222490e5217e48a262864ccb659be559f8491bbafdc97da0
         env:
           POSTGRES_DB: postgres
           POSTGRES_USER: java_isolated_ci
@@ -56,7 +56,17 @@ jobs:
           java-version: '21'
           cache: maven
           cache-dependency-path: backend-java/pom.xml
-      - name: Explicit dedicated PG; TestPg verifies role and directory before CREATE/DROP
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Install original frontend client runtime for Java HTTP integration
+        # 完整Java HTTP集成会执行原前端API客户端，需要真实Node/esbuild依赖。
+        # 在独立前端job通过不能替代本job的运行依赖。
+        working-directory: frontend
+        run: npm ci
+      - name: Explicit dedicated PG integration
         working-directory: backend-java
         run: ./mvnw -B test
   frontend:

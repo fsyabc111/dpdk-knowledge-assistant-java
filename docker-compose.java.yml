@@ -2,7 +2,7 @@
 name: dpdk-java-isolated
 services:
   postgres-java:
-    image: pgvector/pgvector:pg16
+    image: pgvector/pgvector:0.8.4-pg17@sha256:dd467f03ca5c5581222490e5217e48a262864ccb659be559f8491bbafdc97da0
     environment:
       POSTGRES_DB: dpdk_java_isolated
       POSTGRES_USER: dpdk_java_isolated
@@ -34,6 +34,15 @@ services:
       DPDK_JAVA_DB_COMMENT: dpdk-java-isolated-rehearsal
       DPDK_JAVA_DB_DATA_DIR: /var/lib/postgresql/data/java-isolated
       DPDK_JAVA_CORS_ORIGINS: https://localhost:${DPDK_JAVA_HTTPS_PORT:-18443}
+      AUTH_MODE: ${DPDK_JAVA_AUTH_MODE:-account}
+      # 该project默认只使用内网固定替身；不是live模型配置或质量声明。
+      DPDK_MODEL_CHAT_BASE_URL: http://fake-upstream:18091/v1
+      DPDK_MODEL_CHAT_API_KEY: isolated-fixed-key
+      DPDK_MODEL_CHAT_MODEL_NAME: isolated-chat
+      DPDK_MODEL_EMBEDDING_BASE_URL: http://fake-upstream:18091/v1
+      DPDK_MODEL_EMBEDDING_API_KEY: isolated-fixed-key
+      DPDK_MODEL_EMBEDDING_MODEL_NAME: isolated-embedding
+      DPDK_JAVA_MODEL_JUDGE_ENABLED: "false"
       # 外部源根通过同一份显式只读挂载提供，绝不猜上级目录。
       JAVA_TOOL_OPTIONS: -Djava.io.tmpdir=/tmp
       DPDK_JAVA_KNOWLEDGE_CONFIG: /sources/knowledge_sources.yml
