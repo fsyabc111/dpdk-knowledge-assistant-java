@@ -1,0 +1,38 @@
+== ST-02 判定器自检：合成 golden/live 对，不启动应用、不连库、不读黄金文件 ==
+[OK] a.错状态同体                  期望=DIFF 实测=DIFF
+       detail: STATUS: HTTP 状态不同: golden=200 live=500；无允许差异声明 → 计失败（ST-02：未声明差异即 DIFF）
+[OK] b.数组反序                   期望=DIFF 实测=DIFF
+       detail: BODY: $body.rows[0].score 值不同: golden=10 live=20（同类型标量值差不归一化吞掉）; $body.rows[1].score 值不同: golden=20 live=10（同类型标量值差不归一化吞掉）；无允许差异声明 → 计失败（ST-02：未声明差异即 DIFF）
+[OK] c.标量值差                   期望=DIFF 实测=DIFF
+       detail: BODY: $body.score 值不同: golden=80 live=99（同类型标量值差不归一化吞掉）；无允许差异声明 → 计失败（ST-02：未声明差异即 DIFF）
+[OK] d.重复行数伪装                 期望=DIFF 实测=DIFF
+       detail: BODY: $body.rows 实体双射校验失败: 去重后原始实体数 golden=2 live=1（重复身份伪装）; $body.rows[1].score 值不同: golden=20 live=10（同类型标量值差不归一化吞掉）；无允许差异声明 → 计失败（ST-02：未声明差异即 DIFF）
+[OK] d2.同值重复身份                期望=DIFF 实测=DIFF
+       detail: BODY: $body.rows 实体双射校验失败: 去重后原始实体数 golden=2 live=1（重复身份伪装）；无允许差异声明 → 计失败（ST-02：未声明差异即 DIFF）
+[OK] e.同构响应正例                 期望=PASS 实测=PASS
+       detail: HTTP 200；归一化后值级相等（保序保重复 + 实体双射通过）
+[OK] e2.重复元素保序正例              期望=PASS 实测=PASS
+       detail: HTTP 200；归一化后值级相等（保序保重复 + 实体双射通过）
+[OK] e3.非对象数组乱序               期望=DIFF 实测=DIFF
+       detail: BODY: $body.rows[1] 值不同: golden=10 live=20（同类型标量值差不归一化吞掉）; $body.rows[2] 值不同: golden=20 live=10（同类型标量值差不归一化吞掉）；无允许差异声明 → 计失败（ST-02：未声明差异即 DIFF）
+[OK] e4.bool与int混淆            期望=DIFF 实测=DIFF
+       detail: BODY: $body.enabled 类型不同: golden=int live=bool；无允许差异声明 → 计失败（ST-02：未声明差异即 DIFF）
+[OK] f.声明内差异                  期望=ALLOWED-DIFF 实测=ALLOWED-DIFF
+       detail: 差异 kinds=['BODY', 'STATUS'] 落在显式声明允许范围内：合成声明：预检拒绝状态 400→403 平台语义（依据 合成自检依据）
+[OK] f2.未声明同差异                期望=DIFF 实测=DIFF
+       detail: STATUS: HTTP 状态不同: golden=400 live=403；BODY: $body.detail 值不同: golden='Invalid CORS request' live='CORS rejected'（同类型标量值差不归一化吞掉）；无允许差异声明 → 计失败（ST-02：未声明差异即 DIFF）
+[OK] f3.生产表CORS声明             期望=ALLOWED-DIFF 实测=ALLOWED-DIFF
+       detail: 差异 kinds=['STATUS'] 落在显式声明允许范围内：非允许来源预检：Python/Starlette 400，Java/Spring CorsFilter 403 同语义拒绝（依据 DECISIONS.md P2-D1）
+[OK] f4.平台路由期望404             期望=REPLAYED 实测=REPLAYED
+       detail: 声明期望 live HTTP 404 与实测一致：Python 平台路由（FastAPI/docs/metrics/health 探针）Java 未迁移，登记平台差异；Java 探针为 /actuator/health（依据 DECISIONS.md P2-D1 平台差异登记；golden=200）
+[OK] f5.平台路由期望不满足             期望=DIFF 实测=DIFF
+       detail: 差异 kinds=['BODY', 'STATUS']（HTTP 状态不同: golden=200 live=500; $body 键集不同: golden独有=['status'] live独有=['detail']）；声明 EXPECT_STATUS=404 不满足（实测 500）——Python 平台路由（FastAPI/docs/metrics/health 探针）Java 未迁移，登记平台差异；Java 探针为 /actuat
+[OK] f6.SKIP声明命中              期望=SKIP 实测=SKIP
+[OK] x.顶键集不同                  期望=DIFF 实测=DIFF
+       detail: BODY: $body 键集不同: golden独有=['a'] live独有=['b']；无允许差异声明 → 计失败（ST-02：未声明差异即 DIFF）
+[OK] x2.数组长度不同                期望=DIFF 实测=DIFF
+       detail: BODY: $body.rows 数组长度不同: golden=2 live=1（保序保重复比较）；无允许差异声明 → 计失败（ST-02：未声明差异即 DIFF）
+
+SELFTEST SUMMARY: total=17 ok=17 failed=0
+全部变异判 FAIL、正例与声明判定符合预期 → 判定器自检通过
+rc=0
