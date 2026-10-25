@@ -1,0 +1,13 @@
+# 独立 Java 主后端；构建上下文为本仓库根目录。
+FROM eclipse-temurin:21-jdk AS builder
+WORKDIR /build
+COPY backend-java/ ./
+RUN chmod +x mvnw && ./mvnw -B -DskipTests package
+
+FROM eclipse-temurin:21-jre
+WORKDIR /app
+RUN groupadd --gid 10001 assistant && useradd --uid 10001 --gid 10001 --no-create-home assistant
+COPY --from=builder --chown=10001:10001 /build/target/dpdk-assistant-backend-0.1.0-SNAPSHOT.jar /app/backend.jar
+USER 10001:10001
+EXPOSE 18090
+ENTRYPOINT ["java", "-XX:MaxRAMPercentage=70", "-Djava.io.tmpdir=/tmp", "-jar", "/app/backend.jar"]

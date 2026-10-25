@@ -1,0 +1,6 @@
+**
+!backend-java/
+!backend-java/**
+backend-java/target/
+backend-java/.env*
+backend-java/**/*.log

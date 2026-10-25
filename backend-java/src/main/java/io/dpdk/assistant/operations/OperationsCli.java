@@ -5,7 +5,6 @@ import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +28,7 @@ public final class OperationsCli {
               retrieve --query TEXT [--top-k 5]
               judge --cases /绝对路径/cases.json
               help | --help
-            judge 仅消费离线 fixture；不调用模型或 harness。错误输出不含凭据/输入正文。
+            judge 仅消费离线 fixture；不调用模型或 harness，不代表真实 judge 质量。错误输出不含凭据/输入正文。
             """;
     private static final Map<String, Set<String>> OPTIONS = Map.of(
             "create-users", Set.of("id", "roles", "daily-quota", "apply"),
