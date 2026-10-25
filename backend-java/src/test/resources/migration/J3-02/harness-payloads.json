@@ -1,0 +1,43 @@
+{
+  "HARNESS_OK": {
+    "ok": true, "protocol": "dns", "score": 100, "cases_total": 8, "passed": 8,
+    "failed": 0, "crashed": 0, "timedout": 0, "cheat": 0,
+    "results": [
+      {"name": "dns_basic_1", "category": "[POSITIVE]", "result": "PASS", "failures": []}
+    ]
+  },
+  "HARNESS_FAIL": {
+    "ok": true, "protocol": "dns", "score": 62, "cases_total": 8, "passed": 5,
+    "failed": 3, "crashed": 0, "timedout": 0, "cheat": 0,
+    "results": [
+      {"name": "dns_basic_1", "category": "[POSITIVE]", "result": "PASS", "failures": []},
+      {"name": "dns_basic_3", "category": "[POSITIVE]", "result": "FAIL",
+       "failures": [{"desc": "qname", "expected": "example.com", "actual": "www.example.com"}]}
+    ]
+  },
+  "LIST_PROTOCOLS_OK": {
+    "ok": true,
+    "protocols": [
+      {"name": "dns", "cases": 8, "categories": {"[POSITIVE]": 5, "[NEGATIVE]": 3}},
+      {"name": "http", "cases": 6, "categories": {"[POSITIVE]": 4, "[NEGATIVE]": 2}}
+    ]
+  },
+  "LIST_CASES_DNS": {
+    "ok": true, "protocol": "dns",
+    "cases": [
+      {"name": "dns_basic_1", "category": "[POSITIVE]"},
+      {"name": "dns_basic_3", "category": "[POSITIVE]"}
+    ]
+  },
+  "REFERENCE_DNS": {
+    "ok": true, "protocol": "dns",
+    "source": "/* 教师参考实现 REF_DNS_QNAME_LABEL_CODEC_V2 */\n#include <stdint.h>\nstatic int encode_qname_labels(uint8_t *out, const char *name)\n{\n    /* 按 '.' 拆成标签序列，逐段写长度字节与标签内容。 */\n    return 0;\n}\n"
+  },
+  "TASK_STATUS_FINISHED": {
+    "ok": true, "status": "finished",
+    "result": {
+      "ok": true, "protocol": "dns", "score": 88, "cases_total": 8, "passed": 7,
+      "results": [{"name": "dns_basic_1", "result": "PASS", "failures": []}]
+    }
+  }
+}
