@@ -152,8 +152,12 @@ class RealAgentLedgerIntegrationTest {
             assertThat(saved.status()).isEqualTo("finished");
             assertThat(saved.submissionDone()).isTrue();
             assertThat(h.task.countRows("grading_submissions", "task_job_id=?", admitted.jobId())).isEqualTo(1);
-            assertThat(h.task.columnValue("grading_submissions", "results_json", "task_job_id=?", admitted.jobId()))
-                    .contains("model_args").doesNotContain(SOURCE);
+            String savedResults = h.task.columnValue("grading_submissions", "results_json", "task_job_id=?", admitted.jobId());
+            var actualResults = new com.fasterxml.jackson.databind.ObjectMapper().readTree(savedResults);
+            assertThat(actualResults.path("source_origin").asText()).isEqualTo("model_args");
+            assertThat(actualResults.path("results").isArray()).isTrue();
+            assertThat(actualResults.path("results")).isEqualTo(new com.fasterxml.jackson.databind.ObjectMapper().valueToTree(result().get("results")));
+            assertThat(savedResults).doesNotContain(SOURCE);
             int before = operations.size();
             for (int restart = 0; restart < 3; restart++) {
                 var resumed = grade(context(h, admitted, harness));
@@ -163,6 +167,109 @@ class RealAgentLedgerIntegrationTest {
             assertThat(operations).hasSize(before);
             assertThat(gradingCount(h)).isEqualTo(1);
             assertThat(h.task.countRows("grading_submissions", "task_job_id=?", admitted.jobId())).isEqualTo(1);
+        }
+    }
+
+    @Test
+    void realAgentGradesPreserveEachCaseAndFailureNamesReachGradingOwnedProfile() throws Exception {
+        List<Map<String, Object>> cases =
+                List.of(
+                        Map.of(
+                                "name",
+                                "dns-pass",
+                                "result",
+                                "PASS",
+                                "expected",
+                                "ok",
+                                "actual",
+                                "ok"),
+                        Map.of(
+                                "name",
+                                "dns-failed-case",
+                                "result",
+                                "FAIL",
+                                "expected",
+                                "A",
+                                "actual",
+                                "B"));
+        Map<String, Object> payload =
+                Map.of(
+                        "ok",
+                        true,
+                        "protocol",
+                        "dns",
+                        "score",
+                        50,
+                        "passed",
+                        1,
+                        "cases_total",
+                        2,
+                        "results",
+                        cases);
+        HarnessPort remote =
+                (tool, args, deadline) ->
+                        "grade_plugin".equals(tool)
+                                ? reply(payload)
+                                : reply(
+                                        Map.of(
+                                                "ok",
+                                                true,
+                                                "data",
+                                                Map.of("reference_source", "synthetic reference")));
+        try (ChatTestHarness h = ChatTestHarness.create("ledgerstructure", MODEL, remote)) {
+            var admitted = admit(h);
+            var managed = runRealExecutor(h, admitted);
+            assertThat(managed.awaitDone(Duration.ofSeconds(5))).isTrue();
+            assertThat(h.task.countRows("grading_submissions", "task_job_id=?", admitted.jobId()))
+                    .isEqualTo(1);
+            String saved =
+                    h.task.columnValue(
+                            "grading_submissions",
+                            "results_json",
+                            "task_job_id=?",
+                            admitted.jobId());
+            var json = new com.fasterxml.jackson.databind.ObjectMapper();
+            var document = json.readTree(saved);
+            assertThat(document.path("source_origin").asText()).isEqualTo("model_args");
+            assertThat(document.path("results").isArray()).isTrue();
+            assertThat(document.path("results")).isEqualTo(json.valueToTree(cases));
+            assertThat(document.path("results").size()).isEqualTo(2);
+            assertThat(saved).doesNotContain(SOURCE);
+            var ports =
+                    new ChatAgentPorts(h.task.store, h.task.runner, h.task.clock, h.task.counters);
+            var profile =
+                    new io.dpdk.assistant.grading.query.AgentGradingStatsService(h.task.runner);
+            assertThat(profile.recentFailCount("student", "dns", 10)).isEqualTo(1);
+            assertThat(ports.recentFailCount("student", "dns", 10)).isEqualTo(1);
+            assertThat(profile.learnerProfile("student"))
+                    .contains("尝试1次", "最高50分", "常挂用例：dns-failed-case");
+            assertThat(ports.learnerProfile("student"))
+                    .isEqualTo(profile.learnerProfile("student"));
+            assertThat(gradingCount(h)).isEqualTo(1);
+        }
+    }
+
+    @Test
+    void nonTaskGradeWriteIsExplicitlyRejectedWithoutBypassingAccountAndTaskLocks()
+            throws Exception {
+        try (ChatTestHarness h = ChatTestHarness.create("ledgerrequiretask", MODEL, null)) {
+            var ports =
+                    new ChatAgentPorts(h.task.store, h.task.runner, h.task.clock, h.task.counters);
+            assertThatThrownBy(
+                            () ->
+                                    ports.recordSubmission(
+                                            "student",
+                                            null,
+                                            "dns",
+                                            HASH,
+                                            50,
+                                            0,
+                                            1,
+                                            List.of(Map.of("name", "case", "result", "FAIL")),
+                                            "pasted"))
+                    .isInstanceOf(IllegalStateException.class)
+                    .hasMessageContaining("taskGrade");
+            assertThat(h.task.countRows("grading_submissions", null)).isZero();
         }
     }
 

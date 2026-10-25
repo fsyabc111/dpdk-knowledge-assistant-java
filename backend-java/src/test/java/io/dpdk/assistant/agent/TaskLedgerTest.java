@@ -86,8 +86,11 @@ class TaskLedgerTest {
         // model_args 首评回填执行源
         assertThat(scenario.ledger.backfilledSources).containsExactly("task_1|model_args");
         // 成绩只存 hash+结果：TaskGradeInput 不携带源码全文
-        assertThat(scenario.taskGrade.calls.get(0).resultsJson())
-                .contains("source_origin").contains("results");
+        var rawResults = new com.fasterxml.jackson.databind.ObjectMapper()
+                .readTree(scenario.taskGrade.calls.get(0).resultsJson());
+        assertThat(rawResults.isArray()).isTrue();
+        assertThat(rawResults.get(0).path("name").asText()).isEqualTo("dns_basic_1");
+        assertThat(rawResults.toString()).doesNotContain("source_origin");
     }
 
     @Test
@@ -325,6 +328,7 @@ class TaskLedgerTest {
         assertThat(input.total()).isEqualTo(8);
         assertThat(input.resultsJson()).doesNotContain("plugin_main");
         assertThat(input.resultsJson()).contains("dns_basic_1");
+        assertThat(new com.fasterxml.jackson.databind.ObjectMapper().readTree(input.resultsJson()).isArray()).isTrue();
     }
 
     @Test

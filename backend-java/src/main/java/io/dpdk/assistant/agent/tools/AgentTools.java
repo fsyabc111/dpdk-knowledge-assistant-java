@@ -539,9 +539,6 @@ public final class AgentTools {
                                      String sourceOrigin, Map<String, Object> payload) {
         try {
             List<Map<String, Object>> results = orList(payload.get("results"));
-            Map<String, Object> resultsDoc = new LinkedHashMap<>();
-            resultsDoc.put("source_origin", sourceOrigin);
-            resultsDoc.put("results", results);
             TaskGradeInput input = new TaskGradeInput(
                     context.taskId, ledger.jobId,
                     GradeFacts.str(strOr(payload.get("protocol"), protocol)),
@@ -549,7 +546,7 @@ public final class AgentTools {
                     (int) Math.round(GradeFacts.intOf(payload.get("score"), 0)),
                     GradeFacts.intOf(payload.get("passed"), 0),
                     GradeFacts.intOf(payload.get("cases_total"), 0),
-                    PythonJson.dumps(resultsDoc, false));
+                    PythonJson.dumps(results, false));
             TaskGradeResult result = context.taskGrade.recordTaskGrade(input);
             if (result == TaskGradeResult.legacy_unlinked) {
                 log.warn(PythonJson.dumps(Map.of(
