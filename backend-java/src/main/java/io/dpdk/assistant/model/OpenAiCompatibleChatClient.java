@@ -160,17 +160,54 @@ public final class OpenAiCompatibleChatClient implements ChatModelPort {
      * 整个调用只记一笔账：成功记上游 usage，失败/取消在 finally 记 unknown。
      */
     public RawChatResult chat(List<ChatMessage> messages, String model, ModelUsageLedger usage, String stage) {
+        Map<String, Object> payload = basePayload(messages, model, false);
+        return invokeChat(payload, usage, stage, this::handleChatResponse, RawChatResult::rawUsage);
+    }
+
+    /** 工具调用保留 id/name/arguments，参数仍是供应商 JSON 文本，不在传输层执行。 */
+    public record RawToolCall(String id, String name, String arguments) {
+    }
+
+    /** Agent 富回复；content 与工具调用允许同时存在。 */
+    public record RawToolChatResult(String content, List<RawToolCall> toolCalls,
+                                    Map<String, Object> rawUsage) {
+    }
+
+    /**
+     * Agent 单轮调用。消息、工具 schema 均由适配器构造；传输/并发门/重试/取消/记账
+     * 与旧 chat 共用，不在客户端执行工具或开启供应商自动循环。
+     */
+    public RawToolChatResult chatTools(List<Map<String, Object>> messages,
+                                       List<Map<String, Object>> tools, String model,
+                                       ModelUsageLedger usage, String stage) {
+        Map<String, Object> payload = basePayload(List.of(),
+                firstNonBlank(model, null, settings.modelName()), false);
+        payload.put("messages", List.copyOf(messages));
+        if (tools != null && !tools.isEmpty()) {
+            payload.put("tools", List.copyOf(tools));
+        }
+        return invokeChat(payload, usage, stage, this::handleToolChatResponse,
+                RawToolChatResult::rawUsage);
+    }
+
+    @FunctionalInterface
+    private interface ResponseReader<T> {
+        T read(ClientHttpResponse response) throws IOException;
+    }
+
+    private <T> T invokeChat(Map<String, Object> payload, ModelUsageLedger usage, String stage,
+                              ResponseReader<T> reader,
+                              java.util.function.Function<T, Map<String, Object>> usageReader) {
         long started = System.nanoTime();
         AtomicInteger calls = new AtomicInteger();
         AtomicBoolean recorded = new AtomicBoolean();
-        Map<String, Object> payload = basePayload(messages, model, false);
         String modelName = (String) payload.get("model");
         try {
             while (true) {
                 int attempt = calls.incrementAndGet();
                 try {
-                    RawChatResult outcome = exchangeOnce(payload);
-                    recordOnce(usage, stage, modelName, outcome.rawUsage(), elapsedMs(started),
+                    T outcome = exchangeOnce(payload, reader);
+                    recordOnce(usage, stage, modelName, usageReader.apply(outcome), elapsedMs(started),
                             attempt, ModelUsageLedger.KIND_LLM, recorded);
                     return outcome;
                 } catch (InterruptedException interrupted) {
@@ -209,9 +246,10 @@ public final class OpenAiCompatibleChatClient implements ChatModelPort {
      * 调用线程中断只取消「等待」——取消发生在发送之前则请求不出门；已发出的请求
      * 继续收尾并释放许可（不伪称远端已取消）。
      */
-    private RawChatResult exchangeOnce(Map<String, Object> payload) throws InterruptedException {
+    private <T> T exchangeOnce(Map<String, Object> payload, ResponseReader<T> reader)
+            throws InterruptedException {
         AtomicBoolean abandoned = new AtomicBoolean(false);
-        CompletableFuture<RawChatResult> task = new CompletableFuture<>();
+        CompletableFuture<T> task = new CompletableFuture<>();
         Future<?> submitted = io.submit(() -> {
             if (abandoned.get()) {
                 return; // 取消先于发送：对位 Python 在 upstream_slot 等待中被取消
@@ -220,7 +258,7 @@ public final class OpenAiCompatibleChatClient implements ChatModelPort {
                 if (abandoned.get()) {
                     return;
                 }
-                task.complete(doPost(payload));
+                task.complete(doPost(payload, reader));
             } catch (Throwable t) {
                 task.completeExceptionally(t instanceof RuntimeException runtime ? runtime
                         : new ModelProtocolException("模型上游交换失败", t));
@@ -241,12 +279,12 @@ public final class OpenAiCompatibleChatClient implements ChatModelPort {
         }
     }
 
-    private RawChatResult doPost(Map<String, Object> payload) {
+    private <T> T doPost(Map<String, Object> payload, ResponseReader<T> reader) {
         return restClient.post()
                 .uri(settings.chatCompletionsUrl())
                 .headers(this::authorize)
                 .body(payload)
-                .exchange((request, response) -> handleChatResponse(response));
+                .exchange((request, response) -> reader.read(response));
     }
 
     private RawChatResult handleChatResponse(ClientHttpResponse response) throws IOException {
@@ -262,6 +300,45 @@ public final class OpenAiCompatibleChatClient implements ChatModelPort {
             throw new ModelProtocolException("上游响应缺少 choices[0].message.content");
         }
         return new RawChatResult(content.asText(), rawUsage(root.get("usage")));
+    }
+
+    private RawToolChatResult handleToolChatResponse(ClientHttpResponse response) throws IOException {
+        if (response.getStatusCode().isError()) {
+            throw httpError(response);
+        }
+        JsonNode root = parseJson(readBody(response));
+        JsonNode choices = root.path("choices");
+        JsonNode message = choices.path(0).path("message");
+        if (!choices.isArray() || choices.isEmpty() || !message.isObject()) {
+            throw new ModelProtocolException("上游响应缺少 choices[0].message");
+        }
+        List<RawToolCall> calls = new ArrayList<>();
+        JsonNode rawCalls = message.get("tool_calls");
+        if (rawCalls != null && !rawCalls.isNull()) {
+            if (!rawCalls.isArray()) {
+                throw new ModelProtocolException("上游 tool_calls 必须是数组");
+            }
+            for (JsonNode call : rawCalls) {
+                JsonNode function = call.path("function");
+                if (!call.path("id").isTextual() || call.path("id").asText().isEmpty()
+                        || !"function".equals(call.path("type").asText())
+                        || !function.path("name").isTextual()
+                        || function.path("name").asText().isEmpty()
+                        || !function.path("arguments").isTextual()) {
+                    throw new ModelProtocolException("上游工具调用缺少 id/type/function.name/arguments");
+                }
+                calls.add(new RawToolCall(call.path("id").asText(), function.path("name").asText(),
+                        function.path("arguments").asText()));
+            }
+        }
+        JsonNode content = message.get("content");
+        if ((content == null || content.isNull()) && !calls.isEmpty()) {
+            return new RawToolChatResult("", List.copyOf(calls), rawUsage(root.get("usage")));
+        }
+        if (content == null || !content.isTextual()) {
+            throw new ModelProtocolException("上游正文必须是字符串，或以工具调用承载 null 正文");
+        }
+        return new RawToolChatResult(content.asText(), List.copyOf(calls), rawUsage(root.get("usage")));
     }
 
     // ------------------------------------------------------------------
