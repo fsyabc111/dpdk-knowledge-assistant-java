@@ -119,3 +119,16 @@ J3-02 已交付（worker/j3-02@3d426e9，自有测试 124/124；黄金场景 Pyt
 3. **ChatModelPort 富接口**：暂不改 contracts。Agent 侧以 `agent/AgentChatModel` 为模型替身边界（W9 口径已在其契约注释声明）；真实模型（OpenAiCompatibleChatClient）到 AgentChatModel 的适配器由 J3-03 集成窗口由集成者编写。tool-calling 富接口（多消息/tool_calls/usage）若 J3-03 集成发现缺口，另行登记变更。
 
 行为差异备查（J3-02 申报，集成复核）：孤立代理项 getBytes 差异（实际不可达）、splitlines 全行界覆盖、get_reference_answer 固定 120s 期限、非流式 delta 粒度为整条消息（脚本化替身口径，SSE 细化归 J3-03）。
+
+## J3-01（持久任务生命周期与恢复）集成裁决（2026-10-25，集成者）
+
+J3-01 已交付（worker/j3-01@40cb46c，自有测试 8类50/50；真双JVM+合成PG认领实测；integration_pending 三项闭环）。六项申请受理如下：
+
+1. **Probe/AdmissionResult/CompletedAnswer/TaskRow 字段补全**：受理，列入 P3 集成窗口（下一会话）执行——富形态（TaskProbeOutcome/TaskAdmitOutcome/TaskRecordRow）现公开于 io.dpdk.assistant.task 包，冻结端口按占位实现，不影响消费方编译；正式化到 contracts 后 J3-03/J3-04 消费切换。
+2. **AdmissionInput 附件四字段（attachment_name/suffix/source_text/source_origin）**：受理，且为 **J3-03 集成前阻断项**——上传附件任务的恢复依赖 rag_task_inputs 寄存，缺字段会丢执行源。随第1项一并补契约字段与 TaskTemporaryInput 子结构。
+3. **TaskGradeInput 来源说明**：登记（实现从任务行与 rag_task_inputs.source_origin 取同源值，已测试）；暂不改契约字段。
+4. **SessionPortAdapter.appendUser 委托更新**：受理，P3 集成窗口由集成者改为委托 SessionService.appendMessage（J3-01 已有 TaskSessionPortBridge 可参照），Spring 装配单点选用。
+5. **NoOp 装配替换**：受理，P3 集成窗口——admin.NoOpLocalTaskCancellation 让位于 task.TaskLocalCancellation（加 @Component 单 Bean），保持 IP-1 真实取消闭环。
+6. **端口语义澄清（claim 先于占槽；finish 失败执行体 result 不成立）**：登记为冻结语义（测试钉死），无签名变化。
+
+**P3 集成窗口待办汇总**（集成者，下一会话）：契约字段补全（1/2）→ SessionPortAdapter 委托（4）→ NoOp 替换（5）→ AgentChatModel 真实模型适配器（承 J3-02 裁决）→ J3-03 chat/SSE 集成。

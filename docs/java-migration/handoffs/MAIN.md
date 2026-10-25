@@ -1,6 +1,21 @@
 # 主 Agent 恢复点
 
-## 当前：2026-10-25 U12 P3进行中（J3-02已合并，J3-01运行中）
+## 当前：2026-10-25 U12 P3交接点（用户指令：J3-01完成后暂停交接）
+
+**本会话最终状态。恢复本批次从这里开始。**
+
+- **R段（已收口，19a2d47）**：8项验收问题全部关闭+双轴审查通过（规范轴0阻断；规格轴B-1已关闭）。证据：evidence/U12-R-segment-20261025/README.md（含review-spec.md/review-standards.md与处置记录）。全量316/316、strict probe 32/32、严格重放DIFF=0（PASS72/ALLOWED-DIFF25/SKIP89）、SP-04四组真实进程探针、SP-05浏览器README原样实测。
+- **P3（暂停于交接点）**：
+  - J3-02 已合并（3d426e9，fast-forward）：Agent五工具受控循环，自有124/124。
+  - J3-01 已合并（d927fb1）：任务账本/受理事务/进程托管/事件流/恢复，8类50/50，真双JVM+合成PG认领实测，integration_pending三项卡内闭环（IP-1停号取消/IP-J205-2会话删除/TaskGradeParticipant）。
+  - **合并树全量verify 490/490（0失败/0错误/0跳过）**——集成分支可构建快照。
+  - 接口变更裁决已登记：migration/contracts/interface-changes.md 的「J3-02集成裁决」「J3-01集成裁决」两节（J3-01六项+J3-02三项，含受理/阻断/登记分类）。
+- **P3集成窗口待办（下一会话执行顺序）**：①契约字段补全（Probe/AdmissionResult/CompletedAnswer/TaskRow + AdmissionInput附件四字段=J3-03阻断项）；②Spring装配（SessionPortAdapter委托SessionService.appendMessage、admin.NoOpLocalTaskCancellation→task.TaskLocalCancellation单Bean、TaskSettings/heartbeat接线、AgentChatModel真实模型适配器）；③J3-03 chat/SSE集成（SSE冻结契约见migration/contracts/http-and-sse.md；AgentScenario/TaskLedgerTest替身换真实仓储）；④J3-04讲解；⑤P3阶段报告+双轴审查→自动进P4。
+- **注意**：IP-1运行时闭环依赖装配替换（NoOp仍在），装配完成前不得宣称生产语义取消已接线。
+- 资源：PG 55481运行中（专属实例，口令.migration-artifacts/p1/local-credentials.txt，600）；无应用/MCP/Vite/Chrome进程。worker worktrees已无用可清理：.migration-artifacts/worktrees/j3-01、j3-02（分支worker/j3-01@40cb46c、worker/j3-02@3d426e9均已推送）。
+- 提交链（集成分支codex/p3-p5-longrun，均ls-remote核验）：4637ac9授权→f38aff9 R段修复→8c89318/d9364ed ST-02/03→4debf9f R段报告→19a2d47 R段收口→3d426e9 J3-02→3f78f00接口裁决→d68e84f检查点→d927fb1 J3-01合并→（本提交）交接终稿。
+
+## 历史：U12 P3进行中（2026-10-25，J3-02已合并时点）
 
 - **P3状态**：J3-02（Agent五工具）已完成并合并——worker/j3-02@3d426e9（fast-forward进集成分支），自有测试124/124绿（合并树复跑确认），黄金场景Python可达子集对齐，三项接口变更申请已裁决登记（3f78f00：TaskGradePort/TaskJobLedgerPort消费面归J3-01实现，ChatModelPort富接口留J3-03适配）。J3-01（任务生命周期）worker仍在运行（worktree .migration-artifacts/worktrees/j3-01，基线19a2d47）。
 - 提交链：19a2d47（R段收口）→ 3d426e9（J3-02）→ 3f78f00（接口裁决）。
