@@ -420,6 +420,10 @@ def bcrypt_hash(password):
         raise SystemExit("FAIL-FAST: M2_REPO 下未找到 spring-security-crypto-*.jar"
                          "（默认 ~/.m2/repository，可用 M2_REPO 覆盖）")
     cp = [crypto_jar]
+    # spring-security-crypto 7.x 运行期需要 spring-core；commons-logging 可选
+    core_jar = find_jar("org/springframework/spring-core", "spring-core-*.jar")
+    if core_jar:
+        cp.append(core_jar)
     cl_jar = find_jar("commons-logging/commons-logging", "commons-logging-*.jar")
     if cl_jar:
         cp.append(cl_jar)

@@ -21,6 +21,7 @@ import os
 import threading
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from pathlib import Path
 
 LOCK = threading.Lock()
 STATE = {"initializes": 0, "tool_calls": 0, "initialized_notifications": 0, "calls": []}
@@ -163,9 +164,13 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--host", default="127.0.0.1")
     ap.add_argument("--port", type=int, default=8100)
-    ap.add_argument("--state-file", default="/tmp/p2reg/harness_state.json")
-    ap.add_argument("--payload-file", default="/tmp/p2reg/grade_payload.json")
-    ap.add_argument("--protocols-file", default="/tmp/p2reg/protocols_payload.json")
+    # 默认落 evidence/logs/tmp（与 common.sh REPLAY_TMP 一致）；可用 DPDK_REPLAY_TMP 覆盖。
+    # 不再依赖旧会话临时目录（ST-03）。
+    tmp_dir = os.environ.get("DPDK_REPLAY_TMP",
+                             str(Path(__file__).resolve().parent.parent / "logs" / "tmp"))
+    ap.add_argument("--state-file", default=os.path.join(tmp_dir, "harness_state.json"))
+    ap.add_argument("--payload-file", default=os.path.join(tmp_dir, "grade_payload.json"))
+    ap.add_argument("--protocols-file", default=os.path.join(tmp_dir, "protocols_payload.json"))
     ARGS = ap.parse_args()
     os.makedirs(os.path.dirname(ARGS.state_file), exist_ok=True)
     persist(ARGS.state_file)
