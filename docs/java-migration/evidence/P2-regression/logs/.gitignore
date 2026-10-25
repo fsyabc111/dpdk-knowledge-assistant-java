@@ -1,0 +1,5 @@
+# 本目录下两类产物不入库（ST-03 身份文件机制）：
+# - replay-state.json：本轮动态身份（token/账号/作业 id；含凭据性质内容，绝不提交）
+# - tmp/：场景脚本与 fake harness 的运行临时产物
+replay-state.json
+tmp/
