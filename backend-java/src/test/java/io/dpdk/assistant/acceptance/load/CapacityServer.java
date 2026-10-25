@@ -76,7 +76,7 @@ public final class CapacityServer {
         properties.put("dpdk.rate-limit-chat-per-minute", 20);
         properties.put("logging.level.root", "ERROR");
         properties.put("logging.level.io.dpdk", "ERROR");
-        application = new SpringApplicationBuilder(Application.class, Boundaries.class, Control.class).profiles("j5-capacity")
+        application = new SpringApplicationBuilder(Application.class, Boundaries.class).profiles("j5-capacity")
                 .initializers(ctx -> ctx.getEnvironment().getPropertySources().addFirst(
                         new org.springframework.core.env.MapPropertySource("j5-explicit", properties))).run();
         DataSource ds = application.getBean(DataSource.class);
@@ -264,12 +264,7 @@ public final class CapacityServer {
         }
     }
 
-    /** 只在显式测试服务装配；控制key不入日志/可提交证据。 */
-    @TestConfiguration(proxyBeanMethods = false)
-    public static class Control {
-        @Bean ControlApi capacityControlApi() { return new ControlApi(); }
-    }
-
+    /** 只在显式测试profile装配一次；控制key不入日志/可提交证据。 */
     @RestController
     @org.springframework.context.annotation.Profile("j5-capacity")
     public static class ControlApi {
