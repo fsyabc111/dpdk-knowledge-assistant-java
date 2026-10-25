@@ -177,7 +177,7 @@ public final class TaskEventStreams implements EventStreamPort {
                 task.messageId() == null ? "" : task.messageId(),
                 result.answer(),
                 result.citations(),
-                List.of(Map.of("label", "继续提问")),
+                List.of(Map.of("label", "继续提问", "source_path", "")),
                 "answered".equals(result.status()) ? "high" : "low",
                 result.status(),
                 result.reason(),

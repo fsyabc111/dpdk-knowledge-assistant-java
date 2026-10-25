@@ -278,24 +278,30 @@ class TaskIpClosureTest {
         HangingExecutor executor = new HangingExecutor();
         h.setRecoveryExecutor(executor);
         h.makeOrphan(admit.taskId(), Duration.ofSeconds(120));
-        // 占满全部槽位（默认 maxActive=8）；到位闩确保 8 个占槽全部生效
-        CountDownLatch occupied = new CountDownLatch(8);
+        // 使用实际冻结设置占满全部槽位；显式确认释放，避免污染其他场景。
+        int capacity = h.settings.maxActiveRequests();
+        CountDownLatch occupied = new CountDownLatch(capacity);
+        CountDownLatch released = new CountDownLatch(capacity);
         CountDownLatch block = new CountDownLatch(1);
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < capacity; i++) {
             Thread.ofVirtual().start(() -> {
+                boolean acquired = false;
                 try {
                     h.gate.acquire();
+                    acquired = true;
                     occupied.countDown();
                     block.await(30, TimeUnit.SECONDS);
-                    h.gate.release();
                 } catch (InterruptedException ignored) {
-                    // no-op
+                    Thread.currentThread().interrupt();
+                } finally {
+                    if (acquired) { h.gate.release(); }
+                    released.countDown();
                 }
             });
         }
         assertThat(occupied.await(10, TimeUnit.SECONDS)).isTrue();
         try {
-            assertThat(h.gate.active()).isEqualTo(8);
+            assertThat(h.gate.active()).isEqualTo(capacity);
             assertThat(h.service.recoverOrphans()).isZero();
             assertThat(h.columnValue("rag_requests", "status", "id=?", admit.taskId()))
                     .isEqualTo("pending");
@@ -303,6 +309,7 @@ class TaskIpClosureTest {
             assertThat(executor.executions.get()).isZero();
         } finally {
             block.countDown();
+            assertThat(released.await(10, TimeUnit.SECONDS)).isTrue();
         }
         // 槽位释放后下一拍照常恢复。注意基线顺序：认领闸先于占槽——占槽失败的行
         // 已被拨新，需再次过 grace 窗口才会重新入选孤儿扫描（与源行为同位）。

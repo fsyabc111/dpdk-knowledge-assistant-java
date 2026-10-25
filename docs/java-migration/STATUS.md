@@ -1,70 +1,60 @@
 # Java迁移唯一任务状态
 
-更新时间：2026-10-25。本文件由主Agent单写；历史细节放handoff/evidence，不在此追加日志。
+更新时间：2026-10-25。本文件由主Agent单写；历史细节保留于handoff/evidence。
 
 ## 当前授权与阶段
 
-- 当前授权：2026-10-25 用户以 LONGRUN_P3_P5_DRAFT.md 任务书正式启动长时批次（U12）：先关闭验收8项问题（ST-01～03、SP-01～05）并完成P1/P2工程复验，再连续完成P3（J3-01～04）、P4（J4-01～03）、P5隔离工程交付（J5-01～03隔离/合成范围验收）与J5-04交付准备。工程门禁通过后自动推进；主Agent统筹、最多3个worker；小步提交及时推送、持续交接。用户启动指令与任务书§建议启动指令一致，已登记为本批次实施授权。
-- 明确不授权：真实模型/embedding/真实harness调用验收、合并main、生产切换、Python退役、删除恢复资产、原项目/原部署/业务库写入。P5仅限隔离/合成范围；J5-04只做交付准备。
-- 当前实施阶段：U12批次**P3实现暂停于用户指令交接点（2026-10-25）**。R段已收口（8项关闭+双轴审查通过）。P3已完成J3-01+J3-02实现并合并：合并树全量verify **490/490**（316基础+124 Agent+50 task）。J3-01（worker/j3-01@40cb46c）：任务受理/账本/进程托管/事件流/恢复+真双JVM认领+integration_pending三项闭环（IP-1停号取消、IP-J205-2会话删除、TaskGradeParticipant）。J3-02（worker/j3-02@3d426e9）：Agent五工具受控循环+黄金场景对齐。六项+三项接口变更申请已裁决登记（migration/contracts/interface-changes.md）。**未做**：契约字段补全、Spring装配接线、J3-03 chat/SSE、J3-04讲解、P3阶段报告与双轴审查、P4/P5——下一会话按MAIN交接继续。
-- 本轮恢复授权：2026-10-25 用户直接发送 LONGRUN_P3_RESUME.md 启动指令，解除此前暂停；从P3集成窗口继续，门禁通过后自动推进P4/P5隔离工程交付与J5-04准备，原禁止项不变。以下暂停记录为恢复前历史。
-- 下一阶段：P3集成窗口待办（见interface-changes.md J3-01裁决节汇总）→ J3-03 → J3-04 → P3阶段报告+双轴审查 → P4。
-- 既有历史：U11批次（P1+P2实现，工程门禁当时通过）及2026-10-25独立验收复核（P0保留通过；P1/P2暂不通过，8项待关闭）保留为下方历史与阶段放行记录；”工程门禁通过/0阻断”不代表本轮验收结论。
-- 功能 oracle：本仓库冻结 Python 副本；初始 HEAD `80b29135faddd16d5e39fdbf0633291ea6a20489`，源来源 manifest 见 COPY_REPORT。不持续吸收原目录变化。
-- Git：当前分支 `codex/p1-p2-longrun`，origin 与用户指定仓库相符；本轮验收前本地与远程 c916e2d4f8e642cd163bcc0808a5bd20b224f339 一致。P0历史推送证据仍见 evidence/P0/push-verification.json。
-- 当前 Java 构建：本轮带显式PG执行 verify，298项、0失败/0错误/0跳过；真实HTTP探针25/32通过、7项差异；前端102项及build通过。全绿套件未覆盖本轮发现的装配/输入/结果/配置缺陷。
-- 所有权：独立规范/规格审查worker均只读收口；STATUS/MAIN仍主Agent单写。本轮应用/fake MCP/Vite/独立Chrome/PG均已停止。专属PG数据、合成验收库和恢复资产保留；未修改业务实现。
-- 数据库迁移单一 owner：主 Agent；本轮只运行既有迁移和合成验证，不改DDL。测试辅助入口身份预检缺口为ST-01，不能用应用迁移预检代替。
+- U12：用户已直接启动LONGRUN_P3_P5_DRAFT，并于本轮直接发送LONGRUN_P3_RESUME续接指令，解除暂停。允许P3→P4→P5隔离工程交付和J5-04准备；工程门禁通过自动推进，最多3个worker，小步提交推送、持续交接。
+- 禁止项：真实模型/embedding/真实harness验收、合并main、生产切换、Python退役、删除恢复资产、原项目/原部署/业务库写入。用户验收不由Agent代签。
+- 当前：P3集成/验证收口中；公共契约、Spring运行装配、J3-03和J3-04已实现，独立双轴审查尚未开始，P3未放行。P4/P5已获条件授权，尚未实施。
+- R段已关闭ST-01～03/SP-01～05并通过独立双轴审查（19a2d47）；历史报告evidence/U12-R-segment-20261025/。P0用户验收通过保留；P1/P2/P3用户验收均未登记。
+- 当前Git：codex/p3-p5-longrun，origin为用户指定新仓库。最近已核验推送b760ea4；后续切片见MAIN，待本轮集成提交再次推送核验。
+- Python行为基线：本仓库初始80b29135faddd16d5e39fdbf0633291ea6a20489冻结副本；Python黄金只读，COMP-003按已批准Java安全差异另验。
+- 本轮实际验证：Spring+PG装配18/18、模型worker84/84、真实Agent账本10/10、讲解23/23并另增1黄金测试；完整嵌入式HTTP/SSE探针通过（前端原client直连项新增后待全量复验）。前端102/102和build通过。
+- 全量r1：581项5失败，失败证据保留；占槽测试容量/释放闩、旧SessionPort占位断言、前端探针过严terminal断言均已修。r2测试编译缺throws已修；r3显式PG全量verify **585/585，0失败/0错误/0跳过**，包含原前端client真实HTTP/SSE/multipart验证。此为工程/合成验证，非用户验收。
+- 公共契约/配置/装配/DDL/STATUS/MAIN由主Agent单写。原PG55481专属实例保留运行；任何建删库均TestPg先验身份。全量/故障PG验证由主Agent排队。
 
-## 任务状态表
+## 任务状态
 
-所有 `planned` 项尚未分派实现。规划worker已结束，不算实现owner。实际分派时填写owner、工作树、契约版本和证据。
-
-| ID | 状态 | 实现owner | 实现 | 自动验证 | 场景/用户验收 | 证据 |
-|---|---|---|---|---|---|---|
-| J0-01 | accepted | p0_contracts；主Agent最终接收 | P0契约最终冻结 | 378文件/全映射/10静态护栏通过 | P0范围合成通过 / 用户验收通过（U10） | evidence/J0-01/final-freeze.md |
-| J0-02 | accepted | p0_oracle、p0_performance；主Agent最终接收 | p0-v2/合成基线交付 | 双库186×2、11PG、40CLI、三轮完整测量通过 | P0范围合成通过 / 用户验收通过（U10） | evidence/P0/phase-report.md |
-| J1-01 | implemented | 主Agent（集成者窗口） | 已集成；测试辅助入口有ST-01预检缺口 | 既有套件通过；本轮298/298 | 迁移路径通过；错误预期仍建库已复现，待修 | evidence/J1-01/build-and-paths.md；evidence/P0-P2-acceptance-20261025/ |
-| J1-02 | implemented | j1-02 worker；主Agent集成 | 已集成（1627178）；SP-01装配缺陷待修 | 既有本切片83/83；本轮全量298/298 | embedding单独配置启动失败已复现 | evidence/J1-02/；evidence/P0-P2-acceptance-20261025/ |
-| J1-03 | implemented | j1-03 worker；主Agent集成 | 完成并已集成（c00eb99） | 通过（本切片29项含10项合成PG；集成后全量147/147） | 未执行 | evidence/J1-03/ |
-| J1-04 | implemented | 主Agent | 完成：POC切片+全链路集成（真实检索+固定模型替身） | 通过（本卡12/12；全量150/150） | 未执行 | evidence/J1-04/chain-samples.md |
-| J2-01 | implemented | j2-01 worker；主Agent集成 | 完成并已集成（17b5c95） | 通过（本卡33/33；全量183/183；golden 19条零差异） | 未执行 | evidence/J2-01/ |
-| J2-02 | implemented | j2-02 worker；主Agent集成 | 完成并已集成（f92ccab） | 通过（本卡35/35；全量218/218；golden 36条对照；IP-1/2/3如实登记） | 未执行 | evidence/J2-02/ |
-| J2-03 | implemented | j2-03 worker；主Agent集成 | 完成并已集成 | 通过（本卡22/22；全量240/240；golden 28条，CSV字节级一致） | 未执行 | evidence/J2-03/ |
-| J2-04 | implemented | j2-04 worker；主Agent集成 | 已集成（69fef5e）；SP-02/03/04待修 | 既有本卡21/21、全量298/298；新边界探针发现差异 | 正常提交/计分通过；JSON/假值结果/环境配额失败 | evidence/J2-04/；evidence/P0-P2-acceptance-20261025/ |
-| P2回归 | review | p2-reg worker；主Agent独立复核 | 真实闭环可运行；ST-02/03证据工具待修 | 历史DIFF=0不足以证明成功面；本轮严格HTTP25/32、7项差异 | 教师/学生浏览器基本闭环通过；默认联调SP-05失败 | evidence/P2-regression/；evidence/P0-P2-acceptance-20261025/ |
-| J2-05 | implemented | j2-05 worker；主Agent集成 | 完成并已集成（含MessageInput扩展） | 通过（本卡37/37；全量277/277；golden 33条含模板字节级） | 未执行 | evidence/J2-05/ |
-| J3-01 | implemented | j3-01 worker（主Agent集成） | 完成并已合并（d927fb1）：任务账本/受理事务/进程托管/事件流/恢复+真双JVM认领；Spring装配未接线 | 本卡8类50/50；合并树全量490/490 | integration_pending三项闭环（卡内实测）；端到端待J3-03装配 | docs/java-migration/handoffs/J3-01.md |
-| J3-02 | implemented | j3-02 worker（主Agent集成） | 完成并已合并（3d426e9）：五工具受控循环/上下文预算/执行源与账本规则；真实模型适配器未写（J3-03） | 本卡124/124；合并树全量490/490 | 黄金场景Python可达子集对齐；HTTP/DB持久化部分待J3-03 | docs/java-migration/handoffs/J3-02.md |
-| J3-03 | running | chat worker；主Agent装配 | 契约/装配先行，chat独占 | 待本轮验证 | 未执行 | handoffs/J3-03.md（交付时） |
-| J3-04 | running | explain worker | 独立准备；依赖J3-03门禁后闭环 | 待本轮验证 | 未执行 | handoffs/J3-04.md（交付时） |
-| J4-01 | planned | — | 未开始 | 未执行 | 未执行 | — |
-| J4-02 | planned | — | 未开始 | 未执行 | 未执行 | — |
-| J4-03 | planned | — | 未开始 | 未执行 | 未执行 | — |
-| J5-01 | planned | — | 未开始 | 未执行 | 未执行 | — |
-| J5-02 | planned | — | 未开始 | 未执行 | 未执行 | — |
-| J5-03 | planned | — | 未开始 | 未执行 | 未执行 | — |
-| J5-04 | planned | — | 未开始 | 未执行 | 未执行 | — |
-
-## 阶段放行记录
-
-| 阶段 | 实施授权依据 | 自动/场景结果 | 用户验收 | 下一阶段授权 |
+| ID | 状态 | owner/实现 | 自动与合成验证 | 用户验收/证据 |
 |---|---|---|---|---|
-| P0 | 2026-10-24直接授权J0-01/J0-02；U08/U09确认安全差异和门槛 | 自动/P0合成/两轴审查通过；Java/真实质量未验 | 2026-10-25登记用户验收通过（U10） | 无 |
-| P1 | 2026-10-25 U11直接授权（P1+P2连续批次；工程门禁通过后自动进P2） | 历史四卡150/150与双轴0阻断；本轮全量298/298，但ST-01测试预检及SP-01 embedding单独装配复核失败。**本轮复核不通过**，见evidence/P0-P2-acceptance-20261025/ | 未登记用户验收通过 | P2此前已按预授权实施，当前先修复复验 |
-| P2 | 2026-10-25 U11预授权随P1工程门禁自动生效 | 历史五卡298/298；本轮HTTP25/32，浏览器基本闭环通过；SP-02～05及ST-02/03阻断，历史DIFF=0证明不足。**本轮复核不通过**，同上 | 未登记用户验收通过 | 无（P3未授权） |
-| P3 | U12预授权（R段门禁通过自动推进）；**2026-10-25用户指令：J3-01完成后暂停交接** | J3-01/J3-02已实现并合并，合并树490/490；J3-03/J3-04未实施，P3阶段报告与审查未做 | 未验收 | 恢复点见MAIN（P3集成窗口待办清单） |
-| P4 | 待授权 | 未执行 | 未验收 | 无 |
-| P5 | 待授权 | 未执行 | 未验收 | 无 |
+| J0-01 | accepted | P0契约冻结 | 全映射与护栏历史通过 | U10通过；evidence/J0-01/ |
+| J0-02 | accepted | P0-v2差分oracle | 双库186×2及PG/CLI/测量历史通过 | U10通过；evidence/P0/ |
+| J1-01 | implemented | 主Agent；独立PG/构建/迁移 | R段ST-01已关闭 | 未登记；evidence/J1-01/、U12-R-segment-20261025/ |
+| J1-02 | implemented | 模型/MCP端口 | R段SP-01已关闭；本轮富模型适配84项worker通过 | 未登记；evidence/J1-02/、J3-03/model-adapter.md |
+| J1-03 | implemented | 只读检索 | 本轮Spring检索配置3项通过；全量待r3 | 未登记；evidence/J1-03/ |
+| J1-04 | implemented | 最小问答纵向切片 | 历史12项；正式入口已由J3-03接管 | 未登记；evidence/J1-04/ |
+| J2-01 | implemented | 认证 | R段回归通过；全量待r3 | 未登记；evidence/J2-01/ |
+| J2-02 | implemented | 管理/班级树/审计 | IP-1已真实Spring+PG取消闭环 | 未登记；evidence/J2-02/、J3-03/task-wiring.md |
+| J2-03 | implemented | 作业/汇总/CSV | R段回归通过；全量待r3 | 未登记；evidence/J2-03/ |
+| J2-04 | implemented | 正式提交/成绩 | SP-02～04已关闭；TaskGradeLedger接线修正 | 未登记；evidence/J2-04/ |
+| J2-05 | implemented | 会话/配额/来源等 | SessionPort真实委托；会话删除组合保留源语义 | 未登记；evidence/J2-05/ |
+| J3-01 | review | 原task worker+主集成 | 历史50项；本轮18装配+10真实Agent账本；全量待r3 | 未登记；handoffs/J3-01.md |
+| J3-02 | review | 原Agent worker+主集成 | 富消息适配、COMP-003安全终态已真实PG10项验证 | 未登记；handoffs/J3-02.md、P3-MODEL.md |
+| J3-03 | review | chat worker+主集成 | 产品HTTP/SSE/引用/超时/用量已实现；全量待r3；双轴待做 | 未登记；handoffs/J3-03.md（收口中） |
+| J3-04 | review | explain worker+主集成 | 23项通过+1黄金增补；真第二JVM恢复，grade0 | 未登记；handoffs/J3-04.md、evidence/J3-04/ |
+| J4-01 | planned | 待P3门禁后派工 | 未执行 | 未验 |
+| J4-02 | planned | 待P3门禁后派工 | 未执行 | 未验 |
+| J4-03 | planned | 待P3门禁后派工 | 未执行 | 未验 |
+| J5-01 | planned | 待P4门禁 | 未执行 | 未验 |
+| J5-02 | planned | 待P5依赖 | 未执行 | 未验 |
+| J5-03 | planned | 待P5依赖 | 未执行 | 未验 |
+| J5-04 | planned | 只做交付准备 | 未执行 | 切换/退役/删除均未授权 |
 
-## 当前阻塞/待决
+## 阶段放行
 
-- **P3交接点待办（下一会话，顺序即优先级）**：①契约字段补全（Probe/AdmissionResult/CompletedAnswer/TaskRow占位补全 + AdmissionInput附件四字段——J3-03前阻断项）；②Spring装配（SessionPortAdapter委托、NoOp→TaskLocalCancellation、TaskSettings注入+heartbeat启动、AgentChatModel真实模型适配器）；③J3-03 chat/SSE集成（含AgentScenario/TaskLedgerTest替身换真实仓储）；④J3-04讲解；⑤P3阶段报告+双轴审查。详见 interface-changes.md「J3-01集成裁决」节与 handoffs/J3-01.md、J3-02.md。
-- 框架未匹配路由/方法兜底500：登记平台缺口，J4-03/J5-01复核修复。chat/RAG/tasks HTTP路由待J3-03装配。
-- integration_pending三项已由J3-01卡内闭环（真实实现+实测）；**Spring装配层的IP-1取消接线（NoOp替换）仍待集成**——装配前生产语义仍走NoOp，不得据此宣称运行时闭环。
-- 完整chat/SSE/恢复端到端、全矩阵/容量、zhparser、真实上游质量和生产schema/切换仍未验证，按P3～P5任务卡推进。
-- 正常提交推送按用户仓库约定/U12执行，仅提交源码、测试、文档与脱敏证据，不合并main或部署。
+| 阶段 | 实施授权 | 工程/合成状态 | 用户验收 | 下一步 |
+|---|---|---|---|---|
+| P0 | U08/U09/U10 | 冻结oracle与阈值，历史通过 | U10通过 | 保留基线 |
+| P1/P2 | U11实施，U12修复复验 | 原独立复核8阻断经R段修复+双轴关闭，R段316/316、strict32/32、DIFF=0 | 未登记 | 本轮整体回归继续 |
+| P3 | U12与本轮直接续接授权 | 四卡集成验证收口，尚未独立双轴审查，未放行 | 未验 | 报告→审查→修复复验 |
+| P4 | U12条件预授权 | 等P3工程门禁；未执行 | 未验 | J4-01/02并行，J4-03集成 |
+| P5 | U12条件预授权（隔离范围） | 等P4工程门禁；未执行 | 未验 | J5-01～03与04准备 |
 
-## 下一动作
+## 当前阻塞与下一动作
 
-恢复P3（用户放行后）：按STATUS本节待办①→⑤执行；入口读 handoffs/MAIN.md 最新节、handoffs/J3-01.md、J3-02.md 与 interface-changes.md 两节裁决。
+- P3全量r3和原前端client直连已通过；阶段报告和独立规范/规格双轴审查仍须完成后才放行P4。
+- 新发现初发竞争、空账本、COMP003盲重投、TaskGrade装配等已实现修复，局部证据见MAIN；以最终集成树全量和审查为关闭依据。
+- P4平台缺口：框架404/405/500、安全头、CLI/就绪/留存/部署/CI待实施；不把“登记”当豁免。
+- 当前Docker context为colima-dpdk-ext，socket不存在，旧dpdk profile停止；P5只能建立全新隔离资源，不启动/迁动旧profile。
+- P5浏览器、全矩阵、容量、冷启动/0013升级/真实备份恢复/回退尚未执行。live质量和生产资格不在本批次。

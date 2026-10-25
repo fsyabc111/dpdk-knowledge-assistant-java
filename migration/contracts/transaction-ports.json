@@ -263,15 +263,37 @@
           "end_line": 468,
           "symbol": "heartbeat_owned"
         }
-      ]
+      ],
+      "data_fields": {
+        "TaskRow": [
+          "taskId",
+          "requestId",
+          "inputHash",
+          "initialRequest",
+          "purpose",
+          "userId",
+          "sessionId",
+          "messageId",
+          "question",
+          "contextText",
+          "status",
+          "reason",
+          "releaseId",
+          "evidenceJson",
+          "modelVersion",
+          "elapsedMs",
+          "createdAt",
+          "updatedAt"
+        ]
+      }
     },
     {
       "id": "task.AnswerCompletion",
       "owner_task": "J3-01",
       "java_target": "io.dpdk.assistant.contracts.task.AnswerCompletion",
-      "signature": "CompletedAnswer finish(AnswerCompletion input)",
+      "signature": "CompletedAnswer finish(AnswerCompletionInput input)",
       "data_fields": {
-        "AnswerCompletion": [
+        "AnswerCompletionInput": [
           "taskId",
           "sessionId",
           "answer",
@@ -280,6 +302,11 @@
           "reason",
           "releaseId",
           "elapsedMs"
+        ],
+        "CompletedAnswer": [
+          "taskId",
+          "status",
+          "messageId"
         ]
       },
       "semantics": "pending→终态条件更新、assistant message、ranked citations、issue(若需要)、session touch、删除临时输入同一事务；重复终态拒绝。返回前持久化成功，不能先发送成功 done 后补写。",

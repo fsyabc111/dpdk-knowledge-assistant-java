@@ -360,13 +360,16 @@ class SessionLifecycleTest {
 
     @Test
     @Order(9)
-    void sessionPortAppendUserIsBlockedByFrozenContractWithRegistrationPointer() {
-        org.assertj.core.api.Assertions.assertThatThrownBy(
-                        () -> h.sessionPort.appendUser(null,
-                                new io.dpdk.assistant.contracts.session.MessageInput("q")))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessageContaining("接口变更请求")
-                .hasMessageContaining("MessageInput");
+    void sessionPortAppendUserDelegatesIntoTheCallerTransaction() throws Exception {
+        SessionId session = h.sessions.ensureOwned(Optional.empty(), "P3端口接线", STUDENT_A);
+        h.runner.required(tx -> {
+            h.sessionPort.appendUser(tx, new io.dpdk.assistant.contracts.session.MessageInput(
+                    "端口已接线", session.value(), "user", java.util.Map.of("task_id", "port-test")));
+            return null;
+        });
+        assertThat(h.countRows("assistant_messages", "session_id=?", session.value())).isEqualTo(1);
+        assertThat(h.columnValue("assistant_messages", "content", "session_id=?", session.value()))
+                .isEqualTo("端口已接线");
     }
 
     /* ------------------------------------------------------------------ */

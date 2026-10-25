@@ -56,7 +56,7 @@ class ProductApplicationHttpTest {
             settings.put("dpdk.database-identity.expected-data-dir", System.getenv("DPDK_TEST_PG_DATA_DIR"));
             settings.put("dpdk.migration.run-on-startup", "false");
             // 无配置启动不能偷偷回退真实上游。
-            try (var ctx = new SpringApplicationBuilder(Application.class).properties(settings).run()) {
+            try (var ctx = start(settings)) {
                 int port = ((WebServerApplicationContext) ctx).getWebServer().getPort();
                 assertThat(post(port, "/api/chat", "{\"message\":\"hello\"}").statusCode()).isEqualTo(503);
                 assertThat(h.countRows("rag_requests", "1=1")).isZero();
@@ -64,7 +64,10 @@ class ProductApplicationHttpTest {
             settings.put("dpdk.model.chat.base-url", "http://127.0.0.1:" + fake.getAddress().getPort() + "/v1");
             settings.put("dpdk.model.chat.api-key", "fixed-local-test-key");
             settings.put("dpdk.model.chat.model-name", "fixed-model");
-            try (var ctx = new SpringApplicationBuilder(Application.class).properties(settings).run()) {
+            settings.put("dpdk.model.embedding.base-url", "http://127.0.0.1:" + fake.getAddress().getPort() + "/v1");
+            settings.put("dpdk.model.embedding.api-key", "fixed-local-embedding-key");
+            settings.put("dpdk.model.embedding.model-name", "fixed-embedding");
+            try (var ctx = start(settings)) {
                 int port = ((WebServerApplicationContext) ctx).getWebServer().getPort();
                 String request = UUID.randomUUID().toString();
                 String body = JSON.writeValueAsString(Map.of("message", "hello", "request_id", request));
@@ -77,7 +80,11 @@ class ProductApplicationHttpTest {
                 int after = calls.get();
                 HttpResponse<String> replay = post(port, "/api/chat", body);
                 assertThat(replay.statusCode()).isEqualTo(200);
-                assertThat(JSON.readTree(replay.body())).isEqualTo(first);
+                // 冻结Python rag_product_service.py:232/652：即时结果有继续提问，
+                // DB重建next_steps为空；其余字段逐项完全比较，不忽略业务差异。
+                var expectedReplay = first.deepCopy();
+                ((com.fasterxml.jackson.databind.node.ObjectNode) expectedReplay).set("next_steps", JSON.createArrayNode());
+                assertThat(JSON.readTree(replay.body())).isEqualTo(expectedReplay);
                 assertThat(calls.get()).isEqualTo(after);
                 String task = first.path("task_id").asText();
                 HttpResponse<String> events = HTTP.send(HttpRequest.newBuilder(URI.create("http://127.0.0.1:" + port + "/api/tasks/" + task + "/events")).GET().build(), HttpResponse.BodyHandlers.ofString());
@@ -86,6 +93,17 @@ class ProductApplicationHttpTest {
                 assertThat(calls.get()).isEqualTo(after);
                 assertThat(h.countRows("rag_requests", "id=?", task)).isEqualTo(1);
                 assertThat(h.countRows("rag_task_inputs", "task_id=?", task)).isZero();
+                java.nio.file.Path root = java.nio.file.Path.of("").toAbsolutePath();
+                while (root != null && !java.nio.file.Files.exists(root.resolve("frontend/src/api/client.js"))) { root = root.getParent(); }
+                assertThat(root).isNotNull();
+                Process client = new ProcessBuilder("node", root.resolve("backend-java/src/test/resources/migration/J3-03/frontend-client.mjs").toString(),
+                        "http://127.0.0.1:" + port, root.toString()).redirectErrorStream(true).start();
+                boolean finished = client.waitFor(30, java.util.concurrent.TimeUnit.SECONDS);
+                if (!finished) { client.destroyForcibly(); }
+                String output = new String(client.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+                assertThat(finished).as("前端原客户端进程超时").isTrue();
+                assertThat(client.exitValue()).as(output).isZero();
+                assertThat(output).contains("FRONTEND_CLIENT_CONTRACT=PASS");
             }
         } finally { fake.stop(0); h.drop(); }
     }
@@ -93,5 +111,11 @@ class ProductApplicationHttpTest {
     private static HttpResponse<String> post(int port, String path, String body) throws Exception {
         return HTTP.send(HttpRequest.newBuilder(URI.create("http://127.0.0.1:" + port + path))
                 .header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(body)).build(), HttpResponse.BodyHandlers.ofString());
+    }
+
+    private static org.springframework.context.ConfigurableApplicationContext start(Map<String, Object> settings) {
+        return new SpringApplicationBuilder(Application.class).initializers(ctx ->
+                ctx.getEnvironment().getPropertySources().addFirst(
+                        new org.springframework.core.env.MapPropertySource("isolated-http-test", settings))).run();
     }
 }

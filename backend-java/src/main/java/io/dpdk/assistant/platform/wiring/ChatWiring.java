@@ -17,6 +17,7 @@ import io.dpdk.assistant.task.TaskGradeLedger;
 import io.dpdk.assistant.task.TaskStore;
 import io.dpdk.assistant.usage.UsageCounterStore;
 import io.dpdk.assistant.usage.UsageLedgerStore;
+import io.dpdk.assistant.platform.config.UsageRecordingPolicy;
 import java.time.Duration;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,7 +34,7 @@ public class ChatWiring {
             @Value("${dpdk.rag.validation-timeout-sec:${RAG_VALIDATION_TIMEOUT_SEC:60}}") double validation,
             @Value("${dpdk.rag.context-max-chars:${RAG_CONTEXT_MAX_CHARS:24000}}") int evidence,
             @Value("${dpdk.rag.request-token-budget:${RAG_REQUEST_TOKEN_BUDGET:48000}}") int tokens,
-            @Value("${dpdk.rate-limit-per-minute:${RATE_LIMIT_PER_MINUTE:20}}") int rate,
+            @Value("${dpdk.rate-limit-chat-per-minute:${RATE_LIMIT_CHAT_PER_MINUTE:20}}") int rate,
             @Value("${dpdk.conversation.recent-turns:${CONVERSATION_RECENT_TURNS:6}}") int recent,
             @Value("${dpdk.conversation.summary-max-chars:${CONVERSATION_SUMMARY_MAX_CHARS:4800}}") int summary,
             @Value("${dpdk.conversation.memory-max-chars:${CONVERSATION_MEMORY_MAX_CHARS:24000}}") int memory,
@@ -48,15 +49,25 @@ public class ChatWiring {
     }
 
     @Bean
+    UsageRecordingPolicy usageRecordingPolicy(
+            @Value("${dpdk.usage.recording-enabled:${LLM_USAGE_RECORDING_ENABLED:true}}") boolean enabled,
+            @Value("${dpdk.usage.prices-json:${LLM_PRICES_JSON:}}") String prices,
+            @Value("${dpdk.usage.price-version:${LLM_PRICE_VERSION:}}") String version) {
+        return UsageRecordingPolicy.parse(enabled, prices, version);
+    }
+
+    @Bean
     ChatTaskExecutor chatTaskExecutor(SessionService sessions, TransactionRunner tx, ClockPort clock,
             ObjectProvider<AgentChatModel> model, AgentSettings agentSettings,
             ObjectProvider<PgReleaseReader> retrieval, ObjectProvider<HarnessPort> harness,
             TaskStore tasks, TaskGradeLedger grades, UsageCounterStore quotas,
-            UsageLedgerStore usage, ChatSettings settings, ExplainDataService explain) {
+            UsageLedgerStore usage, ChatSettings settings, ExplainDataService explain,
+            UsageRecordingPolicy policy) {
         ChatTaskExecutor executor = new ChatTaskExecutor(sessions, tx, clock, model.getIfAvailable(),
                 agentSettings, retrieval.getIfAvailable(), harness.getIfAvailable(), tasks, grades,
                 quotas, usage, settings);
         executor.setExplainResolver(explain::resolve);
+        executor.setUsagePolicy(policy.enabled(), policy.prices(), policy.version());
         return executor;
     }
 
