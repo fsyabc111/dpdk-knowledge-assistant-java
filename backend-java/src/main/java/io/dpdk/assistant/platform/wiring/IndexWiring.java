@@ -1,6 +1,7 @@
 package io.dpdk.assistant.platform.wiring;
 
 import io.dpdk.assistant.contracts.index.EmbeddingConfig;
+import io.dpdk.assistant.contracts.knowledge.PublishedKnowledgeReader;
 import io.dpdk.assistant.contracts.platform.ClockPort;
 import io.dpdk.assistant.contracts.platform.TransactionRunner;
 import io.dpdk.assistant.index.IndexService;
@@ -30,7 +31,8 @@ public class IndexWiring {
     @ConditionalOnProperty("dpdk.model.embedding.base-url")
     IndexService indexService(DataSource ds, TransactionRunner tx, RetrievalSettings retrieval,
             EmbeddingConfig config, ClockPort clock, OpenAiCompatibleEmbeddingClient client,
-            ModelEmbeddingProperties model, UsageLedgerStore ledger, UsageRecordingPolicy policy) {
+            ModelEmbeddingProperties model, UsageLedgerStore ledger, UsageRecordingPolicy policy,
+            PublishedKnowledgeReader knowledge) {
         return new IndexService(ds, tx, retrieval, config, new IndexConfigurationFingerprint(), clock,
                 (texts, usage) -> {
                     ModelUsageLedger calls = ModelUsageLedger.create();
@@ -56,7 +58,7 @@ public class IndexWiring {
                         ledger.recordRows(UsageCore.entriesToRows(usage.entries(), policy.prices(), policy.version(),
                                 null, null, null, clock.nextSessionIso()));
                     }
-                }, model.batchSize());
+                }, model.batchSize(), knowledge);
     }
 
     @Bean
