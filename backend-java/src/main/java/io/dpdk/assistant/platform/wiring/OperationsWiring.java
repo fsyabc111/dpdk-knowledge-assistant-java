@@ -11,6 +11,9 @@ import io.dpdk.assistant.index.SourceSettings;
 import io.dpdk.assistant.knowledge.workflow.KnowledgeWorkflowService;
 import io.dpdk.assistant.operations.OperationsMetricsPort;
 import io.dpdk.assistant.operations.OperationsPort;
+import io.dpdk.assistant.operations.OfflineEvidenceJudge;
+import io.dpdk.assistant.agent.AgentChatModel;
+import io.dpdk.assistant.chat.ChatSettings;
 import io.dpdk.assistant.operations.adapter.OperationsBusinessAdapter;
 import io.dpdk.assistant.operations.adapter.OperationsDomainMetricsAdapter;
 import io.dpdk.assistant.retrieval.HeuristicQueryRewriter;
@@ -65,12 +68,15 @@ public class OperationsWiring {
             KnowledgeWorkflowService workflow, ObjectProvider<IndexService> index,
             DataSource ds, RetrievalSettings settings, ObjectProvider<EmbeddingConfig> embedding,
             Function<Path, SourceSettings> sources,
-            @Qualifier("fixedRetrievalQueries") Map<String, Vector1024> vectors) {
+            @Qualifier("fixedRetrievalQueries") Map<String, Vector1024> vectors,
+            ObjectProvider<AgentChatModel> model, ChatSettings chatSettings,
+            @Value("${dpdk.operations.model-judge-enabled:${DPDK_JAVA_MODEL_JUDGE_ENABLED:false}}") boolean modelJudgeEnabled) {
         EmbeddingConfig config = embedding.getIfAvailable();
         PgReleaseReader localReader = config == null ? null : new PgReleaseReader(ds, settings, config,
                 new IndexConfigurationFingerprint(), new HeuristicQueryRewriter(), null);
         return new OperationsBusinessAdapter(admin, sessions, tasks, workflow, index.getIfAvailable(),
-                localReader, sources, vectors);
+                localReader, sources, vectors,
+                new OfflineEvidenceJudge(model.getIfAvailable(), chatSettings.validationTimeout(), modelJudgeEnabled));
     }
 
     @Bean
