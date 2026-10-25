@@ -148,7 +148,8 @@ public final class CapacityServer {
     public static final class RuntimeState {
         public final ConcurrentMap<String, AtomicLong> calls = new ConcurrentHashMap<>();
         public volatile boolean hold;
-        public volatile String status = "finished";
+        public volatile String status = System.getenv().getOrDefault("J5_STATUS", "finished");
+        public volatile boolean ignoreModelInterrupt;
         public final double modelDelay = Double.parseDouble(System.getenv().getOrDefault("J5_MODEL_DELAY", "1"));
         public final double retrievalDelay = Double.parseDouble(System.getenv().getOrDefault("J5_RETRIEVAL_DELAY", ".05"));
         public final double mcpDelay = Double.parseDouble(System.getenv().getOrDefault("J5_MCP_DELAY", ".2"));
@@ -211,7 +212,13 @@ public final class CapacityServer {
                 AgentMessage last = messages.getLast();
                 String stage = last.isTool() ? "model_second_before" : "model_first_before";
                 STATE.point(stage, Map.of());
-                while (STATE.hold) STATE.pause(.01);
+                while (STATE.hold) {
+                    try { STATE.pause(.01); }
+                    catch (CancellationException e) {
+                        if (!STATE.ignoreModelInterrupt) throw e;
+                        Thread.interrupted();
+                    }
+                }
                 STATE.pause(STATE.modelDelay);
                 STATE.point(last.isTool() ? "model_second_after" : "model_first_after", Map.of());
                 if (last.isTool()) return new AgentChatModel.AgentReply(
@@ -241,7 +248,7 @@ public final class CapacityServer {
                 STATE.pause(STATE.mcpDelay);
                 Map<String, Object> result;
                 if ("get_task_status".equals(tool)) {
-                    String mode = System.getenv().getOrDefault("J5_STATUS", STATE.status);
+                    String mode = STATE.status;
                     if ("query_failed".equals(mode)) throw new IllegalStateException("合成状态查询失败");
                     result = "finished".equals(mode) ? Map.of("ok", true, "job_id", job, "status", mode, "result", grade())
                             : Map.of("ok", true, "job_id", job, "status", mode);
@@ -270,6 +277,7 @@ public final class CapacityServer {
         @Autowired TaskRecovery recovery;
         @Autowired TaskStore store;
         @Autowired RagTaskService tasks;
+        @Autowired AdminUserRepository users;
         private void authorize(String key) {
             if (!java.security.MessageDigest.isEqual(required("J5_CONTROL_KEY").getBytes(StandardCharsets.UTF_8),
                     key.getBytes(StandardCharsets.UTF_8))) throw new SecurityException("测试控制未授权");
@@ -281,7 +289,13 @@ public final class CapacityServer {
                 @RequestBody Map<String, Object> input) throws Exception {
             authorize(key);
             if (input.containsKey("hold")) STATE.hold = Boolean.TRUE.equals(input.get("hold"));
+            if (input.containsKey("ignore_model_interrupt")) STATE.ignoreModelInterrupt = Boolean.TRUE.equals(input.get("ignore_model_interrupt"));
             if (input.containsKey("status")) STATE.status = String.valueOf(input.get("status"));
+            if (input.containsKey("disable")) {
+                String subject = String.valueOf(input.get("disable"));
+                users.setEnabled(subject, false);
+                tasks.cancelLocalForUser(subject);
+            }
             if (input.containsKey("recover")) {
                 String id = String.valueOf(input.get("recover"));
                 var row = store.findOwned(id, String.valueOf(input.get("subject"))).orElseThrow();

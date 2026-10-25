@@ -186,21 +186,41 @@ async def phase(manifest, isolation, db, seconds, number, label, output, source)
                 pass
     started = time.monotonic()
     monitor_task = asyncio.create_task(monitor())
+    work = asyncio.gather(*(reader(i) for i in range(60)), *(chat() for _ in range(10)), formal())
+    failure = None
     try:
-        await asyncio.gather(*(reader(i) for i in range(60)), *(chat() for _ in range(10)), formal())
+        finished, _ = await asyncio.wait({work, monitor_task}, return_when=asyncio.FIRST_COMPLETED)
+        if monitor_task in finished:
+            await monitor_task
+            raise RuntimeError("资源监控意外提前结束")
+        await work
+    except Exception as exc:
+        failure = type(exc).__name__
+        work.cancel()
+        await asyncio.gather(work, return_exceptions=True)
     finally:
         stop.set()
-        await monitor_task
+        monitor_result = await asyncio.gather(monitor_task, return_exceptions=True)
+        if isinstance(monitor_result[0], Exception):
+            failure = failure or type(monitor_result[0]).__name__
         for client in clients:
             await client.aclose()
         await admin.aclose()
+    try:
+        after = snapshot(isolation, db)
+    except Exception as exc:
+        after = {"error_type": type(exc).__name__}
+        failure = failure or type(exc).__name__
     report = {"round": number, "phase": label, "target_seconds": seconds, "elapsed_including_drain_seconds": time.monotonic()-started,
         "groups": {g: {**percentiles(latency[g]), "requests": errors[g]["requests"], "unexpected_errors": errors[g]["unexpected_errors"],
                        "statuses": dict(errors[g])} for g in GROUPS},
-        "resource_samples": resource.samples, "resource_summary": combine_resources(resource.samples),
-        "task_samples": control, "after": snapshot(isolation, db)}
+        "resource_samples": resource.samples, "resource_summary": combine_resources(resource.samples) if resource.samples else None,
+        "task_samples": control, "after": after}
+    report["aborted_error_type"] = failure
     write_json(output / f"round-{number}-{label}-latencies.json", dict(latency))
     write_json(output / f"round-{number}-{label}.json", report)
+    if failure:
+        raise RuntimeError("本轮提前终止，原始统计与失败已保留:"+failure)
     print(json.dumps({"runtime": manifest["runtime"], "round": number, "phase": label, "elapsed_seconds": report["elapsed_including_drain_seconds"],
                       "groups": report["groups"], "resources": report["resource_summary"]}), flush=True)
     return report
@@ -306,14 +326,16 @@ async def run_runtime(runtime, isolation, output, source, args):
             "no_grade_from_explanation": final["grades"] == final["grading_charges"] == successes,
             "no_network_denial": state["calls"].get("network_denial", 0) == 0}
     finally:
-        stop_process(process)
         # 默认永不drop。恢复与统计资产由主Agent验收后按manifest另行清理。
         write_json(output / "summary.json", report)
+        stop_process(process)
     return report
 
 
 async def main_async(args):
     output = Path(args.output).resolve()
+    if not any(parent.name == ".migration-artifacts" for parent in output.parents):
+        raise RuntimeError("原始统计/manifest只能写入gitignored .migration-artifacts目录")
     if output.exists():
         raise RuntimeError("拒绝覆盖已有轮次证据")
     output.mkdir(parents=True)
