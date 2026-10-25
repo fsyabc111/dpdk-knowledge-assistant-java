@@ -78,6 +78,11 @@ public final class SubmissionTestHarness {
     public final SubmissionRecordReader reader;
     public final ScriptedHarness harness = new ScriptedHarness();
 
+    /** 提交链路的 harness 端口（quota 集成测试切到真实 StreamableHttpHarnessClient）。 */
+    public volatile HarnessPort submitHarness = harness;
+    /** 提交链路评测设置（用例可临时覆盖后重建 MockMvc）。 */
+    public volatile SubmissionSettings gradingSettings = SubmissionSettings.DEFAULTS;
+
     private final AuthAccountWriteGuard writeGuard;
 
     private SubmissionTestHarness(DataSource ds, String database, AuthServerSettings initial) {
@@ -123,12 +128,12 @@ public final class SubmissionTestHarness {
                 settings, resolver, users, catalog, harness, clock);
         AssignmentReportController reportController = new AssignmentReportController(
                 settings, resolver, report);
-        GradingInvoker invoker = new GradingInvoker(harness, counters, clock,
-                SubmissionSettings.DEFAULTS);
+        GradingInvoker invoker = new GradingInvoker(submitHarness, counters, clock,
+                gradingSettings);
         AssignmentSubmissionService service = new AssignmentSubmissionService(
                 catalog, users, invoker, writer, clock);
         AssignmentSubmissionController submitController = new AssignmentSubmissionController(
-                settings, resolver, service, SubmissionSettings.DEFAULTS);
+                settings, resolver, service, gradingSettings);
         return standaloneSetup(authController, catalogController, reportController,
                         submitController)
                 .setControllerAdvice(new ApiExceptionHandler())
