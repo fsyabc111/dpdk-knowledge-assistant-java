@@ -59,6 +59,29 @@ class SubmissionExplainContractTest {
         assertThat(context.get("source_origin")).isNull();
     }
 
+    @Test
+    void exactPythonAstGoldenContextAndIdentity() throws Exception {
+        var fixture = MAPPER.readTree(getClass().getResourceAsStream("/migration/J3-04/explain-golden.json"));
+        for (var identity : fixture.path("identities")) {
+            var result = ExplainIdentity.forSubmission(identity.path("submission_id").asText());
+            assertThat(MAPPER.<com.fasterxml.jackson.databind.JsonNode>valueToTree(List.of(result.sessionId(), result.requestId())))
+                    .isEqualTo(identity.path("expected"));
+        }
+        for (var item : fixture.path("contexts")) {
+            var row = item.path("submission");
+            var payload = MAPPER.createObjectNode();
+            if (row.has("results")) payload.set("results", row.get("results"));
+            if (row.has("source_origin")) payload.set("source_origin", row.get("source_origin"));
+            var record = new SubmissionRecord(row.path("id").asText(), "student", row.path("assignment_id").asText(),
+                    null, row.path("protocol").asText(), "hash-only", row.path("score").asInt(),
+                    row.path("passed").asInt(), row.path("total").asInt(), payload,
+                    OffsetDateTime.parse("2026-10-25T00:00:00Z"));
+            String title = item.path("assignment").path("title").asText("");
+            assertThat(MAPPER.<com.fasterxml.jackson.databind.JsonNode>valueToTree(ExplainContext.from(record, title))).as(item.path("id").asText())
+                    .isEqualTo(item.path("expected"));
+        }
+    }
+
     private static SubmissionRecord record(String payload) throws Exception {
         return new SubmissionRecord("grade_abc", "student", "asg1", null, "dns", "hash-sentinel",
                 80, 4, 5, MAPPER.readTree(payload), OffsetDateTime.parse("2026-10-25T00:00:00Z"));

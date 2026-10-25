@@ -1,0 +1,267 @@
+{
+  "oracle": "frozen Python AST pure functions",
+  "source_sha256": "f83adc3041e42e517449bcca5586e800d44dd6e1ba2ac14126679ab27d9b0d9d",
+  "identities": [
+    {
+      "submission_id": "grade_abc",
+      "expected": [
+        "explain-grade_abc",
+        "ca952def-7b8d-5e7f-b0fd-2504dcc6936d"
+      ]
+    },
+    {
+      "submission_id": "grade_xyz",
+      "expected": [
+        "explain-grade_xyz",
+        "933cf9a7-c75d-5146-b644-8ca4fb1eca8d"
+      ]
+    },
+    {
+      "submission_id": "grade_中文😀",
+      "expected": [
+        "explain-grade_中文😀",
+        "a516c2fd-120e-50c4-b32c-07ead142c9bc"
+      ]
+    }
+  ],
+  "contexts": [
+    {
+      "id": "results_0",
+      "submission": {
+        "id": "grade_abc",
+        "assignment_id": "asg1",
+        "protocol": "dns",
+        "score": 80,
+        "passed": 4,
+        "total": 5,
+        "created_at": "2026-10-25 00:00:00+00:00",
+        "results": null,
+        "source_origin": "uploaded"
+      },
+      "assignment": {
+        "title": "作业一"
+      },
+      "expected": {
+        "submission_id": "grade_abc",
+        "assignment_id": "asg1",
+        "assignment_title": "作业一",
+        "protocol": "dns",
+        "score": 80,
+        "passed": 4,
+        "total": 5,
+        "results": [],
+        "source_origin": "uploaded",
+        "submitted_at": "2026-10-25 00:00:00+00:00"
+      }
+    },
+    {
+      "id": "results_1",
+      "submission": {
+        "id": "grade_abc",
+        "assignment_id": "asg1",
+        "protocol": "dns",
+        "score": 80,
+        "passed": 4,
+        "total": 5,
+        "created_at": "2026-10-25 00:00:00+00:00",
+        "results": false,
+        "source_origin": "uploaded"
+      },
+      "assignment": {
+        "title": "作业一"
+      },
+      "expected": {
+        "submission_id": "grade_abc",
+        "assignment_id": "asg1",
+        "assignment_title": "作业一",
+        "protocol": "dns",
+        "score": 80,
+        "passed": 4,
+        "total": 5,
+        "results": [],
+        "source_origin": "uploaded",
+        "submitted_at": "2026-10-25 00:00:00+00:00"
+      }
+    },
+    {
+      "id": "results_2",
+      "submission": {
+        "id": "grade_abc",
+        "assignment_id": "asg1",
+        "protocol": "dns",
+        "score": 80,
+        "passed": 4,
+        "total": 5,
+        "created_at": "2026-10-25 00:00:00+00:00",
+        "results": 0,
+        "source_origin": "uploaded"
+      },
+      "assignment": {
+        "title": "作业一"
+      },
+      "expected": {
+        "submission_id": "grade_abc",
+        "assignment_id": "asg1",
+        "assignment_title": "作业一",
+        "protocol": "dns",
+        "score": 80,
+        "passed": 4,
+        "total": 5,
+        "results": [],
+        "source_origin": "uploaded",
+        "submitted_at": "2026-10-25 00:00:00+00:00"
+      }
+    },
+    {
+      "id": "results_3",
+      "submission": {
+        "id": "grade_abc",
+        "assignment_id": "asg1",
+        "protocol": "dns",
+        "score": 80,
+        "passed": 4,
+        "total": 5,
+        "created_at": "2026-10-25 00:00:00+00:00",
+        "results": "",
+        "source_origin": "uploaded"
+      },
+      "assignment": {
+        "title": "作业一"
+      },
+      "expected": {
+        "submission_id": "grade_abc",
+        "assignment_id": "asg1",
+        "assignment_title": "作业一",
+        "protocol": "dns",
+        "score": 80,
+        "passed": 4,
+        "total": 5,
+        "results": [],
+        "source_origin": "uploaded",
+        "submitted_at": "2026-10-25 00:00:00+00:00"
+      }
+    },
+    {
+      "id": "results_4",
+      "submission": {
+        "id": "grade_abc",
+        "assignment_id": "asg1",
+        "protocol": "dns",
+        "score": 80,
+        "passed": 4,
+        "total": 5,
+        "created_at": "2026-10-25 00:00:00+00:00",
+        "results": [],
+        "source_origin": "uploaded"
+      },
+      "assignment": {
+        "title": "作业一"
+      },
+      "expected": {
+        "submission_id": "grade_abc",
+        "assignment_id": "asg1",
+        "assignment_title": "作业一",
+        "protocol": "dns",
+        "score": 80,
+        "passed": 4,
+        "total": 5,
+        "results": [],
+        "source_origin": "uploaded",
+        "submitted_at": "2026-10-25 00:00:00+00:00"
+      }
+    },
+    {
+      "id": "results_5",
+      "submission": {
+        "id": "grade_abc",
+        "assignment_id": "asg1",
+        "protocol": "dns",
+        "score": 80,
+        "passed": 4,
+        "total": 5,
+        "created_at": "2026-10-25 00:00:00+00:00",
+        "results": {},
+        "source_origin": "uploaded"
+      },
+      "assignment": {
+        "title": "作业一"
+      },
+      "expected": {
+        "submission_id": "grade_abc",
+        "assignment_id": "asg1",
+        "assignment_title": "作业一",
+        "protocol": "dns",
+        "score": 80,
+        "passed": 4,
+        "total": 5,
+        "results": [],
+        "source_origin": "uploaded",
+        "submitted_at": "2026-10-25 00:00:00+00:00"
+      }
+    },
+    {
+      "id": "results_6",
+      "submission": {
+        "id": "grade_abc",
+        "assignment_id": "asg1",
+        "protocol": "dns",
+        "score": 80,
+        "passed": 4,
+        "total": 5,
+        "created_at": "2026-10-25 00:00:00+00:00",
+        "results": [
+          {
+            "result": "FAIL",
+            "name": "dns"
+          }
+        ],
+        "source_origin": "uploaded"
+      },
+      "assignment": {
+        "title": "作业一"
+      },
+      "expected": {
+        "submission_id": "grade_abc",
+        "assignment_id": "asg1",
+        "assignment_title": "作业一",
+        "protocol": "dns",
+        "score": 80,
+        "passed": 4,
+        "total": 5,
+        "results": [
+          {
+            "result": "FAIL",
+            "name": "dns"
+          }
+        ],
+        "source_origin": "uploaded",
+        "submitted_at": "2026-10-25 00:00:00+00:00"
+      }
+    },
+    {
+      "id": "missing_optional",
+      "submission": {
+        "id": "grade_abc",
+        "assignment_id": "asg1",
+        "protocol": "dns",
+        "score": 80,
+        "passed": 4,
+        "total": 5,
+        "created_at": "2026-10-25 00:00:00+00:00"
+      },
+      "assignment": null,
+      "expected": {
+        "submission_id": "grade_abc",
+        "assignment_id": "asg1",
+        "assignment_title": "",
+        "protocol": "dns",
+        "score": 80,
+        "passed": 4,
+        "total": 5,
+        "results": [],
+        "source_origin": null,
+        "submitted_at": "2026-10-25 00:00:00+00:00"
+      }
+    }
+  ]
+}
