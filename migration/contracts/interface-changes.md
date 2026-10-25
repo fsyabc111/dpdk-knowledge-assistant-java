@@ -60,6 +60,18 @@
 - 求值序门禁：401→422→404门禁→业务，与 J2-01 修正后的 golden 序一致。
 - **IP-3**：J2-02 差分 suite 待集成者在 P2 集成回归统一补跑（golden 36 条已在单卡测试覆盖）。
 
+## J2-03（作业/成绩/CSV）已接受（2026-10-25）
+
+- 消费端口：`assignment.catalog.AssignmentCatalogPort`（submissionSnapshot/getAssignment/
+  bestScore/isPastDeadline——J2-04 受理分值与汇总动态分值两口径分界；是否入
+  transaction-ports.json 留 J2-04 集成时决定）。
+- 求值序（源证实）：assignments 守卫为依赖形式 401→404门禁→422（与 admin.py 相反）。
+- CSV/时间实现约束：`utf-8-sig` 非 JVM 字符集，Content-Type 需直接写头绕过 Spring
+  MediaType；golden 时间戳为 Python str(datetime)（空格分隔）——均已按源实现并断言。
+- 协议清单失败降级：`{"protocols":[],"error":…}`，error 必带，不伪称有效空清单。
+- 布局登记：J2-03 测试类位于 test:assignment/ 根（跨 catalog/report 共享 harness），
+  所有权不变，与 J2-04 的 assignment/submission/** 无冲突。
+
 ## 消费指引（P1 内）
 
 - J1-04/P2 消费模型端口：经 `io.dpdk.assistant.model.ModelClients` / `harness.HarnessClients` 入口。

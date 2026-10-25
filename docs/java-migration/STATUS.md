@@ -27,7 +27,7 @@
 | J1-04 | implemented | 主Agent | 完成：POC切片+全链路集成（真实检索+固定模型替身） | 通过（本卡12/12；全量150/150） | 未执行 | evidence/J1-04/chain-samples.md |
 | J2-01 | implemented | j2-01 worker；主Agent集成 | 完成并已集成（17b5c95） | 通过（本卡33/33；全量183/183；golden 19条零差异） | 未执行 | evidence/J2-01/ |
 | J2-02 | implemented | j2-02 worker；主Agent集成 | 完成并已集成（f92ccab） | 通过（本卡35/35；全量218/218；golden 36条对照；IP-1/2/3如实登记） | 未执行 | evidence/J2-02/ |
-| J2-03 | planned | — | 未开始 | 未执行 | 未执行 | — |
+| J2-03 | implemented | j2-03 worker；主Agent集成 | 完成并已集成 | 通过（本卡22/22；全量240/240；golden 28条，CSV字节级一致） | 未执行 | evidence/J2-03/ |
 | J2-04 | planned | — | 未开始 | 未执行 | 未执行 | — |
 | J2-05 | planned | — | 未开始 | 未执行 | 未执行 | — |
 | J3-01 | planned | — | 未开始 | 未执行 | 未执行 | — |
