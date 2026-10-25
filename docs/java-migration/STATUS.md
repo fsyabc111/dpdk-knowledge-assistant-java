@@ -29,7 +29,7 @@
 | J2-02 | implemented | j2-02 worker；主Agent集成 | 完成并已集成（f92ccab） | 通过（本卡35/35；全量218/218；golden 36条对照；IP-1/2/3如实登记） | 未执行 | evidence/J2-02/ |
 | J2-03 | implemented | j2-03 worker；主Agent集成 | 完成并已集成 | 通过（本卡22/22；全量240/240；golden 28条，CSV字节级一致） | 未执行 | evidence/J2-03/ |
 | J2-04 | planned | — | 未开始 | 未执行 | 未执行 | — |
-| J2-05 | planned | — | 未开始 | 未执行 | 未执行 | — |
+| J2-05 | implemented | j2-05 worker；主Agent集成 | 完成并已集成（含MessageInput扩展） | 通过（本卡37/37；全量277/277；golden 33条含模板字节级） | 未执行 | evidence/J2-05/ |
 | J3-01 | planned | — | 未开始 | 未执行 | 未执行 | — |
 | J3-02 | planned | — | 未开始 | 未执行 | 未执行 | — |
 | J3-03 | planned | — | 未开始 | 未执行 | 未执行 | — |

@@ -72,6 +72,18 @@
 - 布局登记：J2-03 测试类位于 test:assignment/ 根（跨 catalog/report 共享 harness），
   所有权不变，与 J2-04 的 assignment/submission/** 无冲突。
 
+## J2-05（会话/配额/用量/来源/模板/成绩读取）已接受（2026-10-25）
+
+- `contracts.session.MessageInput` 已按请求扩展为 (content, sessionId, role, metadata)
+  四字段（兼容构造器保留单参形态）；SessionPort.appendUser 完整能力在
+  `session.SessionService.appendMessage`（事务参与，已测试），J3-01 受理事务消费完整形态
+  （原 IP-J205-1 关闭）。
+- **IP-J205-2（integration_pending）**：活动会话删除×执行中任务组合按 PLAN 归 J3-01
+  真实任务实现补验，当前仅冻结端口断言，未写成已通过。
+- 语义固化：QuotaExceedException（429 语义载体）；checkAndCountDaily 独立事务先递增后检查
+  的失败计数源现状保留；storage_bytes 物理字段归一化（session_count 精确）。
+- 求值序按源固化：401→422→404；维护端点 503（未配置）/403（缺失/不符）、dry-run/apply 分离。
+
 ## 消费指引（P1 内）
 
 - J1-04/P2 消费模型端口：经 `io.dpdk.assistant.model.ModelClients` / `harness.HarnessClients` 入口。
