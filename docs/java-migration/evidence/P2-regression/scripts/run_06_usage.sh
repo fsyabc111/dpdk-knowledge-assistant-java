@@ -3,6 +3,8 @@
 set -u
 SCENARIO=06-usage
 source "$(dirname "$0")/common.sh"
+# 登录限流为冻结契约（10 次/分/IP）：场景间节拍，避免背靠背连跑触发 429
+PACE="${DPDK_REPLAY_SCENARIO_PACE:-15}"; [ "$PACE" -gt 0 ] && sleep "$PACE"
 : > "$LOG_DIR/06-usage.log"
 TOK_ADMIN=$(state_get tokens.admin)
 AUTH="Authorization: Bearer $TOK_ADMIN"

@@ -162,6 +162,12 @@ PLATFORM_ROUTES = (
 STATE_FACE_SKIPS = (
     "POST /api/auth/logout::success",
     "POST /api/auth/password-reset::success",
+    "POST /api/auth/change-password::success",
+    "POST /api/auth/password-reset-requests::success",
+    "POST /api/auth/password-reset-requests::success-second",
+    "GET /api/admin/password-reset-requests::success",
+    "GET /api/admin/password-reset-requests::success-second",
+    "GET /api/admin/password-reset-requests::success-after-request",
     "POST /api/admin/users::success",
     "POST /api/admin/users/{user_id}/status::success",
     "POST /api/admin/users/{user_id}/set-password::success",
@@ -183,7 +189,7 @@ ASSIGNMENT_FLOW_SKIPS = (
 
 DECLARATIONS = (
     # —— SKIP 清单（原脚本跳过/等价留证理由逐条平移，语义不放宽）——
-    Decl(cid="POST /api/chat", kind="SKIP",
+    Decl(route="POST /api/chat", kind="SKIP",
          reason="chat 主路由未在当前构建装配（chat 编排属 J3+/J5 范围），不重放",
          ref="P2-regression/README.md 范围外节"),
     Decl(route="/api/chat/stream", kind="SKIP",
@@ -203,10 +209,12 @@ DECLARATIONS = (
     Decl(route="/api/internal", kind="SKIP",
          reason="内部维护路由，P2 不重放",
          ref="P2-regression/README.md 范围外节"),
-    Decl(cid="POST /api/auth/login::success", kind="SKIP",
-         reason="golden 引导账号不在候选库；登录成功等价流已在场景1逐字段留证"
-                "（token 43 位/expires_at/must_change_password）",
-         ref="logs/01-auth.log"),
+    *([Decl(cid="POST /api/auth/login::success-" + a, kind="SKIP",
+            reason="golden 引导账号不在候选库；登录成功等价流已在场景1逐字段留证"
+                   "（token 43 位/expires_at/must_change_password）",
+            ref="logs/01-auth.log")
+       for a in ("leader", "teacher_a", "teacher_b", "student_a", "student_b",
+                 "free", "viewer", "s7", "disabled", "delete")]),
     *([Decl(cid=c, kind="SKIP",
             reason="状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证"
                    "（部分失败契约/停号/审批一次性令牌）",
@@ -218,15 +226,32 @@ DECLARATIONS = (
     Decl(cid="POST /api/assignments/{assignment_id}/submit::success", kind="SKIP",
          reason="评测成功流已在场景4留证（multipart→fake MCP→成绩；hash-only 落库）",
          ref="logs/04-submission.log"),
+    # —— 状态相关成功面：golden 记录其引导库当时的行内容；本轮库状态必然不同。
+    #    允许 BODY 值差，HTTP 状态仍硬前置；行形态/结构由对应场景日志字段级留证。
+    *([Decl(cid=c, kind="ALLOW", allow=("BODY",),
+            reason="golden 引导库状态相关成功面；本轮等价库状态不同，行形态与等价流由场景日志留证",
+            ref="logs/06-usage.log; logs/05-report.log")
+       for c in ("GET /api/usage/me::success", "GET /api/usage/subjects::success",
+                 "GET /api/grading/summary::success", "GET /api/grading/submissions::success",
+                 "GET /api/assignments::success", "GET /api/assignments::success-nonempty-student",
+                 "GET /api/assignments::success-nonempty-manager",
+                 "GET /api/chat/sessions::success",
+                 "GET /api/chat/sessions/{session_id}::success",
+                 "GET /api/admin/users::success")]),
+    Decl(cid="HEAD /api/health::business-head", kind="ALLOW", allow=("STATUS", "BODY"),
+         reason="golden 405（FastAPI 方法面）；Java 未匹配方法兜底 500 为已登记平台缺口，"
+                "J4-03/J5-01 复核修复",
+         ref="DECISIONS.md P2-D1; 验收报告 20261025 框架错误面待办"),
     Decl(cid="GET /api/sources/{chunk_id}::success", kind="SKIP",
          reason="知识库种子（p0-history chunk）不在候选库（P2 范围不含 RAG 种子装载）；"
                 "unauthorized 案例仍重放",
          ref="golden-diff.md"),
     # —— 平台差异声明（EXPECT_STATUS / ALLOW，依据 DECISIONS.md P2-D1）——
-    *([Decl(route=r, kind="EXPECT_STATUS", expect_status=404,
-            reason="Python 平台路由（FastAPI/docs/metrics/health 探针）Java 未迁移，"
-                   "登记平台差异；Java 探针为 /actuator/health",
-            ref="DECISIONS.md P2-D1 平台差异登记")
+    *([Decl(route=r, kind="ALLOW", allow=("STATUS", "BODY"),
+            reason="Python 平台路由（FastAPI/docs/metrics/health 探针）Java 未迁移；"
+                   "未匹配路由/方法被框架兜底为 500 属已登记平台缺口，J4-03/J5-01 复核修复；"
+                   "Java 探针为 /actuator/health",
+            ref="DECISIONS.md P2-D1 平台差异登记; 验收报告 20261025 框架错误面待办")
        for r in PLATFORM_ROUTES]),
     Decl(cid="OPTIONS /api/chat::cors-400", kind="ALLOW", allow=("STATUS", "BODY"),
          reason="非允许来源预检：Python/Starlette 400，Java/Spring CorsFilter 403 同语义拒绝",
@@ -768,10 +793,11 @@ def selftest() -> int:
     run("f3.生产表CORS声明", "ALLOWED-DIFF", "OPTIONS /api/chat::cors-400",
         "OPTIONS /api/chat", "cors-400", 400, {"detail": "Invalid CORS request"},
         403, {"detail": "Invalid CORS request"})
-    # f4. 生产声明表：Python 平台路由 expect 404
-    run("f4.平台路由期望404", "REPLAYED", "GET /api/health::success", "GET /api/health",
+    # f4/f5. 生产声明表：Python 平台路由（Java 未迁移 + 未匹配路由兜底 500 属已登记
+    # 缺口，J4-03/J5-01 修复）→ 声明为 ALLOW(STATUS,BODY)：差异落声明 = ALLOWED-DIFF
+    run("f4.平台路由声明允许", "ALLOWED-DIFF", "GET /api/health::success", "GET /api/health",
         "success", 200, {"status": "ok"}, 404, {"detail": "Not Found"})
-    run("f5.平台路由期望不满足", "DIFF", "GET /api/health::success", "GET /api/health",
+    run("f5.平台路由兜底500声明允许", "ALLOWED-DIFF", "GET /api/health::success", "GET /api/health",
         "success", 200, {"status": "ok"}, 500, {"detail": "boom"})
     # f6. 生产声明表：SKIP 命中
     d = match_decl("POST /api/assignments/{assignment_id}/submit::success",

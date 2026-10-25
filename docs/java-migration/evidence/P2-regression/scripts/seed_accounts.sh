@@ -7,8 +7,9 @@
 # - bcrypt 哈希由 tools/BcryptGen.java 运行时生成，脚本不提交任何哈希/口令字面量；
 # - 合成账号口令=学号（与历史 seed_users.sql 约定一致），仅存在于本轮独立测试库。
 #
-# U90000000006（leader 树内 viewer）与 U90000000007（无班级学生）由场景2/collect_state.py
-# 通过 admin 批量创建接口建立（与历史等价流一致），不在本脚本 SQL 种子范围。
+# U90000000006（leader 树内 viewer）由场景2/collect_state.py 通过 admin 批量创建接口
+# 建立（与历史等价流一致）；U90000000007（无班级学生）在本脚本以 created_by=NULL 种子，
+# 保证 foreign-tree 等价主体确实树外。
 set -eu
 SCENARIO=00b-seed
 source "$(dirname "$0")/common.sh"
@@ -47,6 +48,10 @@ seed_user "U90000000002" '["admin"]' "NULL"
 seed_user "U90000000003" '["viewer"]' "'U90000000002'"
 seed_user "U90000000004" '["viewer"]' "'U90000000002'"
 seed_user "U90000000005" '["viewer"]' "'U90000000002'"
+# U7 必须无班级（golden foreign-tree 等价主体）：batch create 会把它挂到调用 admin
+# 的班上（U90000000002），与 ASG1 创建者同班 → 越权可见性案例失真。故在此以
+# created_by=NULL 直接种子；collect_state 的批量创建对已存在 id 幂等 skipped。
+seed_user "U90000000007" '["viewer"]' "NULL"
 
 echo "-- 复核（只读）"
 psql -h "$PGHOST" -p "$PGPORT" -U "$PGUSER" -d "$DB" -tAc \

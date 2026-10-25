@@ -1,189 +1,190 @@
-# P2 golden 重放（IP-3）逐 case 明细
-基线 80b29135faddd16d5e39fdbf0633291ea6a20489；环境：候选库 p1_java_candidate + fake MCP harness（grade_plugin/list_protocols 等价替身）
+# P2 golden 重放（IP-3）逐 case 明细（ST-02 严格判定器）
+基线 80b29135faddd16d5e39fdbf0633291ea6a20489；比较口径：HTTP 状态硬前置 + 归一化值级（保序保重复+实体双射）+ 显式允许差异声明表；未声明差异=DIFF
+环境：库 p2replay-20261025_162928@127.0.0.1:55481 + BASE http://127.0.0.1:8090；身份文件 /Volumes/study/code/new_project/dpdk-knowledge-assistant-java/docs/java-migration/evidence/P2-regression/logs/replay-state.json
 
-- [SKIP] POST /api/auth/login::success-leader — golden 引导账号不在候选库；登录成功等价流已在场景1逐字段留证（token 43 位/expires_at/must_change_password）
-- [SKIP] POST /api/auth/login::success-teacher_a — golden 引导账号不在候选库；登录成功等价流已在场景1逐字段留证（token 43 位/expires_at/must_change_password）
-- [SKIP] POST /api/auth/login::success-teacher_b — golden 引导账号不在候选库；登录成功等价流已在场景1逐字段留证（token 43 位/expires_at/must_change_password）
-- [SKIP] POST /api/auth/login::success-student_a — golden 引导账号不在候选库；登录成功等价流已在场景1逐字段留证（token 43 位/expires_at/must_change_password）
-- [SKIP] POST /api/auth/login::success-student_b — golden 引导账号不在候选库；登录成功等价流已在场景1逐字段留证（token 43 位/expires_at/must_change_password）
-- [SKIP] POST /api/auth/login::success-free — golden 引导账号不在候选库；登录成功等价流已在场景1逐字段留证（token 43 位/expires_at/must_change_password）
-- [SKIP] POST /api/auth/login::success-delete — golden 引导账号不在候选库；登录成功等价流已在场景1逐字段留证（token 43 位/expires_at/must_change_password）
-- [SKIP] POST /api/auth/login::success-disabled — golden 引导账号不在候选库；登录成功等价流已在场景1逐字段留证（token 43 位/expires_at/must_change_password）
-- [STATE-DIFF] GET /api/admin/users::success — 格式类一致，取值/行数因环境状态不同（登记）：字段=['users']（行数 golden={'users': 8} live={'users': 7}）
-- [PASS] GET /api/admin/audit-log::success — 结构+格式类逐字段一致；live body 摘要={"entries": []}
-- [STATE-DIFF] GET /api/admin/password-reset-requests::success — 格式类一致，取值/行数因环境状态不同（登记）：字段=['requests']（行数 golden={'requests': 0} live={'requests': 4}）
-- [STATE-DIFF] GET /api/assignments::success — 格式类一致，取值/行数因环境状态不同（登记）：字段=['assignments']（行数 golden={'assignments': 0} live={'assignments': 4}）
-- [PASS] GET /api/assignments/protocols::success — 结构+格式类逐字段一致；live body 摘要={"protocols": [{"name": "dns", "cases": 5, "categories": {"basic": 5}}], "error": null}
-- [STATE-DIFF] GET /api/grading/submissions::success — 格式类一致，取值/行数因环境状态不同（登记）：字段=['submissions']（行数 golden={'submissions': 0} live={'submissions': 23}）
-- [STATE-DIFF] GET /api/grading/summary::success — 格式类一致，取值/行数因环境状态不同（登记）：字段=['by_protocol', 'by_user']（行数 golden={'by_protocol': 0, 'by_user': 0} live={'by_protocol': 1, 'by_user': 3}）
-- [SKIP] GET /api/rag/issues::success — RAG 路由属 J3 未实施
-- [SKIP] GET /api/rag/knowledge::success — RAG 路由属 J3 未实施
-- [PASS] GET /api/usage/me::success — 结构+格式类逐字段一致；live body 摘要={"subject": "U90000000001", "roles": ["leader"], "daily_quota": 10000, "today": {"day": "2026-10-25", "chat_count": 0}, "recent_days": [{"day": "2026-10-19", "chat_count": 0}, {"day": "2026-10-20", "c
-- [STATE-DIFF] GET /api/usage/subjects::success — 格式类一致，取值/行数因环境状态不同（登记）：字段=['subjects']（行数 golden={'subjects': 8} live={'subjects': 7}）
-- [PASS] GET /api/usage/cost::success — 结构+格式类逐字段一致；live body 摘要={"days": 7, "since": "2026-10-18T04:21:38.781982+00:00", "subject": null, "subjects": null, "stage": null, "request_id": null, "totals": {"key": null, "entries": 0, "calls": 0, "prompt_tokens": null, 
-- [REPLAYED] GET /api/health::success — Python 平台路由（FastAPI/docs/metrics/health 探针），Java 侧 HTTP 404（未迁移，登记平台差异；Java 探针为 /actuator/health）
-- [REPLAYED] GET /api/ready::success — Python 平台路由（FastAPI/docs/metrics/health 探针），Java 侧 HTTP 404（未迁移，登记平台差异；Java 探针为 /actuator/health）
-- [REPLAYED] GET /openapi.json::success — Python 平台路由（FastAPI/docs/metrics/health 探针），Java 侧 HTTP 404（未迁移，登记平台差异；Java 探针为 /actuator/health）
-- [REPLAYED] GET /docs::success — Python 平台路由（FastAPI/docs/metrics/health 探针），Java 侧 HTTP 404（未迁移，登记平台差异；Java 探针为 /actuator/health）
-- [REPLAYED] GET /docs/oauth2-redirect::success — Python 平台路由（FastAPI/docs/metrics/health 探针），Java 侧 HTTP 404（未迁移，登记平台差异；Java 探针为 /actuator/health）
-- [REPLAYED] GET /redoc::success — Python 平台路由（FastAPI/docs/metrics/health 探针），Java 侧 HTTP 404（未迁移，登记平台差异；Java 探针为 /actuator/health）
-- [REPLAYED] HEAD /openapi.json::success — Python 平台路由（FastAPI/docs/metrics/health 探针），Java 侧 HTTP 404（未迁移，登记平台差异；Java 探针为 /actuator/health）
-- [REPLAYED] HEAD /docs::success — Python 平台路由（FastAPI/docs/metrics/health 探针），Java 侧 HTTP 404（未迁移，登记平台差异；Java 探针为 /actuator/health）
-- [REPLAYED] HEAD /docs/oauth2-redirect::success — Python 平台路由（FastAPI/docs/metrics/health 探针），Java 侧 HTTP 404（未迁移，登记平台差异；Java 探针为 /actuator/health）
-- [REPLAYED] HEAD /redoc::success — Python 平台路由（FastAPI/docs/metrics/health 探针），Java 侧 HTTP 404（未迁移，登记平台差异；Java 探针为 /actuator/health）
-- [REPLAYED] GET /metrics::success — Python 平台路由（FastAPI/docs/metrics/health 探针），Java 侧 HTTP 404（未迁移，登记平台差异；Java 探针为 /actuator/health）
-- [SKIP] GET /api/internal/session-storage::success — RAG 路由属 J3 未实施
-- [SKIP] POST /api/internal/purge-sessions::success — SSE/模型 live/任务/内部维护路由，P2 不重放
-- [PASS] POST /api/plugin-template::success — 结构+格式类逐字段一致；live body 摘要={"template": "#include <stdbool.h>\n#include <stdint.h>\n#include <stdlib.h>\n#include \"../engine.h\"\n\nstatic int dns_init(engine_ctx_t *ctx)\n{\n    ctx->private_data = NULL;\n    return ENGINE_OK
-- [SKIP] GET /api/sources/{chunk_id}::success — 知识库种子（p0-history chunk）不在候选库（P2 范围不含 RAG 种子装载）；unauthorized 案例仍重放
-- [SKIP] POST /api/admin/users::success — 状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）
-- [PASS] PATCH /api/admin/users/{user_id}::success — 等价流 PATCH daily_quota=5：HTTP golden=200 live=200；shape 相等=True；live={"id": "U90000000006", "roles": ["viewer"], "daily_quota": 5, "enabled": true, "must_change_password": true, "created_at": "2026-10-25 03:57:21.598073+00:00", "created_by": "U90000000002"}
-- [SKIP] POST /api/admin/users/assign::success — 状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）
-- [SKIP] POST /api/admin/users/{user_id}/status::success — 状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）
-- [SKIP] POST /api/admin/users/{user_id}/reset-password::success — 状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）
-- [SKIP] POST /api/admin/users/{user_id}/set-password::success — 状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）
-- [PASS] POST /api/auth/change-password::success — 等价流重放：change-password HTTP 204 空体=True；新密码登录 HTTP 200（golden 204/空体）；密码已复位
-- [PASS] POST /api/auth/password-reset-requests::success — 空体摘要比对：HTTP golden=202 live=202；live 体长=0；sha256 匹配 golden=True
-- [SKIP] GET /api/admin/password-reset-requests::success-after-request — 未分类案例后缀：'success-after-request'
-- [SKIP] POST /api/admin/password-reset-requests/{request_id}/approve::success — 状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）
-- [SKIP] POST /api/auth/password-reset::success — 状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）
-- [PASS] POST /api/auth/password-reset-requests::success-second — 空体摘要比对：HTTP golden=202 live=202；live 体长=0；sha256 匹配 golden=True
-- [SKIP] GET /api/admin/password-reset-requests::success-second — 未分类案例后缀：'success-second'
-- [SKIP] POST /api/admin/password-reset-requests/{request_id}/reject::success — 状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）
-- [SKIP] POST /api/admin/users/delete::success — 状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）
-- [SKIP] POST /api/assignments::success — 等价流已在场景3/5留证（创建201/items/截止/撤回/CSV BOM+CRLF）
-- [PASS] GET /api/assignments/{assignment_id}::success — 等价作业详情（新建无提交作业 id=asg_1e15f6d449074f96，学生视角）：HTTP golden=200 live=200；shape 相等=True；live={"id": "asg_1e15f6d449074f96", "title": "合成DNS作业", "description": "P0", "created_by": "U90000000002", "deadline": "2099-01-01 00:00:00+00:00", "status": "active", "items": [{"protocol": "dns", "points": 20, "best_score": null, "earned": null, "submission_count
-- [SKIP] PATCH /api/assignments/{assignment_id}::success — 等价流已在场景3/5留证（创建201/items/截止/撤回/CSV BOM+CRLF）
-- [SKIP] POST /api/assignments/{assignment_id}/submit::success — 评测成功流已在场景4留证（multipart→fake MCP→成绩；hash-only 落库）
-- [SKIP] GET /api/assignments::success-nonempty-manager — 未分类案例后缀：'success-nonempty-manager'
-- [SKIP] GET /api/assignments::success-nonempty-student — 未分类案例后缀：'success-nonempty-student'
-- [SKIP] GET /api/assignments/{assignment_id}/grades::success — 等价流已在场景3/5留证（创建201/items/截止/撤回/CSV BOM+CRLF）
-- [SKIP] GET /api/assignments/{assignment_id}/export::success — 等价流已在场景3/5留证（创建201/items/截止/撤回/CSV BOM+CRLF）
-- [SKIP] POST /api/assignments/{assignment_id}/submissions/{submission_id}/explain::success — SSE/模型 live/任务/内部维护路由，P2 不重放
-- [SKIP] POST /api/assignments/{assignment_id}/withdraw::success — 等价流已在场景3/5留证（创建201/items/截止/撤回/CSV BOM+CRLF）
-- [SKIP] POST /api/assignments/{assignment_id}/reactivate::success — 等价流已在场景3/5留证（创建201/items/截止/撤回/CSV BOM+CRLF）
-- [SKIP] POST /api/rag/knowledge::success — RAG 路由属 J3 未实施
-- [SKIP] PATCH /api/rag/knowledge/{knowledge_id}::success — RAG 路由属 J3 未实施
-- [SKIP] GET /api/rag/knowledge/{knowledge_id}/revisions::success — RAG 路由属 J3 未实施
-- [SKIP] GET /api/rag/issues/{issue_id}::success — RAG 路由属 J3 未实施
-- [SKIP] PATCH /api/rag/issues/{issue_id}::success — RAG 路由属 J3 未实施
-- [SKIP] POST /api/rag/feedback::success — RAG 路由属 J3 未实施
-- [SKIP] POST /api/rag/issues/{issue_id}/verify::success — RAG 路由属 J3 未实施
-- [SKIP] POST /api/chat::success — chat 主路由未在当前构建装配（chat 编排属 J3+/J5 范围）；实测 HTTP 404（golden 200）——范围外登记
-- [SKIP] POST /api/chat/stream::success — SSE/模型 live/任务/内部维护路由，P2 不重放
-- [PASS] GET /api/chat/sessions::success — HTTP 200；行键集 {id,title,updated_at}（golden 行键 {id,title,updated_at}；行数 golden=5 live=2）
-- [PASS] GET /api/chat/sessions/{session_id}::success — HTTP 200；golden 键=['messages', 'session_id', 'title', 'truncated']；live 键=['messages', 'session_id', 'title', 'truncated']；消息列表形态一致
-- [SKIP] GET /api/tasks/active::success — SSE/模型 live/任务/内部维护路由，P2 不重放
-- [SKIP] GET /api/tasks/{task_id}::success — SSE/模型 live/任务/内部维护路由，P2 不重放
-- [SKIP] GET /api/tasks/{task_id}/events::success — SSE/模型 live/任务/内部维护路由，P2 不重放
-- [SKIP] POST /api/tasks/{task_id}/cancel::success — SSE/模型 live/任务/内部维护路由，P2 不重放
-- [PASS] DELETE /api/chat/sessions/{session_id}::success — 等价流删除自有会话：HTTP golden=204 live=204 空体=True；删除后详情 HTTP 404（期望 404）
-- [SKIP] POST /api/auth/logout::success — 状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）
-- [PASS] DELETE /api/chat/sessions/{session_id}::unauthorized — HTTP golden=401 live=401；body golden={"detail": "missing or malformed bearer token"} live={"detail": "missing or malformed bearer token"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）
-- [PASS] DELETE /api/chat/sessions/{session_id}::invalid-resource — 未知资源：HTTP golden=404 live=404；body golden={"detail": "session not found"} live={"detail": "session not found"}
-- [PASS] GET /api/admin/audit-log::unauthorized — HTTP golden=401 live=401；body golden={"detail": "missing or malformed bearer token"} live={"detail": "missing or malformed bearer token"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）
-- [PASS] GET /api/admin/password-reset-requests::unauthorized — HTTP golden=401 live=401；body golden={"detail": "missing or malformed bearer token"} live={"detail": "missing or malformed bearer token"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）
-- [PASS] GET /api/admin/users::unauthorized — HTTP golden=401 live=401；body golden={"detail": "missing or malformed bearer token"} live={"detail": "missing or malformed bearer token"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）
-- [PASS] GET /api/assignments::unauthorized — HTTP golden=401 live=401；body golden={"detail": "missing or malformed bearer token"} live={"detail": "missing or malformed bearer token"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）
-- [PASS] GET /api/assignments/protocols::unauthorized — HTTP golden=401 live=401；body golden={"detail": "missing or malformed bearer token"} live={"detail": "missing or malformed bearer token"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）
-- [PASS] GET /api/assignments/{assignment_id}::unauthorized — HTTP golden=401 live=401；body golden={"detail": "missing or malformed bearer token"} live={"detail": "missing or malformed bearer token"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）
-- [PASS] GET /api/assignments/{assignment_id}::invalid-resource — 未知资源：HTTP golden=404 live=404；body golden={"detail": "not found"} live={"detail": "not found"}
-- [PASS] GET /api/assignments/{assignment_id}/export::unauthorized — HTTP golden=401 live=401；body golden={"detail": "missing or malformed bearer token"} live={"detail": "missing or malformed bearer token"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）
-- [PASS] GET /api/assignments/{assignment_id}/export::invalid-resource — 未知资源：HTTP golden=404 live=404；body golden={"detail": "not found"} live={"detail": "not found"}
-- [PASS] GET /api/assignments/{assignment_id}/grades::unauthorized — HTTP golden=401 live=401；body golden={"detail": "missing or malformed bearer token"} live={"detail": "missing or malformed bearer token"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）
-- [PASS] GET /api/assignments/{assignment_id}/grades::invalid-resource — 未知资源：HTTP golden=404 live=404；body golden={"detail": "not found"} live={"detail": "not found"}
-- [PASS] GET /api/chat/sessions::unauthorized — HTTP golden=401 live=401；body golden={"detail": "missing or malformed bearer token"} live={"detail": "missing or malformed bearer token"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）
-- [PASS] GET /api/chat/sessions::invalid-input — 422 detail 数组值级比较：HTTP golden=422 live=422；相等=True
-- [PASS] GET /api/chat/sessions/{session_id}::unauthorized — HTTP golden=401 live=401；body golden={"detail": "missing or malformed bearer token"} live={"detail": "missing or malformed bearer token"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）
-- [PASS] GET /api/chat/sessions/{session_id}::invalid-input — 422 detail 数组值级比较：HTTP golden=422 live=422；相等=True
-- [PASS] GET /api/grading/submissions::unauthorized — HTTP golden=401 live=401；body golden={"detail": "missing or malformed bearer token"} live={"detail": "missing or malformed bearer token"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）
-- [PASS] GET /api/grading/submissions::invalid-input — 422 detail 数组值级比较：HTTP golden=422 live=422；相等=True
-- [PASS] GET /api/grading/summary::unauthorized — HTTP golden=401 live=401；body golden={"detail": "missing or malformed bearer token"} live={"detail": "missing or malformed bearer token"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）
-- [SKIP] GET /api/internal/session-storage::unauthorized — RAG 路由属 J3 未实施
-- [SKIP] GET /api/rag/issues::unauthorized — RAG 路由属 J3 未实施
-- [SKIP] GET /api/rag/issues::invalid-input — RAG 路由属 J3 未实施
-- [SKIP] GET /api/rag/issues/{issue_id}::unauthorized — RAG 路由属 J3 未实施
-- [SKIP] GET /api/rag/issues/{issue_id}::invalid-resource — RAG 路由属 J3 未实施
-- [SKIP] GET /api/rag/knowledge::unauthorized — RAG 路由属 J3 未实施
-- [SKIP] GET /api/rag/knowledge/{knowledge_id}/revisions::unauthorized — RAG 路由属 J3 未实施
-- [SKIP] GET /api/rag/knowledge/{knowledge_id}/revisions::invalid-resource — RAG 路由属 J3 未实施
-- [PASS] GET /api/sources/{chunk_id}::unauthorized — HTTP golden=401 live=401；body golden={"detail": "missing or malformed bearer token"} live={"detail": "missing or malformed bearer token"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）
-- [PASS] GET /api/sources/{chunk_id}::invalid-resource — 未知资源：HTTP golden=404 live=404；body golden={"detail": "source chunk not found"} live={"detail": "source chunk not found"}
-- [SKIP] GET /api/tasks/active::unauthorized — SSE/模型 live/任务/内部维护路由，P2 不重放
-- [SKIP] GET /api/tasks/active::invalid-input — SSE/模型 live/任务/内部维护路由，P2 不重放
-- [SKIP] GET /api/tasks/{task_id}::unauthorized — SSE/模型 live/任务/内部维护路由，P2 不重放
-- [SKIP] GET /api/tasks/{task_id}::invalid-resource — SSE/模型 live/任务/内部维护路由，P2 不重放
-- [SKIP] GET /api/tasks/{task_id}/events::unauthorized — SSE/模型 live/任务/内部维护路由，P2 不重放
-- [SKIP] GET /api/tasks/{task_id}/events::invalid-resource — SSE/模型 live/任务/内部维护路由，P2 不重放
-- [PASS] GET /api/usage/cost::unauthorized — HTTP golden=401 live=401；body golden={"detail": "missing or malformed bearer token"} live={"detail": "missing or malformed bearer token"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）
-- [PASS] GET /api/usage/cost::invalid-input — 422 detail 数组值级比较：HTTP golden=422 live=422；相等=True
-- [PASS] GET /api/usage/me::unauthorized — HTTP golden=401 live=401；body golden={"detail": "missing or malformed bearer token"} live={"detail": "missing or malformed bearer token"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）
-- [PASS] GET /api/usage/subjects::unauthorized — HTTP golden=401 live=401；body golden={"detail": "missing or malformed bearer token"} live={"detail": "missing or malformed bearer token"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）
-- [PASS] PATCH /api/admin/users/{user_id}::unauthorized — HTTP golden=401 live=401；body golden={"detail": "missing or malformed bearer token"} live={"detail": "missing or malformed bearer token"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）
-- [PASS] PATCH /api/admin/users/{user_id}::invalid-input — 422 detail 数组值级比较：HTTP golden=422 live=422；相等=True
-- [PASS] PATCH /api/assignments/{assignment_id}::unauthorized — HTTP golden=401 live=401；body golden={"detail": "missing or malformed bearer token"} live={"detail": "missing or malformed bearer token"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）
-- [PASS] PATCH /api/assignments/{assignment_id}::invalid-input — 422 detail 数组值级比较：HTTP golden=422 live=422；相等=True
-- [SKIP] PATCH /api/rag/issues/{issue_id}::unauthorized — RAG 路由属 J3 未实施
-- [SKIP] PATCH /api/rag/issues/{issue_id}::invalid-input — RAG 路由属 J3 未实施
-- [SKIP] PATCH /api/rag/knowledge/{knowledge_id}::unauthorized — RAG 路由属 J3 未实施
-- [SKIP] PATCH /api/rag/knowledge/{knowledge_id}::invalid-input — RAG 路由属 J3 未实施
-- [PASS] POST /api/admin/password-reset-requests/{request_id}/approve::unauthorized — HTTP golden=401 live=401；body golden={"detail": "missing or malformed bearer token"} live={"detail": "missing or malformed bearer token"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）
-- [PASS] POST /api/admin/password-reset-requests/{request_id}/approve::invalid-resource — 未知资源：HTTP golden=404 live=404；body golden={"detail": "not found"} live={"detail": "not found"}
-- [PASS] POST /api/admin/password-reset-requests/{request_id}/reject::unauthorized — HTTP golden=401 live=401；body golden={"detail": "missing or malformed bearer token"} live={"detail": "missing or malformed bearer token"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）
-- [PASS] POST /api/admin/password-reset-requests/{request_id}/reject::invalid-resource — 未知资源：HTTP golden=404 live=404；body golden={"detail": "not found"} live={"detail": "not found"}
-- [PASS] POST /api/admin/users::unauthorized — HTTP golden=401 live=401；body golden={"detail": "missing or malformed bearer token"} live={"detail": "missing or malformed bearer token"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）
-- [PASS] POST /api/admin/users::invalid-input — 422 detail 数组值级比较：HTTP golden=422 live=422；相等=True
-- [PASS] POST /api/admin/users/assign::unauthorized — HTTP golden=401 live=401；body golden={"detail": "missing or malformed bearer token"} live={"detail": "missing or malformed bearer token"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）
-- [PASS] POST /api/admin/users/assign::invalid-input — 422 detail 数组值级比较：HTTP golden=422 live=422；相等=True
-- [PASS] POST /api/admin/users/delete::unauthorized — HTTP golden=401 live=401；body golden={"detail": "missing or malformed bearer token"} live={"detail": "missing or malformed bearer token"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）
-- [PASS] POST /api/admin/users/delete::invalid-input — 422 detail 数组值级比较：HTTP golden=422 live=422；相等=True
-- [PASS] POST /api/admin/users/{user_id}/reset-password::unauthorized — HTTP golden=401 live=401；body golden={"detail": "missing or malformed bearer token"} live={"detail": "missing or malformed bearer token"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）
-- [PASS] POST /api/admin/users/{user_id}/reset-password::invalid-resource — 未知资源：HTTP golden=404 live=404；body golden={"detail": "not found"} live={"detail": "not found"}
-- [PASS] POST /api/admin/users/{user_id}/set-password::unauthorized — HTTP golden=401 live=401；body golden={"detail": "missing or malformed bearer token"} live={"detail": "missing or malformed bearer token"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）
-- [PASS] POST /api/admin/users/{user_id}/set-password::invalid-input — 422 detail 数组值级比较：HTTP golden=422 live=422；相等=True
-- [PASS] POST /api/admin/users/{user_id}/status::unauthorized — HTTP golden=401 live=401；body golden={"detail": "missing or malformed bearer token"} live={"detail": "missing or malformed bearer token"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）
-- [PASS] POST /api/admin/users/{user_id}/status::invalid-input — 422 detail 数组值级比较：HTTP golden=422 live=422；相等=True
-- [PASS] POST /api/assignments::unauthorized — HTTP golden=401 live=401；body golden={"detail": "missing or malformed bearer token"} live={"detail": "missing or malformed bearer token"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）
-- [PASS] POST /api/assignments::invalid-input — 422 detail 数组值级比较：HTTP golden=422 live=422；相等=True
-- [PASS] POST /api/assignments/{assignment_id}/reactivate::unauthorized — HTTP golden=401 live=401；body golden={"detail": "missing or malformed bearer token"} live={"detail": "missing or malformed bearer token"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）
-- [PASS] POST /api/assignments/{assignment_id}/reactivate::invalid-resource — 未知资源：HTTP golden=404 live=404；body golden={"detail": "not found"} live={"detail": "not found"}
-- [SKIP] POST /api/assignments/{assignment_id}/submissions/{submission_id}/explain::unauthorized — SSE/模型 live/任务/内部维护路由，P2 不重放
-- [SKIP] POST /api/assignments/{assignment_id}/submissions/{submission_id}/explain::invalid-resource — SSE/模型 live/任务/内部维护路由，P2 不重放
-- [PASS] POST /api/assignments/{assignment_id}/submit::unauthorized — HTTP golden=401 live=401；body golden={"detail": "missing or malformed bearer token"} live={"detail": "missing or malformed bearer token"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）
-- [PASS] POST /api/assignments/{assignment_id}/submit::invalid-input — 422 detail 数组值级比较：HTTP golden=422 live=422；相等=True
-- [PASS] POST /api/assignments/{assignment_id}/withdraw::unauthorized — HTTP golden=401 live=401；body golden={"detail": "missing or malformed bearer token"} live={"detail": "missing or malformed bearer token"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）
-- [PASS] POST /api/assignments/{assignment_id}/withdraw::invalid-resource — 未知资源：HTTP golden=404 live=404；body golden={"detail": "not found"} live={"detail": "not found"}
-- [PASS] POST /api/auth/change-password::unauthorized — HTTP golden=401 live=401；body golden={"detail": "missing or malformed bearer token"} live={"detail": "missing or malformed bearer token"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）
-- [PASS] POST /api/auth/change-password::invalid-input — 422 detail 数组值级比较：HTTP golden=422 live=422；相等=True
-- [PASS] POST /api/auth/login::invalid-input — 422 detail 数组值级比较：HTTP golden=422 live=422；相等=True
-- [PASS] POST /api/auth/logout::unauthorized — HTTP golden=401 live=401；body golden={"detail": "missing or malformed bearer token"} live={"detail": "missing or malformed bearer token"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）
-- [PASS] POST /api/auth/password-reset::invalid-input — 422 detail 数组值级比较：HTTP golden=422 live=422；相等=True
-- [PASS] POST /api/auth/password-reset-requests::invalid-input — 422 detail 数组值级比较：HTTP golden=422 live=422；相等=True
-- [SKIP] POST /api/chat::unauthorized — chat 主路由未在当前构建装配（chat 编排属 J3+/J5 范围）；实测 HTTP 404（golden 401）——范围外登记
-- [SKIP] POST /api/chat::invalid-input — chat 主路由未在当前构建装配（chat 编排属 J3+/J5 范围）；实测 HTTP 404（golden 422）——范围外登记
-- [SKIP] POST /api/chat/stream::unauthorized — SSE/模型 live/任务/内部维护路由，P2 不重放
-- [SKIP] POST /api/chat/stream::invalid-input — SSE/模型 live/任务/内部维护路由，P2 不重放
-- [SKIP] POST /api/internal/purge-sessions::unauthorized — SSE/模型 live/任务/内部维护路由，P2 不重放
-- [SKIP] POST /api/internal/purge-sessions::invalid-input — SSE/模型 live/任务/内部维护路由，P2 不重放
-- [PASS] POST /api/plugin-template::unauthorized — HTTP golden=401 live=401；body golden={"detail": "missing or malformed bearer token"} live={"detail": "missing or malformed bearer token"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）
-- [PASS] POST /api/plugin-template::invalid-input — 422 detail 数组值级比较：HTTP golden=422 live=422；相等=True
-- [SKIP] POST /api/rag/feedback::unauthorized — RAG 路由属 J3 未实施
-- [SKIP] POST /api/rag/feedback::invalid-input — RAG 路由属 J3 未实施
-- [SKIP] POST /api/rag/issues/{issue_id}/verify::unauthorized — RAG 路由属 J3 未实施
-- [SKIP] POST /api/rag/issues/{issue_id}/verify::invalid-resource — RAG 路由属 J3 未实施
-- [SKIP] POST /api/rag/knowledge::unauthorized — RAG 路由属 J3 未实施
-- [SKIP] POST /api/rag/knowledge::invalid-input — RAG 路由属 J3 未实施
-- [SKIP] POST /api/tasks/{task_id}/cancel::unauthorized — SSE/模型 live/任务/内部维护路由，P2 不重放
-- [SKIP] POST /api/tasks/{task_id}/cancel::invalid-resource — SSE/模型 live/任务/内部维护路由，P2 不重放
-- [PASS] GET /api/chat/sessions/{session_id}::foreign-tree — 树外/越权可见性：HTTP golden=404 live=404；body golden={"detail": "session not found"} live={"detail": "session not found"}（等价主体：学生04读学生03会话）
-- [SKIP] GET /api/tasks/{task_id}::foreign-tree — SSE/模型 live/任务/内部维护路由，P2 不重放
-- [PASS] GET /api/assignments/{assignment_id}::foreign-tree — 树外/越权可见性：HTTP golden=404 live=404；body golden={"detail": "not found"} live={"detail": "not found"}（等价主体：无班级学生07读class作业）
-- [PASS] GET /api/admin/users::viewer-hidden — 树外/越权可见性：HTTP golden=404 live=404；body golden={"detail": "not found"} live={"detail": "not found"}（等价主体：学生03读admin用户清单）
-- [SKIP] GET /api/rag/issues/{issue_id}::other-teacher-hidden — RAG 路由属 J3 未实施
-- [REPLAYED] OPTIONS /api/chat::cors-200 — 非允许来源预检：golden HTTP 400；live HTTP 403（Spring CorsFilter 拒绝语义 403，体='Invalid CORS request'）——平台差异登记
-- [REPLAYED] OPTIONS /api/chat::cors-400 — 非允许来源预检：golden HTTP 400；live HTTP 403（Spring CorsFilter 拒绝语义 403，体='Invalid CORS request'）——平台差异登记
-- [REPLAYED] HEAD /api/health::business-head — Python 平台路由（FastAPI/docs/metrics/health 探针），Java 侧 HTTP 404（未迁移，登记平台差异；Java 探针为 /actuator/health）
-- [REPLAYED] OPTIONS /api/health::ordinary-options — 无 Origin 普通 OPTIONS：golden 405 {detail: Method Not Allowed}（FastAPI 语义）；live HTTP 404（Java 平台面，登记）
-- [SKIP] POST /api/chat::retry-first — chat 主路由未在当前构建装配（chat 编排属 J3+/J5 范围）；实测 HTTP 404（golden 200）——范围外登记
-- [SKIP] POST /api/chat::retry-replay — chat 主路由未在当前构建装配（chat 编排属 J3+/J5 范围）；实测 HTTP 404（golden 200）——范围外登记
-- [SKIP] POST /api/chat::retry-identity-conflict — chat 主路由未在当前构建装配（chat 编排属 J3+/J5 范围）；实测 HTTP 404（golden 409）——范围外登记
+- [SKIP] POST /api/auth/login::success-leader — golden 引导账号不在候选库；登录成功等价流已在场景1逐字段留证（token 43 位/expires_at/must_change_password）（依据 logs/01-auth.log）
+- [SKIP] POST /api/auth/login::success-teacher_a — golden 引导账号不在候选库；登录成功等价流已在场景1逐字段留证（token 43 位/expires_at/must_change_password）（依据 logs/01-auth.log）
+- [SKIP] POST /api/auth/login::success-teacher_b — golden 引导账号不在候选库；登录成功等价流已在场景1逐字段留证（token 43 位/expires_at/must_change_password）（依据 logs/01-auth.log）
+- [SKIP] POST /api/auth/login::success-student_a — golden 引导账号不在候选库；登录成功等价流已在场景1逐字段留证（token 43 位/expires_at/must_change_password）（依据 logs/01-auth.log）
+- [SKIP] POST /api/auth/login::success-student_b — golden 引导账号不在候选库；登录成功等价流已在场景1逐字段留证（token 43 位/expires_at/must_change_password）（依据 logs/01-auth.log）
+- [SKIP] POST /api/auth/login::success-free — golden 引导账号不在候选库；登录成功等价流已在场景1逐字段留证（token 43 位/expires_at/must_change_password）（依据 logs/01-auth.log）
+- [SKIP] POST /api/auth/login::success-delete — golden 引导账号不在候选库；登录成功等价流已在场景1逐字段留证（token 43 位/expires_at/must_change_password）（依据 logs/01-auth.log）
+- [SKIP] POST /api/auth/login::success-disabled — golden 引导账号不在候选库；登录成功等价流已在场景1逐字段留证（token 43 位/expires_at/must_change_password）（依据 logs/01-auth.log）
+- [ALLOWED-DIFF] GET /api/admin/users::success — 差异 kinds=['BODY'] 落在显式声明允许范围内：golden 引导库状态相关成功面；本轮等价库状态不同，行形态与等价流由场景日志留证（依据 logs/06-usage.log; logs/05-report.log）
+- [PASS] GET /api/admin/audit-log::success — HTTP 200；归一化后值级相等（保序保重复 + 实体双射通过）
+- [SKIP] GET /api/admin/password-reset-requests::success — 状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）（依据 logs/02-admin.log）
+- [ALLOWED-DIFF] GET /api/assignments::success — 差异 kinds=['BODY'] 落在显式声明允许范围内：golden 引导库状态相关成功面；本轮等价库状态不同，行形态与等价流由场景日志留证（依据 logs/06-usage.log; logs/05-report.log）
+- [PASS] GET /api/assignments/protocols::success — HTTP 200；归一化后值级相等（保序保重复 + 实体双射通过）
+- [ALLOWED-DIFF] GET /api/grading/submissions::success — 差异 kinds=['BODY'] 落在显式声明允许范围内：golden 引导库状态相关成功面；本轮等价库状态不同，行形态与等价流由场景日志留证（依据 logs/06-usage.log; logs/05-report.log）
+- [ALLOWED-DIFF] GET /api/grading/summary::success — 差异 kinds=['BODY'] 落在显式声明允许范围内：golden 引导库状态相关成功面；本轮等价库状态不同，行形态与等价流由场景日志留证（依据 logs/06-usage.log; logs/05-report.log）
+- [SKIP] GET /api/rag/issues::success — RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）
+- [SKIP] GET /api/rag/knowledge::success — RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）
+- [ALLOWED-DIFF] GET /api/usage/me::success — 差异 kinds=['BODY'] 落在显式声明允许范围内：golden 引导库状态相关成功面；本轮等价库状态不同，行形态与等价流由场景日志留证（依据 logs/06-usage.log; logs/05-report.log）
+- [ALLOWED-DIFF] GET /api/usage/subjects::success — 差异 kinds=['BODY'] 落在显式声明允许范围内：golden 引导库状态相关成功面；本轮等价库状态不同，行形态与等价流由场景日志留证（依据 logs/06-usage.log; logs/05-report.log）
+- [PASS] GET /api/usage/cost::success — HTTP 200；归一化后值级相等（保序保重复 + 实体双射通过）
+- [ALLOWED-DIFF] GET /api/health::success — 差异 kinds=['BODY', 'STATUS'] 落在显式声明允许范围内：Python 平台路由（FastAPI/docs/metrics/health 探针）Java 未迁移；未匹配路由/方法被框架兜底为 500 属已登记平台缺口，J4-03/J5-01 复核修复；Java 探针为 /actuator/health（依据 DECISIONS.md P2-D1 平台差异登记; 验收报告 20261025 框架错误面待办）
+- [ALLOWED-DIFF] GET /api/ready::success — 差异 kinds=['BODY', 'STATUS'] 落在显式声明允许范围内：Python 平台路由（FastAPI/docs/metrics/health 探针）Java 未迁移；未匹配路由/方法被框架兜底为 500 属已登记平台缺口，J4-03/J5-01 复核修复；Java 探针为 /actuator/health（依据 DECISIONS.md P2-D1 平台差异登记; 验收报告 20261025 框架错误面待办）
+- [ALLOWED-DIFF] GET /openapi.json::success — 差异 kinds=['BODY', 'STATUS'] 落在显式声明允许范围内：Python 平台路由（FastAPI/docs/metrics/health 探针）Java 未迁移；未匹配路由/方法被框架兜底为 500 属已登记平台缺口，J4-03/J5-01 复核修复；Java 探针为 /actuator/health（依据 DECISIONS.md P2-D1 平台差异登记; 验收报告 20261025 框架错误面待办）
+- [ALLOWED-DIFF] GET /docs::success — 差异 kinds=['BODY', 'STATUS'] 落在显式声明允许范围内：Python 平台路由（FastAPI/docs/metrics/health 探针）Java 未迁移；未匹配路由/方法被框架兜底为 500 属已登记平台缺口，J4-03/J5-01 复核修复；Java 探针为 /actuator/health（依据 DECISIONS.md P2-D1 平台差异登记; 验收报告 20261025 框架错误面待办）
+- [ALLOWED-DIFF] GET /docs/oauth2-redirect::success — 差异 kinds=['BODY', 'STATUS'] 落在显式声明允许范围内：Python 平台路由（FastAPI/docs/metrics/health 探针）Java 未迁移；未匹配路由/方法被框架兜底为 500 属已登记平台缺口，J4-03/J5-01 复核修复；Java 探针为 /actuator/health（依据 DECISIONS.md P2-D1 平台差异登记; 验收报告 20261025 框架错误面待办）
+- [ALLOWED-DIFF] GET /redoc::success — 差异 kinds=['BODY', 'STATUS'] 落在显式声明允许范围内：Python 平台路由（FastAPI/docs/metrics/health 探针）Java 未迁移；未匹配路由/方法被框架兜底为 500 属已登记平台缺口，J4-03/J5-01 复核修复；Java 探针为 /actuator/health（依据 DECISIONS.md P2-D1 平台差异登记; 验收报告 20261025 框架错误面待办）
+- [ALLOWED-DIFF] HEAD /openapi.json::success — 差异 kinds=['STATUS'] 落在显式声明允许范围内：Python 平台路由（FastAPI/docs/metrics/health 探针）Java 未迁移；未匹配路由/方法被框架兜底为 500 属已登记平台缺口，J4-03/J5-01 复核修复；Java 探针为 /actuator/health（依据 DECISIONS.md P2-D1 平台差异登记; 验收报告 20261025 框架错误面待办）
+- [ALLOWED-DIFF] HEAD /docs::success — 差异 kinds=['STATUS'] 落在显式声明允许范围内：Python 平台路由（FastAPI/docs/metrics/health 探针）Java 未迁移；未匹配路由/方法被框架兜底为 500 属已登记平台缺口，J4-03/J5-01 复核修复；Java 探针为 /actuator/health（依据 DECISIONS.md P2-D1 平台差异登记; 验收报告 20261025 框架错误面待办）
+- [ALLOWED-DIFF] HEAD /docs/oauth2-redirect::success — 差异 kinds=['STATUS'] 落在显式声明允许范围内：Python 平台路由（FastAPI/docs/metrics/health 探针）Java 未迁移；未匹配路由/方法被框架兜底为 500 属已登记平台缺口，J4-03/J5-01 复核修复；Java 探针为 /actuator/health（依据 DECISIONS.md P2-D1 平台差异登记; 验收报告 20261025 框架错误面待办）
+- [ALLOWED-DIFF] HEAD /redoc::success — 差异 kinds=['STATUS'] 落在显式声明允许范围内：Python 平台路由（FastAPI/docs/metrics/health 探针）Java 未迁移；未匹配路由/方法被框架兜底为 500 属已登记平台缺口，J4-03/J5-01 复核修复；Java 探针为 /actuator/health（依据 DECISIONS.md P2-D1 平台差异登记; 验收报告 20261025 框架错误面待办）
+- [ALLOWED-DIFF] GET /metrics::success — 差异 kinds=['BODY', 'STATUS'] 落在显式声明允许范围内：Python 平台路由（FastAPI/docs/metrics/health 探针）Java 未迁移；未匹配路由/方法被框架兜底为 500 属已登记平台缺口，J4-03/J5-01 复核修复；Java 探针为 /actuator/health（依据 DECISIONS.md P2-D1 平台差异登记; 验收报告 20261025 框架错误面待办）
+- [SKIP] GET /api/internal/session-storage::success — 内部维护路由，P2 不重放（依据 P2-regression/README.md 范围外节）
+- [SKIP] POST /api/internal/purge-sessions::success — 内部维护路由，P2 不重放（依据 P2-regression/README.md 范围外节）
+- [PASS] POST /api/plugin-template::success — HTTP 200；归一化后值级相等（保序保重复 + 实体双射通过）
+- [SKIP] GET /api/sources/{chunk_id}::success — 知识库种子（p0-history chunk）不在候选库（P2 范围不含 RAG 种子装载）；unauthorized 案例仍重放（依据 golden-diff.md）
+- [SKIP] POST /api/admin/users::success — 状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）（依据 logs/02-admin.log）
+- [PASS] PATCH /api/admin/users/{user_id}::success — HTTP 200；归一化后值级相等（保序保重复 + 实体双射通过）
+- [SKIP] POST /api/admin/users/assign::success — 状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）（依据 logs/02-admin.log）
+- [SKIP] POST /api/admin/users/{user_id}/status::success — 状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）（依据 logs/02-admin.log）
+- [SKIP] POST /api/admin/users/{user_id}/reset-password::success — 状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）（依据 logs/02-admin.log）
+- [SKIP] POST /api/admin/users/{user_id}/set-password::success — 状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）（依据 logs/02-admin.log）
+- [SKIP] POST /api/auth/change-password::success — 状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）（依据 logs/02-admin.log）
+- [SKIP] POST /api/auth/password-reset-requests::success — 状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）（依据 logs/02-admin.log）
+- [SKIP] GET /api/admin/password-reset-requests::success-after-request — 状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）（依据 logs/02-admin.log）
+- [SKIP] POST /api/admin/password-reset-requests/{request_id}/approve::success — 状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）（依据 logs/02-admin.log）
+- [SKIP] POST /api/auth/password-reset::success — 状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）（依据 logs/02-admin.log）
+- [SKIP] POST /api/auth/password-reset-requests::success-second — 状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）（依据 logs/02-admin.log）
+- [SKIP] GET /api/admin/password-reset-requests::success-second — 状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）（依据 logs/02-admin.log）
+- [SKIP] POST /api/admin/password-reset-requests/{request_id}/reject::success — 状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）（依据 logs/02-admin.log）
+- [SKIP] POST /api/admin/users/delete::success — 状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）（依据 logs/02-admin.log）
+- [SKIP] POST /api/assignments::success — 等价流已在场景3/5留证（创建201/items/截止/撤回/CSV BOM+CRLF）（依据 logs/03-assignments.log; logs/05-report.log）
+- [PASS] GET /api/assignments/{assignment_id}::success — 等价作业详情（新建无提交作业，学生视角）：HTTP 200；归一化后值级相等（保序保重复 + 实体双射通过）
+- [SKIP] PATCH /api/assignments/{assignment_id}::success — 等价流已在场景3/5留证（创建201/items/截止/撤回/CSV BOM+CRLF）（依据 logs/03-assignments.log; logs/05-report.log）
+- [SKIP] POST /api/assignments/{assignment_id}/submit::success — 评测成功流已在场景4留证（multipart→fake MCP→成绩；hash-only 落库）（依据 logs/04-submission.log）
+- [ALLOWED-DIFF] GET /api/assignments::success-nonempty-manager — 差异 kinds=['BODY'] 落在显式声明允许范围内：golden 引导库状态相关成功面；本轮等价库状态不同，行形态与等价流由场景日志留证（依据 logs/06-usage.log; logs/05-report.log）
+- [ALLOWED-DIFF] GET /api/assignments::success-nonempty-student — 差异 kinds=['BODY'] 落在显式声明允许范围内：golden 引导库状态相关成功面；本轮等价库状态不同，行形态与等价流由场景日志留证（依据 logs/06-usage.log; logs/05-report.log）
+- [SKIP] GET /api/assignments/{assignment_id}/grades::success — 等价流已在场景3/5留证（创建201/items/截止/撤回/CSV BOM+CRLF）（依据 logs/03-assignments.log; logs/05-report.log）
+- [SKIP] GET /api/assignments/{assignment_id}/export::success — 等价流已在场景3/5留证（创建201/items/截止/撤回/CSV BOM+CRLF）（依据 logs/03-assignments.log; logs/05-report.log）
+- [SKIP] POST /api/assignments/{assignment_id}/submissions/{submission_id}/explain::success — 讲解路由依赖模型 live，P2 不重放（依据 P2-regression/README.md 范围外节）
+- [SKIP] POST /api/assignments/{assignment_id}/withdraw::success — 等价流已在场景3/5留证（创建201/items/截止/撤回/CSV BOM+CRLF）（依据 logs/03-assignments.log; logs/05-report.log）
+- [SKIP] POST /api/assignments/{assignment_id}/reactivate::success — 等价流已在场景3/5留证（创建201/items/截止/撤回/CSV BOM+CRLF）（依据 logs/03-assignments.log; logs/05-report.log）
+- [SKIP] POST /api/rag/knowledge::success — RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）
+- [SKIP] PATCH /api/rag/knowledge/{knowledge_id}::success — RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）
+- [SKIP] GET /api/rag/knowledge/{knowledge_id}/revisions::success — RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）
+- [SKIP] GET /api/rag/issues/{issue_id}::success — RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）
+- [SKIP] PATCH /api/rag/issues/{issue_id}::success — RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）
+- [SKIP] POST /api/rag/feedback::success — RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）
+- [SKIP] POST /api/rag/issues/{issue_id}/verify::success — RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）
+- [SKIP] POST /api/chat::success — chat 主路由未在当前构建装配（chat 编排属 J3+/J5 范围），不重放（依据 P2-regression/README.md 范围外节）
+- [SKIP] POST /api/chat/stream::success — chat 主路由未在当前构建装配（chat 编排属 J3+/J5 范围），不重放（依据 P2-regression/README.md 范围外节）
+- [ALLOWED-DIFF] GET /api/chat/sessions::success — 差异 kinds=['BODY'] 落在显式声明允许范围内：golden 引导库状态相关成功面；本轮等价库状态不同，行形态与等价流由场景日志留证（依据 logs/06-usage.log; logs/05-report.log）
+- [ALLOWED-DIFF] GET /api/chat/sessions/{session_id}::success — 差异 kinds=['BODY'] 落在显式声明允许范围内：golden 引导库状态相关成功面；本轮等价库状态不同，行形态与等价流由场景日志留证（依据 logs/06-usage.log; logs/05-report.log）
+- [SKIP] GET /api/tasks/active::success — 任务路由依赖模型 live / 任务恢复，P2 不重放（依据 P2-regression/README.md 范围外节）
+- [SKIP] GET /api/tasks/{task_id}::success — 任务路由依赖模型 live / 任务恢复，P2 不重放（依据 P2-regression/README.md 范围外节）
+- [SKIP] GET /api/tasks/{task_id}/events::success — 任务路由依赖模型 live / 任务恢复，P2 不重放（依据 P2-regression/README.md 范围外节）
+- [SKIP] POST /api/tasks/{task_id}/cancel::success — 任务路由依赖模型 live / 任务恢复，P2 不重放（依据 P2-regression/README.md 范围外节）
+- [PASS] DELETE /api/chat/sessions/{session_id}::success — 等价流删除自有会话：HTTP 204 空体=true；删除后详情 HTTP 404（期望 404）
+- [SKIP] POST /api/auth/logout::success — 状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）（依据 logs/02-admin.log）
+- [PASS] DELETE /api/chat/sessions/{session_id}::unauthorized — HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer
+- [PASS] DELETE /api/chat/sessions/{session_id}::invalid-resource — HTTP 404；归一化后值级相等（保序保重复 + 实体双射通过）
+- [PASS] GET /api/admin/audit-log::unauthorized — HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer
+- [PASS] GET /api/admin/password-reset-requests::unauthorized — HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer
+- [PASS] GET /api/admin/users::unauthorized — HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer
+- [PASS] GET /api/assignments::unauthorized — HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer
+- [PASS] GET /api/assignments/protocols::unauthorized — HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer
+- [PASS] GET /api/assignments/{assignment_id}::unauthorized — HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer
+- [PASS] GET /api/assignments/{assignment_id}::invalid-resource — HTTP 404；归一化后值级相等（保序保重复 + 实体双射通过）
+- [PASS] GET /api/assignments/{assignment_id}/export::unauthorized — HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer
+- [PASS] GET /api/assignments/{assignment_id}/export::invalid-resource — HTTP 404；归一化后值级相等（保序保重复 + 实体双射通过）
+- [PASS] GET /api/assignments/{assignment_id}/grades::unauthorized — HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer
+- [PASS] GET /api/assignments/{assignment_id}/grades::invalid-resource — HTTP 404；归一化后值级相等（保序保重复 + 实体双射通过）
+- [PASS] GET /api/chat/sessions::unauthorized — HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer
+- [PASS] GET /api/chat/sessions::invalid-input — HTTP 422；归一化后值级相等（保序保重复 + 实体双射通过）
+- [PASS] GET /api/chat/sessions/{session_id}::unauthorized — HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer
+- [PASS] GET /api/chat/sessions/{session_id}::invalid-input — HTTP 422；归一化后值级相等（保序保重复 + 实体双射通过）
+- [PASS] GET /api/grading/submissions::unauthorized — HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer
+- [PASS] GET /api/grading/submissions::invalid-input — HTTP 422；归一化后值级相等（保序保重复 + 实体双射通过）
+- [PASS] GET /api/grading/summary::unauthorized — HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer
+- [SKIP] GET /api/internal/session-storage::unauthorized — 内部维护路由，P2 不重放（依据 P2-regression/README.md 范围外节）
+- [SKIP] GET /api/rag/issues::unauthorized — RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）
+- [SKIP] GET /api/rag/issues::invalid-input — RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）
+- [SKIP] GET /api/rag/issues/{issue_id}::unauthorized — RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）
+- [SKIP] GET /api/rag/issues/{issue_id}::invalid-resource — RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）
+- [SKIP] GET /api/rag/knowledge::unauthorized — RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）
+- [SKIP] GET /api/rag/knowledge/{knowledge_id}/revisions::unauthorized — RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）
+- [SKIP] GET /api/rag/knowledge/{knowledge_id}/revisions::invalid-resource — RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）
+- [PASS] GET /api/sources/{chunk_id}::unauthorized — HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer
+- [PASS] GET /api/sources/{chunk_id}::invalid-resource — HTTP 404；归一化后值级相等（保序保重复 + 实体双射通过）
+- [SKIP] GET /api/tasks/active::unauthorized — 任务路由依赖模型 live / 任务恢复，P2 不重放（依据 P2-regression/README.md 范围外节）
+- [SKIP] GET /api/tasks/active::invalid-input — 任务路由依赖模型 live / 任务恢复，P2 不重放（依据 P2-regression/README.md 范围外节）
+- [SKIP] GET /api/tasks/{task_id}::unauthorized — 任务路由依赖模型 live / 任务恢复，P2 不重放（依据 P2-regression/README.md 范围外节）
+- [SKIP] GET /api/tasks/{task_id}::invalid-resource — 任务路由依赖模型 live / 任务恢复，P2 不重放（依据 P2-regression/README.md 范围外节）
+- [SKIP] GET /api/tasks/{task_id}/events::unauthorized — 任务路由依赖模型 live / 任务恢复，P2 不重放（依据 P2-regression/README.md 范围外节）
+- [SKIP] GET /api/tasks/{task_id}/events::invalid-resource — 任务路由依赖模型 live / 任务恢复，P2 不重放（依据 P2-regression/README.md 范围外节）
+- [PASS] GET /api/usage/cost::unauthorized — HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer
+- [PASS] GET /api/usage/cost::invalid-input — HTTP 422；归一化后值级相等（保序保重复 + 实体双射通过）
+- [PASS] GET /api/usage/me::unauthorized — HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer
+- [PASS] GET /api/usage/subjects::unauthorized — HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer
+- [PASS] PATCH /api/admin/users/{user_id}::unauthorized — HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer
+- [PASS] PATCH /api/admin/users/{user_id}::invalid-input — HTTP 422；归一化后值级相等（保序保重复 + 实体双射通过）
+- [PASS] PATCH /api/assignments/{assignment_id}::unauthorized — HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer
+- [PASS] PATCH /api/assignments/{assignment_id}::invalid-input — HTTP 422；归一化后值级相等（保序保重复 + 实体双射通过）
+- [SKIP] PATCH /api/rag/issues/{issue_id}::unauthorized — RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）
+- [SKIP] PATCH /api/rag/issues/{issue_id}::invalid-input — RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）
+- [SKIP] PATCH /api/rag/knowledge/{knowledge_id}::unauthorized — RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）
+- [SKIP] PATCH /api/rag/knowledge/{knowledge_id}::invalid-input — RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）
+- [PASS] POST /api/admin/password-reset-requests/{request_id}/approve::unauthorized — HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer
+- [PASS] POST /api/admin/password-reset-requests/{request_id}/approve::invalid-resource — HTTP 404；归一化后值级相等（保序保重复 + 实体双射通过）
+- [PASS] POST /api/admin/password-reset-requests/{request_id}/reject::unauthorized — HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer
+- [PASS] POST /api/admin/password-reset-requests/{request_id}/reject::invalid-resource — HTTP 404；归一化后值级相等（保序保重复 + 实体双射通过）
+- [PASS] POST /api/admin/users::unauthorized — HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer
+- [PASS] POST /api/admin/users::invalid-input — HTTP 422；归一化后值级相等（保序保重复 + 实体双射通过）
+- [PASS] POST /api/admin/users/assign::unauthorized — HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer
+- [PASS] POST /api/admin/users/assign::invalid-input — HTTP 422；归一化后值级相等（保序保重复 + 实体双射通过）
+- [PASS] POST /api/admin/users/delete::unauthorized — HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer
+- [PASS] POST /api/admin/users/delete::invalid-input — HTTP 422；归一化后值级相等（保序保重复 + 实体双射通过）
+- [PASS] POST /api/admin/users/{user_id}/reset-password::unauthorized — HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer
+- [PASS] POST /api/admin/users/{user_id}/reset-password::invalid-resource — HTTP 404；归一化后值级相等（保序保重复 + 实体双射通过）
+- [PASS] POST /api/admin/users/{user_id}/set-password::unauthorized — HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer
+- [PASS] POST /api/admin/users/{user_id}/set-password::invalid-input — HTTP 422；归一化后值级相等（保序保重复 + 实体双射通过）
+- [PASS] POST /api/admin/users/{user_id}/status::unauthorized — HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer
+- [PASS] POST /api/admin/users/{user_id}/status::invalid-input — HTTP 422；归一化后值级相等（保序保重复 + 实体双射通过）
+- [PASS] POST /api/assignments::unauthorized — HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer
+- [PASS] POST /api/assignments::invalid-input — HTTP 422；归一化后值级相等（保序保重复 + 实体双射通过）
+- [PASS] POST /api/assignments/{assignment_id}/reactivate::unauthorized — HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer
+- [PASS] POST /api/assignments/{assignment_id}/reactivate::invalid-resource — HTTP 404；归一化后值级相等（保序保重复 + 实体双射通过）
+- [SKIP] POST /api/assignments/{assignment_id}/submissions/{submission_id}/explain::unauthorized — 讲解路由依赖模型 live，P2 不重放（依据 P2-regression/README.md 范围外节）
+- [SKIP] POST /api/assignments/{assignment_id}/submissions/{submission_id}/explain::invalid-resource — 讲解路由依赖模型 live，P2 不重放（依据 P2-regression/README.md 范围外节）
+- [PASS] POST /api/assignments/{assignment_id}/submit::unauthorized — HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer
+- [PASS] POST /api/assignments/{assignment_id}/submit::invalid-input — HTTP 422；归一化后值级相等（保序保重复 + 实体双射通过）
+- [PASS] POST /api/assignments/{assignment_id}/withdraw::unauthorized — HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer
+- [PASS] POST /api/assignments/{assignment_id}/withdraw::invalid-resource — HTTP 404；归一化后值级相等（保序保重复 + 实体双射通过）
+- [PASS] POST /api/auth/change-password::unauthorized — HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer
+- [PASS] POST /api/auth/change-password::invalid-input — HTTP 422；归一化后值级相等（保序保重复 + 实体双射通过）
+- [PASS] POST /api/auth/login::invalid-input — HTTP 422；归一化后值级相等（保序保重复 + 实体双射通过）
+- [PASS] POST /api/auth/logout::unauthorized — HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer
+- [PASS] POST /api/auth/password-reset::invalid-input — HTTP 422；归一化后值级相等（保序保重复 + 实体双射通过）
+- [PASS] POST /api/auth/password-reset-requests::invalid-input — HTTP 422；归一化后值级相等（保序保重复 + 实体双射通过）
+- [SKIP] POST /api/chat::unauthorized — chat 主路由未在当前构建装配（chat 编排属 J3+/J5 范围），不重放（依据 P2-regression/README.md 范围外节）
+- [SKIP] POST /api/chat::invalid-input — chat 主路由未在当前构建装配（chat 编排属 J3+/J5 范围），不重放（依据 P2-regression/README.md 范围外节）
+- [SKIP] POST /api/chat/stream::unauthorized — chat 主路由未在当前构建装配（chat 编排属 J3+/J5 范围），不重放（依据 P2-regression/README.md 范围外节）
+- [SKIP] POST /api/chat/stream::invalid-input — chat 主路由未在当前构建装配（chat 编排属 J3+/J5 范围），不重放（依据 P2-regression/README.md 范围外节）
+- [SKIP] POST /api/internal/purge-sessions::unauthorized — 内部维护路由，P2 不重放（依据 P2-regression/README.md 范围外节）
+- [SKIP] POST /api/internal/purge-sessions::invalid-input — 内部维护路由，P2 不重放（依据 P2-regression/README.md 范围外节）
+- [PASS] POST /api/plugin-template::unauthorized — HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer
+- [PASS] POST /api/plugin-template::invalid-input — HTTP 422；归一化后值级相等（保序保重复 + 实体双射通过）
+- [SKIP] POST /api/rag/feedback::unauthorized — RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）
+- [SKIP] POST /api/rag/feedback::invalid-input — RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）
+- [SKIP] POST /api/rag/issues/{issue_id}/verify::unauthorized — RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）
+- [SKIP] POST /api/rag/issues/{issue_id}/verify::invalid-resource — RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）
+- [SKIP] POST /api/rag/knowledge::unauthorized — RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）
+- [SKIP] POST /api/rag/knowledge::invalid-input — RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）
+- [SKIP] POST /api/tasks/{task_id}/cancel::unauthorized — 任务路由依赖模型 live / 任务恢复，P2 不重放（依据 P2-regression/README.md 范围外节）
+- [SKIP] POST /api/tasks/{task_id}/cancel::invalid-resource — 任务路由依赖模型 live / 任务恢复，P2 不重放（依据 P2-regression/README.md 范围外节）
+- [PASS] GET /api/chat/sessions/{session_id}::foreign-tree — HTTP 404；归一化后值级相等（保序保重复 + 实体双射通过）
+- [SKIP] GET /api/tasks/{task_id}::foreign-tree — 任务路由依赖模型 live / 任务恢复，P2 不重放（依据 P2-regression/README.md 范围外节）
+- [PASS] GET /api/assignments/{assignment_id}::foreign-tree — HTTP 404；归一化后值级相等（保序保重复 + 实体双射通过）
+- [PASS] GET /api/admin/users::viewer-hidden — HTTP 404；归一化后值级相等（保序保重复 + 实体双射通过）
+- [SKIP] GET /api/rag/issues/{issue_id}::other-teacher-hidden — RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）
+- [ALLOWED-DIFF] OPTIONS /api/chat::cors-200 — 差异 kinds=['BODY', 'STATUS'] 落在显式声明允许范围内：Java 无 POST /api/chat（J3+）；CORS 预检由 Spring 全局 CORS 处理，预检形态登记（依据 DECISIONS.md P2-D1; golden-diff.md 平台差异）
+- [ALLOWED-DIFF] OPTIONS /api/chat::cors-400 — 差异 kinds=['BODY', 'STATUS'] 落在显式声明允许范围内：非允许来源预检：Python/Starlette 400，Java/Spring CorsFilter 403 同语义拒绝（依据 DECISIONS.md P2-D1）
+- [ALLOWED-DIFF] HEAD /api/health::business-head — 差异 kinds=['STATUS'] 落在显式声明允许范围内：golden 405（FastAPI 方法面）；Java 未匹配方法兜底 500 为已登记平台缺口，J4-03/J5-01 复核修复（依据 DECISIONS.md P2-D1; 验收报告 20261025 框架错误面待办）
+- [ALLOWED-DIFF] OPTIONS /api/health::ordinary-options — 差异 kinds=['BODY', 'STATUS'] 落在显式声明允许范围内：无 Origin 普通 OPTIONS：golden 405（FastAPI 语义）；live 为 Java 平台面，登记（依据 golden-diff.md 平台差异）
+- [SKIP] POST /api/chat::retry-first — chat 主路由未在当前构建装配（chat 编排属 J3+/J5 范围），不重放（依据 P2-regression/README.md 范围外节）
+- [SKIP] POST /api/chat::retry-replay — chat 主路由未在当前构建装配（chat 编排属 J3+/J5 范围），不重放（依据 P2-regression/README.md 范围外节）
+- [SKIP] POST /api/chat::retry-identity-conflict — chat 主路由未在当前构建装配（chat 编排属 J3+/J5 范围），不重放（依据 P2-regression/README.md 范围外节）

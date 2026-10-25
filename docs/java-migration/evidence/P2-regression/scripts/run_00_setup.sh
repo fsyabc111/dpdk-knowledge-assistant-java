@@ -24,7 +24,7 @@ source "$(dirname "$0")/common.sh"
 
 : "${DPDK_TEST_PG_DATA_DIR:?需要 DPDK_TEST_PG_DATA_DIR（期望 data_directory 前缀，核验用）}"
 MAINTDB="${DPDK_REPLAY_MAINTDB:-postgres}"
-ROUND="${DPDK_REPLAY_ROUND:-$(date +%Y%m%d-%H%M%S)}"
+ROUND="${DPDK_REPLAY_ROUND:-$(date +%Y%m%d_%H%M%S)}"
 ROUND_ID="p2replay-${ROUND}"
 NEWDB="${ROUND_ID}"   # 库名含本轮标记
 
@@ -65,9 +65,9 @@ fi
 
 echo "-- [核验通过，开始写] CREATE DATABASE ${NEWDB} + 本轮标记 COMMENT"
 psql -h "$PGHOST" -p "$PGPORT" -U "$PGUSER" -d "$MAINTDB" -v ON_ERROR_STOP=1 -c \
-  "CREATE DATABASE ${NEWDB}" >/dev/null
+  "CREATE DATABASE \"${NEWDB}\"" >/dev/null
 psql -h "$PGHOST" -p "$PGPORT" -U "$PGUSER" -d "$MAINTDB" -v ON_ERROR_STOP=1 -c \
-  "COMMENT ON DATABASE ${NEWDB} IS 'java-migration-p2-replay ${ROUND_ID}'" >/dev/null
+  "COMMENT ON DATABASE \"${NEWDB}\" IS 'java-migration-p2-replay ${ROUND_ID}'" >/dev/null
 
 echo "-- [建库后核验 3/3] 新库身份（current_database + COMMENT + data_directory）"
 NEW_IDENT="$(idcheck "$NEWDB")" || {

@@ -1,940 +1,940 @@
 {
  "summary": {
-  "SKIP": 87,
-  "STATE-DIFF": 6,
-  "PASS": 78,
-  "REPLAYED": 15
+  "SKIP": 89,
+  "ALLOWED-DIFF": 25,
+  "PASS": 72
  },
+ "comparator": "strict-v2: status-precondition+ordered-dedup+bijection+explicit-decls",
  "cases": [
   {
    "case_id": "POST /api/auth/login::success-leader",
    "verdict": "SKIP",
-   "detail": "golden 引导账号不在候选库；登录成功等价流已在场景1逐字段留证（token 43 位/expires_at/must_change_password）"
+   "detail": "golden 引导账号不在候选库；登录成功等价流已在场景1逐字段留证（token 43 位/expires_at/must_change_password）（依据 logs/01-auth.log）"
   },
   {
    "case_id": "POST /api/auth/login::success-teacher_a",
    "verdict": "SKIP",
-   "detail": "golden 引导账号不在候选库；登录成功等价流已在场景1逐字段留证（token 43 位/expires_at/must_change_password）"
+   "detail": "golden 引导账号不在候选库；登录成功等价流已在场景1逐字段留证（token 43 位/expires_at/must_change_password）（依据 logs/01-auth.log）"
   },
   {
    "case_id": "POST /api/auth/login::success-teacher_b",
    "verdict": "SKIP",
-   "detail": "golden 引导账号不在候选库；登录成功等价流已在场景1逐字段留证（token 43 位/expires_at/must_change_password）"
+   "detail": "golden 引导账号不在候选库；登录成功等价流已在场景1逐字段留证（token 43 位/expires_at/must_change_password）（依据 logs/01-auth.log）"
   },
   {
    "case_id": "POST /api/auth/login::success-student_a",
    "verdict": "SKIP",
-   "detail": "golden 引导账号不在候选库；登录成功等价流已在场景1逐字段留证（token 43 位/expires_at/must_change_password）"
+   "detail": "golden 引导账号不在候选库；登录成功等价流已在场景1逐字段留证（token 43 位/expires_at/must_change_password）（依据 logs/01-auth.log）"
   },
   {
    "case_id": "POST /api/auth/login::success-student_b",
    "verdict": "SKIP",
-   "detail": "golden 引导账号不在候选库；登录成功等价流已在场景1逐字段留证（token 43 位/expires_at/must_change_password）"
+   "detail": "golden 引导账号不在候选库；登录成功等价流已在场景1逐字段留证（token 43 位/expires_at/must_change_password）（依据 logs/01-auth.log）"
   },
   {
    "case_id": "POST /api/auth/login::success-free",
    "verdict": "SKIP",
-   "detail": "golden 引导账号不在候选库；登录成功等价流已在场景1逐字段留证（token 43 位/expires_at/must_change_password）"
+   "detail": "golden 引导账号不在候选库；登录成功等价流已在场景1逐字段留证（token 43 位/expires_at/must_change_password）（依据 logs/01-auth.log）"
   },
   {
    "case_id": "POST /api/auth/login::success-delete",
    "verdict": "SKIP",
-   "detail": "golden 引导账号不在候选库；登录成功等价流已在场景1逐字段留证（token 43 位/expires_at/must_change_password）"
+   "detail": "golden 引导账号不在候选库；登录成功等价流已在场景1逐字段留证（token 43 位/expires_at/must_change_password）（依据 logs/01-auth.log）"
   },
   {
    "case_id": "POST /api/auth/login::success-disabled",
    "verdict": "SKIP",
-   "detail": "golden 引导账号不在候选库；登录成功等价流已在场景1逐字段留证（token 43 位/expires_at/must_change_password）"
+   "detail": "golden 引导账号不在候选库；登录成功等价流已在场景1逐字段留证（token 43 位/expires_at/must_change_password）（依据 logs/01-auth.log）"
   },
   {
    "case_id": "GET /api/admin/users::success",
-   "verdict": "STATE-DIFF",
-   "detail": "格式类一致，取值/行数因环境状态不同（登记）：字段=['users']（行数 golden={'users': 8} live={'users': 7}）"
+   "verdict": "ALLOWED-DIFF",
+   "detail": "差异 kinds=['BODY'] 落在显式声明允许范围内：golden 引导库状态相关成功面；本轮等价库状态不同，行形态与等价流由场景日志留证（依据 logs/06-usage.log; logs/05-report.log）"
   },
   {
    "case_id": "GET /api/admin/audit-log::success",
    "verdict": "PASS",
-   "detail": "结构+格式类逐字段一致；live body 摘要={\"entries\": []}"
+   "detail": "HTTP 200；归一化后值级相等（保序保重复 + 实体双射通过）"
   },
   {
    "case_id": "GET /api/admin/password-reset-requests::success",
-   "verdict": "STATE-DIFF",
-   "detail": "格式类一致，取值/行数因环境状态不同（登记）：字段=['requests']（行数 golden={'requests': 0} live={'requests': 4}）"
+   "verdict": "SKIP",
+   "detail": "状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）（依据 logs/02-admin.log）"
   },
   {
    "case_id": "GET /api/assignments::success",
-   "verdict": "STATE-DIFF",
-   "detail": "格式类一致，取值/行数因环境状态不同（登记）：字段=['assignments']（行数 golden={'assignments': 0} live={'assignments': 4}）"
+   "verdict": "ALLOWED-DIFF",
+   "detail": "差异 kinds=['BODY'] 落在显式声明允许范围内：golden 引导库状态相关成功面；本轮等价库状态不同，行形态与等价流由场景日志留证（依据 logs/06-usage.log; logs/05-report.log）"
   },
   {
    "case_id": "GET /api/assignments/protocols::success",
    "verdict": "PASS",
-   "detail": "结构+格式类逐字段一致；live body 摘要={\"protocols\": [{\"name\": \"dns\", \"cases\": 5, \"categories\": {\"basic\": 5}}], \"error\": null}"
+   "detail": "HTTP 200；归一化后值级相等（保序保重复 + 实体双射通过）"
   },
   {
    "case_id": "GET /api/grading/submissions::success",
-   "verdict": "STATE-DIFF",
-   "detail": "格式类一致，取值/行数因环境状态不同（登记）：字段=['submissions']（行数 golden={'submissions': 0} live={'submissions': 23}）"
+   "verdict": "ALLOWED-DIFF",
+   "detail": "差异 kinds=['BODY'] 落在显式声明允许范围内：golden 引导库状态相关成功面；本轮等价库状态不同，行形态与等价流由场景日志留证（依据 logs/06-usage.log; logs/05-report.log）"
   },
   {
    "case_id": "GET /api/grading/summary::success",
-   "verdict": "STATE-DIFF",
-   "detail": "格式类一致，取值/行数因环境状态不同（登记）：字段=['by_protocol', 'by_user']（行数 golden={'by_protocol': 0, 'by_user': 0} live={'by_protocol': 1, 'by_user': 3}）"
+   "verdict": "ALLOWED-DIFF",
+   "detail": "差异 kinds=['BODY'] 落在显式声明允许范围内：golden 引导库状态相关成功面；本轮等价库状态不同，行形态与等价流由场景日志留证（依据 logs/06-usage.log; logs/05-report.log）"
   },
   {
    "case_id": "GET /api/rag/issues::success",
    "verdict": "SKIP",
-   "detail": "RAG 路由属 J3 未实施"
+   "detail": "RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "GET /api/rag/knowledge::success",
    "verdict": "SKIP",
-   "detail": "RAG 路由属 J3 未实施"
+   "detail": "RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "GET /api/usage/me::success",
-   "verdict": "PASS",
-   "detail": "结构+格式类逐字段一致；live body 摘要={\"subject\": \"U90000000001\", \"roles\": [\"leader\"], \"daily_quota\": 10000, \"today\": {\"day\": \"2026-10-25\", \"chat_count\": 0}, \"recent_days\": [{\"day\": \"2026-10-19\", \"chat_count\": 0}, {\"day\": \"2026-10-20\", \"c"
+   "verdict": "ALLOWED-DIFF",
+   "detail": "差异 kinds=['BODY'] 落在显式声明允许范围内：golden 引导库状态相关成功面；本轮等价库状态不同，行形态与等价流由场景日志留证（依据 logs/06-usage.log; logs/05-report.log）"
   },
   {
    "case_id": "GET /api/usage/subjects::success",
-   "verdict": "STATE-DIFF",
-   "detail": "格式类一致，取值/行数因环境状态不同（登记）：字段=['subjects']（行数 golden={'subjects': 8} live={'subjects': 7}）"
+   "verdict": "ALLOWED-DIFF",
+   "detail": "差异 kinds=['BODY'] 落在显式声明允许范围内：golden 引导库状态相关成功面；本轮等价库状态不同，行形态与等价流由场景日志留证（依据 logs/06-usage.log; logs/05-report.log）"
   },
   {
    "case_id": "GET /api/usage/cost::success",
    "verdict": "PASS",
-   "detail": "结构+格式类逐字段一致；live body 摘要={\"days\": 7, \"since\": \"2026-10-18T04:21:38.781982+00:00\", \"subject\": null, \"subjects\": null, \"stage\": null, \"request_id\": null, \"totals\": {\"key\": null, \"entries\": 0, \"calls\": 0, \"prompt_tokens\": null, "
+   "detail": "HTTP 200；归一化后值级相等（保序保重复 + 实体双射通过）"
   },
   {
    "case_id": "GET /api/health::success",
-   "verdict": "REPLAYED",
-   "detail": "Python 平台路由（FastAPI/docs/metrics/health 探针），Java 侧 HTTP 404（未迁移，登记平台差异；Java 探针为 /actuator/health）"
+   "verdict": "ALLOWED-DIFF",
+   "detail": "差异 kinds=['BODY', 'STATUS'] 落在显式声明允许范围内：Python 平台路由（FastAPI/docs/metrics/health 探针）Java 未迁移；未匹配路由/方法被框架兜底为 500 属已登记平台缺口，J4-03/J5-01 复核修复；Java 探针为 /actuator/health（依据 DECISIONS.md P2-D1 平台差异登记; 验收报告 20261025 框架错误面待办）"
   },
   {
    "case_id": "GET /api/ready::success",
-   "verdict": "REPLAYED",
-   "detail": "Python 平台路由（FastAPI/docs/metrics/health 探针），Java 侧 HTTP 404（未迁移，登记平台差异；Java 探针为 /actuator/health）"
+   "verdict": "ALLOWED-DIFF",
+   "detail": "差异 kinds=['BODY', 'STATUS'] 落在显式声明允许范围内：Python 平台路由（FastAPI/docs/metrics/health 探针）Java 未迁移；未匹配路由/方法被框架兜底为 500 属已登记平台缺口，J4-03/J5-01 复核修复；Java 探针为 /actuator/health（依据 DECISIONS.md P2-D1 平台差异登记; 验收报告 20261025 框架错误面待办）"
   },
   {
    "case_id": "GET /openapi.json::success",
-   "verdict": "REPLAYED",
-   "detail": "Python 平台路由（FastAPI/docs/metrics/health 探针），Java 侧 HTTP 404（未迁移，登记平台差异；Java 探针为 /actuator/health）"
+   "verdict": "ALLOWED-DIFF",
+   "detail": "差异 kinds=['BODY', 'STATUS'] 落在显式声明允许范围内：Python 平台路由（FastAPI/docs/metrics/health 探针）Java 未迁移；未匹配路由/方法被框架兜底为 500 属已登记平台缺口，J4-03/J5-01 复核修复；Java 探针为 /actuator/health（依据 DECISIONS.md P2-D1 平台差异登记; 验收报告 20261025 框架错误面待办）"
   },
   {
    "case_id": "GET /docs::success",
-   "verdict": "REPLAYED",
-   "detail": "Python 平台路由（FastAPI/docs/metrics/health 探针），Java 侧 HTTP 404（未迁移，登记平台差异；Java 探针为 /actuator/health）"
+   "verdict": "ALLOWED-DIFF",
+   "detail": "差异 kinds=['BODY', 'STATUS'] 落在显式声明允许范围内：Python 平台路由（FastAPI/docs/metrics/health 探针）Java 未迁移；未匹配路由/方法被框架兜底为 500 属已登记平台缺口，J4-03/J5-01 复核修复；Java 探针为 /actuator/health（依据 DECISIONS.md P2-D1 平台差异登记; 验收报告 20261025 框架错误面待办）"
   },
   {
    "case_id": "GET /docs/oauth2-redirect::success",
-   "verdict": "REPLAYED",
-   "detail": "Python 平台路由（FastAPI/docs/metrics/health 探针），Java 侧 HTTP 404（未迁移，登记平台差异；Java 探针为 /actuator/health）"
+   "verdict": "ALLOWED-DIFF",
+   "detail": "差异 kinds=['BODY', 'STATUS'] 落在显式声明允许范围内：Python 平台路由（FastAPI/docs/metrics/health 探针）Java 未迁移；未匹配路由/方法被框架兜底为 500 属已登记平台缺口，J4-03/J5-01 复核修复；Java 探针为 /actuator/health（依据 DECISIONS.md P2-D1 平台差异登记; 验收报告 20261025 框架错误面待办）"
   },
   {
    "case_id": "GET /redoc::success",
-   "verdict": "REPLAYED",
-   "detail": "Python 平台路由（FastAPI/docs/metrics/health 探针），Java 侧 HTTP 404（未迁移，登记平台差异；Java 探针为 /actuator/health）"
+   "verdict": "ALLOWED-DIFF",
+   "detail": "差异 kinds=['BODY', 'STATUS'] 落在显式声明允许范围内：Python 平台路由（FastAPI/docs/metrics/health 探针）Java 未迁移；未匹配路由/方法被框架兜底为 500 属已登记平台缺口，J4-03/J5-01 复核修复；Java 探针为 /actuator/health（依据 DECISIONS.md P2-D1 平台差异登记; 验收报告 20261025 框架错误面待办）"
   },
   {
    "case_id": "HEAD /openapi.json::success",
-   "verdict": "REPLAYED",
-   "detail": "Python 平台路由（FastAPI/docs/metrics/health 探针），Java 侧 HTTP 404（未迁移，登记平台差异；Java 探针为 /actuator/health）"
+   "verdict": "ALLOWED-DIFF",
+   "detail": "差异 kinds=['STATUS'] 落在显式声明允许范围内：Python 平台路由（FastAPI/docs/metrics/health 探针）Java 未迁移；未匹配路由/方法被框架兜底为 500 属已登记平台缺口，J4-03/J5-01 复核修复；Java 探针为 /actuator/health（依据 DECISIONS.md P2-D1 平台差异登记; 验收报告 20261025 框架错误面待办）"
   },
   {
    "case_id": "HEAD /docs::success",
-   "verdict": "REPLAYED",
-   "detail": "Python 平台路由（FastAPI/docs/metrics/health 探针），Java 侧 HTTP 404（未迁移，登记平台差异；Java 探针为 /actuator/health）"
+   "verdict": "ALLOWED-DIFF",
+   "detail": "差异 kinds=['STATUS'] 落在显式声明允许范围内：Python 平台路由（FastAPI/docs/metrics/health 探针）Java 未迁移；未匹配路由/方法被框架兜底为 500 属已登记平台缺口，J4-03/J5-01 复核修复；Java 探针为 /actuator/health（依据 DECISIONS.md P2-D1 平台差异登记; 验收报告 20261025 框架错误面待办）"
   },
   {
    "case_id": "HEAD /docs/oauth2-redirect::success",
-   "verdict": "REPLAYED",
-   "detail": "Python 平台路由（FastAPI/docs/metrics/health 探针），Java 侧 HTTP 404（未迁移，登记平台差异；Java 探针为 /actuator/health）"
+   "verdict": "ALLOWED-DIFF",
+   "detail": "差异 kinds=['STATUS'] 落在显式声明允许范围内：Python 平台路由（FastAPI/docs/metrics/health 探针）Java 未迁移；未匹配路由/方法被框架兜底为 500 属已登记平台缺口，J4-03/J5-01 复核修复；Java 探针为 /actuator/health（依据 DECISIONS.md P2-D1 平台差异登记; 验收报告 20261025 框架错误面待办）"
   },
   {
    "case_id": "HEAD /redoc::success",
-   "verdict": "REPLAYED",
-   "detail": "Python 平台路由（FastAPI/docs/metrics/health 探针），Java 侧 HTTP 404（未迁移，登记平台差异；Java 探针为 /actuator/health）"
+   "verdict": "ALLOWED-DIFF",
+   "detail": "差异 kinds=['STATUS'] 落在显式声明允许范围内：Python 平台路由（FastAPI/docs/metrics/health 探针）Java 未迁移；未匹配路由/方法被框架兜底为 500 属已登记平台缺口，J4-03/J5-01 复核修复；Java 探针为 /actuator/health（依据 DECISIONS.md P2-D1 平台差异登记; 验收报告 20261025 框架错误面待办）"
   },
   {
    "case_id": "GET /metrics::success",
-   "verdict": "REPLAYED",
-   "detail": "Python 平台路由（FastAPI/docs/metrics/health 探针），Java 侧 HTTP 404（未迁移，登记平台差异；Java 探针为 /actuator/health）"
+   "verdict": "ALLOWED-DIFF",
+   "detail": "差异 kinds=['BODY', 'STATUS'] 落在显式声明允许范围内：Python 平台路由（FastAPI/docs/metrics/health 探针）Java 未迁移；未匹配路由/方法被框架兜底为 500 属已登记平台缺口，J4-03/J5-01 复核修复；Java 探针为 /actuator/health（依据 DECISIONS.md P2-D1 平台差异登记; 验收报告 20261025 框架错误面待办）"
   },
   {
    "case_id": "GET /api/internal/session-storage::success",
    "verdict": "SKIP",
-   "detail": "RAG 路由属 J3 未实施"
+   "detail": "内部维护路由，P2 不重放（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "POST /api/internal/purge-sessions::success",
    "verdict": "SKIP",
-   "detail": "SSE/模型 live/任务/内部维护路由，P2 不重放"
+   "detail": "内部维护路由，P2 不重放（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "POST /api/plugin-template::success",
    "verdict": "PASS",
-   "detail": "结构+格式类逐字段一致；live body 摘要={\"template\": \"#include <stdbool.h>\\n#include <stdint.h>\\n#include <stdlib.h>\\n#include \\\"../engine.h\\\"\\n\\nstatic int dns_init(engine_ctx_t *ctx)\\n{\\n    ctx->private_data = NULL;\\n    return ENGINE_OK"
+   "detail": "HTTP 200；归一化后值级相等（保序保重复 + 实体双射通过）"
   },
   {
    "case_id": "GET /api/sources/{chunk_id}::success",
    "verdict": "SKIP",
-   "detail": "知识库种子（p0-history chunk）不在候选库（P2 范围不含 RAG 种子装载）；unauthorized 案例仍重放"
+   "detail": "知识库种子（p0-history chunk）不在候选库（P2 范围不含 RAG 种子装载）；unauthorized 案例仍重放（依据 golden-diff.md）"
   },
   {
    "case_id": "POST /api/admin/users::success",
    "verdict": "SKIP",
-   "detail": "状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）"
+   "detail": "状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）（依据 logs/02-admin.log）"
   },
   {
    "case_id": "PATCH /api/admin/users/{user_id}::success",
    "verdict": "PASS",
-   "detail": "等价流 PATCH daily_quota=5：HTTP golden=200 live=200；shape 相等=True；live={\"id\": \"U90000000006\", \"roles\": [\"viewer\"], \"daily_quota\": 5, \"enabled\": true, \"must_change_password\": true, \"created_at\": \"2026-10-25 03:57:21.598073+00:00\", \"created_by\": \"U90000000002\"}"
+   "detail": "HTTP 200；归一化后值级相等（保序保重复 + 实体双射通过）"
   },
   {
    "case_id": "POST /api/admin/users/assign::success",
    "verdict": "SKIP",
-   "detail": "状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）"
+   "detail": "状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）（依据 logs/02-admin.log）"
   },
   {
    "case_id": "POST /api/admin/users/{user_id}/status::success",
    "verdict": "SKIP",
-   "detail": "状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）"
+   "detail": "状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）（依据 logs/02-admin.log）"
   },
   {
    "case_id": "POST /api/admin/users/{user_id}/reset-password::success",
    "verdict": "SKIP",
-   "detail": "状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）"
+   "detail": "状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）（依据 logs/02-admin.log）"
   },
   {
    "case_id": "POST /api/admin/users/{user_id}/set-password::success",
    "verdict": "SKIP",
-   "detail": "状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）"
+   "detail": "状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）（依据 logs/02-admin.log）"
   },
   {
    "case_id": "POST /api/auth/change-password::success",
-   "verdict": "PASS",
-   "detail": "等价流重放：change-password HTTP 204 空体=True；新密码登录 HTTP 200（golden 204/空体）；密码已复位"
+   "verdict": "SKIP",
+   "detail": "状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）（依据 logs/02-admin.log）"
   },
   {
    "case_id": "POST /api/auth/password-reset-requests::success",
-   "verdict": "PASS",
-   "detail": "空体摘要比对：HTTP golden=202 live=202；live 体长=0；sha256 匹配 golden=True"
+   "verdict": "SKIP",
+   "detail": "状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）（依据 logs/02-admin.log）"
   },
   {
    "case_id": "GET /api/admin/password-reset-requests::success-after-request",
    "verdict": "SKIP",
-   "detail": "未分类案例后缀：'success-after-request'"
+   "detail": "状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）（依据 logs/02-admin.log）"
   },
   {
    "case_id": "POST /api/admin/password-reset-requests/{request_id}/approve::success",
    "verdict": "SKIP",
-   "detail": "状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）"
+   "detail": "状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）（依据 logs/02-admin.log）"
   },
   {
    "case_id": "POST /api/auth/password-reset::success",
    "verdict": "SKIP",
-   "detail": "状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）"
+   "detail": "状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）（依据 logs/02-admin.log）"
   },
   {
    "case_id": "POST /api/auth/password-reset-requests::success-second",
-   "verdict": "PASS",
-   "detail": "空体摘要比对：HTTP golden=202 live=202；live 体长=0；sha256 匹配 golden=True"
+   "verdict": "SKIP",
+   "detail": "状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）（依据 logs/02-admin.log）"
   },
   {
    "case_id": "GET /api/admin/password-reset-requests::success-second",
    "verdict": "SKIP",
-   "detail": "未分类案例后缀：'success-second'"
+   "detail": "状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）（依据 logs/02-admin.log）"
   },
   {
    "case_id": "POST /api/admin/password-reset-requests/{request_id}/reject::success",
    "verdict": "SKIP",
-   "detail": "状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）"
+   "detail": "状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）（依据 logs/02-admin.log）"
   },
   {
    "case_id": "POST /api/admin/users/delete::success",
    "verdict": "SKIP",
-   "detail": "状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）"
+   "detail": "状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）（依据 logs/02-admin.log）"
   },
   {
    "case_id": "POST /api/assignments::success",
    "verdict": "SKIP",
-   "detail": "等价流已在场景3/5留证（创建201/items/截止/撤回/CSV BOM+CRLF）"
+   "detail": "等价流已在场景3/5留证（创建201/items/截止/撤回/CSV BOM+CRLF）（依据 logs/03-assignments.log; logs/05-report.log）"
   },
   {
    "case_id": "GET /api/assignments/{assignment_id}::success",
    "verdict": "PASS",
-   "detail": "等价作业详情（新建无提交作业 id=asg_1e15f6d449074f96，学生视角）：HTTP golden=200 live=200；shape 相等=True；live={\"id\": \"asg_1e15f6d449074f96\", \"title\": \"合成DNS作业\", \"description\": \"P0\", \"created_by\": \"U90000000002\", \"deadline\": \"2099-01-01 00:00:00+00:00\", \"status\": \"active\", \"items\": [{\"protocol\": \"dns\", \"points\": 20, \"best_score\": null, \"earned\": null, \"submission_count"
+   "detail": "等价作业详情（新建无提交作业，学生视角）：HTTP 200；归一化后值级相等（保序保重复 + 实体双射通过）"
   },
   {
    "case_id": "PATCH /api/assignments/{assignment_id}::success",
    "verdict": "SKIP",
-   "detail": "等价流已在场景3/5留证（创建201/items/截止/撤回/CSV BOM+CRLF）"
+   "detail": "等价流已在场景3/5留证（创建201/items/截止/撤回/CSV BOM+CRLF）（依据 logs/03-assignments.log; logs/05-report.log）"
   },
   {
    "case_id": "POST /api/assignments/{assignment_id}/submit::success",
    "verdict": "SKIP",
-   "detail": "评测成功流已在场景4留证（multipart→fake MCP→成绩；hash-only 落库）"
+   "detail": "评测成功流已在场景4留证（multipart→fake MCP→成绩；hash-only 落库）（依据 logs/04-submission.log）"
   },
   {
    "case_id": "GET /api/assignments::success-nonempty-manager",
-   "verdict": "SKIP",
-   "detail": "未分类案例后缀：'success-nonempty-manager'"
+   "verdict": "ALLOWED-DIFF",
+   "detail": "差异 kinds=['BODY'] 落在显式声明允许范围内：golden 引导库状态相关成功面；本轮等价库状态不同，行形态与等价流由场景日志留证（依据 logs/06-usage.log; logs/05-report.log）"
   },
   {
    "case_id": "GET /api/assignments::success-nonempty-student",
-   "verdict": "SKIP",
-   "detail": "未分类案例后缀：'success-nonempty-student'"
+   "verdict": "ALLOWED-DIFF",
+   "detail": "差异 kinds=['BODY'] 落在显式声明允许范围内：golden 引导库状态相关成功面；本轮等价库状态不同，行形态与等价流由场景日志留证（依据 logs/06-usage.log; logs/05-report.log）"
   },
   {
    "case_id": "GET /api/assignments/{assignment_id}/grades::success",
    "verdict": "SKIP",
-   "detail": "等价流已在场景3/5留证（创建201/items/截止/撤回/CSV BOM+CRLF）"
+   "detail": "等价流已在场景3/5留证（创建201/items/截止/撤回/CSV BOM+CRLF）（依据 logs/03-assignments.log; logs/05-report.log）"
   },
   {
    "case_id": "GET /api/assignments/{assignment_id}/export::success",
    "verdict": "SKIP",
-   "detail": "等价流已在场景3/5留证（创建201/items/截止/撤回/CSV BOM+CRLF）"
+   "detail": "等价流已在场景3/5留证（创建201/items/截止/撤回/CSV BOM+CRLF）（依据 logs/03-assignments.log; logs/05-report.log）"
   },
   {
    "case_id": "POST /api/assignments/{assignment_id}/submissions/{submission_id}/explain::success",
    "verdict": "SKIP",
-   "detail": "SSE/模型 live/任务/内部维护路由，P2 不重放"
+   "detail": "讲解路由依赖模型 live，P2 不重放（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "POST /api/assignments/{assignment_id}/withdraw::success",
    "verdict": "SKIP",
-   "detail": "等价流已在场景3/5留证（创建201/items/截止/撤回/CSV BOM+CRLF）"
+   "detail": "等价流已在场景3/5留证（创建201/items/截止/撤回/CSV BOM+CRLF）（依据 logs/03-assignments.log; logs/05-report.log）"
   },
   {
    "case_id": "POST /api/assignments/{assignment_id}/reactivate::success",
    "verdict": "SKIP",
-   "detail": "等价流已在场景3/5留证（创建201/items/截止/撤回/CSV BOM+CRLF）"
+   "detail": "等价流已在场景3/5留证（创建201/items/截止/撤回/CSV BOM+CRLF）（依据 logs/03-assignments.log; logs/05-report.log）"
   },
   {
    "case_id": "POST /api/rag/knowledge::success",
    "verdict": "SKIP",
-   "detail": "RAG 路由属 J3 未实施"
+   "detail": "RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "PATCH /api/rag/knowledge/{knowledge_id}::success",
    "verdict": "SKIP",
-   "detail": "RAG 路由属 J3 未实施"
+   "detail": "RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "GET /api/rag/knowledge/{knowledge_id}/revisions::success",
    "verdict": "SKIP",
-   "detail": "RAG 路由属 J3 未实施"
+   "detail": "RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "GET /api/rag/issues/{issue_id}::success",
    "verdict": "SKIP",
-   "detail": "RAG 路由属 J3 未实施"
+   "detail": "RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "PATCH /api/rag/issues/{issue_id}::success",
    "verdict": "SKIP",
-   "detail": "RAG 路由属 J3 未实施"
+   "detail": "RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "POST /api/rag/feedback::success",
    "verdict": "SKIP",
-   "detail": "RAG 路由属 J3 未实施"
+   "detail": "RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "POST /api/rag/issues/{issue_id}/verify::success",
    "verdict": "SKIP",
-   "detail": "RAG 路由属 J3 未实施"
+   "detail": "RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "POST /api/chat::success",
    "verdict": "SKIP",
-   "detail": "chat 主路由未在当前构建装配（chat 编排属 J3+/J5 范围）；实测 HTTP 404（golden 200）——范围外登记"
+   "detail": "chat 主路由未在当前构建装配（chat 编排属 J3+/J5 范围），不重放（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "POST /api/chat/stream::success",
    "verdict": "SKIP",
-   "detail": "SSE/模型 live/任务/内部维护路由，P2 不重放"
+   "detail": "chat 主路由未在当前构建装配（chat 编排属 J3+/J5 范围），不重放（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "GET /api/chat/sessions::success",
-   "verdict": "PASS",
-   "detail": "HTTP 200；行键集 {id,title,updated_at}（golden 行键 {id,title,updated_at}；行数 golden=5 live=2）"
+   "verdict": "ALLOWED-DIFF",
+   "detail": "差异 kinds=['BODY'] 落在显式声明允许范围内：golden 引导库状态相关成功面；本轮等价库状态不同，行形态与等价流由场景日志留证（依据 logs/06-usage.log; logs/05-report.log）"
   },
   {
    "case_id": "GET /api/chat/sessions/{session_id}::success",
-   "verdict": "PASS",
-   "detail": "HTTP 200；golden 键=['messages', 'session_id', 'title', 'truncated']；live 键=['messages', 'session_id', 'title', 'truncated']；消息列表形态一致"
+   "verdict": "ALLOWED-DIFF",
+   "detail": "差异 kinds=['BODY'] 落在显式声明允许范围内：golden 引导库状态相关成功面；本轮等价库状态不同，行形态与等价流由场景日志留证（依据 logs/06-usage.log; logs/05-report.log）"
   },
   {
    "case_id": "GET /api/tasks/active::success",
    "verdict": "SKIP",
-   "detail": "SSE/模型 live/任务/内部维护路由，P2 不重放"
+   "detail": "任务路由依赖模型 live / 任务恢复，P2 不重放（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "GET /api/tasks/{task_id}::success",
    "verdict": "SKIP",
-   "detail": "SSE/模型 live/任务/内部维护路由，P2 不重放"
+   "detail": "任务路由依赖模型 live / 任务恢复，P2 不重放（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "GET /api/tasks/{task_id}/events::success",
    "verdict": "SKIP",
-   "detail": "SSE/模型 live/任务/内部维护路由，P2 不重放"
+   "detail": "任务路由依赖模型 live / 任务恢复，P2 不重放（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "POST /api/tasks/{task_id}/cancel::success",
    "verdict": "SKIP",
-   "detail": "SSE/模型 live/任务/内部维护路由，P2 不重放"
+   "detail": "任务路由依赖模型 live / 任务恢复，P2 不重放（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "DELETE /api/chat/sessions/{session_id}::success",
    "verdict": "PASS",
-   "detail": "等价流删除自有会话：HTTP golden=204 live=204 空体=True；删除后详情 HTTP 404（期望 404）"
+   "detail": "等价流删除自有会话：HTTP 204 空体=true；删除后详情 HTTP 404（期望 404）"
   },
   {
    "case_id": "POST /api/auth/logout::success",
    "verdict": "SKIP",
-   "detail": "状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）"
+   "detail": "状态面成功流依赖 golden 引导状态；等价流已在场景2逐字段留证（部分失败契约/停号/审批一次性令牌）（依据 logs/02-admin.log）"
   },
   {
    "case_id": "DELETE /api/chat/sessions/{session_id}::unauthorized",
    "verdict": "PASS",
-   "detail": "HTTP golden=401 live=401；body golden={\"detail\": \"missing or malformed bearer token\"} live={\"detail\": \"missing or malformed bearer token\"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）"
+   "detail": "HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer"
   },
   {
    "case_id": "DELETE /api/chat/sessions/{session_id}::invalid-resource",
    "verdict": "PASS",
-   "detail": "未知资源：HTTP golden=404 live=404；body golden={\"detail\": \"session not found\"} live={\"detail\": \"session not found\"}"
+   "detail": "HTTP 404；归一化后值级相等（保序保重复 + 实体双射通过）"
   },
   {
    "case_id": "GET /api/admin/audit-log::unauthorized",
    "verdict": "PASS",
-   "detail": "HTTP golden=401 live=401；body golden={\"detail\": \"missing or malformed bearer token\"} live={\"detail\": \"missing or malformed bearer token\"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）"
+   "detail": "HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer"
   },
   {
    "case_id": "GET /api/admin/password-reset-requests::unauthorized",
    "verdict": "PASS",
-   "detail": "HTTP golden=401 live=401；body golden={\"detail\": \"missing or malformed bearer token\"} live={\"detail\": \"missing or malformed bearer token\"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）"
+   "detail": "HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer"
   },
   {
    "case_id": "GET /api/admin/users::unauthorized",
    "verdict": "PASS",
-   "detail": "HTTP golden=401 live=401；body golden={\"detail\": \"missing or malformed bearer token\"} live={\"detail\": \"missing or malformed bearer token\"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）"
+   "detail": "HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer"
   },
   {
    "case_id": "GET /api/assignments::unauthorized",
    "verdict": "PASS",
-   "detail": "HTTP golden=401 live=401；body golden={\"detail\": \"missing or malformed bearer token\"} live={\"detail\": \"missing or malformed bearer token\"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）"
+   "detail": "HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer"
   },
   {
    "case_id": "GET /api/assignments/protocols::unauthorized",
    "verdict": "PASS",
-   "detail": "HTTP golden=401 live=401；body golden={\"detail\": \"missing or malformed bearer token\"} live={\"detail\": \"missing or malformed bearer token\"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）"
+   "detail": "HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer"
   },
   {
    "case_id": "GET /api/assignments/{assignment_id}::unauthorized",
    "verdict": "PASS",
-   "detail": "HTTP golden=401 live=401；body golden={\"detail\": \"missing or malformed bearer token\"} live={\"detail\": \"missing or malformed bearer token\"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）"
+   "detail": "HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer"
   },
   {
    "case_id": "GET /api/assignments/{assignment_id}::invalid-resource",
    "verdict": "PASS",
-   "detail": "未知资源：HTTP golden=404 live=404；body golden={\"detail\": \"not found\"} live={\"detail\": \"not found\"}"
+   "detail": "HTTP 404；归一化后值级相等（保序保重复 + 实体双射通过）"
   },
   {
    "case_id": "GET /api/assignments/{assignment_id}/export::unauthorized",
    "verdict": "PASS",
-   "detail": "HTTP golden=401 live=401；body golden={\"detail\": \"missing or malformed bearer token\"} live={\"detail\": \"missing or malformed bearer token\"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）"
+   "detail": "HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer"
   },
   {
    "case_id": "GET /api/assignments/{assignment_id}/export::invalid-resource",
    "verdict": "PASS",
-   "detail": "未知资源：HTTP golden=404 live=404；body golden={\"detail\": \"not found\"} live={\"detail\": \"not found\"}"
+   "detail": "HTTP 404；归一化后值级相等（保序保重复 + 实体双射通过）"
   },
   {
    "case_id": "GET /api/assignments/{assignment_id}/grades::unauthorized",
    "verdict": "PASS",
-   "detail": "HTTP golden=401 live=401；body golden={\"detail\": \"missing or malformed bearer token\"} live={\"detail\": \"missing or malformed bearer token\"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）"
+   "detail": "HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer"
   },
   {
    "case_id": "GET /api/assignments/{assignment_id}/grades::invalid-resource",
    "verdict": "PASS",
-   "detail": "未知资源：HTTP golden=404 live=404；body golden={\"detail\": \"not found\"} live={\"detail\": \"not found\"}"
+   "detail": "HTTP 404；归一化后值级相等（保序保重复 + 实体双射通过）"
   },
   {
    "case_id": "GET /api/chat/sessions::unauthorized",
    "verdict": "PASS",
-   "detail": "HTTP golden=401 live=401；body golden={\"detail\": \"missing or malformed bearer token\"} live={\"detail\": \"missing or malformed bearer token\"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）"
+   "detail": "HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer"
   },
   {
    "case_id": "GET /api/chat/sessions::invalid-input",
    "verdict": "PASS",
-   "detail": "422 detail 数组值级比较：HTTP golden=422 live=422；相等=True"
+   "detail": "HTTP 422；归一化后值级相等（保序保重复 + 实体双射通过）"
   },
   {
    "case_id": "GET /api/chat/sessions/{session_id}::unauthorized",
    "verdict": "PASS",
-   "detail": "HTTP golden=401 live=401；body golden={\"detail\": \"missing or malformed bearer token\"} live={\"detail\": \"missing or malformed bearer token\"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）"
+   "detail": "HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer"
   },
   {
    "case_id": "GET /api/chat/sessions/{session_id}::invalid-input",
    "verdict": "PASS",
-   "detail": "422 detail 数组值级比较：HTTP golden=422 live=422；相等=True"
+   "detail": "HTTP 422；归一化后值级相等（保序保重复 + 实体双射通过）"
   },
   {
    "case_id": "GET /api/grading/submissions::unauthorized",
    "verdict": "PASS",
-   "detail": "HTTP golden=401 live=401；body golden={\"detail\": \"missing or malformed bearer token\"} live={\"detail\": \"missing or malformed bearer token\"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）"
+   "detail": "HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer"
   },
   {
    "case_id": "GET /api/grading/submissions::invalid-input",
    "verdict": "PASS",
-   "detail": "422 detail 数组值级比较：HTTP golden=422 live=422；相等=True"
+   "detail": "HTTP 422；归一化后值级相等（保序保重复 + 实体双射通过）"
   },
   {
    "case_id": "GET /api/grading/summary::unauthorized",
    "verdict": "PASS",
-   "detail": "HTTP golden=401 live=401；body golden={\"detail\": \"missing or malformed bearer token\"} live={\"detail\": \"missing or malformed bearer token\"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）"
+   "detail": "HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer"
   },
   {
    "case_id": "GET /api/internal/session-storage::unauthorized",
    "verdict": "SKIP",
-   "detail": "RAG 路由属 J3 未实施"
+   "detail": "内部维护路由，P2 不重放（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "GET /api/rag/issues::unauthorized",
    "verdict": "SKIP",
-   "detail": "RAG 路由属 J3 未实施"
+   "detail": "RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "GET /api/rag/issues::invalid-input",
    "verdict": "SKIP",
-   "detail": "RAG 路由属 J3 未实施"
+   "detail": "RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "GET /api/rag/issues/{issue_id}::unauthorized",
    "verdict": "SKIP",
-   "detail": "RAG 路由属 J3 未实施"
+   "detail": "RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "GET /api/rag/issues/{issue_id}::invalid-resource",
    "verdict": "SKIP",
-   "detail": "RAG 路由属 J3 未实施"
+   "detail": "RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "GET /api/rag/knowledge::unauthorized",
    "verdict": "SKIP",
-   "detail": "RAG 路由属 J3 未实施"
+   "detail": "RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "GET /api/rag/knowledge/{knowledge_id}/revisions::unauthorized",
    "verdict": "SKIP",
-   "detail": "RAG 路由属 J3 未实施"
+   "detail": "RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "GET /api/rag/knowledge/{knowledge_id}/revisions::invalid-resource",
    "verdict": "SKIP",
-   "detail": "RAG 路由属 J3 未实施"
+   "detail": "RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "GET /api/sources/{chunk_id}::unauthorized",
    "verdict": "PASS",
-   "detail": "HTTP golden=401 live=401；body golden={\"detail\": \"missing or malformed bearer token\"} live={\"detail\": \"missing or malformed bearer token\"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）"
+   "detail": "HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer"
   },
   {
    "case_id": "GET /api/sources/{chunk_id}::invalid-resource",
    "verdict": "PASS",
-   "detail": "未知资源：HTTP golden=404 live=404；body golden={\"detail\": \"source chunk not found\"} live={\"detail\": \"source chunk not found\"}"
+   "detail": "HTTP 404；归一化后值级相等（保序保重复 + 实体双射通过）"
   },
   {
    "case_id": "GET /api/tasks/active::unauthorized",
    "verdict": "SKIP",
-   "detail": "SSE/模型 live/任务/内部维护路由，P2 不重放"
+   "detail": "任务路由依赖模型 live / 任务恢复，P2 不重放（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "GET /api/tasks/active::invalid-input",
    "verdict": "SKIP",
-   "detail": "SSE/模型 live/任务/内部维护路由，P2 不重放"
+   "detail": "任务路由依赖模型 live / 任务恢复，P2 不重放（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "GET /api/tasks/{task_id}::unauthorized",
    "verdict": "SKIP",
-   "detail": "SSE/模型 live/任务/内部维护路由，P2 不重放"
+   "detail": "任务路由依赖模型 live / 任务恢复，P2 不重放（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "GET /api/tasks/{task_id}::invalid-resource",
    "verdict": "SKIP",
-   "detail": "SSE/模型 live/任务/内部维护路由，P2 不重放"
+   "detail": "任务路由依赖模型 live / 任务恢复，P2 不重放（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "GET /api/tasks/{task_id}/events::unauthorized",
    "verdict": "SKIP",
-   "detail": "SSE/模型 live/任务/内部维护路由，P2 不重放"
+   "detail": "任务路由依赖模型 live / 任务恢复，P2 不重放（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "GET /api/tasks/{task_id}/events::invalid-resource",
    "verdict": "SKIP",
-   "detail": "SSE/模型 live/任务/内部维护路由，P2 不重放"
+   "detail": "任务路由依赖模型 live / 任务恢复，P2 不重放（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "GET /api/usage/cost::unauthorized",
    "verdict": "PASS",
-   "detail": "HTTP golden=401 live=401；body golden={\"detail\": \"missing or malformed bearer token\"} live={\"detail\": \"missing or malformed bearer token\"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）"
+   "detail": "HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer"
   },
   {
    "case_id": "GET /api/usage/cost::invalid-input",
    "verdict": "PASS",
-   "detail": "422 detail 数组值级比较：HTTP golden=422 live=422；相等=True"
+   "detail": "HTTP 422；归一化后值级相等（保序保重复 + 实体双射通过）"
   },
   {
    "case_id": "GET /api/usage/me::unauthorized",
    "verdict": "PASS",
-   "detail": "HTTP golden=401 live=401；body golden={\"detail\": \"missing or malformed bearer token\"} live={\"detail\": \"missing or malformed bearer token\"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）"
+   "detail": "HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer"
   },
   {
    "case_id": "GET /api/usage/subjects::unauthorized",
    "verdict": "PASS",
-   "detail": "HTTP golden=401 live=401；body golden={\"detail\": \"missing or malformed bearer token\"} live={\"detail\": \"missing or malformed bearer token\"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）"
+   "detail": "HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer"
   },
   {
    "case_id": "PATCH /api/admin/users/{user_id}::unauthorized",
    "verdict": "PASS",
-   "detail": "HTTP golden=401 live=401；body golden={\"detail\": \"missing or malformed bearer token\"} live={\"detail\": \"missing or malformed bearer token\"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）"
+   "detail": "HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer"
   },
   {
    "case_id": "PATCH /api/admin/users/{user_id}::invalid-input",
    "verdict": "PASS",
-   "detail": "422 detail 数组值级比较：HTTP golden=422 live=422；相等=True"
+   "detail": "HTTP 422；归一化后值级相等（保序保重复 + 实体双射通过）"
   },
   {
    "case_id": "PATCH /api/assignments/{assignment_id}::unauthorized",
    "verdict": "PASS",
-   "detail": "HTTP golden=401 live=401；body golden={\"detail\": \"missing or malformed bearer token\"} live={\"detail\": \"missing or malformed bearer token\"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）"
+   "detail": "HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer"
   },
   {
    "case_id": "PATCH /api/assignments/{assignment_id}::invalid-input",
    "verdict": "PASS",
-   "detail": "422 detail 数组值级比较：HTTP golden=422 live=422；相等=True"
+   "detail": "HTTP 422；归一化后值级相等（保序保重复 + 实体双射通过）"
   },
   {
    "case_id": "PATCH /api/rag/issues/{issue_id}::unauthorized",
    "verdict": "SKIP",
-   "detail": "RAG 路由属 J3 未实施"
+   "detail": "RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "PATCH /api/rag/issues/{issue_id}::invalid-input",
    "verdict": "SKIP",
-   "detail": "RAG 路由属 J3 未实施"
+   "detail": "RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "PATCH /api/rag/knowledge/{knowledge_id}::unauthorized",
    "verdict": "SKIP",
-   "detail": "RAG 路由属 J3 未实施"
+   "detail": "RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "PATCH /api/rag/knowledge/{knowledge_id}::invalid-input",
    "verdict": "SKIP",
-   "detail": "RAG 路由属 J3 未实施"
+   "detail": "RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "POST /api/admin/password-reset-requests/{request_id}/approve::unauthorized",
    "verdict": "PASS",
-   "detail": "HTTP golden=401 live=401；body golden={\"detail\": \"missing or malformed bearer token\"} live={\"detail\": \"missing or malformed bearer token\"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）"
+   "detail": "HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer"
   },
   {
    "case_id": "POST /api/admin/password-reset-requests/{request_id}/approve::invalid-resource",
    "verdict": "PASS",
-   "detail": "未知资源：HTTP golden=404 live=404；body golden={\"detail\": \"not found\"} live={\"detail\": \"not found\"}"
+   "detail": "HTTP 404；归一化后值级相等（保序保重复 + 实体双射通过）"
   },
   {
    "case_id": "POST /api/admin/password-reset-requests/{request_id}/reject::unauthorized",
    "verdict": "PASS",
-   "detail": "HTTP golden=401 live=401；body golden={\"detail\": \"missing or malformed bearer token\"} live={\"detail\": \"missing or malformed bearer token\"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）"
+   "detail": "HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer"
   },
   {
    "case_id": "POST /api/admin/password-reset-requests/{request_id}/reject::invalid-resource",
    "verdict": "PASS",
-   "detail": "未知资源：HTTP golden=404 live=404；body golden={\"detail\": \"not found\"} live={\"detail\": \"not found\"}"
+   "detail": "HTTP 404；归一化后值级相等（保序保重复 + 实体双射通过）"
   },
   {
    "case_id": "POST /api/admin/users::unauthorized",
    "verdict": "PASS",
-   "detail": "HTTP golden=401 live=401；body golden={\"detail\": \"missing or malformed bearer token\"} live={\"detail\": \"missing or malformed bearer token\"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）"
+   "detail": "HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer"
   },
   {
    "case_id": "POST /api/admin/users::invalid-input",
    "verdict": "PASS",
-   "detail": "422 detail 数组值级比较：HTTP golden=422 live=422；相等=True"
+   "detail": "HTTP 422；归一化后值级相等（保序保重复 + 实体双射通过）"
   },
   {
    "case_id": "POST /api/admin/users/assign::unauthorized",
    "verdict": "PASS",
-   "detail": "HTTP golden=401 live=401；body golden={\"detail\": \"missing or malformed bearer token\"} live={\"detail\": \"missing or malformed bearer token\"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）"
+   "detail": "HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer"
   },
   {
    "case_id": "POST /api/admin/users/assign::invalid-input",
    "verdict": "PASS",
-   "detail": "422 detail 数组值级比较：HTTP golden=422 live=422；相等=True"
+   "detail": "HTTP 422；归一化后值级相等（保序保重复 + 实体双射通过）"
   },
   {
    "case_id": "POST /api/admin/users/delete::unauthorized",
    "verdict": "PASS",
-   "detail": "HTTP golden=401 live=401；body golden={\"detail\": \"missing or malformed bearer token\"} live={\"detail\": \"missing or malformed bearer token\"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）"
+   "detail": "HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer"
   },
   {
    "case_id": "POST /api/admin/users/delete::invalid-input",
    "verdict": "PASS",
-   "detail": "422 detail 数组值级比较：HTTP golden=422 live=422；相等=True"
+   "detail": "HTTP 422；归一化后值级相等（保序保重复 + 实体双射通过）"
   },
   {
    "case_id": "POST /api/admin/users/{user_id}/reset-password::unauthorized",
    "verdict": "PASS",
-   "detail": "HTTP golden=401 live=401；body golden={\"detail\": \"missing or malformed bearer token\"} live={\"detail\": \"missing or malformed bearer token\"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）"
+   "detail": "HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer"
   },
   {
    "case_id": "POST /api/admin/users/{user_id}/reset-password::invalid-resource",
    "verdict": "PASS",
-   "detail": "未知资源：HTTP golden=404 live=404；body golden={\"detail\": \"not found\"} live={\"detail\": \"not found\"}"
+   "detail": "HTTP 404；归一化后值级相等（保序保重复 + 实体双射通过）"
   },
   {
    "case_id": "POST /api/admin/users/{user_id}/set-password::unauthorized",
    "verdict": "PASS",
-   "detail": "HTTP golden=401 live=401；body golden={\"detail\": \"missing or malformed bearer token\"} live={\"detail\": \"missing or malformed bearer token\"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）"
+   "detail": "HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer"
   },
   {
    "case_id": "POST /api/admin/users/{user_id}/set-password::invalid-input",
    "verdict": "PASS",
-   "detail": "422 detail 数组值级比较：HTTP golden=422 live=422；相等=True"
+   "detail": "HTTP 422；归一化后值级相等（保序保重复 + 实体双射通过）"
   },
   {
    "case_id": "POST /api/admin/users/{user_id}/status::unauthorized",
    "verdict": "PASS",
-   "detail": "HTTP golden=401 live=401；body golden={\"detail\": \"missing or malformed bearer token\"} live={\"detail\": \"missing or malformed bearer token\"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）"
+   "detail": "HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer"
   },
   {
    "case_id": "POST /api/admin/users/{user_id}/status::invalid-input",
    "verdict": "PASS",
-   "detail": "422 detail 数组值级比较：HTTP golden=422 live=422；相等=True"
+   "detail": "HTTP 422；归一化后值级相等（保序保重复 + 实体双射通过）"
   },
   {
    "case_id": "POST /api/assignments::unauthorized",
    "verdict": "PASS",
-   "detail": "HTTP golden=401 live=401；body golden={\"detail\": \"missing or malformed bearer token\"} live={\"detail\": \"missing or malformed bearer token\"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）"
+   "detail": "HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer"
   },
   {
    "case_id": "POST /api/assignments::invalid-input",
    "verdict": "PASS",
-   "detail": "422 detail 数组值级比较：HTTP golden=422 live=422；相等=True"
+   "detail": "HTTP 422；归一化后值级相等（保序保重复 + 实体双射通过）"
   },
   {
    "case_id": "POST /api/assignments/{assignment_id}/reactivate::unauthorized",
    "verdict": "PASS",
-   "detail": "HTTP golden=401 live=401；body golden={\"detail\": \"missing or malformed bearer token\"} live={\"detail\": \"missing or malformed bearer token\"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）"
+   "detail": "HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer"
   },
   {
    "case_id": "POST /api/assignments/{assignment_id}/reactivate::invalid-resource",
    "verdict": "PASS",
-   "detail": "未知资源：HTTP golden=404 live=404；body golden={\"detail\": \"not found\"} live={\"detail\": \"not found\"}"
+   "detail": "HTTP 404；归一化后值级相等（保序保重复 + 实体双射通过）"
   },
   {
    "case_id": "POST /api/assignments/{assignment_id}/submissions/{submission_id}/explain::unauthorized",
    "verdict": "SKIP",
-   "detail": "SSE/模型 live/任务/内部维护路由，P2 不重放"
+   "detail": "讲解路由依赖模型 live，P2 不重放（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "POST /api/assignments/{assignment_id}/submissions/{submission_id}/explain::invalid-resource",
    "verdict": "SKIP",
-   "detail": "SSE/模型 live/任务/内部维护路由，P2 不重放"
+   "detail": "讲解路由依赖模型 live，P2 不重放（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "POST /api/assignments/{assignment_id}/submit::unauthorized",
    "verdict": "PASS",
-   "detail": "HTTP golden=401 live=401；body golden={\"detail\": \"missing or malformed bearer token\"} live={\"detail\": \"missing or malformed bearer token\"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）"
+   "detail": "HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer"
   },
   {
    "case_id": "POST /api/assignments/{assignment_id}/submit::invalid-input",
    "verdict": "PASS",
-   "detail": "422 detail 数组值级比较：HTTP golden=422 live=422；相等=True"
+   "detail": "HTTP 422；归一化后值级相等（保序保重复 + 实体双射通过）"
   },
   {
    "case_id": "POST /api/assignments/{assignment_id}/withdraw::unauthorized",
    "verdict": "PASS",
-   "detail": "HTTP golden=401 live=401；body golden={\"detail\": \"missing or malformed bearer token\"} live={\"detail\": \"missing or malformed bearer token\"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）"
+   "detail": "HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer"
   },
   {
    "case_id": "POST /api/assignments/{assignment_id}/withdraw::invalid-resource",
    "verdict": "PASS",
-   "detail": "未知资源：HTTP golden=404 live=404；body golden={\"detail\": \"not found\"} live={\"detail\": \"not found\"}"
+   "detail": "HTTP 404；归一化后值级相等（保序保重复 + 实体双射通过）"
   },
   {
    "case_id": "POST /api/auth/change-password::unauthorized",
    "verdict": "PASS",
-   "detail": "HTTP golden=401 live=401；body golden={\"detail\": \"missing or malformed bearer token\"} live={\"detail\": \"missing or malformed bearer token\"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）"
+   "detail": "HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer"
   },
   {
    "case_id": "POST /api/auth/change-password::invalid-input",
    "verdict": "PASS",
-   "detail": "422 detail 数组值级比较：HTTP golden=422 live=422；相等=True"
+   "detail": "HTTP 422；归一化后值级相等（保序保重复 + 实体双射通过）"
   },
   {
    "case_id": "POST /api/auth/login::invalid-input",
    "verdict": "PASS",
-   "detail": "422 detail 数组值级比较：HTTP golden=422 live=422；相等=True"
+   "detail": "HTTP 422；归一化后值级相等（保序保重复 + 实体双射通过）"
   },
   {
    "case_id": "POST /api/auth/logout::unauthorized",
    "verdict": "PASS",
-   "detail": "HTTP golden=401 live=401；body golden={\"detail\": \"missing or malformed bearer token\"} live={\"detail\": \"missing or malformed bearer token\"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）"
+   "detail": "HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer"
   },
   {
    "case_id": "POST /api/auth/password-reset::invalid-input",
    "verdict": "PASS",
-   "detail": "422 detail 数组值级比较：HTTP golden=422 live=422；相等=True"
+   "detail": "HTTP 422；归一化后值级相等（保序保重复 + 实体双射通过）"
   },
   {
    "case_id": "POST /api/auth/password-reset-requests::invalid-input",
    "verdict": "PASS",
-   "detail": "422 detail 数组值级比较：HTTP golden=422 live=422；相等=True"
+   "detail": "HTTP 422；归一化后值级相等（保序保重复 + 实体双射通过）"
   },
   {
    "case_id": "POST /api/chat::unauthorized",
    "verdict": "SKIP",
-   "detail": "chat 主路由未在当前构建装配（chat 编排属 J3+/J5 范围）；实测 HTTP 404（golden 401）——范围外登记"
+   "detail": "chat 主路由未在当前构建装配（chat 编排属 J3+/J5 范围），不重放（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "POST /api/chat::invalid-input",
    "verdict": "SKIP",
-   "detail": "chat 主路由未在当前构建装配（chat 编排属 J3+/J5 范围）；实测 HTTP 404（golden 422）——范围外登记"
+   "detail": "chat 主路由未在当前构建装配（chat 编排属 J3+/J5 范围），不重放（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "POST /api/chat/stream::unauthorized",
    "verdict": "SKIP",
-   "detail": "SSE/模型 live/任务/内部维护路由，P2 不重放"
+   "detail": "chat 主路由未在当前构建装配（chat 编排属 J3+/J5 范围），不重放（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "POST /api/chat/stream::invalid-input",
    "verdict": "SKIP",
-   "detail": "SSE/模型 live/任务/内部维护路由，P2 不重放"
+   "detail": "chat 主路由未在当前构建装配（chat 编排属 J3+/J5 范围），不重放（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "POST /api/internal/purge-sessions::unauthorized",
    "verdict": "SKIP",
-   "detail": "SSE/模型 live/任务/内部维护路由，P2 不重放"
+   "detail": "内部维护路由，P2 不重放（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "POST /api/internal/purge-sessions::invalid-input",
    "verdict": "SKIP",
-   "detail": "SSE/模型 live/任务/内部维护路由，P2 不重放"
+   "detail": "内部维护路由，P2 不重放（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "POST /api/plugin-template::unauthorized",
    "verdict": "PASS",
-   "detail": "HTTP golden=401 live=401；body golden={\"detail\": \"missing or malformed bearer token\"} live={\"detail\": \"missing or malformed bearer token\"}；WWW-Authenticate=Bearer（golden 另含 CSP 等安全头=已知平台差异）"
+   "detail": "HTTP 401；归一化后值级相等（保序保重复 + 实体双射通过）；WWW-Authenticate=Bearer"
   },
   {
    "case_id": "POST /api/plugin-template::invalid-input",
    "verdict": "PASS",
-   "detail": "422 detail 数组值级比较：HTTP golden=422 live=422；相等=True"
+   "detail": "HTTP 422；归一化后值级相等（保序保重复 + 实体双射通过）"
   },
   {
    "case_id": "POST /api/rag/feedback::unauthorized",
    "verdict": "SKIP",
-   "detail": "RAG 路由属 J3 未实施"
+   "detail": "RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "POST /api/rag/feedback::invalid-input",
    "verdict": "SKIP",
-   "detail": "RAG 路由属 J3 未实施"
+   "detail": "RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "POST /api/rag/issues/{issue_id}/verify::unauthorized",
    "verdict": "SKIP",
-   "detail": "RAG 路由属 J3 未实施"
+   "detail": "RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "POST /api/rag/issues/{issue_id}/verify::invalid-resource",
    "verdict": "SKIP",
-   "detail": "RAG 路由属 J3 未实施"
+   "detail": "RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "POST /api/rag/knowledge::unauthorized",
    "verdict": "SKIP",
-   "detail": "RAG 路由属 J3 未实施"
+   "detail": "RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "POST /api/rag/knowledge::invalid-input",
    "verdict": "SKIP",
-   "detail": "RAG 路由属 J3 未实施"
+   "detail": "RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "POST /api/tasks/{task_id}/cancel::unauthorized",
    "verdict": "SKIP",
-   "detail": "SSE/模型 live/任务/内部维护路由，P2 不重放"
+   "detail": "任务路由依赖模型 live / 任务恢复，P2 不重放（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "POST /api/tasks/{task_id}/cancel::invalid-resource",
    "verdict": "SKIP",
-   "detail": "SSE/模型 live/任务/内部维护路由，P2 不重放"
+   "detail": "任务路由依赖模型 live / 任务恢复，P2 不重放（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "GET /api/chat/sessions/{session_id}::foreign-tree",
    "verdict": "PASS",
-   "detail": "树外/越权可见性：HTTP golden=404 live=404；body golden={\"detail\": \"session not found\"} live={\"detail\": \"session not found\"}（等价主体：学生04读学生03会话）"
+   "detail": "HTTP 404；归一化后值级相等（保序保重复 + 实体双射通过）"
   },
   {
    "case_id": "GET /api/tasks/{task_id}::foreign-tree",
    "verdict": "SKIP",
-   "detail": "SSE/模型 live/任务/内部维护路由，P2 不重放"
+   "detail": "任务路由依赖模型 live / 任务恢复，P2 不重放（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "GET /api/assignments/{assignment_id}::foreign-tree",
    "verdict": "PASS",
-   "detail": "树外/越权可见性：HTTP golden=404 live=404；body golden={\"detail\": \"not found\"} live={\"detail\": \"not found\"}（等价主体：无班级学生07读class作业）"
+   "detail": "HTTP 404；归一化后值级相等（保序保重复 + 实体双射通过）"
   },
   {
    "case_id": "GET /api/admin/users::viewer-hidden",
    "verdict": "PASS",
-   "detail": "树外/越权可见性：HTTP golden=404 live=404；body golden={\"detail\": \"not found\"} live={\"detail\": \"not found\"}（等价主体：学生03读admin用户清单）"
+   "detail": "HTTP 404；归一化后值级相等（保序保重复 + 实体双射通过）"
   },
   {
    "case_id": "GET /api/rag/issues/{issue_id}::other-teacher-hidden",
    "verdict": "SKIP",
-   "detail": "RAG 路由属 J3 未实施"
+   "detail": "RAG 路由属 J3 未实施（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "OPTIONS /api/chat::cors-200",
-   "verdict": "REPLAYED",
-   "detail": "非允许来源预检：golden HTTP 400；live HTTP 403（Spring CorsFilter 拒绝语义 403，体='Invalid CORS request'）——平台差异登记"
+   "verdict": "ALLOWED-DIFF",
+   "detail": "差异 kinds=['BODY', 'STATUS'] 落在显式声明允许范围内：Java 无 POST /api/chat（J3+）；CORS 预检由 Spring 全局 CORS 处理，预检形态登记（依据 DECISIONS.md P2-D1; golden-diff.md 平台差异）"
   },
   {
    "case_id": "OPTIONS /api/chat::cors-400",
-   "verdict": "REPLAYED",
-   "detail": "非允许来源预检：golden HTTP 400；live HTTP 403（Spring CorsFilter 拒绝语义 403，体='Invalid CORS request'）——平台差异登记"
+   "verdict": "ALLOWED-DIFF",
+   "detail": "差异 kinds=['BODY', 'STATUS'] 落在显式声明允许范围内：非允许来源预检：Python/Starlette 400，Java/Spring CorsFilter 403 同语义拒绝（依据 DECISIONS.md P2-D1）"
   },
   {
    "case_id": "HEAD /api/health::business-head",
-   "verdict": "REPLAYED",
-   "detail": "Python 平台路由（FastAPI/docs/metrics/health 探针），Java 侧 HTTP 404（未迁移，登记平台差异；Java 探针为 /actuator/health）"
+   "verdict": "ALLOWED-DIFF",
+   "detail": "差异 kinds=['STATUS'] 落在显式声明允许范围内：golden 405（FastAPI 方法面）；Java 未匹配方法兜底 500 为已登记平台缺口，J4-03/J5-01 复核修复（依据 DECISIONS.md P2-D1; 验收报告 20261025 框架错误面待办）"
   },
   {
    "case_id": "OPTIONS /api/health::ordinary-options",
-   "verdict": "REPLAYED",
-   "detail": "无 Origin 普通 OPTIONS：golden 405 {detail: Method Not Allowed}（FastAPI 语义）；live HTTP 404（Java 平台面，登记）"
+   "verdict": "ALLOWED-DIFF",
+   "detail": "差异 kinds=['BODY', 'STATUS'] 落在显式声明允许范围内：无 Origin 普通 OPTIONS：golden 405（FastAPI 语义）；live 为 Java 平台面，登记（依据 golden-diff.md 平台差异）"
   },
   {
    "case_id": "POST /api/chat::retry-first",
    "verdict": "SKIP",
-   "detail": "chat 主路由未在当前构建装配（chat 编排属 J3+/J5 范围）；实测 HTTP 404（golden 200）——范围外登记"
+   "detail": "chat 主路由未在当前构建装配（chat 编排属 J3+/J5 范围），不重放（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "POST /api/chat::retry-replay",
    "verdict": "SKIP",
-   "detail": "chat 主路由未在当前构建装配（chat 编排属 J3+/J5 范围）；实测 HTTP 404（golden 200）——范围外登记"
+   "detail": "chat 主路由未在当前构建装配（chat 编排属 J3+/J5 范围），不重放（依据 P2-regression/README.md 范围外节）"
   },
   {
    "case_id": "POST /api/chat::retry-identity-conflict",
    "verdict": "SKIP",
-   "detail": "chat 主路由未在当前构建装配（chat 编排属 J3+/J5 范围）；实测 HTTP 404（golden 409）——范围外登记"
+   "detail": "chat 主路由未在当前构建装配（chat 编排属 J3+/J5 范围），不重放（依据 P2-regression/README.md 范围外节）"
   }
  ]
 }

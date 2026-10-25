@@ -26,7 +26,14 @@ BASE="${DPDK_REPLAY_BASE_URL:-http://127.0.0.1:8090}"
 PGHOST="${DPDK_TEST_PG_HOST:-127.0.0.1}"
 PGPORT="${DPDK_TEST_PG_PORT:-55481}"
 PGUSER="${DPDK_TEST_PG_USER:-p1_java}"
-PGDATABASE="${DPDK_TEST_PG_DATABASE:-p1_java_candidate}"
+# 数据库名解析顺序：显式环境 > 身份文件 pg.database（run_00_setup 写入本轮库名）>
+# 旧默认值。目标库不存在时 psqlq 直接失败——调用方不得以静默失败或重跑掩盖环境错配。
+if [ -n "${DPDK_TEST_PG_DATABASE:-}" ]; then
+  PGDATABASE="$DPDK_TEST_PG_DATABASE"
+else
+  PGDATABASE="$(python3 -c 'import json,sys;print(json.load(open(sys.argv[1])).get("pg",{}).get("database","") or "")' "$STATE_FILE" 2>/dev/null || true)"
+  PGDATABASE="${PGDATABASE:-p1_java_candidate}"
+fi
 # 合成实例口令从环境读取（不提交字面量、不设默认；实例为仓库专属合成PG，见 .env.example）
 export PGPASSWORD="${DPDK_TEST_PG_PASSWORD:?需要 DPDK_TEST_PG_PASSWORD（不设默认口令）}"
 export REPLAY_TMP STATE_FILE

@@ -110,10 +110,18 @@ def main():
 
     tokens = {}
     seen = {}
+    # 登录限流为冻结契约（10 次/分/IP，含全部登录尝试）：collect 连发 10 次登录会把
+    # 60 秒窗口填满，后续场景立即 429。默认每次登录间隔 7 秒（DPDK_REPLAY_LOGIN_PACE=0 可关）。
+    import time
+    pace = float(os.environ.get("DPDK_REPLAY_LOGIN_PACE", "9"))
+    first = True
     for role, username in ROLES.items():
         if username in seen:
             tokens[role] = seen[username]     # 同账号别名共用同一 token（历史语义）
             continue
+        if not first and pace > 0:
+            time.sleep(pace)
+        first = False
         tokens[role] = login(base, username, role_password(username))
         seen[username] = tokens[role]
         print("  %-10s <- %s  token=%s…" % (role, username, tokens[role][:6]))

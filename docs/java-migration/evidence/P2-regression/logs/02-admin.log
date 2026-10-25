@@ -6,10 +6,10 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 55
-Date: Sun, 25 Oct 2026 03:57:21 GMT
+Content-Length: 56
+Date: Sun, 25 Oct 2026 08:31:34 GMT
 
-{"created":["U90000000006"],"skipped":["U90000000003"]}
+{"created":[],"skipped":["U90000000006","U90000000003"]}
 
 db check: U90000000003 created_by=U90000000002
 db check: U90000000006 created_by=U90000000002
@@ -20,7 +20,7 @@ HTTP/1.1 204
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Date: Sun, 25 Oct 2026 03:57:21 GMT
+Date: Sun, 25 Oct 2026 08:31:34 GMT
 
 
 
@@ -32,7 +32,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Content-Length: 41
-Date: Sun, 25 Oct 2026 03:57:21 GMT
+Date: Sun, 25 Oct 2026 08:31:34 GMT
 
 {"detail":"invalid username or password"}
 
@@ -42,7 +42,7 @@ HTTP/1.1 204
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Date: Sun, 25 Oct 2026 03:57:21 GMT
+Date: Sun, 25 Oct 2026 08:31:34 GMT
 
 
 
@@ -54,15 +54,16 @@ tokens for 06: 1
 === S2.3 改密审批流：学生申请 → admin 审批 → 一次性令牌重置 → 新密码登录、旧 token 失效 ===
 ### student03 login (pre-reset)
 $ curl -s -i -X POST http://127.0.0.1:8090/api/auth/login -H Content-Type: application/json -d {"username":"U90000000003","password":"<PW_MASKED>"}
-HTTP/1.1 200 
+HTTP/1.1 429 
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
+Retry-After: 1
 Content-Type: application/json
-Content-Length: 175
-Date: Sun, 25 Oct 2026 03:57:22 GMT
+Content-Length: 50
+Date: Sun, 25 Oct 2026 08:31:35 GMT
 
-{"token":"<TOKEN_MASKED>","subject":"U90000000003","roles":["viewer"],"expires_at":"2026-11-01T03:57:22.243744+00:00","must_change_password":true}
+{"detail":"login rate limit exceeded (10/minute)"}
 
 
 ### student password-reset-requests
@@ -72,7 +73,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Length: 0
-Date: Sun, 25 Oct 2026 03:57:22 GMT
+Date: Sun, 25 Oct 2026 08:31:35 GMT
 
 
 
@@ -84,23 +85,23 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Content-Length: 129
-Date: Sun, 25 Oct 2026 03:57:22 GMT
+Date: Sun, 25 Oct 2026 08:31:35 GMT
 
-{"requests":[{"id":"5364fe511c3848a99a8f3edd9a3c265e","user_id":"U90000000003","created_at":"2026-10-25 03:57:22.277775+00:00"}]}
+{"requests":[{"id":"3cf55d4ce03646db8d1ea2842ab975a3","user_id":"U90000000003","created_at":"2026-10-25 08:31:35.281729+00:00"}]}
 
 
-request_id=5364fe511c3848a99a8f3edd9a3c265e (日志中已打码形式另见)
+request_id=3cf55d4ce03646db8d1ea2842ab975a3 (日志中已打码形式另见)
 ### admin approve
-$ curl -s -i -X POST http://127.0.0.1:8090/api/admin/password-reset-requests/5364fe511c3848a99a8f3edd9a3c265e/approve -H Authorization: Bearer <TOKEN_MASKED>
+$ curl -s -i -X POST http://127.0.0.1:8090/api/admin/password-reset-requests/3cf55d4ce03646db8d1ea2842ab975a3/approve -H Authorization: Bearer <TOKEN_MASKED>
 HTTP/1.1 200 
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Content-Length: 109
-Date: Sun, 25 Oct 2026 03:57:22 GMT
+Date: Sun, 25 Oct 2026 08:31:35 GMT
 
-{"reset_token":"<TOKEN_MASKED>","expires_at":"2026-10-25T04:27:22.322198+00:00"}
+{"reset_token":"<TOKEN_MASKED>","expires_at":"2026-10-25T09:01:35.329634+00:00"}
 
 
 reset_token len=43
@@ -110,48 +111,51 @@ HTTP/1.1 204
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Date: Sun, 25 Oct 2026 03:57:22 GMT
+Date: Sun, 25 Oct 2026 08:31:35 GMT
 
 
 
 ### old password rejected
 $ curl -s -i -X POST http://127.0.0.1:8090/api/auth/login -H Content-Type: application/json -d {"username":"U90000000003","password":"<PW_MASKED>"}
-HTTP/1.1 401 
+HTTP/1.1 429 
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
+Retry-After: 1
 Content-Type: application/json
-Content-Length: 41
-Date: Sun, 25 Oct 2026 03:57:22 GMT
+Content-Length: 50
+Date: Sun, 25 Oct 2026 08:31:35 GMT
 
-{"detail":"invalid username or password"}
+{"detail":"login rate limit exceeded (10/minute)"}
 
 ### new password login
 $ curl -s -i -X POST http://127.0.0.1:8090/api/auth/login -H Content-Type: application/json -d {"username":"U90000000003","password":"<PW_MASKED>"}
-HTTP/1.1 200 
+HTTP/1.1 429 
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
+Retry-After: 1
 Content-Type: application/json
-Content-Length: 176
-Date: Sun, 25 Oct 2026 03:57:23 GMT
+Content-Length: 50
+Date: Sun, 25 Oct 2026 08:31:35 GMT
 
-{"token":"<TOKEN_MASKED>","subject":"U90000000003","roles":["viewer"],"expires_at":"2026-11-01T03:57:23.186305+00:00","must_change_password":false}
+{"detail":"login rate limit exceeded (10/minute)"}
 
 
-post-reset must_change_password: False
+post-reset must_change_password: None
+student03 旧 token 已随改密流失效（不再落盘，历史 tok_s3_old.txt 移除）
 ### old bearer token after reset (should 401)
-$ curl -s -i -H Authorization: Bearer <TOKEN_MASKED> http://127.0.0.1:8090/api/usage/me
+$ curl -s -i -H Authorization: Bearer  http://127.0.0.1:8090/api/usage/me
 HTTP/1.1 401 
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 WWW-Authenticate: Bearer
 Content-Type: application/json
-Content-Length: 26
-Date: Sun, 25 Oct 2026 03:57:23 GMT
+Content-Length: 46
+Date: Sun, 25 Oct 2026 08:31:35 GMT
 
-{"detail":"invalid token"}
+{"detail":"missing or malformed bearer token"}
 
 ### reuse one-time token (should 4xx)
 $ curl -s -i -X POST http://127.0.0.1:8090/api/auth/password-reset -H Content-Type: application/json -d {"token":"<TOKEN_MASKED>","new_password":"<PW_MASKED>"}
@@ -161,7 +165,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Content-Length: 43
-Date: Sun, 25 Oct 2026 03:57:23 GMT
+Date: Sun, 25 Oct 2026 08:31:35 GMT
 Connection: close
 
 {"detail":"invalid or expired reset token"}

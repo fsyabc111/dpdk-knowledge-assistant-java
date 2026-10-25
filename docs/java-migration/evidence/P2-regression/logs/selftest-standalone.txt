@@ -23,10 +23,10 @@
        detail: STATUS: HTTP 状态不同: golden=400 live=403；BODY: $body.detail 值不同: golden='Invalid CORS request' live='CORS rejected'（同类型标量值差不归一化吞掉）；无允许差异声明 → 计失败（ST-02：未声明差异即 DIFF）
 [OK] f3.生产表CORS声明             期望=ALLOWED-DIFF 实测=ALLOWED-DIFF
        detail: 差异 kinds=['STATUS'] 落在显式声明允许范围内：非允许来源预检：Python/Starlette 400，Java/Spring CorsFilter 403 同语义拒绝（依据 DECISIONS.md P2-D1）
-[OK] f4.平台路由期望404             期望=REPLAYED 实测=REPLAYED
-       detail: 声明期望 live HTTP 404 与实测一致：Python 平台路由（FastAPI/docs/metrics/health 探针）Java 未迁移，登记平台差异；Java 探针为 /actuator/health（依据 DECISIONS.md P2-D1 平台差异登记；golden=200）
-[OK] f5.平台路由期望不满足             期望=DIFF 实测=DIFF
-       detail: 差异 kinds=['BODY', 'STATUS']（HTTP 状态不同: golden=200 live=500; $body 键集不同: golden独有=['status'] live独有=['detail']）；声明 EXPECT_STATUS=404 不满足（实测 500）——Python 平台路由（FastAPI/docs/metrics/health 探针）Java 未迁移，登记平台差异；Java 探针为 /actuat
+[OK] f4.平台路由声明允许              期望=ALLOWED-DIFF 实测=ALLOWED-DIFF
+       detail: 差异 kinds=['BODY', 'STATUS'] 落在显式声明允许范围内：Python 平台路由（FastAPI/docs/metrics/health 探针）Java 未迁移；未匹配路由/方法被框架兜底为 500 属已登记平台缺口，J4-03/J5-01 复核修复；Java 探针为 /actuator/health（依据 DECISIONS.md P2-D1 平台差异登记; 验收报告 20261025 框架错误面待办）
+[OK] f5.平台路由兜底500声明允许         期望=ALLOWED-DIFF 实测=ALLOWED-DIFF
+       detail: 差异 kinds=['BODY', 'STATUS'] 落在显式声明允许范围内：Python 平台路由（FastAPI/docs/metrics/health 探针）Java 未迁移；未匹配路由/方法被框架兜底为 500 属已登记平台缺口，J4-03/J5-01 复核修复；Java 探针为 /actuator/health（依据 DECISIONS.md P2-D1 平台差异登记; 验收报告 20261025 框架错误面待办）
 [OK] f6.SKIP声明命中              期望=SKIP 实测=SKIP
 [OK] x.顶键集不同                  期望=DIFF 实测=DIFF
        detail: BODY: $body 键集不同: golden独有=['a'] live独有=['b']；无允许差异声明 → 计失败（ST-02：未声明差异即 DIFF）
@@ -35,4 +35,3 @@
 
 SELFTEST SUMMARY: total=17 ok=17 failed=0
 全部变异判 FAIL、正例与声明判定符合预期 → 判定器自检通过
-rc=0

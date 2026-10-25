@@ -6,9 +6,9 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Content-Length: 176
-Date: Sun, 25 Oct 2026 04:00:00 GMT
+Date: Sun, 25 Oct 2026 08:32:06 GMT
 
-{"token":"<TOKEN_MASKED>","subject":"U90000000003","roles":["viewer"],"expires_at":"2026-11-01T04:00:00.941714+00:00","must_change_password":false}
+{"token":"<TOKEN_MASKED>","subject":"U90000000003","roles":["viewer"],"expires_at":"2026-11-01T08:32:06.961417+00:00","must_change_password":false}
 
 
 ### student04 login
@@ -19,51 +19,51 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Content-Length: 175
-Date: Sun, 25 Oct 2026 04:00:01 GMT
+Date: Sun, 25 Oct 2026 08:32:07 GMT
 
-{"token":"<TOKEN_MASKED>","subject":"U90000000004","roles":["viewer"],"expires_at":"2026-11-01T04:00:01.043553+00:00","must_change_password":true}
+{"token":"<TOKEN_MASKED>","subject":"U90000000004","roles":["viewer"],"expires_at":"2026-11-01T08:32:07.086818+00:00","must_change_password":true}
 
 
 === S4.1 学生03 multipart 提交 .c → fake MCP 评测 → 成绩 ===
 ### student03 submit #1
-$ curl -s -i -X POST http://127.0.0.1:8090/api/assignments/asg_a03f90646f844013/submit -H Authorization: Bearer <TOKEN_MASKED> -F protocol=dns -F file=@/tmp/p2reg/synthetic_plugin.c;type=text/plain
+$ curl -s -i -X POST http://127.0.0.1:8090/api/assignments/asg_df29cea8b4db4cab/submit -H Authorization: Bearer <TOKEN_MASKED> -F protocol=dns -F file=@/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/docs/java-migration/evidence/P2-regression/logs/tmp/synthetic_plugin.c;type=text/plain
 HTTP/1.1 200 
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Content-Length: 132
-Date: Sun, 25 Oct 2026 04:00:01 GMT
+Date: Sun, 25 Oct 2026 08:32:07 GMT
 
-{"score":80,"passed":4,"total":5,"results":[],"points":20,"earned":16.0,"best_earned":16.0,"submission_id":"grade_1449a340253a4281"}
+{"score":80,"passed":4,"total":5,"results":[],"points":20,"earned":16.0,"best_earned":16.0,"submission_id":"grade_d502f3650b724e00"}
 
 
-harness tool_calls after submit#1: 2
+harness tool_calls after submit#1: 26
 === S4.2 同学生再提交 → 成绩列表（作业详情 best_score；管理端 submissions 列表） ===
 ### student03 submit #2
-$ curl -s -i -X POST http://127.0.0.1:8090/api/assignments/asg_a03f90646f844013/submit -H Authorization: Bearer <TOKEN_MASKED> -F protocol=dns -F file=@/tmp/p2reg/synthetic_plugin.c;type=text/plain
+$ curl -s -i -X POST http://127.0.0.1:8090/api/assignments/asg_df29cea8b4db4cab/submit -H Authorization: Bearer <TOKEN_MASKED> -F protocol=dns -F file=@/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/docs/java-migration/evidence/P2-regression/logs/tmp/synthetic_plugin.c;type=text/plain
 HTTP/1.1 200 
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Content-Length: 132
-Date: Sun, 25 Oct 2026 04:00:01 GMT
+Date: Sun, 25 Oct 2026 08:32:07 GMT
 
-{"score":80,"passed":4,"total":5,"results":[],"points":20,"earned":16.0,"best_earned":16.0,"submission_id":"grade_215f512c0b914840"}
+{"score":80,"passed":4,"total":5,"results":[],"points":20,"earned":16.0,"best_earned":16.0,"submission_id":"grade_b080a6b8683d4025"}
 
 
 ### student03 assignment detail (best scores)
-$ curl -s -i -H Authorization: Bearer <TOKEN_MASKED> http://127.0.0.1:8090/api/assignments/asg_a03f90646f844013
+$ curl -s -i -H Authorization: Bearer <TOKEN_MASKED> http://127.0.0.1:8090/api/assignments/asg_df29cea8b4db4cab
 HTTP/1.1 200 
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Content-Length: 400
-Date: Sun, 25 Oct 2026 04:00:01 GMT
+Date: Sun, 25 Oct 2026 08:32:07 GMT
 
-{"id":"asg_a03f90646f844013","title":"回归DNS作业","description":"P2回归","created_by":"U90000000002","deadline":"2099-01-01 00:00:00+00:00","status":"active","items":[{"protocol":"arp","points":30,"best_score":null,"earned":null,"submission_count":0},{"protocol":"dns","points":20,"best_score":80,"earned":16.0,"submission_count":2}],"total_points":50,"total_earned":16.0,"submission_count":2}
+{"id":"asg_df29cea8b4db4cab","title":"回归DNS作业","description":"P2回归","created_by":"U90000000002","deadline":"2099-01-01 00:00:00+00:00","status":"active","items":[{"protocol":"arp","points":30,"best_score":null,"earned":null,"submission_count":0},{"protocol":"dns","points":20,"best_score":80,"earned":16.0,"submission_count":2}],"total_points":50,"total_earned":16.0,"submission_count":2}
 
 
 ### admin grading submissions list
@@ -74,18 +74,19 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Content-Length: 325
-Date: Sun, 25 Oct 2026 04:00:01 GMT
+Date: Sun, 25 Oct 2026 08:32:07 GMT
 
-{"submissions":[{"id":"grade_215f512c0b914840","user_id":"U90000000003","protocol":"dns","score":80,"passed":4,"total":5,"created_at":"2026-10-25 04:00:01.196222+00:00"},{"id":"grade_1449a340253a4281","user_id":"U90000000003","protocol":"dns","score":80,"passed":4,"total":5,"created_at":"2026-10-25 04:00:01.141201+00:00"}]}
+{"submissions":[{"id":"grade_b080a6b8683d4025","user_id":"U90000000003","protocol":"dns","score":80,"passed":4,"total":5,"created_at":"2026-10-25 08:32:07.297625+00:00"},{"id":"grade_d502f3650b724e00","user_id":"U90000000003","protocol":"dns","score":80,"passed":4,"total":5,"created_at":"2026-10-25 08:32:07.227846+00:00"}]}
 
 
 === S4.3 SQL 验证：成绩行只含 hash，results_json 有内容且无源码文本 ===
 -- grading_submissions 概览（user/protocol/score/hash前12位/长度）
-U90000000003 dns score=80 hash=4ec45beb8c6b… hashlen=64 results_len=282 assignment_id=asg_a03f90646f844013
-U90000000003 dns score=80 hash=4ec45beb8c6b… hashlen=64 results_len=282 assignment_id=asg_a03f90646f844013
+U90000000003 dns score=80 hash=4ec45beb8c6b… hashlen=64 results_len=282 assignment_id=asg_df29cea8b4db4cab
+U90000000003 dns score=80 hash=4ec45beb8c6b… hashlen=64 results_len=282 assignment_id=asg_df29cea8b4db4cab
 -- 源码特征串在整行内不应出现（期望 0 行）
 source-text leak rows: 0
--- api_tokens/其他表无源码文本（期望 0）
+-- api_tokens 无源码文本（期望 0；api_tokens 只存 token_hash）
+tokens-with-source: 0
 === S4.4 admin 停号学生03 → 03 token 失效；学生04提交不受影响 ===
 ### disable student03
 $ curl -s -i -X POST http://127.0.0.1:8090/api/admin/users/U90000000003/status -H Authorization: Bearer <TOKEN_MASKED> -H Content-Type: application/json -d {"enabled":false}
@@ -93,7 +94,7 @@ HTTP/1.1 204
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Date: Sun, 25 Oct 2026 04:00:01 GMT
+Date: Sun, 25 Oct 2026 08:32:07 GMT
 
 
 
@@ -106,21 +107,21 @@ Vary: Access-Control-Request-Headers
 WWW-Authenticate: Bearer
 Content-Type: application/json
 Content-Length: 26
-Date: Sun, 25 Oct 2026 04:00:01 GMT
+Date: Sun, 25 Oct 2026 08:32:07 GMT
 
 {"detail":"invalid token"}
 
 ### student04 submit while 03 disabled
-$ curl -s -i -X POST http://127.0.0.1:8090/api/assignments/asg_a03f90646f844013/submit -H Authorization: Bearer <TOKEN_MASKED> -F protocol=dns -F file=@/tmp/p2reg/synthetic_plugin.c;type=text/plain
+$ curl -s -i -X POST http://127.0.0.1:8090/api/assignments/asg_df29cea8b4db4cab/submit -H Authorization: Bearer <TOKEN_MASKED> -F protocol=dns -F file=@/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/docs/java-migration/evidence/P2-regression/logs/tmp/synthetic_plugin.c;type=text/plain
 HTTP/1.1 200 
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Content-Length: 132
-Date: Sun, 25 Oct 2026 04:00:01 GMT
+Date: Sun, 25 Oct 2026 08:32:07 GMT
 
-{"score":80,"passed":4,"total":5,"results":[],"points":20,"earned":16.0,"best_earned":16.0,"submission_id":"grade_90444681c72c4a42"}
+{"score":80,"passed":4,"total":5,"results":[],"points":20,"earned":16.0,"best_earned":16.0,"submission_id":"grade_ccb4c1367772412f"}
 
 
 ### re-enable student03
@@ -129,7 +130,7 @@ HTTP/1.1 204
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Date: Sun, 25 Oct 2026 04:00:01 GMT
+Date: Sun, 25 Oct 2026 08:32:07 GMT
 
 
 
@@ -141,9 +142,9 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Content-Length: 176
-Date: Sun, 25 Oct 2026 04:00:01 GMT
+Date: Sun, 25 Oct 2026 08:32:07 GMT
 
-{"token":"<TOKEN_MASKED>","subject":"U90000000003","roles":["viewer"],"expires_at":"2026-11-01T04:00:01.499250+00:00","must_change_password":false}
+{"token":"<TOKEN_MASKED>","subject":"U90000000003","roles":["viewer"],"expires_at":"2026-11-01T08:32:07.624052+00:00","must_change_password":false}
 
 
 === S4.5 配额：学生04 连续提交到超限（默认 grading_daily_quota=20）→ 429 ===
@@ -156,7 +157,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Content-Length: 74
-Date: Sun, 25 Oct 2026 04:00:01 GMT
+Date: Sun, 25 Oct 2026 08:32:07 GMT
 
 {"detail":"今日评测配额已用完（20 次/天），请明天再试"}
 submit#2 -> 200
@@ -179,16 +180,8 @@ submit#18 -> 200
 submit#19 -> 200
 submit#20 -> 200
 submit#21 -> 429
-harness tool_calls total: 23
--- usage_counters after quota loop
-scenario 04 done
---（修正列名后的补充查询）api_tokens 存 token_hash，无源码文本（期望 0）
-tokens-with-source: 0
--- grading 配额计数：usage_counters(kind='grading', chat_count=当日递增值)
+harness tool_calls total: 47
+-- usage_counters after quota loop（grading 计数存 chat_count 列，kind='grading'）
 subject=U90000000003 kind=grading day=2026-10-25 chat_count=2
 subject=U90000000004 kind=grading day=2026-10-25 chat_count=22
--- 源码特征串复查（期望全部 0）
-leak-check code_hash: 0
-leak-check results_json: 0
--- results_json 样例（单行，脱敏后）
-{"results": [], "source_origin": "upload", "accepted_assignment": {"scope": "class", "points": 20, "deadline": "2099-01-01 00:00:00+00:00", "created_by": "U90000000002", "accepted_at": "2026-10-25T04:00:01.083796+00:00", "assignment_updated_at": "2026-10-25 03:58:33.287360+00:00"}}
+scenario 04 done

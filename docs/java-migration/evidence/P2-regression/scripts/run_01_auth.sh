@@ -3,6 +3,8 @@
 set -u
 SCENARIO=01-auth
 source "$(dirname "$0")/common.sh"
+# 登录限流为冻结契约（10 次/分/IP）：场景间节拍，避免背靠背连跑触发 429
+PACE="${DPDK_REPLAY_SCENARIO_PACE:-15}"; [ "$PACE" -gt 0 ] && sleep "$PACE"
 : > "$LOG_DIR/01-auth.log"
 
 echo "=== S1.1 admin 登录成功（口令=学号，见 seed_users.sql） ===" | tee -a "$LOG_DIR/01-auth.log"
