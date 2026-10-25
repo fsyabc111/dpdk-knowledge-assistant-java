@@ -95,6 +95,7 @@ class PgIndexIntegrationTest {
     @Test void publicIngestIdempotencyAndContentMetadataIncrement() throws Exception {
         SourceSettings source = sources("# A\n内容🙂");
         IngestResult first = service.ingest(source);
+        assertThat(service.activeRelease()).isEqualTo(first.releaseId());
         assertThat(first.insertedOrUpdated()).isEqualTo(1);
         assertThat(service.ingest(source).releaseId()).isEqualTo(first.releaseId());
         assertThat(embeddings).hasValue(1); assertThat(count("rag_releases")).isEqualTo(1);

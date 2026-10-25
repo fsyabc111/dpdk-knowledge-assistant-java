@@ -165,6 +165,11 @@ public final class IndexService implements PublishPort {
         return new PublishReceipt(index.releaseId());
     }
 
+    /** 活动版本读取供运维与健康接线复用，不另复制 SQL。 */
+    public String activeRelease() {
+        return store.active();
+    }
+
     public IndexHealth health(String releaseId) {
         return store.health(releaseId, fingerprint.pythonCompatibleConfiguration(config));
     }
