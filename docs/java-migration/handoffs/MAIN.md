@@ -1,6 +1,14 @@
 # 主 Agent 恢复点
 
-## 当前：2026-10-25 U12 R段收口（双轴审查通过），进入P3
+## 当前：2026-10-25 U12 P3进行中（J3-02已合并，J3-01运行中）
+
+- **P3状态**：J3-02（Agent五工具）已完成并合并——worker/j3-02@3d426e9（fast-forward进集成分支），自有测试124/124绿（合并树复跑确认），黄金场景Python可达子集对齐，三项接口变更申请已裁决登记（3f78f00：TaskGradePort/TaskJobLedgerPort消费面归J3-01实现，ChatModelPort富接口留J3-03适配）。J3-01（任务生命周期）worker仍在运行（worktree .migration-artifacts/worktrees/j3-01，基线19a2d47）。
+- 提交链：19a2d47（R段收口）→ 3d426e9（J3-02）→ 3f78f00（接口裁决）。
+- J3-01完成后：合并（预期无冲突：task/** vs agent/**）→ 全量verify → 集成接线（AgentScenario/TaskLedgerTest替身换真实仓储 + AgentChatModel真实模型适配器归J3-03）→ J3-03 chat/SSE → J3-04讲解 → P3阶段报告+双轴审查。
+- integration_pending 三项由J3-01交付闭环（IP-1停号取消、IP-J205-2活动会话删除、TaskGradeParticipant）。
+- SSE冻结契约已预读（http-and-sse.md）：帧格式双LF、done/terminal:false区分、error-only合法结束、累计sources、引用按chunks顺序绑定。
+
+## 历史：U12 R段收口（2026-10-25，双轴审查通过）
 
 - **R段正式收口**：双轴独立审查——规范轴通过（0阻断5建议）、规格轴1阻断B-1（SP-04实测证据缺口）**已关闭**（补齐GRADING_MAX_CODE_BYTES=100→413/边界200、GRADING_TIMEOUT_SEC=1慢初始化→504+零成绩行、慢tools/call→200不中断语义、非法值真实进程启动失败×2；全部sp04b探针存证 .migration-artifacts/u12-rerun/）。审查处置全记录：evidence/U12-R-segment-20261025/README.md（含S-1～S-5与规范轴①②⑤处置）。审查后全量verify复跑316/316。
 - R段最终证据链：Java修复 f38aff9 → ST-02/03 worker 9b4de06（合并8c89318）→ 重放集成 d9364ed → R段报告 4debf9f → 审查处置（本提交）。严格重放DIFF=0（PASS72/ALLOWED-DIFF25/SKIP89）、探针32/32、--selftest 17/17、guard库150条清理。
