@@ -50,6 +50,16 @@
 - 平台差异登记：secure-headers 中间件头未实现（归平台层，J4-03 前评估）；JSON 极端输入
   NaN/Infinity 字面量行为差异（Java 拒绝，Python 容忍；已列 evidence/J2-01 差异表）。
 
+## J2-02（管理员/班级树/审计）已接受（2026-10-25）
+
+- 消费端口落地：`admin.AdminClassScopePort`（班级范围查询，供 J2-03/用量/问题工作台）、
+  `admin.LocalTaskCancellationPort`（停号→任务取消冻结端口，NoOp 占位，**integration_pending
+  IP-1**：J3-01 真实任务实现后补验，当前仅端口时序断言，不得写成已通过）。
+- auth 接口请求（登记待后续消费者需要时再改，当前不阻塞）：PasswordRuleException 非 public、
+  verifyCredentials 未端口化、PATCH 配额/角色后 60s Principal 缓存差异（golden 归一化映射登记）。
+- 求值序门禁：401→422→404门禁→业务，与 J2-01 修正后的 golden 序一致。
+- **IP-3**：J2-02 差分 suite 待集成者在 P2 集成回归统一补跑（golden 36 条已在单卡测试覆盖）。
+
 ## 消费指引（P1 内）
 
 - J1-04/P2 消费模型端口：经 `io.dpdk.assistant.model.ModelClients` / `harness.HarnessClients` 入口。
