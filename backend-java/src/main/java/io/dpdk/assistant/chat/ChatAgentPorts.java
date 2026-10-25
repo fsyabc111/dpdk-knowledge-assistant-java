@@ -39,7 +39,7 @@ final class ChatAgentPorts
                             m.put("submission_done", r.submissionDone());
                             return m;
                         })
-                .orElse(Map.of());
+                .orElse(null);
     }
 
     public void recordJob(String taskId, String jobId, String tool, String protocol, String hash) {

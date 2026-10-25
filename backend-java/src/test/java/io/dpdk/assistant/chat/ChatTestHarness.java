@@ -92,19 +92,18 @@ public final class ChatTestHarness implements AutoCloseable {
             try (var ps =
                     conn.prepareStatement(
                             "INSERT INTO data_li_knowledge_v1(node_id,text,metadata_,embedding)"
-                                + " VALUES (?,?,?::jsonb,?::vector)")) {
+                                    + " VALUES (?,?,?::jsonb,?::vector)")) {
                 ps.setString(1, node);
                 ps.setString(2, text);
                 ps.setString(
-                        3,
-                        "{\"file_path\":\"src/dns.c\",\"file_name\":\"DNS\",\"section\":\"DNS\"}");
+                        3, "{\"source_path\":\"src/dns.c\",\"title\":\"DNS\",\"section\":\"DNS\"}");
                 ps.setString(4, "[" + String.join(",", Collections.nCopies(1024, "0")) + "]");
                 ps.executeUpdate();
             }
             try (var ps =
                     conn.prepareStatement(
                             "INSERT INTO rag_releases(id,configuration,created_at,node_count)"
-                                + " VALUES (?,?,?,1) ON CONFLICT DO NOTHING")) {
+                                    + " VALUES (?,?,?,1) ON CONFLICT DO NOTHING")) {
                 ps.setString(1, release);
                 ps.setString(2, fingerprint);
                 ps.setString(3, task.clock.nextSessionIso());
