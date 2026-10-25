@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import org.springframework.stereotype.Repository;
 
 /**
  * 账号凭据仓储：users/api_tokens/password_reset_requests 的存储与校验。
@@ -34,6 +35,7 @@ import java.util.UUID;
  * `WHERE id=? AND status='approved'` + rowcount 守卫保证并发严格一次（验收 D 要求），
  * 顺序流行为与 Python 一致。
  */
+@Repository
 public class UserAuthRepository implements CredentialInvalidationPort, PasswordResetApprovalPort {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();

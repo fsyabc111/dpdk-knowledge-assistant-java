@@ -10,6 +10,7 @@ import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.output.MigrateResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 /**
  * 唯一迁移入口（DDL 唯一 owner = 主 Agent/J1-01 集成者，契约 schema-migration.md）。
@@ -23,6 +24,7 @@ import org.slf4j.LoggerFactory;
  *
  * 常量设置：baselineOnMigrate=false（仅空库路径显式开启）、validateOnMigrate=true、cleanDisabled=true。
  */
+@Component
 public final class MigrationController {
 
     private static final Logger log = LoggerFactory.getLogger(MigrationController.class);

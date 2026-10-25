@@ -10,6 +10,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.springframework.stereotype.Repository;
 
 /**
  * grading_submissions 只读查询（对齐 services/grading_service.py 的教师视图子集：
@@ -19,6 +20,7 @@ import java.util.Map;
  * （老师=自己学生，不含本人；null=不限；空集合=不可见任何行）。
  * ORDER BY created_at DESC, id DESC 兜底同时间戳稳定序。
  */
+@Repository
 public class GradingQueryRepository {
 
     private final TransactionRunner runner;

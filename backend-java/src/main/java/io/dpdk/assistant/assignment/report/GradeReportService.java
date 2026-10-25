@@ -9,6 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import org.springframework.stereotype.Service;
 
 /**
  * 成绩汇总与 CSV 导出服务（对齐 assignments.py 的 `_scoped_grade_rows` 与
@@ -20,6 +21,7 @@ import java.util.TreeMap;
  *
  * 汇总口径：按当前作业项动态折算（受理口径的边界见 AssignmentCatalogPort）。
  */
+@Service
 public class GradeReportService {
 
     static final String UNASSIGNED_CLASS = "未分配";

@@ -8,12 +8,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.OffsetDateTime;
 import java.util.Optional;
+import org.springframework.stereotype.Repository;
 
 /**
  * 成绩行只读查询端口（实现步骤 4：供 J2-03/J3-04 与「结果讲解」按
  * submission_id 关联成绩行；对齐 grading_service.get_submission 的整行读取，
  * results_json 反序列化返回）。查询不存在返回 empty，调用方决定 404 口径。
  */
+@Repository
 public class SubmissionRecordReader {
 
     /** 一条成绩行（resultsJson 为解析后的 jsonb）。 */

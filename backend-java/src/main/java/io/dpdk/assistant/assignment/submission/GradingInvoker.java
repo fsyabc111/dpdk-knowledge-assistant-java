@@ -13,6 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.springframework.stereotype.Service;
 
 /**
  * 评测封装（冻结 services/harness_grading.py 的 grade_code）：
@@ -27,6 +28,7 @@ import java.util.Set;
  * 与 Python 同为 504）；发出后失败 → UNKNOWN/harness_unavailable（502，不盲重发，
  * 不伪称未提交）。两者的账面副作用（配额已计、成绩未落）一致。
  */
+@Service
 public final class GradingInvoker {
 
     /** GRADING_QUOTA_EXEMPT_ROLES（agent/tools.py）。 */

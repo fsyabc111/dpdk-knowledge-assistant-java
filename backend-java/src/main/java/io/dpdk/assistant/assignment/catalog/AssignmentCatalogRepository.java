@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import org.springframework.stereotype.Repository;
 
 /**
  * 作业目录仓储：assignments / assignment_items / 作业视角的 grading_submissions
@@ -25,6 +26,7 @@ import java.util.UUID;
  * 拒绝，与 Python 相同不预校验）；时间戳统一走 clock.nextSessionIso()（Python
  * now_iso 的进程内严格递增微秒语义）。
  */
+@Repository
 public class AssignmentCatalogRepository {
 
     /** user 侧 status 取值（assignments.status：active 学生可见；withdrawn 隐藏保留成绩）。 */

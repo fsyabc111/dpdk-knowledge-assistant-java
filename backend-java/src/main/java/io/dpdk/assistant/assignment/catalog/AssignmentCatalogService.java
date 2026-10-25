@@ -3,11 +3,13 @@ package io.dpdk.assistant.assignment.catalog;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.stereotype.Service;
 
 /**
  * 作业目录服务：仓储编排 + {@link AssignmentCatalogPort} 实现（对齐
  * AssignmentService 的公开方法子集；scope 由服务端按角色产生，客户端不可指定）。
  */
+@Service
 public class AssignmentCatalogService implements AssignmentCatalogPort {
 
     private final AssignmentCatalogRepository repo;

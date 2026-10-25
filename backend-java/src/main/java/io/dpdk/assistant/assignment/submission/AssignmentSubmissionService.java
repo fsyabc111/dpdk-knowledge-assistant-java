@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
 /**
  * 正式提交编排（冻结 api/assignments.py 的 submit_assignment 主流程）：
@@ -32,6 +33,7 @@ import org.springframework.http.HttpStatus;
  * 两种分值口径：响应/落库 accepted_assignment 用受理快照 points；成绩汇总的
  * 动态折算归 J2-03 report（best 查询按请求协议）。
  */
+@Service
 public class AssignmentSubmissionService implements FormalSubmissionPort {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();

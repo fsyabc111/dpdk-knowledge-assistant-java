@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
+import org.springframework.stereotype.Repository;
 
 /**
  * 来源回读（对齐 storage/retrieval_store.get_historical_chunk 与
@@ -21,6 +22,7 @@ import java.util.Optional;
  * - 非 li_（历史 legacy 引用）：knowledge_chunks LEFT JOIN knowledge_documents，
  *   title 缺省回落 source_path——仅服务旧回答的来源还原，不参与候选召回。
  */
+@Repository
 public class SourceRepository {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();

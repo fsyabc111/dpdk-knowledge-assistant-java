@@ -12,6 +12,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.stereotype.Repository;
 
 /**
  * 配额计数存储（usage_counters 表；对齐 core/rate_limit.py RateLimiter 的库内部分）。
@@ -25,6 +26,7 @@ import java.util.List;
  *   提交——「失败计数」现状保留并登记（grading 等非受理路径使用）；
  * - fetchCounters 供 /api/usage/me、/api/usage/subjects 读取（只统计 kind='chat'）。
  */
+@Repository
 public class UsageCounterStore implements QuotaParticipant {
 
     private final TransactionRunner runner;

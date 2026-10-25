@@ -20,6 +20,8 @@ import java.util.Optional;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 会话存储（对齐 backend/app/services/session_service.py 的 J2-05 范围：
@@ -35,6 +37,7 @@ import org.slf4j.LoggerFactory;
  * 会话/消息 id：sess_/msg_/cit_ + 12hex；时间统一经 ClockPort.nextSessionIso()
  * （进程内严格递增微秒，对齐 Python now_iso）。
  */
+@Service
 public class SessionService {
 
     private static final Logger log = LoggerFactory.getLogger(SessionService.class);
@@ -51,6 +54,7 @@ public class SessionService {
         String get();
     }
 
+    @Autowired
     public SessionService(TransactionRunner runner, ClockPort clock) {
         this(runner, clock, null);
     }

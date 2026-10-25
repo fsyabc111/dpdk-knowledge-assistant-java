@@ -1,6 +1,7 @@
 package io.dpdk.assistant.template;
 
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 /**
  * 插件模板生成（对齐 backend/app/services/template_service.py）。
@@ -9,6 +10,7 @@ import java.util.List;
  * （Unicode 口径）小写、其余替换为 "_"、去首尾 "_"，空则 "myproto"。
  * template_type/difficulty/requirements 仅参与契约校验，不改变输出（与源一致）。
  */
+@Service
 public final class TemplateService {
 
     public record TemplateResult(String template, String explanation, List<String> checklist,

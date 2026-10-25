@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.stereotype.Repository;
 
 /**
  * 成绩汇总仓储（对齐 `_grades_for_assignment_sync` / `_class_teachers_sync`）。
@@ -21,6 +22,7 @@ import java.util.Map;
  * 每协议取 MAX(score) 按当前分值折算 earned；同一 (user, assignment) 的全部提交
  * （含已不在当前协议项内的协议）计入提交次数与最近提交时间；行按 user_id 升序。
  */
+@Repository
 public class GradeReportRepository {
 
     private final TransactionRunner runner;

@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Repository;
 
 /**
  * 成绩写入（冻结 services/grading_service.py 的 record_submission，单事务）：
@@ -18,6 +19,7 @@ import org.springframework.http.HttpStatus;
  * 最小化落库：只存代码 sha256 + 结果 JSON + 受理依据，不存源码全文；
  * session_id/task_job_id 恒 NULL（正式提交无任务账本；聊天任务路径归 J3-01）。
  */
+@Repository
 public class SubmissionGradeWriter {
 
     /** 一条待落成绩（resultsJson 为已序列化的 results_json 全文）。 */

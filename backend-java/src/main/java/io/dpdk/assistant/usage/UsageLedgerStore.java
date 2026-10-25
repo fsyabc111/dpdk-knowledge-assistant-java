@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.springframework.stereotype.Repository;
 
 /**
  * 用量账本落库与查询（对齐 services/usage_service.py UsageService）。
@@ -19,6 +20,7 @@ import java.util.Map;
  *   request_id 只做收窄，仍受主体约束；
  * - 倒序取 MAX_QUERY_ROWS+1 判 truncated，聚合保持纯函数单一口径。
  */
+@Repository
 public class UsageLedgerStore {
 
     public static final int MAX_QUERY_ROWS = 20000;

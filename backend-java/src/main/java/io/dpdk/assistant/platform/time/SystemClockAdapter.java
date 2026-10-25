@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * ClockPort 默认实现。
@@ -22,6 +23,7 @@ public class SystemClockAdapter implements ClockPort {
     private final java.time.Clock wallClock;
     private Instant lastSessionStamp = Instant.EPOCH;
 
+    @Autowired
     public SystemClockAdapter() {
         this(java.time.Clock.systemUTC());
     }

@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 
 /**
  * 提交请求解析（冻结 backend/app/api/assignments.py 的 `_parse_submit_request`，
@@ -33,6 +34,7 @@ import org.springframework.http.HttpStatus;
  *       → UTF-8 替换解码，origin="upload"。</li>
  * </ul>
  */
+@Component
 public final class SubmitRequestParser {
 
     /** ALLOWED_UPLOAD_SUFFIXES（assignments.py 模块常量）。 */
