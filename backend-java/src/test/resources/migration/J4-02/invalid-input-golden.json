@@ -1,0 +1,101 @@
+{
+  "source": "migration/fixtures/p0-v2/python-golden.json",
+  "sha256": "8d0658661fedb31c6a0690ea97cb3167534504049c65861b3c67e6691337de14",
+  "cases": {
+    "GET /api/rag/issues::invalid-input": {
+      "detail": [
+        {
+          "ctx": {
+            "ge": 1
+          },
+          "input": "0",
+          "loc": [
+            "query",
+            "limit"
+          ],
+          "msg": "Input should be greater than or equal to 1",
+          "type": "greater_than_equal"
+        }
+      ]
+    },
+    "PATCH /api/rag/issues/{issue_id}::invalid-input": {
+      "detail": [
+        {
+          "input": {},
+          "loc": [
+            "body",
+            "status"
+          ],
+          "msg": "Field required",
+          "type": "missing"
+        }
+      ]
+    },
+    "PATCH /api/rag/knowledge/{knowledge_id}::invalid-input": {
+      "detail": [
+        {
+          "input": {},
+          "loc": [
+            "body",
+            "title"
+          ],
+          "msg": "Field required",
+          "type": "missing"
+        },
+        {
+          "input": {},
+          "loc": [
+            "body",
+            "body"
+          ],
+          "msg": "Field required",
+          "type": "missing"
+        }
+      ]
+    },
+    "POST /api/rag/feedback::invalid-input": {
+      "detail": [
+        {
+          "input": {},
+          "loc": [
+            "body",
+            "message_id"
+          ],
+          "msg": "Field required",
+          "type": "missing"
+        },
+        {
+          "input": {},
+          "loc": [
+            "body",
+            "reason"
+          ],
+          "msg": "Field required",
+          "type": "missing"
+        }
+      ]
+    },
+    "POST /api/rag/knowledge::invalid-input": {
+      "detail": [
+        {
+          "input": {},
+          "loc": [
+            "body",
+            "title"
+          ],
+          "msg": "Field required",
+          "type": "missing"
+        },
+        {
+          "input": {},
+          "loc": [
+            "body",
+            "body"
+          ],
+          "msg": "Field required",
+          "type": "missing"
+        }
+      ]
+    }
+  }
+}
