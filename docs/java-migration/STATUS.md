@@ -33,9 +33,9 @@
 | J3-02 | implemented | 原Agent worker+主集成 | 富消息适配、COMP-003安全终态已真实PG10项验证 | 未登记；handoffs/J3-02.md、P3-MODEL.md |
 | J3-03 | implemented | chat worker+主集成 | 产品HTTP/SSE/引用/超时/用量已实现；本轮全量591/591；双轴待做 | 未登记；handoffs/J3-03.md（收口中） |
 | J3-04 | implemented | explain worker+主集成 | 23项通过+1黄金增补；真第二JVM恢复，grade0 | 未登记；handoffs/J3-04.md、evidence/J3-04/ |
-| J4-01 | running | index worker；codex/j4-01-index | 接口先行、合成全源/PG | 未验 |
-| J4-02 | running | knowledge worker；codex/j4-02-knowledge | 原题验证消费端口准备 | 未验 |
-| J4-03 | running | operations worker；codex/j4-03-operations | 主Agent平台/共享配置，worker运维/部署物料 | 未验 |
+| J4-01 | review | index worker；主Agent集成 | 单卡52/52，合并树待最终复验 | 用户未验；evidence/J4-01/ |
+| J4-02 | review | knowledge worker；主Agent集成 | 单卡19/19+组合真实闭环4项通过 | 用户未验；evidence/J4-02/、P4/workflow-index.md |
+| J4-03 | running | operations/ops_integration+主Agent | 10基础+7真实PG+5Node；原题/ready/错误/头已测，offline judge补齐中 | 用户未验；evidence/J4-03/ |
 | J5-01 | planned | 待P4门禁 | 未执行 | 未验 |
 | J5-02 | planned | 待P5依赖 | 未执行 | 未验 |
 | J5-03 | planned | 待P5依赖 | 未执行 | 未验 |
@@ -60,3 +60,5 @@
 - P4平台缺口：框架404/405/500、安全头、CLI/就绪/留存/部署/CI待实施；不把“登记”当豁免。
 - 当前Docker context为colima-dpdk-ext，socket不存在，旧dpdk profile停止；P5只能建立全新隔离资源，不启动/迁动旧profile。
 - P5浏览器、全矩阵、容量、冷启动/0013升级/真实备份恢复/回退尚未执行。live质量和生产资格不在本批次。
+
+- P4首次合并树684项1失败为旧并发测试未同步执行入口（不是放宽生产不变量），已用入口闩修复并单组7/7；最终全量与P4双轴审查仍未做。新Colima java-u12独立profile下载中，旧dpdk/context未动。

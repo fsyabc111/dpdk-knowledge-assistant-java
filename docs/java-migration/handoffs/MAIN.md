@@ -1,41 +1,45 @@
 # 主Agent恢复点
 
-## 当前：2026-10-25 U12续接，P3集成验证收口
+## 当前：2026-10-25 U12连续批次，P4集成中
 
-- 用户直接启动LONGRUN_P3_RESUME；解除此前暂停。P3→P4→P5隔离工程交付/J5-04准备，门禁通过自动推进。
-- 禁止真实上游验收、合并main、生产、Python退役和删除恢复资产；旧项目/部署/业务库只读。
-- 热状态以STATUS为准；本文件为准确恢复动作。此前完整历史已存archive/MAIN-U12-pre-P3-integration-20261025.md。
+- 直接用户授权LONGRUN_P3_RESUME解除暂停；工程门禁后自动P3→P4→P5隔离工程交付/J5-04准备，最多3worker，小步提交推送，持续交接。
+- 禁止真实模型/embedding/harness验收、合并main、生产切换、Python退役、删除恢复资产，原项目/原部署/业务库只读。用户验收不可代签。
+- P3工程已通过：修复快照5d0d6a3，全量591/591，两轴复审关闭4阻断。报告evidence/P3/phase-report.md、validation-reviewed.json；jar SHA02829d493ce390aea84ccc6a6e5f475f840818b1ffb67785ff2f16d55bb00e6e。阶段收口708128c。
 
-## Git/所有权
+## Git/权属
 
-- 集成分支codex/p3-p5-longrun，恢复90fae3d，最近已推送并核验b760ea4。此后已集成7278691/1c95430真实账本、c5c643d/c297eef讲解、3e186a6严格产品入口、ef490ea用量策略；均未合main。
-- 主Agent单写公共契约/配置/装配/DDL/STATUS/MAIN；chat worker窄获AgentOrchestrator.runProduct所有权已交付，主线已接收。
-- 三个实现worker工作树：p3-model（模型/账本验证已交付）、j3-03（chat收口handoff中）、j3-04（讲解已交付）。无worker在跑PG。
-- 原j3-01/j3-02工作树保留，不删除恢复资产。所有临时日志/数据库/口令留gitignored目录。
+- 集成codex/p3-p5-longrun，origin用户新仓库；最近已核验推送81f3757。当前HEAD af0543e，后续集成待本轮验证后推送。
+- 主Agent独占contracts/pom/配置/wiring/DDL/STATUS/MAIN/平台web/errors；root已装配Index/Knowledge/GroundedQuestionVerifier/OperationsPort/Metrics/health-ready。
+- J4-01 index worker已交付：c94bcbb→70e574e→b59c631→fcb3e26→ad277bf，已全cherry-pick；52/52（39单元黄金+13PG）。无运行任务，源码锁释放。
+- J4-02 knowledge worker已交付：7d9d1be→c1b4a7e→49b649a，已集成；19/19PG，含真实原题强制judge。无运行任务，锁释放。
+- J4-03 operations worker已交付d715837/1312f72/3c79a70，已集成；CLI/HTTP指标/独立Compose/HTTPS/CI/备份脚本+固定MCP五工具，10Java单测+5Node协议+Java client loopback smoke通过。真实harness profile默认off；fake默认新隔离栈，绝不执行源码。
+- ops_integration子片37987d9已集成711d84e：9命令真实业务适配/持久指标/owner公开维护聚合，7PG通过。当前追加离线judge正确映射（只写ops/adapter及OfflineEvidenceJudge/Port/CLI/测试，不动共享wiring）；根Main会接9参构造。
+- model_adapter组合测试923e996已集成24b0ee7：workflow→index闭环2项+完整Spring HTTP平台2项实跑通过，含真实DPDK_MODEL_*环境绑定。
+- 独立worktrees保留于.migration-artifacts/worktrees/{j4-01,j4-02,j4-03,j4-adapters,p3-model,...}。不用删除任何恢复资产。
 
-## 当前证据与失败处置
+## P4已实现/正在验证
 
-- P3公共契约已补富快照与附件四字段；SessionPort真实委托、真实取消单Bean、TaskSettings/heartbeat/orphan扫描与Agent/model/retrieval/product完整Spring装配。
-- 实际局部通过：模型worker84/84；真实Spring+PG18/18；真实Agent账本10/10；讲解23/23+新1黄金；HTTP嵌入式服务1/1（原前端客户端新增Node直连项待最新全量）。
-- COMP003：running只get_task_status轮询；unknown/queryfail和首次SUBMITTED/UNKNOWN丢响应终态system_error+harness_result_unknown；消息/SSE failure_code、保留账本/清输入实测通过。Python黄金不变。
-- initial_request并发败方按初发身份查赢家、findJob空行null、TaskGradeLedger真实guard/tx已修。
-- r1全量581项5失败：前端探针强断言正常done必须terminal:true（契约允许省略，已显式修）；TaskIp测试硬编码8槽与未等待释放导致3连锁失败（改settings容量与释放闩）；SessionLifecycle旧端口占位抛错断言（改真实caller事务写入）。失败日志p3-full-verify.log。
-- r2测试编译缺throws（已修）；r3全量verify已通过585/585（0失败/错误/跳过），日志.migration-artifacts/p3-full-verify-r3.log。原前端client直连也通过；测试进程已退出。
-- 原前端102/102与npm build通过，日志p3-frontend-tests.log/build.log。源码未改。
-- 新Node直连探针resources/migration/J3-03/frontend-client.mjs用esbuild替换构建期env后导入原client.js，验证JSON/replay/status/active/task-sse/chat-sse/multipart；由ProductApplicationHttpTest启动真实嵌入式Java与本机模型替身。
+- Index公共PreparedIndex/IndexNode补全，批量client→ModelUsageLedger→UsageCore保留每批成功/失败/unknown，finally刷账；公开activeRelease/health/rollback共用校验。
+- Knowledge作者title/body保留Python原文，不引入脱敏新语义；运行问题/反馈/note/事件用既有Redact。verify顺序限流/日配额→scope issue读取→gate→真实检索/生成/强制judge→CAS，不新建chat任务。
+- 真实新跨链发现insertIssue随机id与消息issue_id不符。cab2bdf初次窄修误命中insertJob，已由ada65f6精确恢复job随机独立id、insertIssue=taskId；新增TaskStoreIdentityIntegrationTest（两job独立+issue身份）防回归，不能覆盖原失败证据。
+- health存活/ready 5秒墙+实际DB/当前release节点完整性/config；404/405/500及四安全头已真实HTTP2项验证。原题桥不使用try-with-executor.close阻塞超时。
+- CLI task.background-enabled=false与migration.run-on-startup=false锁定，默认dryrun；root修retain-issues默认180天，purge-sessions仍30天。Operations reader专门new HeuristicQueryRewriter()、embeddingPort=null，固定queryVector必填，绝不复用产品可能外发的rewrite。
+- 领域指标为持久账本gauge，未知不折0，未实现过程指标明确unavailable（不伪称同名counter）。需阶段审查确认完整交付边界，不能当生产观测全覆盖。
+- 离线judge当前worker正纠正：原adapter误把检索命中率叫judge；将保留为retrieval-eval，judge读取源cases的answer/evidence/mode经AnswerValidator+显式模型judge。默认modelJudgeEnabled=false，未授权skip不算pass；loopback测试可启true。Pythonmismatch报告-only/exit0保持，非法执行仍非零。
 
-## 环境/恢复
+## 当前验证/资源
 
-- PG127.0.0.1:55481专属实例运行，数据.migration-artifacts/p1/pgdata；口令文件local-credentials.txt仅进env不输出。
-- JAVA_HOME=/opt/homebrew/opt/openjdk@21；四个DPDK_TEST_PG_*见backend-java/README，TestPg先验维护连接身份才建删动态库。
-- 全量使用主Agent排队。原始日志均.migration-artifacts/p3-*。临时模型HTTP和嵌入式服务由测试finally停止。
-- Docker只读核查：colima-dpdk-ext socket不存在；原dpdk profile Stopped。后续只能建全新隔离profile/context，不启动/改旧profile。外盘可用约75GiB（核查时）。
+- P4首次完整显式PG verify已结束684项1失败（TaskIp并发恢复注册后立即断言执行次数的调度竞态）；已加executor.entered闩、保留恰好一次断言并收集线程异常，单组7/7复验通过，日志p4-recovery-latch.log。待离线judge新增片后重新完整verify，当前PG空闲。
+- PG55481专属实例运行；四DPDK_TEST_PG_*显式，口令只从主checkout .migration-artifacts/p1/local-credentials.txt解析，不输出。TestPg先验身份再动态建删，临时测试库finally清理；不删历史合成验收/恢复资产。
+- JAVA_HOME=/opt/homebrew/opt/openjdk@21。Node24.18.1本机测试，原frontend102+build P3已通过，未改前端源码。
+- 新隔离Colima java-u12（4CPU/4GiB/20GiB）启动中，仅本批次新profile，--activate=false --ssh-config=false --template=false，只挂当前repo；旧dpdk profile保持Stopped，原context仍colima-dpdk-ext。
+- Colima exec session48460/PID94506，日志.migration-artifacts/p4-colima-java-u12.log；原生下载经现有localhost7897代理持续增长（最近176MiB），不是已完成VM。缓存~/Library/Caches/colima/caches/b0992...downloading。不要因慢而反复重跑/启动旧profile。
+- Docker实际新栈尚未构建/部署，Compose静态通过不算演练；P5冷启动/0013升级/备份实际恢复/回退/容量与浏览器仍未做。
 
 ## 下一准确动作
 
-1. 审查源码已冻结3718d21（已推送并核验），构建jar SHA76ba685c77f1c80e34b2381561ca59a4f32bed636d52a7dbaccfcb5a50f78edf。阶段报告evidence/P3/phase-report.md与validation.json已写。
-2. 两轴审查完成：规范2阻断+1建议（results双包装、chat成绩SQL跨模块）；规格2阻断（产品预算太晚、追问语境丢失）。报告review-standards.md/review-spec.md；P3暂不放行。
-3. 规格代码修复14d756d已提交推送核验（SearchInput上下文兼容重载、每reply预算闸）；model_adapter独占新增P3ReviewRegressionTest+spec-regression证据。chat worker独占规范两阻断（AgentTools仅results序列化、grading/query新统计服务、ChatAgentPorts委托、RealAgentLedger结构回归），当前PG单卡归chat，完成后交model_adapter再主Agent全量。index预检已完成，仅handoffs/J4-01-PREFLIGHT.md，无P4业务实现。
-4. 报告与审查后提交推送/SHA核验；门禁通过才进入P4。最多3worker。
-5. P4 J4-01索引/index/**、J4-02知识/knowledge/workflow/**可并行，J4-03平台/运维与共享物料由主Agent单写或明确授权窗口。
-6. P5验收/容量/全新隔离部署/恢复及J5-04准备仍未执行；完成整个授权批次前持续推进，不因本轮中间结果而收口。
+1. 接离线judge新增片并完整verify；旧684项唯一调度测试失败已确定性修复，不能用局部7/7替最终全量。
+2. 接收ops_integration追加offline judge提交；OperationsWiring改9参constructor注入OfflineEvidenceJudge(model,settings.validationTimeout,显式DPDK_JAVA_MODEL_JUDGE_ENABLED默认false)。需CLI真实jar help/非法退出/业务dryrun/apply启动验证。
+3. 当前代码与物料及时commit/push并核验SHA；更新STATUS/本文件。完成P4报告+独立双轴审查，阻断关闭后自动进P5。
+4. 新Colima继续等下载并核对profile/context，后续docker --context colima-java-u12显式运行，禁止动原profile。若硬阻塞继续其他独立工作。
+5. P5按acceptance J5-01全矩阵/原客户端与浏览器→J5-02故障/三轮120s+600s固定容量（thresholds.json）→J5-03独立Compose冷启0013升级/备份排除临时输入且实际恢复/回退→J5-04交付准备；未实现/未测/未授权分开。整个授权范围完成前不收口。

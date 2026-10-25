@@ -337,13 +337,14 @@ class TaskIpClosureTest {
         CountDownLatch start = new CountDownLatch(1);
         CountDownLatch done = new CountDownLatch(threads);
         AtomicInteger recoveredTotal = new AtomicInteger();
+        var recoveryFailures = new CopyOnWriteArrayList<Exception>();
         for (int i = 0; i < threads; i++) {
             Thread.ofVirtual().start(() -> {
                 try {
                     start.await();
                     recoveredTotal.addAndGet(h.service.recoverOrphans());
                 } catch (Exception e) {
-                    // 计数失败视为 0
+                    recoveryFailures.add(e);
                 } finally {
                     done.countDown();
                 }
@@ -351,10 +352,13 @@ class TaskIpClosureTest {
         }
         start.countDown();
         assertThat(done.await(30, TimeUnit.SECONDS)).isTrue();
-        // 恢复集合/认领闸仲裁：恰好一次重驱动（其余拿到 pending 终帧）
-        assertThat(executor.executions.get()).isEqualTo(1);
-        assertThat(recoveredTotal.get()).isEqualTo(1);
-        executor.resume();
+        // 注册完成不等于异步执行体已获调度；用执行入口闩确认后保留恰好一次断言。
+        try {
+            assertThat(recoveryFailures).isEmpty();
+            assertThat(executor.entered.await(10, TimeUnit.SECONDS)).isTrue();
+            assertThat(executor.executions.get()).isEqualTo(1);
+            assertThat(recoveredTotal.get()).isEqualTo(1);
+        } finally { executor.resume(); }
         long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(10);
         while (!"answered".equals(h.columnValue("rag_requests", "status", "id=?",
                 admit.taskId())) && System.nanoTime() < deadline) {
