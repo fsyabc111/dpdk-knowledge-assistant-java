@@ -1,6 +1,14 @@
 # 主 Agent 恢复点
 
-## 当前：2026-10-25 U12 长时批次启动（R段）
+## 当前：2026-10-25 U12 R段完成（8项关闭），待独立审查
+
+- **R段（验收8项修复+P1/P2工程复验）实现与验证完成**：Java修复 f38aff9（ST-01 TestPg身份预检+8负例、SP-01 AnyNestedCondition四组合、SP-02 FAIL_ON_TRAILING_TOKENS严格JSON、SP-03 resultsOf truthy falsy链、SP-04 GRADING_*桥接、SP-05 CORS默认5174+README）、ST-02/03 worker分支 9b4de06 合并 8c89318、重放集成收口 d9364ed（声明表补齐+五轮端到端）。全量verify **316/316**、strict probe **32/32**、SP-04真实进程探针7/7、SP-05浏览器README原样全通过（teacher-grades-u12.png）、严格重放 **DIFF=0**（PASS72/ALLOWED-DIFF25/SKIP89，--selftest 17/17）。报告：evidence/U12-R-segment-20261025/README.md。
+- 150个历史guard库按before/after清单清除（仅p1_t_*命名空间；验收库与恢复资产保留）。重放轮临时库已DROP。
+- **下一步**：双轴独立审查worker（只读）→ 修复复验 → R段收口 → P3（J3-01～04）。用户验收未登记（独立放行点）。
+- 资源：PG 55481运行中；Java/Vite/MCP/Chrome已停。PG口令U12重设，存 .migration-artifacts/p1/local-credentials.txt（600，gitignored）。原始探针/日志 .migration-artifacts/u12-rerun/（gitignored）。
+- 提交链：4637ac9→f38aff9→8c89318→d9364ed，本地/远程SHA一致。
+
+## 历史：U12 批次启动（2026-10-25）
 
 - 用户以 LONGRUN_P3_P5_DRAFT.md 正式启动长时任务（U12授权）：先关闭验收8项问题（ST-01～03、SP-01～05）并完成P1/P2工程复验，再连续P3（J3-01～04）→P4（J4-01～03）→P5隔离工程交付+J5-04交付准备。工程门禁通过自动推进；最多3个worker；小步提交推送、持续交接。**不在本批次**：真实调用验收、合并main、生产切换、Python退役、删除恢复资产。
 - 集成分支：`codex/p3-p5-longrun`（自 f06ae18 建立）；`codex/p1-p2-longrun` 保留为P1/P2验收状态存档。环境核对：工作区干净、PG55481/18090/18100/5173无运行进程、磁盘74GB可用。
