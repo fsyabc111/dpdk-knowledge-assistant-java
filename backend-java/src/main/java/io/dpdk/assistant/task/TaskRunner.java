@@ -146,16 +146,22 @@ public final class TaskRunner {
     /* ------------------------------------------------------------------ */
 
     private void runWithDeadline(ManagedTask managed, TaskExecutor executor, long startedNanos) {
+        // result 仅在 finish 持久化成功后成立（finish 失败 = 收口失败，订阅者拿
+        // pending/归因终帧，与源 service.run 内嵌 finish 的语义同位）。
         TaskExecutor.TaskExecutionResult result = null;
         Throwable error = null;
         try {
-            result = executor.run(managed.context, managed::emit);
+            TaskExecutor.TaskExecutionResult candidate =
+                    executor.run(managed.context, managed::emit);
             String messageId = finisher.finish(managed.taskId, managed.sessionId,
-                    result.answer(), result.citations(), result.status(), result.reason(),
-                    result.releaseId(), (clock.monotonicNanos() - startedNanos) / 1_000_000);
+                    candidate.answer(), candidate.citations(), candidate.status(),
+                    candidate.reason(), candidate.releaseId(),
+                    (clock.monotonicNanos() - startedNanos) / 1_000_000);
+            result = candidate;
             managed.setMessageId(messageId);
             // finish 的 issue 登记条件同位：状态非 answered/not_applicable 记 issue。
-            if (!"answered".equals(result.status()) && !"not_applicable".equals(result.status())) {
+            if (!"answered".equals(candidate.status())
+                    && !"not_applicable".equals(candidate.status())) {
                 managed.setIssueId(managed.taskId);
             }
         } catch (InterruptedException cancelled) {

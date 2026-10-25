@@ -161,9 +161,9 @@ public final class TaskRecovery {
             return Optional.empty();
         }
         return txRunner.required(tx -> {
-            try (Connection conn = tx.connection();
-                 PreparedStatement ps = conn.prepareStatement(
-                         "SELECT roles, enabled, daily_quota FROM users WHERE id=?")) {
+            // 注意：tx.connection() 是事务绑定连接，参与者不得关闭（契约 DbTx）。
+            try (PreparedStatement ps = tx.connection().prepareStatement(
+                    "SELECT roles, enabled, daily_quota FROM users WHERE id=?")) {
                 ps.setString(1, userId);
                 try (ResultSet rs = ps.executeQuery()) {
                     if (!rs.next() || !rs.getBoolean("enabled")) {

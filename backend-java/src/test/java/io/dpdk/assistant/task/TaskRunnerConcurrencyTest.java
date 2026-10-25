@@ -457,8 +457,6 @@ class TaskRunnerConcurrencyTest {
             ManagedTask managed = tight.service.startTask(viewer, "req-to", sessionId, context,
                     executor);
             assertThat(managed.awaitDone(Duration.ofSeconds(10))).isTrue();
-            System.out.println("DEBUG-TIMEOUT error=" + managed.error()
-                    + " deadlineFired=" + managed.isDeadlineFired());
             assertThat(managed.result()).isNull();
 
             assertThat(tight.columnValue("rag_requests", "status", "id=?", admit.taskId()))

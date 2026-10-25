@@ -130,7 +130,7 @@ public class TaskGradeLedger implements TaskGradeParticipant {
         try (PreparedStatement ps = conn.prepareStatement(
                 "INSERT INTO grading_submissions"
                         + "(id,user_id,session_id,protocol,code_hash,score,passed,total,results_json,"
-                        + "assignment_id,task_job_id,created_at) VALUES (?,?,?,?,?,?,?,?,?,NULL,?,?)")) {
+                        + "assignment_id,task_job_id,created_at) VALUES (?,?,?,?,?,?,?,?,?::jsonb,NULL,?,?)")) {
             ps.setString(1, submissionId);
             ps.setString(2, userId);
             ps.setString(3, sessionId);

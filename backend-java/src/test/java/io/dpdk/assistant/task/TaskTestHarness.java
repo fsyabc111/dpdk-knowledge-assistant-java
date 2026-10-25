@@ -102,6 +102,13 @@ public final class TaskTestHarness {
         return new TaskTestHarness(ds, database, initial, settings);
     }
 
+    /** 双进程测试用：连接既有库（不再建库/迁移）。 */
+    public static TaskTestHarness attach(String database) throws Exception {
+        AuthServerSettings initial = AuthServerSettings.of("account", "{}", 7, 8, 4, 10000);
+        DataSource ds = TestPg.dataSource(database);
+        return new TaskTestHarness(ds, database, initial, TaskSettings.defaults());
+    }
+
     public void setRecoveryExecutor(TaskExecutor executor) {
         this.recoveryExecutor = executor;
         this.recovery.setExecutor(executor);
@@ -172,6 +179,18 @@ public final class TaskTestHarness {
             }
             var rs = ps.executeQuery();
             return rs.next() ? rs.getString("v") : null;
+        }
+    }
+
+    /** 把 updated_at 拨回新鲜（测试清理：不入选孤儿扫描）。 */
+    public void makeFresh(String taskId) throws Exception {
+        try (Connection conn = ds.getConnection();
+             PreparedStatement ps = conn.prepareStatement(
+                     "UPDATE rag_requests SET updated_at=? WHERE id=?")) {
+            ps.setString(1, io.dpdk.assistant.platform.time.SystemClockAdapter.pythonIso(
+                    clock.nextSessionIso() == null ? clock.nowUtc() : clock.nowUtc()));
+            ps.setString(2, taskId);
+            ps.executeUpdate();
         }
     }
 
