@@ -21,7 +21,7 @@ public final class OperationsCli {
               create-users --id U00000000001 [--id ...] [--roles viewer,teacher] [--daily-quota N] [--apply]
               purge-sessions [--retention-days 30] [--apply]
               purge-task-inputs [--apply]
-              retain-issues [--retention-days 30] [--apply]
+              retain-issues [--retention-days 180] [--apply]
               ingest --manifest /绝对路径/manifest.json [--apply]
               rollback --release RELEASE [--apply]
               audit-grading-jobs [--limit 200]
@@ -110,7 +110,7 @@ public final class OperationsCli {
                     c.options().containsKey("daily-quota") ? number(c, "daily-quota", 0, Integer.MAX_VALUE, 0) : null), c.apply());
             case "purge-sessions" -> port.purgeSessions(number(c, "retention-days", 1, 365000, 30), c.apply());
             case "purge-task-inputs" -> port.purgeTaskInputs(c.apply());
-            case "retain-issues" -> port.retainIssues(number(c, "retention-days", 1, 365000, 30), c.apply());
+            case "retain-issues" -> port.retainIssues(number(c, "retention-days", 1, 365000, 180), c.apply());
             case "ingest" -> port.ingest(absolute(c, "manifest"), c.apply());
             case "rollback" -> port.rollback(required(c, "release"), c.apply());
             case "audit-grading-jobs" -> port.auditGradingJobs(number(c, "limit", 1, 10000, 200));
