@@ -200,9 +200,10 @@ class OperationsAdaptersIntegrationTest {
         String chunk=h.columnValue("data_li_knowledge_v1","node_id","true");
         Path cases=temp.resolve("cases.json");
         Files.writeString(cases,new ObjectMapper().writeValueAsString(List.of(Map.of("question","DPDK","expected_chunk_ids",List.of(chunk)))));
-        assertThat(configured.judge(cases)).containsEntry("domain","deterministic_retrieval").containsEntry("non_live",true).containsEntry("release", first);
+        assertThat(configured.evaluateRetrieval(cases)).containsEntry("domain","deterministic_retrieval").containsEntry("non_live",true).containsEntry("release", first);
         assertThatThrownBy(()->ops.retrieve("DPDK",5)).isInstanceOf(IllegalStateException.class);
-        assertThatThrownBy(()->ops.judge(cases)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(()->ops.evaluateRetrieval(cases)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(()->ops.judge(cases)).isInstanceOf(IllegalStateException.class);
         assertThat(snapshot()).isEqualTo(before);
         Files.writeString(temp.resolve("a.md"),"# DPDK\nDPDK updated synthetic documentation");
         configured.ingest(manifest,true);assertThat(index.activeRelease()).isNotEqualTo(first);

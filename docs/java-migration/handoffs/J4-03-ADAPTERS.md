@@ -47,3 +47,15 @@ OperationsDomainMetricsAdapter(TaskStore tasks, UsageLedgerStore usage)
 ## 恢复点
 
 无运行中进程/测试库；TaskStore/UsageLedgerStore/AdminUserRepository 窄写窗口交还主 Agent。下一步：主 Agent cherry-pick 本分支提交，接共享 Beans，用专用本地 reader，运行组合/全量验收并按授权推送目标开发分支；worker 未自行合并 main 或发布。
+
+## 证据 judge 修正增量交接（2026-10-25）
+
+前述 judge=固定检索算法的入口映射已修正，原算法完整迁到 `evaluateRetrieval(Path)` / CLI `retrieval-eval --cases`；不再把命中率当成 Python rag_judge_eval 的证据裁决。原 PG 检索断言也已迁移保留，当前仅重新 test-compile，未占 PG 窗口重跑。
+
+新增 `OfflineEvidenceJudge(AgentChatModel model, Duration timeout, boolean modelJudgeEnabled)`，实现 `Function<Path,Map<String,Object>>`。Adapter 原8参保留，新增9参重载最后传此 Function；8参的 judge 明确未装配。主共享 wiring 使用默认 false 的 modelJudgeEnabled；deterministic 直接复用 AnswerValidator 零模型；judge 未授权 matched=null/skipped_live_not_authorized，显式启用才限时调用注入模型，空模型配置报错。复用共享 JUDGE_PROMPT、严格 JSON、无工具、超时取消；不复制证据判据，不输出候选源码或完整 prompt。
+
+Python 源码已核对：正常生成报告时所有 mismatch 报告-only/exit0；Java 保持。summary 分列 deterministic_mismatched、model_mismatched、runtime_errors、skipped；不能将 exit0 当质量通过。逐case有 expect/actual/matched/error/usage，不授权的模型例不算通过。
+
+新增/修改授权路径：operations/OfflineEvidenceJudge.java、OperationsPort.java、OperationsCli.java、operations/adapter/OperationsBusinessAdapter.java及对应测试、OperationsAdaptersIntegrationTest中入口改名；仅追加本卡 evidence/operations-map/handoff。Task/Usage/Admin 数据仓储本增量未改，OperationsWiring 未触碰。
+
+当前验证：`-Dtest=OfflineEvidenceJudgeTest,OperationsCliTest,OperationsMetricsTest,OperationsBusinessAdapterTest test`，**24/24，0 skipped**，2026-10-25 20:06:36 +08:00；JDK21 compile/test-compile 同时通过。初次新增测试因泛型断言编译错误已修复，最终日志 `.migration-artifacts/offline-judge-final.log`。无 PG 或真实模型调用；历史7/7 PG不充当本提交新运行证据。后续由主 Agent cherry-pick 增量、接共享Bean、组合验收并推送。

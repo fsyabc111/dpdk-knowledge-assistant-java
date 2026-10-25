@@ -18,4 +18,8 @@ public interface OperationsPort {
     Map<String, Object> auditGradingJobs(int limit);
     Map<String, Object> retrieve(String query, int topK);
     Map<String, Object> judge(Path cases);
+    /** 固定检索命中率评估；独立于候选答案的证据裁决。 */
+    default Map<String, Object> evaluateRetrieval(Path cases) {
+        throw new IllegalStateException("检索样例评估未装配");
+    }
 }

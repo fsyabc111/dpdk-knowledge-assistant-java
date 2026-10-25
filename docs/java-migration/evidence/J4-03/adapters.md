@@ -54,3 +54,20 @@
 ## 未验证与下一步
 
 未运行全量回归、共享 Bean 启动/CLI 端到端、真实模型/评测、真实部署、备份恢复。共享装配由主 Agent 独占，必须使用运维专用本地改写 reader；固定查询映射默认空，能力不可用时 fail-closed。实现完成/单卡自动验证完成；阶段验收与用户验收由主 Agent 记录。
+
+## 证据裁决语义修正（2026-10-25 20:04）
+
+前文把固定检索命中率入口叫作 `judge` 的映射不正确：Python `rag_judge_eval.py` 与 `judge_cases.yml` 实际输入的是候选 answer 和内嵌 evidence，经 `validate_answer` 得出证据裁决。本节替代前文 judge 的当前入口说明，历史 7/7 PG 证据只证明当时固定检索算法及其他业务适配。
+
+- `OperationsPort.evaluateRetrieval(Path)` 是兼容 default 方法；原检索算法完整保留在该方法，CLI 新增 `retrieval-eval --cases /绝对路径/retrieval-cases.json`，结果仍是 `deterministic_retrieval/non_live`。此前 PG 测试中的检索断言已迁到此方法，没有删除覆盖。
+- `judge(Path)` 现在只分派注入的离线证据裁决函数，8 参 adapter 构造未装配时明确不可用，不能回退检索。新增 9 参重载的最后一参为 `Function<Path, Map<String,Object>> offlineJudge`。
+- `OfflineEvidenceJudge(AgentChatModel model, Duration timeout, boolean modelJudgeEnabled)` 实现该 Function；model 可空，默认布尔值由共享 wiring 配置为 false。支持 JSON 或 SnakeYAML SafeConstructor 安全加载的 `{cases:[...]}`；字段为 name/mode/question/answer/evidence/expect_status/可选 expect_reason，缺省 mode=judge；拒绝重复 name、重复键、危险 YAML tag 和错误数组类型。
+- deterministic 分支传 null judge，直接复用既有 `AnswerValidator`，不复制判据，不调用模型。judge 分支须显式 modelJudgeEnabled=true；关闭时逐例输出 `skipped_live_not_authorized`、matched=null，不计 matched/mismatched。开启但模型缺失为配置执行失败，非零退出。
+- 启用的 judge 复用 `AnswerValidator.JUDGE_PROMPT`、无工具模型端口和严格 JSON（拒绝尾随内容/重复键）；超时使用独立虚拟线程 Future 限时并 cancel/shutdownNow，不重试。所有裁决仍由同一 AnswerValidator 执行，前置引用检查也保留。
+- 逐例含 expect/actual status+reason、matched、outcome、elapsed_sec、用量和经清理的 error 类型；不输出候选 answer、evidence、完整 prompt 或模型原始响应。汇总分列 deterministic_mismatched/model_mismatched/runtime_errors/skipped，并保留 unknown 用量，零模型调用明确 calls=0。
+- **退出码与 Python 源码一致：成功生成报告为 0，即使存在 deterministic 或模型 mismatch；非法文件/参数/无法装配等执行失败仍非零。** 严格验收必须读取 summary，不能把 exit=0 当作质量通过。
+
+实际新增验证：
+`JAVA_HOME=/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home ./backend-java/mvnw -f backend-java/pom.xml -Dtest=OfflineEvidenceJudgeTest,OperationsCliTest,OperationsMetricsTest,OperationsBusinessAdapterTest test`，2026-10-25 20:06:36 +08:00 **24/24，0 failure/error/skip**（OfflineEvidenceJudge 12，CLI 7，Metrics 3，Adapter 2）；compile/test-compile 随执行通过。仅内嵌合成样例和固定模型替身，无 PG、真实模型或 harness。覆盖五项确定性规则、YAML、所有模型裁决状态、前置引用、严格 JSON/非法 verdict、超时取消、异常清理、报告-only mismatch、unknown 汇总、默认 skip、空模型配置失败、两个入口分派隔离。日志：本 worktree `.migration-artifacts/offline-judge-final.log`。
+
+未重跑改名后的 7 项 PG 测试，待主 Agent 集成后组合验证；该历史证据不自动继承为本提交 PG 全通过。共享 OperationsWiring 仍由主 Agent 独占，worker 未修改。

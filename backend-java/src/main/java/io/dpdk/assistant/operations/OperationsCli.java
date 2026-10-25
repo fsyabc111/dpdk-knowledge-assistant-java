@@ -26,9 +26,11 @@ public final class OperationsCli {
               rollback --release RELEASE [--apply]
               audit-grading-jobs [--limit 200]
               retrieve --query TEXT [--top-k 5]
-              judge --cases /绝对路径/cases.json
+              judge --cases /绝对路径/cases.json或yml
+              retrieval-eval --cases /绝对路径/retrieval-cases.json
               help | --help
-            judge 仅消费离线 fixture；不调用模型或 harness，不代表真实 judge 质量。错误输出不含凭据/输入正文。
+            judge 评估候选答案与内嵌证据，模型模式须显式授权；未授权会跳过且不计通过。
+            retrieval-eval 只评固定检索样例；错误输出不含凭据/输入正文。
             """;
     private static final Map<String, Set<String>> OPTIONS = Map.of(
             "create-users", Set.of("id", "roles", "daily-quota", "apply"),
@@ -37,7 +39,7 @@ public final class OperationsCli {
             "retain-issues", Set.of("retention-days", "apply"),
             "ingest", Set.of("manifest", "apply"), "rollback", Set.of("release", "apply"),
             "audit-grading-jobs", Set.of("limit"), "retrieve", Set.of("query", "top-k"),
-            "judge", Set.of("cases"));
+            "judge", Set.of("cases"), "retrieval-eval", Set.of("cases"));
 
     public static Command parse(String... args) {
         if (args.length == 0 || (args.length == 1 && Set.of("help", "--help", "-h").contains(args[0])))
@@ -74,7 +76,7 @@ public final class OperationsCli {
             case "audit-grading-jobs" -> number(c, "limit", 1, 10000, 200);
             case "retrieve" -> { required(c, "query"); number(c, "top-k", 1, 100, 5); }
             case "ingest" -> absolute(c, "manifest");
-            case "judge" -> absolute(c, "cases");
+            case "judge", "retrieval-eval" -> absolute(c, "cases");
             case "rollback" -> required(c, "release");
             default -> { }
         }
@@ -116,6 +118,7 @@ public final class OperationsCli {
             case "audit-grading-jobs" -> port.auditGradingJobs(number(c, "limit", 1, 10000, 200));
             case "retrieve" -> port.retrieve(required(c, "query"), number(c, "top-k", 1, 100, 5));
             case "judge" -> port.judge(absolute(c, "cases"));
+            case "retrieval-eval" -> port.evaluateRetrieval(absolute(c, "cases"));
             default -> throw new IllegalArgumentException("帮助命令不访问业务端口");
         };
     }
@@ -127,6 +130,7 @@ public final class OperationsCli {
         try {
             Map<String, Object> result = execute(c, port.get());
             out.println(new ObjectMapper().writeValueAsString(Map.of("command", c.name(), "apply", c.apply(), "result", result)));
+            // 与 Python rag_judge_eval 保持报告-only：mismatch 不改变成功执行的退出码。
             out.flush(); return 0;
         } catch (Exception e) {
             err.println("操作失败（" + e.getClass().getSimpleName() + "）；检查数据库身份、配置及业务前置条件");

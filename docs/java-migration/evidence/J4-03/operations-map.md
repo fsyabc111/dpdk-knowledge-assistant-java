@@ -33,3 +33,16 @@ Java日常主后端与CLI不导入Python服务，不运行旧start_dev/local_har
 | assistant_upstream_usage_tokens_total / assistant_upstream_usage_cost_micros_total / assistant_upstream_usage_unknown_total | 可由主集成者账本聚合适配；仅统计确实返回的用量，unknown独立计数；缺账不折0 |
 
 既有SessionService保留结构化session_purge日志；其他模型/任务结构化事件归各真实业务owner。CLI stdout为单个JSON结果，stderr只输出校验错误或异常类名，禁止堆栈/配置/正文。集成阶段必须核对账本unknown与实际事件后再声明领域监控完成；当前本卡独立单测仅证明HTTP filter及安全导出，不证明未接hook的指标。
+
+## 当前 judge 映射修正（2026-10-25）
+
+`rag_judge_eval.py` 评的是 **候选答案+内嵌证据的证据裁决**，不评检索命中率。当前映射如下，替代前表中宽泛的 judge 说明：
+
+| Python 用途 | Java 入口 | 运行/验收口径 |
+|---|---|---|
+| rag_judge_eval.py + tests/rag_eval/judge_cases.yml | `judge --cases /绝对路径/cases.json或yml` → OfflineEvidenceJudge → 既有 AnswerValidator | `{cases:[name, mode, question, answer, evidence, expect_status, expect_reason]}`；deterministic 零模型；judge 默认未授权逐例 skipped_live_not_authorized，不计通过；显式启用才用注入模型与超时 |
+| tests/rag_eval 检索样例 | `retrieval-eval --cases /绝对路径/retrieval-cases.json` → evaluateRetrieval | 保留原固定 query→vector 检索命中率算法，domain=deterministic_retrieval/non_live，不充当证据裁决 |
+
+Python 脚本源码的 mismatch 是报告-only，正常执行退出0。Java 保持该退出语义，summary 分列 deterministic_mismatched/model_mismatched/runtime_errors/skipped；不能拿退出0作阶段通过。非法文件/参数/装配失败仍非零。严格 JSON、共享 JUDGE_PROMPT、无工具调用、限时 Future+取消复用现有证据规则。原始响应、候选源码与完整 prompt 不进入 CLI 报告或错误日志。
+
+当前纯自动验证：OfflineEvidenceJudge/OperationsCli/OperationsMetrics/OperationsBusinessAdapter **24/24，零跳过**；仅内嵌固定样例与固定模型边界，无真实外发或 PG。详细证据见 `adapters.md` 的修正节；共享配置及 live 质量未验收。

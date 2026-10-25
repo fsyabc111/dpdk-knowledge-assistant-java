@@ -55,7 +55,8 @@ class OperationsCliTest {
         OperationsCli.execute(OperationsCli.parse("audit-grading-jobs", "--limit", "10"), port);
         OperationsCli.execute(OperationsCli.parse("retrieve", "--query", "synthetic", "--top-k", "3"), port);
         OperationsCli.execute(OperationsCli.parse("judge", "--cases", "/tmp/cases.json"), port);
-        assertEquals(3, port.calls);
+        OperationsCli.execute(OperationsCli.parse("retrieval-eval", "--cases", "/tmp/retrieval.json"), port);
+        assertEquals(4, port.calls);
     }
     @Test void outputIsJsonAndFailureDoesNotLeakSecrets() {
         StringWriter out = new StringWriter(), err = new StringWriter();
@@ -85,5 +86,6 @@ class OperationsCliTest {
         public Map<String,Object> auditGradingJobs(int limit) { return record(false); }
         public Map<String,Object> retrieve(String query, int topK) { return record(false); }
         public Map<String,Object> judge(Path cases) { return record(false); }
+        public Map<String,Object> evaluateRetrieval(Path cases) { return record(false); }
     }
 }

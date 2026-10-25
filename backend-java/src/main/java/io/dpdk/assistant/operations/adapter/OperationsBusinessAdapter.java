@@ -33,10 +33,19 @@ public final class OperationsBusinessAdapter implements OperationsPort {
     private final PgReleaseReader retrieval;
     private final Function<Path, SourceSettings> sourceSettings;
     private final Map<String, Vector1024> fixedQueries;
+    private final Function<Path, Map<String, Object>> offlineJudge;
 
     public OperationsBusinessAdapter(AdminUserRepository admin, SessionService sessions, TaskStore tasks,
             KnowledgeWorkflowService workflow, IndexService index, PgReleaseReader retrieval,
             Function<Path, SourceSettings> sourceSettings, Map<String, Vector1024> fixedRetrievalQueries) {
+        this(admin, sessions, tasks, workflow, index, retrieval, sourceSettings, fixedRetrievalQueries, null);
+    }
+
+    public OperationsBusinessAdapter(AdminUserRepository admin, SessionService sessions, TaskStore tasks,
+            KnowledgeWorkflowService workflow, IndexService index, PgReleaseReader retrieval,
+            Function<Path, SourceSettings> sourceSettings, Map<String, Vector1024> fixedRetrievalQueries,
+            Function<Path, Map<String, Object>> offlineJudge) {
+        this.offlineJudge = offlineJudge;
         this.admin = Objects.requireNonNull(admin); this.sessions = Objects.requireNonNull(sessions);
         this.tasks = Objects.requireNonNull(tasks); this.workflow = Objects.requireNonNull(workflow);
         this.index = index;
@@ -94,8 +103,14 @@ public final class OperationsBusinessAdapter implements OperationsPort {
         return Map.of("domain", "deterministic_retrieval", "non_live", true, "release", pinned.releaseId(),
                 "chunks", found.chunks());
     }
-    /** 固定样例集合的检索验收，不替代原问题模型证据核验或真实 judge。 */
+    /** 候选答案与内嵌证据裁决，未装配时明确拒绝，不能降成检索命中率。 */
     @Override public Map<String, Object> judge(Path cases) {
+        requireAbsolute(cases);
+        if (offlineJudge == null) throw new IllegalStateException("离线证据 judge 未装配");
+        return offlineJudge.apply(cases);
+    }
+    /** 固定样例集合的检索验收，与证据裁决分别报告。 */
+    @Override public Map<String, Object> evaluateRetrieval(Path cases) {
         requireAbsolute(cases);
         final JsonNode input;
         try { input = JSON.readTree(cases.toFile()); }
