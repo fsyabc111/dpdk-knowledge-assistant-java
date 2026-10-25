@@ -84,8 +84,9 @@ public class AssignmentReportController {
     /* ------------------------------------------------------------------ */
 
     @GetMapping("/api/assignments/{assignment_id}/export")
-    public ResponseEntity<byte[]> exportAssignmentGrades(
-            @PathVariable("assignment_id") String assignmentId, HttpServletRequest request) {
+    public void exportAssignmentGrades(
+            @PathVariable("assignment_id") String assignmentId, HttpServletRequest request,
+            jakarta.servlet.http.HttpServletResponse response) throws java.io.IOException {
         Principal principal = authenticate(request);
         requireGradesViewer(principal);
         GradeReportService.ScopedGrades grades = service.scopedGrades(assignmentId, principal);
@@ -93,11 +94,13 @@ public class AssignmentReportController {
             throw notFound();
         }
         GradeReportService.CsvResult csv = service.exportCsv(grades, principal);
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_TYPE, "text/csv; charset=utf-8-sig")
-                .header(HttpHeaders.CONTENT_DISPOSITION,
-                        "attachment; filename=\"" + csv.filename() + "\"")
-                .body(csv.bytes());
+        // 直接写响应：Spring 的 MediaType 解析不接受 Java 未注册的 utf-8-sig 字符集名
+        // （Python/HTTP 侧合法），故 Content-Type 原样落头，不经 HttpEntity 转换器。
+        response.setHeader(HttpHeaders.CONTENT_TYPE, "text/csv; charset=utf-8-sig");
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\"" + csv.filename() + "\"");
+        response.setStatus(HttpStatus.OK.value());
+        response.getOutputStream().write(csv.bytes());
     }
 
     /* ------------------------------------------------------------------ */

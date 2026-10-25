@@ -89,7 +89,7 @@ final class AssignmentPydanticBody {
         int chars = value.codePointCount(0, value.length());
         if (chars < 1) {
             errors.add(entry("string_too_short", List.of("body", "title"),
-                    "String should have at least 1 characters", value, Map.of("min_length", 1)));
+                    "String should have at least 1 character", value, Map.of("min_length", 1)));
             return null;
         }
         if (chars > 200) {
@@ -218,7 +218,7 @@ final class AssignmentPydanticBody {
         int chars = value.codePointCount(0, value.length());
         if (chars < 1) {
             errors.add(entry("string_too_short", List.of("body", "items", index, "protocol"),
-                    "String should have at least 1 characters", value,
+                    "String should have at least 1 character", value,
                     Map.of("min_length", 1)));
             return null;
         }
