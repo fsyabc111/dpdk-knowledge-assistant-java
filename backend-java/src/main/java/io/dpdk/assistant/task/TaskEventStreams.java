@@ -132,6 +132,9 @@ public final class TaskEventStreams implements EventStreamPort {
         data.put("debug_trace", null);
         data.put("answer_status", view.answerStatus());
         data.put("answer_reason", view.answerReason());
+        if ("harness_result_unknown".equals(view.answerReason())) {
+            data.put("failure_code", view.answerReason());
+        }
         data.put("issue_id", view.issueId());
         data.put("request_id", view.requestId());
         data.put("task_id", view.taskId());

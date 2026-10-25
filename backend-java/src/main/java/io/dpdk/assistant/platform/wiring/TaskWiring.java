@@ -84,7 +84,10 @@ public class TaskWiring {
             QuotaParticipant quotas, ClockPort clock, TransactionRunner tx, TaskSettings settings) {
         return new RagTaskService(store, runner, recovery, streams, guard, sessions, quotas, clock, tx, settings);
     }
-    @Bean TaskGradeLedger taskGradeLedger(TaskStore store, ClockPort clock) { return new TaskGradeLedger(store, clock); }
+    @Bean TaskGradeLedger taskGradeLedger(TaskStore store, AccountWriteGuard guard,
+            TransactionRunner tx, ClockPort clock) {
+        return new TaskGradeLedger(store, guard, tx, clock);
+    }
     @Bean LocalTaskCancellationPort localTaskCancellation(RagTaskService tasks) { return new TaskLocalCancellation(tasks); }
     @Bean(destroyMethod = "close")
     TaskBackground taskBackground(TaskRecovery recovery, ObjectProvider<TaskExecutor> executor) {

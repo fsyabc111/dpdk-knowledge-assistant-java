@@ -219,6 +219,8 @@ public final class AgentOrchestrator {
             }
             result.answer = answer;
             result.confidence = toolContext.collectedChunks.isEmpty() ? "low" : "high";
+        } catch (io.dpdk.assistant.agent.tools.HarnessResultUnknown e) {
+            throw e;
         } catch (RetryableTaskFailure e) {
             throw e;
         } catch (ContextBudgetExceededException e) {

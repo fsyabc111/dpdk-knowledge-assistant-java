@@ -239,6 +239,11 @@ public final class AgentGraph {
                 try {
                     Map<String, Object> raw = tool.invoke(call.args());
                     result = raw == null ? Map.of() : raw;
+                } catch (io.dpdk.assistant.agent.tools.HarnessResultUnknown e) {
+                    throw e;
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new RetryableTaskFailure("task_interrupted", e);
                 } catch (RetryableTaskFailure e) {
                     throw e;
                 } catch (Exception exc) {

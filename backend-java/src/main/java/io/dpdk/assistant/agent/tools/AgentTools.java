@@ -321,6 +321,8 @@ public final class AgentTools {
         if (context.taskId != null) {
             try {
                 ledger = resumeGradingJob(context, protocol, execBytes);
+            } catch (HarnessResultUnknown terminal) {
+                throw terminal;
             } catch (Exception exc) {
                 log.warn(PythonJson.dumps(Map.of(
                         "event", "task_job_ledger_failed", "tool", "grade_plugin",
@@ -435,7 +437,7 @@ public final class AgentTools {
     /**
      * S3-c 评测作业账本接续（只在 taskId 上下文启用）。
      * 接续顺序：账本行 finished → 直接复用；submitted → get_task_status 接续
-     * （finished 复用、running/unknown 交回主流程以同一 job_id 调 grade_plugin）；
+     * （finished 复用、running 只查等、unknown/查询失败停止自动重投）；
      * 账本缺行 → get_task_status 兜底，兜住「harness 有结果而账本漏写」的场景。
      * 任何账本层异常向上抛（调用方转 RetryableTaskFailure，任务不得降级为无账本评测）。
      */
@@ -447,24 +449,28 @@ public final class AgentTools {
         Map<String, Object> replayed = null;
         String jobId = deterministicJobId;
         boolean resumed;
-        if (job != null) {
+        if (job != null && !job.isEmpty()) {
             jobId = GradeFacts.str(job.get("job_id"));
             resumed = true;
+            if (jobId.isBlank()) { throw new HarnessResultUnknown(); }
             if ("finished".equals(job.get("status"))) {
                 replayed = jobResultPayload(job);
-            } else {
-                Map<String, Object> status = harnessJobStatus(context, jobId);
-                if (status != null && "finished".equals(status.get("status"))
-                        && status.get("result") instanceof Map<?, ?>) {
-                    @SuppressWarnings("unchecked")
-                    Map<String, Object> result = (Map<String, Object>) status.get("result");
-                    context.taskLedger.finishJob(jobId, result);
-                    replayed = result;
+                if (replayed == null) {
+                    replayed = awaitSubmittedResult(context, jobId);
+                    context.taskLedger.finishJob(jobId, replayed);
                 }
+            } else {
+                replayed = awaitSubmittedResult(context, jobId);
+                context.taskLedger.finishJob(jobId, replayed);
             }
         } else {
             resumed = false;
             Map<String, Object> status = harnessJobStatus(context, jobId);
+            if (status != null && "running".equals(status.get("status"))) {
+                context.taskLedger.recordJob(context.taskId, jobId, "grade_plugin", protocol, codeHash);
+                replayed = awaitSubmittedResult(context, jobId);
+                context.taskLedger.finishJob(jobId, replayed);
+            }
             if (status != null && "finished".equals(status.get("status"))
                     && status.get("result") instanceof Map<?, ?>) {
                 @SuppressWarnings("unchecked")
@@ -479,7 +485,24 @@ public final class AgentTools {
         return new Ledger(jobId, codeHash, resumed, replayed);
     }
 
-    /** get_task_status 探测：失败/超时/形态异常一律 null（按不可接续处理，主流程重投）。 */
+    /** 既有提交只查询，不因远端未知而重新执行。外层任务硬墙/显式取消中断等待。 */
+    @SuppressWarnings("unchecked")
+    private static Map<String, Object> awaitSubmittedResult(AgentToolContext context, String jobId)
+            throws InterruptedException {
+        while (true) {
+            if (Thread.currentThread().isInterrupted()) { throw new InterruptedException(); }
+            Map<String, Object> status = harnessJobStatus(context, jobId);
+            if (Thread.currentThread().isInterrupted()) { throw new InterruptedException(); }
+            if (status == null) { throw new HarnessResultUnknown(); }
+            if ("finished".equals(status.get("status")) && status.get("result") instanceof Map<?, ?> result) {
+                return (Map<String, Object>) result;
+            }
+            if (!"running".equals(status.get("status"))) { throw new HarnessResultUnknown(); }
+            Thread.sleep(250);
+        }
+    }
+
+    /** 查询失败返回null；已有账本由调用方封锁重投，首次缺账本仍可首次受理。 */
     private static Map<String, Object> harnessJobStatus(AgentToolContext context, String jobId) {
         try {
             Map<String, Object> payload = context.harness.call("get_task_status",

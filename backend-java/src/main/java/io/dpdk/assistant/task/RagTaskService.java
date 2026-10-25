@@ -171,7 +171,8 @@ public final class RagTaskService implements AdmissionPort, LifecyclePort, Answe
             return created;
         }
         // 唯一键冲突：赢家已把身份与配额同事务提交，按既有任务接续（不重扣）。
-        TaskProbeOutcome probed = probeDetail(identity, subject, Optional.ofNullable(session));
+        TaskProbeOutcome probed = probeDetail(identity, subject,
+                identity.initialRequest() ? Optional.empty() : Optional.ofNullable(session));
         if (probed.isReplay()) {
             return new TaskAdmitOutcome(TaskAdmitOutcome.REPLAYED, probed.row(), probed.message());
         }

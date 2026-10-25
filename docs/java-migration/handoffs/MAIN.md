@@ -11,6 +11,15 @@
 - P3门禁前不进入P4业务；源码输入、原始日志、口令、恢复资产禁止提交。
 - 下一步：核对本轮diff及worker消息；装配后执行任务受理和Spring上下文验证。
 
+### 续接检查点：装配通过，P3整链阻断修复中
+
+- 已推送f6b866e（首个公共契约/任务运行装配）；此后主线已集成模型326991d/6c2c8ea、讲解b125aa9/014d6b0/a17383d、chat初步dfea660、装配测试cd925e9，均为开发切片，P3未放行。
+- 实际证据：模型worker84/84；Spring+PG装配18/18；讲解数据PG3/3；主线模型/检索配置等48/48；COMP003修复后TaskLedger20/20。旧490全量尚未本轮重跑。
+- 新阻断：ChatAgentPorts空Map被当已有job（chat修）；initial_request并发败方按新session查错赢家（主修）；Agent submitted running/unknown仍盲重投违反COMP003（主修并加安全终态异常，chat映射）；TaskGradeLedger装配误用无事务构造（主改真实guard/tx）。必须真实仓储复验后关闭。
+- 主线新增ChatWiring/RetrievalWiring与模型Bean，编译/打包通过，端到端应用启动/HTTP仍待实测；所有未验证项保留。
+- worker：chat单卡整链与输入/SSE差分；explain整链与真第二JVM恢复；model_adapter独占RealAgentLedgerIntegrationTest新文件。PG排队由主Agent指定，禁止同时跑全量。
+- Docker只读核查：当前colima-dpdk-ext socket不存在、原dpdk profile停止；后续P5需要全新隔离profile，不启动/修改旧profile。外盘剩余75GiB。
+
 ## 当前：2026-10-25 U12 P3交接点（用户指令：J3-01完成后暂停交接）
 
 **本会话最终状态。恢复本批次从这里开始。**

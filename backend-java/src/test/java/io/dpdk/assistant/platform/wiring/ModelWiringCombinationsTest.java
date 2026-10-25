@@ -42,6 +42,7 @@ class ModelWiringCombinationsTest {
                 .run(ctx -> {
                     assertThat(ctx).hasSingleBean(ModelClients.class);
                     assertThat(ctx).hasSingleBean(OpenAiCompatibleChatClient.class);
+                    assertThat(ctx).hasSingleBean(io.dpdk.assistant.agent.AgentChatModel.class);
                     assertThat(ctx).doesNotHaveBean(OpenAiCompatibleEmbeddingClient.class);
                 });
     }
@@ -56,6 +57,7 @@ class ModelWiringCombinationsTest {
                     assertThat(ctx).hasSingleBean(ModelClients.class);
                     assertThat(ctx).hasSingleBean(OpenAiCompatibleEmbeddingClient.class);
                     assertThat(ctx).doesNotHaveBean(OpenAiCompatibleChatClient.class);
+                    assertThat(ctx).doesNotHaveBean(io.dpdk.assistant.agent.AgentChatModel.class);
                 });
     }
 
@@ -71,6 +73,7 @@ class ModelWiringCombinationsTest {
                 .run(ctx -> {
                     assertThat(ctx).hasSingleBean(ModelClients.class);
                     assertThat(ctx).hasSingleBean(OpenAiCompatibleChatClient.class);
+                    assertThat(ctx).hasSingleBean(io.dpdk.assistant.agent.AgentChatModel.class);
                     assertThat(ctx).hasSingleBean(OpenAiCompatibleEmbeddingClient.class);
                 });
     }
@@ -80,6 +83,7 @@ class ModelWiringCombinationsTest {
         runner.run(ctx -> {
             assertThat(ctx).doesNotHaveBean(ModelClients.class);
             assertThat(ctx).doesNotHaveBean(OpenAiCompatibleChatClient.class);
+                    assertThat(ctx).doesNotHaveBean(io.dpdk.assistant.agent.AgentChatModel.class);
             assertThat(ctx).doesNotHaveBean(OpenAiCompatibleEmbeddingClient.class);
             // harness 未配置 url 时默认装配（matchIfMissing=true），保持 J1-02 行为。
             assertThat(ctx).hasSingleBean(

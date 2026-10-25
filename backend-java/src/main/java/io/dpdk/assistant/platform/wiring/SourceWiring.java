@@ -12,7 +12,7 @@ public class SourceWiring {
 
     @Bean
     SourceRepository sourceRepository(TransactionRunner runner,
-                                      @Value("${dpdk.llama-index-table:li_knowledge_v1}") String llamaIndexTable) {
+                                      @Value("${dpdk.llama-index-table:${LLAMA_INDEX_TABLE:li_knowledge_v1}}") String llamaIndexTable) {
         return new SourceRepository(runner, llamaIndexTable);
     }
 }

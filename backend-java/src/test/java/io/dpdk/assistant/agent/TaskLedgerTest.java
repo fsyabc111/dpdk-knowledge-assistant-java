@@ -97,11 +97,12 @@ class TaskLedgerTest {
         scenario.ledger.recordJob("task_1", deterministicJobId(), "grade_plugin", "dns",
                 io.dpdk.assistant.agent.tools.AgentTools.sha256Hex(
                         SOURCE.getBytes(StandardCharsets.UTF_8)));
+        scenario.harness.payloads.put("get_task_status", Fixtures.payload("TASK_STATUS_FINISHED"));
         AgentToolContext context = scenario.buildContext();
         Map<String, Object> result = invokeGrade(context);
         assertThat(result.get("ok")).isEqualTo(true);
         assertThat(scenario.ledger.quotaCharges).isEmpty(); // 恢复不二次扣
-        assertThat(scenario.harness.callsOf("grade_plugin")).hasSize(1); // 同 job_id 重投
+        assertThat(scenario.harness.callsOf("grade_plugin")).isEmpty(); // 已提交只查等，不重投
         assertThat(scenario.taskGrade.calls).hasSize(1); // 成绩落一次
     }
 
@@ -166,25 +167,26 @@ class TaskLedgerTest {
     }
 
     @Test
-    void running_remote_status_reinvests_with_same_job_id() throws Exception {
-        // 远端 running：不虚构终态，同 job_id 幂等重投（加入既有执行）。
+    void running_remote_status_only_polls_then_reuses_finished_result() throws Exception {
+        // COMP-003：远端 running 只查询等待，不再次提交评测。
         AgentScenario scenario = taskScenario();
         scenario.ledger.recordJob("task_1", deterministicJobId(), "grade_plugin", "dns",
                 io.dpdk.assistant.agent.tools.AgentTools.sha256Hex(
                         SOURCE.getBytes(StandardCharsets.UTF_8)));
-        scenario.harness.payloads.put("get_task_status",
-                Map.of("ok", true, "status", "running"));
+        scenario.harness.sequences.put("get_task_status", new java.util.ArrayList<>(List.of(
+                Map.of("ok", true, "status", "running"), Fixtures.payload("TASK_STATUS_FINISHED"))));
         AgentToolContext context = scenario.buildContext();
         Map<String, Object> result = invokeGrade(context);
         assertThat(result.get("ok")).isEqualTo(true);
-        assertThat(data(result)).doesNotContainKey("resumed");
-        assertThat(scenario.harness.callsOf("grade_plugin")).hasSize(1);
+        assertThat(data(result)).containsEntry("resumed", true);
+        assertThat(scenario.harness.callsOf("get_task_status")).hasSize(2);
+        assertThat(scenario.harness.callsOf("grade_plugin")).isEmpty();
         assertThat(scenario.taskGrade.calls).hasSize(1);
     }
 
     @Test
-    void unknown_remote_status_never_fakes_exactly_once() throws Exception {
-        // 未知远端状态（探测失败）：按不可接续处理重投，不虚构已做到全局 exactly-once。
+    void unknown_remote_status_stops_automatic_resubmission() throws Exception {
+        // COMP-003：结果未知进入受控终态，保留账本待核对。
         AgentScenario scenario = taskScenario();
         scenario.ledger.recordJob("task_1", deterministicJobId(), "grade_plugin", "dns",
                 io.dpdk.assistant.agent.tools.AgentTools.sha256Hex(
@@ -192,9 +194,21 @@ class TaskLedgerTest {
         scenario.harness.payloads.put("get_task_status",
                 Map.of("ok", false, "error", "unknown_job", "detail", "账本无该 job"));
         AgentToolContext context = scenario.buildContext();
-        Map<String, Object> result = invokeGrade(context);
-        assertThat(result.get("ok")).isEqualTo(true);
-        assertThat(scenario.harness.callsOf("grade_plugin")).hasSize(1);
+        assertThatThrownBy(() -> invokeGrade(context))
+                .isInstanceOf(io.dpdk.assistant.agent.tools.HarnessResultUnknown.class);
+        assertThat(scenario.harness.callsOf("grade_plugin")).isEmpty();
+        assertThat(scenario.ledger.rowByJobId(deterministicJobId()).get("status")).isEqualTo("submitted");
+    }
+
+    @Test
+    void failed_status_query_stops_automatic_resubmission() {
+        AgentScenario scenario = taskScenario();
+        scenario.ledger.recordJob("task_1", deterministicJobId(), "grade_plugin", "dns",
+                io.dpdk.assistant.agent.tools.AgentTools.sha256Hex(SOURCE.getBytes(StandardCharsets.UTF_8)));
+        scenario.harness.payloads.put("get_task_status", new IllegalStateException("synthetic disconnect"));
+        assertThatThrownBy(() -> invokeGrade(scenario.buildContext()))
+                .isInstanceOf(io.dpdk.assistant.agent.tools.HarnessResultUnknown.class);
+        assertThat(scenario.harness.callsOf("grade_plugin")).isEmpty();
     }
 
     // ------------------------------------------------------------------
@@ -314,19 +328,20 @@ class TaskLedgerTest {
     }
 
     @Test
-    void replayed_payload_json_corruption_falls_back_to_reinvest() throws Exception {
-        // result_json 损坏 → 按无终态处理，主流程同 job_id 重投。
+    void corrupt_cached_payload_queries_result_without_regrading() throws Exception {
+        // 缓存损坏只查远端结果，不重新执行评测。
         AgentScenario scenario = taskScenario();
         scenario.ledger.recordJob("task_1", deterministicJobId(), "grade_plugin", "dns",
                 io.dpdk.assistant.agent.tools.AgentTools.sha256Hex(
                         SOURCE.getBytes(StandardCharsets.UTF_8)));
         scenario.ledger.rowByJobId(deterministicJobId()).put("status", "finished");
         scenario.ledger.rowByJobId(deterministicJobId()).put("result_json", "{broken");
+        scenario.harness.payloads.put("get_task_status", Fixtures.payload("TASK_STATUS_FINISHED"));
         AgentToolContext context = scenario.buildContext();
         Map<String, Object> result = invokeGrade(context);
         assertThat(result.get("ok")).isEqualTo(true);
-        assertThat(data(result)).doesNotContainKey("resumed");
-        assertThat(scenario.harness.callsOf("grade_plugin")).hasSize(1);
+        assertThat(data(result)).containsEntry("resumed", true);
+        assertThat(scenario.harness.callsOf("grade_plugin")).isEmpty();
     }
 
     @Test

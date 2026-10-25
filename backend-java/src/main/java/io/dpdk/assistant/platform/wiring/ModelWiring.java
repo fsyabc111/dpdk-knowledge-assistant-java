@@ -6,6 +6,8 @@ import io.dpdk.assistant.model.EmbeddingClientSettings;
 import io.dpdk.assistant.model.ModelClients;
 import io.dpdk.assistant.model.OpenAiCompatibleChatClient;
 import io.dpdk.assistant.model.OpenAiCompatibleEmbeddingClient;
+import io.dpdk.assistant.model.AgentModelAdapter;
+import io.dpdk.assistant.agent.AgentChatModel;
 import io.dpdk.assistant.platform.config.HarnessProperties;
 import io.dpdk.assistant.platform.config.ModelChatProperties;
 import io.dpdk.assistant.platform.config.ModelEmbeddingProperties;
@@ -44,6 +46,12 @@ public class ModelWiring {
                 props.baseUrl(), props.apiKey(), props.modelName(),
                 props.maxTokens(), props.maxRetries(), props.retryBaseSeconds(),
                 props.requestTimeoutSeconds(), props.streamUsageEnabled()));
+    }
+
+    @Bean
+    @ConditionalOnProperty("dpdk.model.chat.base-url")
+    public AgentChatModel agentChatModel(OpenAiCompatibleChatClient client, ModelChatProperties props) {
+        return new AgentModelAdapter(client, props.modelName());
     }
 
     @Bean

@@ -140,3 +140,4 @@ J3-01 已交付（worker/j3-01@40cb46c，自有测试 8类50/50；真双JVM+合�
 - SessionPortAdapter.appendUser真实委托；取消单Bean改为TaskLocalCancellation；TaskWiring管理设置和心跳生命周期。
 - 模型适配受理：model.AgentModelAdapter(OpenAiCompatibleChatClient,String)实现AgentChatModel；client添加富工具调用出口，旧chat/stream兼容。只扩展模型协议，不改变产品SSE/权限/扣次；固定HTTP替身验证，不做真实验收。
 - 核查发现TaskSettings默认8 active/32 waiting/30s排队与冻结config.py:77-79不符；本窗口纠正20/20/10s，纳入配置桥接验证，不改变Python基线和阈值。
+- COMP-003实施：已有submitted作业running仅轮询，unknown/查询失败由HarnessResultUnknown穿透图层，在产品层保存system_error/answer_reason=harness_result_unknown，消息元数据及JSON/SSE附failure_code同值；保留submitted账本，终态清理输入。首次缺账本仍可首次受理。现有Python黄金不变，按p0-approved-differences/comp003.json单独验收。

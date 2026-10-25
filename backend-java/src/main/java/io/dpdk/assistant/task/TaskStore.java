@@ -472,6 +472,9 @@ public class TaskStore {
                 metadata.put("answer_status", status);
                 metadata.put("answer_reason", reason);
                 metadata.put("request_id", requestId);
+                if ("harness_result_unknown".equals(reason)) {
+                    metadata.put("failure_code", reason);
+                }
                 metadata.put("stream_status", "completed");
                 if (!"answered".equals(status) && !"not_applicable".equals(status)) {
                     insertIssue(conn, taskId);
