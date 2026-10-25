@@ -1,7 +1,7 @@
 # 主 Agent 恢复点
 
 - 日期：2026-10-25（U11批次，P2 中段）；集成分支 `codex/p1-p2-longrun`，远程最新 bed823a（已核验）。P1 已收口（工程门禁通过，双轴审查 0 阻断）。
-- P2 进度：J2-01 认证完成集成（183/183，golden 19 条零差异）；J2-02 管理员/班级树/审计完成集成（218/218，golden 36 条，IP-1..3 如实登记）；J2-03（作业/成绩/CSV）与 J2-05（会话/配额/用量）已在 worktree j2-03/j2-05 并行派工（基线 bed823a）。后续：回收集成两者 → J2-04（正式提交+替身评测，依赖 J2-03/J2-05/J1-02）→ P2 集成回归（真实 Java+PG 业务闭环 + React 联调，含 IP-3 差分补跑）→ P2 双轴审查与报告。不进 P3。
+- P2 进度：J2-01（183/183）、J2-02（218/218）、J2-03（240/240，CSV 字节级）、J2-05（含 MessageInput 扩展，全量 277/277）均已集成并推送核验（最新 a6bf0d1）；**J2-04（正式提交+替身评测，末卡）已派工**（worktree j2-04，基线 a6bf0d1）。后续：J2-04 回收集成 → P2 集成回归（真实 Java+PG 业务闭环：启动应用对 8090 端口、三模式认证/班级权限/作业CRUD/替身提交/配额成绩副作用/汇总CSV/会话用量读取全链路、React 联调 vite+5173、IP-3 差分补跑）→ P2 双轴审查与 phase-report → 批次收口（不进 P3）。
 - 运行资源：P1 独立测试 PG 127.0.0.1:55481（.migration-artifacts/p1/pgdata，角色 p1_java）持续运行，多 worker 动态建删库隔离；origin pushurl=ssh://git@ssh.github.com:443/...（HTTPS 劣化临时切换）。
 - 已知 integration_pending：IP-1 停号→任务取消（J3-01）；J2-05 活动会话删除同类（worker 登记中）；IP-3 差分 suite 集成回归补跑。
 - 目录：`/Volumes/study/code/new_project/dpdk-knowledge-assistant-java`；分支`codex/p0-baseline-oracle`；初始基线`80b29135faddd16d5e39fdbf0633291ea6a20489`。
