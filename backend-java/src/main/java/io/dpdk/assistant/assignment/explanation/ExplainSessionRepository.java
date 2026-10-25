@@ -27,8 +27,8 @@ public class ExplainSessionRepository {
                 ps.setString(1, sessionId);
                 ps.setString(2, userId);
                 ps.setString(3, trimmed);
-                ps.setString(4, clock.nextSessionIso());
-                ps.setString(5, clock.nextSessionIso());
+                ps.setObject(4, java.time.OffsetDateTime.parse(clock.nextSessionIso()));
+                ps.setObject(5, java.time.OffsetDateTime.parse(clock.nextSessionIso()));
                 ps.executeUpdate();
                 return null;
             } catch (java.sql.SQLException e) {
