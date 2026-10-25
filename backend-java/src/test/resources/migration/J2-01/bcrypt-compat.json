@@ -1,0 +1,52 @@
+{
+ "generator": "python-bcrypt 4.3.0 (P0 oracle venv, read-only)",
+ "vectors": [
+  {
+   "id": "initial-password-id",
+   "password": "U20260000001",
+   "cost": 4,
+   "hash": "$2b$04$J2b01syntheticsaltvalu.5OzKWYcLUHxkuVeme8A9EMiKtcG5T2",
+   "python_checkpw": true
+  },
+  {
+   "id": "login-new-password",
+   "password": "newpassword123",
+   "cost": 4,
+   "hash": "$2b$04$J2b01syntheticsaltvaluQ21c4jUNMkzycyYQZcURRzoIr7YFpw2",
+   "python_checkpw": true
+  },
+  {
+   "id": "second-password",
+   "password": "anotherpassword456",
+   "cost": 4,
+   "hash": "$2b$04$J2b01syntheticsaltvaluK2UDoqDvA2M4wm7Ig6LNv0wVS61r79.",
+   "python_checkpw": true
+  },
+  {
+   "id": "reset-password",
+   "password": "resetpassword123",
+   "cost": 4,
+   "hash": "$2b$04$J2b01syntheticsaltvalukhUxsTEUTN7D5lehVa1zSK9wznLq/ZK",
+   "python_checkpw": true
+  },
+  {
+   "id": "dummy-seed",
+   "password": "kimi-assistant-dummy",
+   "cost": 4,
+   "hash": "$2b$04$J2b01syntheticsaltvaluB4da4B08gW8552KRiIvlYlBPUpelzUy",
+   "python_checkpw": true
+  },
+  {
+   "id": "cost12-sample",
+   "password": "U20260000002",
+   "cost": 12,
+   "hash": "$2b$12$J2b01syntheticsaltvaluNt2uT7JIMC9qbTA97uDOGMsWq.89QFW",
+   "python_checkpw": true
+  }
+ ],
+ "cross_prefix_note": "同一盐/口令下 $2a/$2y/$2b 互验均通过（口令<255字节时算法等价）",
+ "token_digest": {
+  "token": "p0-synthetic-static-token-value-0001",
+  "sha256": "26d6fd724e081a624ced6ea0493c30e8c66d918e5709813c376dc272ff63c4c1"
+ }
+}
