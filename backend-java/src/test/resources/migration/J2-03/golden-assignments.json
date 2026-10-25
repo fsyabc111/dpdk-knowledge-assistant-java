@@ -1,0 +1,5810 @@
+{
+ "_source": "migration/fixtures/p0-v2/python-golden.json (J2-03 路由切片, 28 observations)",
+ "observations": [
+  {
+   "after_boundary": "response-consumed-and-accepted-tasks-settled",
+   "body": {
+    "assignments": []
+   },
+   "business_after": {
+    "row_counts": {
+     "admin_audit_log": 0,
+     "api_tokens": 8,
+     "assignment_items": 0,
+     "assignments": 0,
+     "assistant_citations": 1,
+     "assistant_messages": 2,
+     "assistant_sessions": 2,
+     "grading_submissions": 0,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 0,
+     "rag_index_state": 1,
+     "rag_issue_events": 0,
+     "rag_issues": 1,
+     "rag_knowledge": 0,
+     "rag_knowledge_revisions": 0,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 1,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 0,
+     "usage_counters": 0,
+     "users": 8
+    }
+   },
+   "business_before": {
+    "row_counts": {
+     "admin_audit_log": 0,
+     "api_tokens": 8,
+     "assignment_items": 0,
+     "assignments": 0,
+     "assistant_citations": 1,
+     "assistant_messages": 2,
+     "assistant_sessions": 2,
+     "grading_submissions": 0,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 0,
+     "rag_index_state": 1,
+     "rag_issue_events": 0,
+     "rag_issues": 1,
+     "rag_knowledge": 0,
+     "rag_knowledge_revisions": 0,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 1,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 0,
+     "usage_counters": 0,
+     "users": 8
+    }
+   },
+   "business_delta": {
+    "tables": {
+     "admin_audit_log": {
+      "added": [],
+      "removed": []
+     },
+     "api_tokens": {
+      "added": [],
+      "removed": []
+     },
+     "assignment_items": {
+      "added": [],
+      "removed": []
+     },
+     "assignments": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_citations": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_messages": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_sessions": {
+      "added": [],
+      "removed": []
+     },
+     "grading_submissions": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_chunks": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_documents": {
+      "added": [],
+      "removed": []
+     },
+     "li_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "password_reset_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_index_state": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issue_events": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issues": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge_revisions": {
+      "added": [],
+      "removed": []
+     },
+     "rag_release_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "rag_releases": {
+      "added": [],
+      "removed": []
+     },
+     "rag_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_inputs": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_jobs": {
+      "added": [],
+      "removed": []
+     },
+     "upstream_usage_records": {
+      "added": [],
+      "removed": []
+     },
+     "usage_counters": {
+      "added": [],
+      "removed": []
+     },
+     "users": {
+      "added": [],
+      "removed": []
+     }
+    }
+   },
+   "case_id": "GET /api/assignments::success",
+   "expected_status": 200,
+   "headers": {
+    "content-security-policy": "default-src 'self'",
+    "referrer-policy": "no-referrer",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "DENY"
+   },
+   "input_identity_assertions": {},
+   "kind": "success",
+   "media_type": "application/json",
+   "precondition": "seeded-synthetic-tree",
+   "request": {
+    "actor": "leader",
+    "input": null,
+    "method": "GET",
+    "params": null,
+    "path_parameters": {},
+    "path_template": "/api/assignments"
+   },
+   "route_id": "GET /api/assignments",
+   "side_effect_counts": {
+    "llm": 0,
+    "mcp": 0
+   },
+   "status": 200,
+   "upstream_script": "fixed-kb-tool-call-and-answer/mcp-grade-80"
+  },
+  {
+   "after_boundary": "response-consumed-and-accepted-tasks-settled",
+   "body": {
+    "error": null,
+    "protocols": [
+     {
+      "cases": 5,
+      "categories": {
+       "basic": 5
+      },
+      "name": "dns"
+     }
+    ]
+   },
+   "business_after": {
+    "row_counts": {
+     "admin_audit_log": 0,
+     "api_tokens": 8,
+     "assignment_items": 0,
+     "assignments": 0,
+     "assistant_citations": 1,
+     "assistant_messages": 2,
+     "assistant_sessions": 2,
+     "grading_submissions": 0,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 0,
+     "rag_index_state": 1,
+     "rag_issue_events": 0,
+     "rag_issues": 1,
+     "rag_knowledge": 0,
+     "rag_knowledge_revisions": 0,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 1,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 0,
+     "usage_counters": 0,
+     "users": 8
+    }
+   },
+   "business_before": {
+    "row_counts": {
+     "admin_audit_log": 0,
+     "api_tokens": 8,
+     "assignment_items": 0,
+     "assignments": 0,
+     "assistant_citations": 1,
+     "assistant_messages": 2,
+     "assistant_sessions": 2,
+     "grading_submissions": 0,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 0,
+     "rag_index_state": 1,
+     "rag_issue_events": 0,
+     "rag_issues": 1,
+     "rag_knowledge": 0,
+     "rag_knowledge_revisions": 0,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 1,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 0,
+     "usage_counters": 0,
+     "users": 8
+    }
+   },
+   "business_delta": {
+    "tables": {
+     "admin_audit_log": {
+      "added": [],
+      "removed": []
+     },
+     "api_tokens": {
+      "added": [],
+      "removed": []
+     },
+     "assignment_items": {
+      "added": [],
+      "removed": []
+     },
+     "assignments": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_citations": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_messages": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_sessions": {
+      "added": [],
+      "removed": []
+     },
+     "grading_submissions": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_chunks": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_documents": {
+      "added": [],
+      "removed": []
+     },
+     "li_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "password_reset_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_index_state": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issue_events": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issues": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge_revisions": {
+      "added": [],
+      "removed": []
+     },
+     "rag_release_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "rag_releases": {
+      "added": [],
+      "removed": []
+     },
+     "rag_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_inputs": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_jobs": {
+      "added": [],
+      "removed": []
+     },
+     "upstream_usage_records": {
+      "added": [],
+      "removed": []
+     },
+     "usage_counters": {
+      "added": [],
+      "removed": []
+     },
+     "users": {
+      "added": [],
+      "removed": []
+     }
+    }
+   },
+   "case_id": "GET /api/assignments/protocols::success",
+   "expected_status": 200,
+   "headers": {
+    "content-security-policy": "default-src 'self'",
+    "referrer-policy": "no-referrer",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "DENY"
+   },
+   "input_identity_assertions": {},
+   "kind": "success",
+   "media_type": "application/json",
+   "precondition": "seeded-synthetic-tree",
+   "request": {
+    "actor": "leader",
+    "input": null,
+    "method": "GET",
+    "params": null,
+    "path_parameters": {},
+    "path_template": "/api/assignments/protocols"
+   },
+   "route_id": "GET /api/assignments/protocols",
+   "side_effect_counts": {
+    "llm": 0,
+    "mcp": 1
+   },
+   "status": 200,
+   "upstream_script": "fixed-kb-tool-call-and-answer/mcp-grade-80"
+  },
+  {
+   "after_boundary": "response-consumed-and-accepted-tasks-settled",
+   "body": {
+    "created_at": "2026-10-24 04:00:00.000054+00:00",
+    "created_by": "U20270000002",
+    "deadline": "2099-01-01 00:00:00+00:00",
+    "description": "P0",
+    "id": "<identity:19>",
+    "items": [
+     {
+      "points": 20,
+      "protocol": "dns"
+     }
+    ],
+    "scope": "class",
+    "status": "active",
+    "title": "合成DNS作业",
+    "updated_at": "2026-10-24 04:00:00.000054+00:00"
+   },
+   "business_after": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 1,
+     "assistant_messages": 2,
+     "assistant_sessions": 2,
+     "grading_submissions": 0,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 0,
+     "rag_issues": 1,
+     "rag_knowledge": 0,
+     "rag_knowledge_revisions": 0,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 1,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 0,
+     "usage_counters": 0,
+     "users": 8
+    }
+   },
+   "business_before": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 0,
+     "assignments": 0,
+     "assistant_citations": 1,
+     "assistant_messages": 2,
+     "assistant_sessions": 2,
+     "grading_submissions": 0,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 0,
+     "rag_issues": 1,
+     "rag_knowledge": 0,
+     "rag_knowledge_revisions": 0,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 1,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 0,
+     "usage_counters": 0,
+     "users": 8
+    }
+   },
+   "business_delta": {
+    "tables": {
+     "admin_audit_log": {
+      "added": [],
+      "removed": []
+     },
+     "api_tokens": {
+      "added": [],
+      "removed": []
+     },
+     "assignment_items": {
+      "added": [
+       {
+        "assignment_id": "<identity:19>",
+        "assignment_item_id": "<identity:20>",
+        "points": 20,
+        "protocol": "dns"
+       }
+      ],
+      "removed": []
+     },
+     "assignments": {
+      "added": [
+       {
+        "assignment_id": "<identity:19>",
+        "created_at": "2026-10-24T04:00:00.000054+00:00",
+        "created_by": "U20270000002",
+        "deadline": "2099-01-01T00:00:00+00:00",
+        "description": "P0",
+        "scope": "class",
+        "status": "active",
+        "title": "合成DNS作业",
+        "updated_at": "2026-10-24T04:00:00.000054+00:00"
+       }
+      ],
+      "removed": []
+     },
+     "assistant_citations": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_messages": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_sessions": {
+      "added": [],
+      "removed": []
+     },
+     "grading_submissions": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_chunks": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_documents": {
+      "added": [],
+      "removed": []
+     },
+     "li_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "password_reset_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_index_state": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issue_events": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issues": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge_revisions": {
+      "added": [],
+      "removed": []
+     },
+     "rag_release_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "rag_releases": {
+      "added": [],
+      "removed": []
+     },
+     "rag_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_inputs": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_jobs": {
+      "added": [],
+      "removed": []
+     },
+     "upstream_usage_records": {
+      "added": [],
+      "removed": []
+     },
+     "usage_counters": {
+      "added": [],
+      "removed": []
+     },
+     "users": {
+      "added": [],
+      "removed": []
+     }
+    }
+   },
+   "case_id": "POST /api/assignments::success",
+   "expected_status": 201,
+   "headers": {
+    "content-security-policy": "default-src 'self'",
+    "referrer-policy": "no-referrer",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "DENY"
+   },
+   "input_identity_assertions": {},
+   "kind": "success",
+   "media_type": "application/json",
+   "precondition": "seeded-synthetic-tree",
+   "request": {
+    "actor": "teacher_a",
+    "input": {
+     "deadline": "2099-01-01T00:00:00Z",
+     "description": "P0",
+     "items": [
+      {
+       "points": 20,
+       "protocol": "dns"
+      }
+     ],
+     "title": "合成DNS作业"
+    },
+    "method": "POST",
+    "params": null,
+    "path_parameters": {},
+    "path_template": "/api/assignments"
+   },
+   "route_id": "POST /api/assignments",
+   "side_effect_counts": {
+    "llm": 0,
+    "mcp": 0
+   },
+   "status": 201,
+   "upstream_script": "fixed-kb-tool-call-and-answer/mcp-grade-80"
+  },
+  {
+   "after_boundary": "response-consumed-and-accepted-tasks-settled",
+   "body": {
+    "created_by": "U20270000002",
+    "deadline": "2099-01-01 00:00:00+00:00",
+    "description": "P0",
+    "id": "<identity:19>",
+    "items": [
+     {
+      "best_score": null,
+      "earned": null,
+      "points": 20,
+      "protocol": "dns",
+      "submission_count": 0
+     }
+    ],
+    "status": "active",
+    "submission_count": 0,
+    "title": "合成DNS作业",
+    "total_earned": 0.0,
+    "total_points": 20
+   },
+   "business_after": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 1,
+     "assistant_messages": 2,
+     "assistant_sessions": 2,
+     "grading_submissions": 0,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 0,
+     "rag_issues": 1,
+     "rag_knowledge": 0,
+     "rag_knowledge_revisions": 0,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 1,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 0,
+     "usage_counters": 0,
+     "users": 8
+    }
+   },
+   "business_before": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 1,
+     "assistant_messages": 2,
+     "assistant_sessions": 2,
+     "grading_submissions": 0,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 0,
+     "rag_issues": 1,
+     "rag_knowledge": 0,
+     "rag_knowledge_revisions": 0,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 1,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 0,
+     "usage_counters": 0,
+     "users": 8
+    }
+   },
+   "business_delta": {
+    "tables": {
+     "admin_audit_log": {
+      "added": [],
+      "removed": []
+     },
+     "api_tokens": {
+      "added": [],
+      "removed": []
+     },
+     "assignment_items": {
+      "added": [],
+      "removed": []
+     },
+     "assignments": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_citations": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_messages": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_sessions": {
+      "added": [],
+      "removed": []
+     },
+     "grading_submissions": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_chunks": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_documents": {
+      "added": [],
+      "removed": []
+     },
+     "li_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "password_reset_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_index_state": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issue_events": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issues": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge_revisions": {
+      "added": [],
+      "removed": []
+     },
+     "rag_release_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "rag_releases": {
+      "added": [],
+      "removed": []
+     },
+     "rag_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_inputs": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_jobs": {
+      "added": [],
+      "removed": []
+     },
+     "upstream_usage_records": {
+      "added": [],
+      "removed": []
+     },
+     "usage_counters": {
+      "added": [],
+      "removed": []
+     },
+     "users": {
+      "added": [],
+      "removed": []
+     }
+    }
+   },
+   "case_id": "GET /api/assignments/{assignment_id}::success",
+   "expected_status": 200,
+   "headers": {
+    "content-security-policy": "default-src 'self'",
+    "referrer-policy": "no-referrer",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "DENY"
+   },
+   "input_identity_assertions": {},
+   "kind": "success",
+   "media_type": "application/json",
+   "precondition": "seeded-synthetic-tree",
+   "request": {
+    "actor": "student_a",
+    "input": null,
+    "method": "GET",
+    "params": null,
+    "path_parameters": {
+     "assignment_id": "<identity:19>"
+    },
+    "path_template": "/api/assignments/{assignment_id}"
+   },
+   "route_id": "GET /api/assignments/{assignment_id}",
+   "side_effect_counts": {
+    "llm": 0,
+    "mcp": 0
+   },
+   "status": 200,
+   "upstream_script": "fixed-kb-tool-call-and-answer/mcp-grade-80"
+  },
+  {
+   "after_boundary": "response-consumed-and-accepted-tasks-settled",
+   "body": {
+    "created_at": "2026-10-24 04:00:00.000054+00:00",
+    "created_by": "U20270000002",
+    "deadline": "2099-01-01 00:00:00+00:00",
+    "description": "P0",
+    "id": "<identity:19>",
+    "items": [
+     {
+      "points": 20,
+      "protocol": "dns"
+     }
+    ],
+    "scope": "class",
+    "status": "active",
+    "title": "合成DNS作业修订",
+    "updated_at": "2026-10-24 04:00:00.000056+00:00"
+   },
+   "business_after": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 1,
+     "assistant_messages": 2,
+     "assistant_sessions": 2,
+     "grading_submissions": 0,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 0,
+     "rag_issues": 1,
+     "rag_knowledge": 0,
+     "rag_knowledge_revisions": 0,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 1,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 0,
+     "usage_counters": 0,
+     "users": 8
+    }
+   },
+   "business_before": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 1,
+     "assistant_messages": 2,
+     "assistant_sessions": 2,
+     "grading_submissions": 0,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 0,
+     "rag_issues": 1,
+     "rag_knowledge": 0,
+     "rag_knowledge_revisions": 0,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 1,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 0,
+     "usage_counters": 0,
+     "users": 8
+    }
+   },
+   "business_delta": {
+    "tables": {
+     "admin_audit_log": {
+      "added": [],
+      "removed": []
+     },
+     "api_tokens": {
+      "added": [],
+      "removed": []
+     },
+     "assignment_items": {
+      "added": [],
+      "removed": []
+     },
+     "assignments": {
+      "added": [
+       {
+        "assignment_id": "<identity:19>",
+        "created_at": "2026-10-24T04:00:00.000054+00:00",
+        "created_by": "U20270000002",
+        "deadline": "2099-01-01T00:00:00+00:00",
+        "description": "P0",
+        "scope": "class",
+        "status": "active",
+        "title": "合成DNS作业修订",
+        "updated_at": "2026-10-24T04:00:00.000056+00:00"
+       }
+      ],
+      "removed": [
+       {
+        "assignment_id": "<identity:19>",
+        "created_at": "2026-10-24T04:00:00.000054+00:00",
+        "created_by": "U20270000002",
+        "deadline": "2099-01-01T00:00:00+00:00",
+        "description": "P0",
+        "scope": "class",
+        "status": "active",
+        "title": "合成DNS作业",
+        "updated_at": "2026-10-24T04:00:00.000054+00:00"
+       }
+      ]
+     },
+     "assistant_citations": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_messages": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_sessions": {
+      "added": [],
+      "removed": []
+     },
+     "grading_submissions": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_chunks": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_documents": {
+      "added": [],
+      "removed": []
+     },
+     "li_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "password_reset_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_index_state": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issue_events": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issues": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge_revisions": {
+      "added": [],
+      "removed": []
+     },
+     "rag_release_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "rag_releases": {
+      "added": [],
+      "removed": []
+     },
+     "rag_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_inputs": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_jobs": {
+      "added": [],
+      "removed": []
+     },
+     "upstream_usage_records": {
+      "added": [],
+      "removed": []
+     },
+     "usage_counters": {
+      "added": [],
+      "removed": []
+     },
+     "users": {
+      "added": [],
+      "removed": []
+     }
+    }
+   },
+   "case_id": "PATCH /api/assignments/{assignment_id}::success",
+   "expected_status": 200,
+   "headers": {
+    "content-security-policy": "default-src 'self'",
+    "referrer-policy": "no-referrer",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "DENY"
+   },
+   "input_identity_assertions": {},
+   "kind": "success",
+   "media_type": "application/json",
+   "precondition": "seeded-synthetic-tree",
+   "request": {
+    "actor": "teacher_a",
+    "input": {
+     "title": "合成DNS作业修订"
+    },
+    "method": "PATCH",
+    "params": null,
+    "path_parameters": {
+     "assignment_id": "<identity:19>"
+    },
+    "path_template": "/api/assignments/{assignment_id}"
+   },
+   "route_id": "PATCH /api/assignments/{assignment_id}",
+   "side_effect_counts": {
+    "llm": 0,
+    "mcp": 0
+   },
+   "status": 200,
+   "upstream_script": "fixed-kb-tool-call-and-answer/mcp-grade-80"
+  },
+  {
+   "after_boundary": "response-consumed-and-accepted-tasks-settled",
+   "body": {
+    "assignments": [
+     {
+      "created_at": "2026-10-24 04:00:00.000054+00:00",
+      "created_by": "U20270000002",
+      "deadline": "2099-01-01 00:00:00+00:00",
+      "description": "P0",
+      "id": "<identity:19>",
+      "items": [
+       {
+        "points": 20,
+        "protocol": "dns"
+       }
+      ],
+      "scope": "class",
+      "status": "active",
+      "student_count": 1,
+      "submission_count": 1,
+      "title": "合成DNS作业修订",
+      "updated_at": "2026-10-24 04:00:00.000056+00:00"
+     }
+    ]
+   },
+   "business_after": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 1,
+     "assistant_messages": 2,
+     "assistant_sessions": 2,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 0,
+     "rag_issues": 1,
+     "rag_knowledge": 0,
+     "rag_knowledge_revisions": 0,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 1,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 0,
+     "usage_counters": 1,
+     "users": 8
+    }
+   },
+   "business_before": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 1,
+     "assistant_messages": 2,
+     "assistant_sessions": 2,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 0,
+     "rag_issues": 1,
+     "rag_knowledge": 0,
+     "rag_knowledge_revisions": 0,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 1,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 0,
+     "usage_counters": 1,
+     "users": 8
+    }
+   },
+   "business_delta": {
+    "tables": {
+     "admin_audit_log": {
+      "added": [],
+      "removed": []
+     },
+     "api_tokens": {
+      "added": [],
+      "removed": []
+     },
+     "assignment_items": {
+      "added": [],
+      "removed": []
+     },
+     "assignments": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_citations": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_messages": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_sessions": {
+      "added": [],
+      "removed": []
+     },
+     "grading_submissions": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_chunks": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_documents": {
+      "added": [],
+      "removed": []
+     },
+     "li_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "password_reset_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_index_state": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issue_events": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issues": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge_revisions": {
+      "added": [],
+      "removed": []
+     },
+     "rag_release_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "rag_releases": {
+      "added": [],
+      "removed": []
+     },
+     "rag_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_inputs": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_jobs": {
+      "added": [],
+      "removed": []
+     },
+     "upstream_usage_records": {
+      "added": [],
+      "removed": []
+     },
+     "usage_counters": {
+      "added": [],
+      "removed": []
+     },
+     "users": {
+      "added": [],
+      "removed": []
+     }
+    }
+   },
+   "case_id": "GET /api/assignments::success-nonempty-manager",
+   "expected_status": 200,
+   "headers": {
+    "content-security-policy": "default-src 'self'",
+    "referrer-policy": "no-referrer",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "DENY"
+   },
+   "input_identity_assertions": {},
+   "kind": "success-nonempty-manager",
+   "media_type": "application/json",
+   "precondition": "seeded-synthetic-tree",
+   "request": {
+    "actor": "teacher_a",
+    "input": null,
+    "method": "GET",
+    "params": null,
+    "path_parameters": {},
+    "path_template": "/api/assignments"
+   },
+   "route_id": "GET /api/assignments",
+   "side_effect_counts": {
+    "llm": 0,
+    "mcp": 0
+   },
+   "status": 200,
+   "upstream_script": "fixed-kb-tool-call-and-answer/mcp-grade-80"
+  },
+  {
+   "after_boundary": "response-consumed-and-accepted-tasks-settled",
+   "body": {
+    "assignments": [
+     {
+      "created_by": "U20270000002",
+      "deadline": "2099-01-01 00:00:00+00:00",
+      "description": "P0",
+      "id": "<identity:19>",
+      "items": [
+       {
+        "best_score": 80,
+        "earned": 16.0,
+        "points": 20,
+        "protocol": "dns",
+        "submission_count": 1
+       }
+      ],
+      "status": "active",
+      "submission_count": 1,
+      "title": "合成DNS作业修订",
+      "total_earned": 16.0,
+      "total_points": 20
+     }
+    ]
+   },
+   "business_after": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 1,
+     "assistant_messages": 2,
+     "assistant_sessions": 2,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 0,
+     "rag_issues": 1,
+     "rag_knowledge": 0,
+     "rag_knowledge_revisions": 0,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 1,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 0,
+     "usage_counters": 1,
+     "users": 8
+    }
+   },
+   "business_before": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 1,
+     "assistant_messages": 2,
+     "assistant_sessions": 2,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 0,
+     "rag_issues": 1,
+     "rag_knowledge": 0,
+     "rag_knowledge_revisions": 0,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 1,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 0,
+     "usage_counters": 1,
+     "users": 8
+    }
+   },
+   "business_delta": {
+    "tables": {
+     "admin_audit_log": {
+      "added": [],
+      "removed": []
+     },
+     "api_tokens": {
+      "added": [],
+      "removed": []
+     },
+     "assignment_items": {
+      "added": [],
+      "removed": []
+     },
+     "assignments": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_citations": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_messages": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_sessions": {
+      "added": [],
+      "removed": []
+     },
+     "grading_submissions": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_chunks": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_documents": {
+      "added": [],
+      "removed": []
+     },
+     "li_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "password_reset_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_index_state": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issue_events": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issues": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge_revisions": {
+      "added": [],
+      "removed": []
+     },
+     "rag_release_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "rag_releases": {
+      "added": [],
+      "removed": []
+     },
+     "rag_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_inputs": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_jobs": {
+      "added": [],
+      "removed": []
+     },
+     "upstream_usage_records": {
+      "added": [],
+      "removed": []
+     },
+     "usage_counters": {
+      "added": [],
+      "removed": []
+     },
+     "users": {
+      "added": [],
+      "removed": []
+     }
+    }
+   },
+   "case_id": "GET /api/assignments::success-nonempty-student",
+   "expected_status": 200,
+   "headers": {
+    "content-security-policy": "default-src 'self'",
+    "referrer-policy": "no-referrer",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "DENY"
+   },
+   "input_identity_assertions": {},
+   "kind": "success-nonempty-student",
+   "media_type": "application/json",
+   "precondition": "seeded-synthetic-tree",
+   "request": {
+    "actor": "student_a",
+    "input": null,
+    "method": "GET",
+    "params": null,
+    "path_parameters": {},
+    "path_template": "/api/assignments"
+   },
+   "route_id": "GET /api/assignments",
+   "side_effect_counts": {
+    "llm": 0,
+    "mcp": 0
+   },
+   "status": 200,
+   "upstream_script": "fixed-kb-tool-call-and-answer/mcp-grade-80"
+  },
+  {
+   "after_boundary": "response-consumed-and-accepted-tasks-settled",
+   "body": {
+    "assignment": {
+     "created_at": "2026-10-24 04:00:00.000054+00:00",
+     "created_by": "U20270000002",
+     "deadline": "2099-01-01 00:00:00+00:00",
+     "description": "P0",
+     "id": "<identity:19>",
+     "items": [
+      {
+       "points": 20,
+       "protocol": "dns"
+      }
+     ],
+     "scope": "class",
+     "status": "active",
+     "title": "合成DNS作业修订",
+     "updated_at": "2026-10-24 04:00:00.000056+00:00"
+    },
+    "rows": [
+     {
+      "class_teacher": "U20270000002",
+      "last_submitted_at": "2026-10-24 04:00:00.000060+00:00",
+      "scores": {
+       "dns": 16.0
+      },
+      "submission_count": 1,
+      "total_earned": 16.0,
+      "user_id": "U20270000011"
+     }
+    ]
+   },
+   "business_after": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 1,
+     "assistant_messages": 2,
+     "assistant_sessions": 2,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 0,
+     "rag_issues": 1,
+     "rag_knowledge": 0,
+     "rag_knowledge_revisions": 0,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 1,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 0,
+     "usage_counters": 1,
+     "users": 8
+    }
+   },
+   "business_before": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 1,
+     "assistant_messages": 2,
+     "assistant_sessions": 2,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 0,
+     "rag_issues": 1,
+     "rag_knowledge": 0,
+     "rag_knowledge_revisions": 0,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 1,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 0,
+     "usage_counters": 1,
+     "users": 8
+    }
+   },
+   "business_delta": {
+    "tables": {
+     "admin_audit_log": {
+      "added": [],
+      "removed": []
+     },
+     "api_tokens": {
+      "added": [],
+      "removed": []
+     },
+     "assignment_items": {
+      "added": [],
+      "removed": []
+     },
+     "assignments": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_citations": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_messages": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_sessions": {
+      "added": [],
+      "removed": []
+     },
+     "grading_submissions": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_chunks": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_documents": {
+      "added": [],
+      "removed": []
+     },
+     "li_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "password_reset_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_index_state": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issue_events": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issues": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge_revisions": {
+      "added": [],
+      "removed": []
+     },
+     "rag_release_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "rag_releases": {
+      "added": [],
+      "removed": []
+     },
+     "rag_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_inputs": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_jobs": {
+      "added": [],
+      "removed": []
+     },
+     "upstream_usage_records": {
+      "added": [],
+      "removed": []
+     },
+     "usage_counters": {
+      "added": [],
+      "removed": []
+     },
+     "users": {
+      "added": [],
+      "removed": []
+     }
+    }
+   },
+   "case_id": "GET /api/assignments/{assignment_id}/grades::success",
+   "expected_status": 200,
+   "headers": {
+    "content-security-policy": "default-src 'self'",
+    "referrer-policy": "no-referrer",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "DENY"
+   },
+   "input_identity_assertions": {},
+   "kind": "success",
+   "media_type": "application/json",
+   "precondition": "seeded-synthetic-tree",
+   "request": {
+    "actor": "teacher_a",
+    "input": null,
+    "method": "GET",
+    "params": null,
+    "path_parameters": {
+     "assignment_id": "<identity:19>"
+    },
+    "path_template": "/api/assignments/{assignment_id}/grades"
+   },
+   "route_id": "GET /api/assignments/{assignment_id}/grades",
+   "side_effect_counts": {
+    "llm": 0,
+    "mcp": 0
+   },
+   "status": 200,
+   "upstream_script": "fixed-kb-tool-call-and-answer/mcp-grade-80"
+  },
+  {
+   "after_boundary": "response-consumed-and-accepted-tasks-settled",
+   "body": {
+    "length": 163,
+    "sha256": "f280bec9cd2ffed50320aac7ea4f89ca5561351eef11268c04acdcc4277da763"
+   },
+   "business_after": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 1,
+     "assistant_messages": 2,
+     "assistant_sessions": 2,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 0,
+     "rag_issues": 1,
+     "rag_knowledge": 0,
+     "rag_knowledge_revisions": 0,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 1,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 0,
+     "usage_counters": 1,
+     "users": 8
+    }
+   },
+   "business_before": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 1,
+     "assistant_messages": 2,
+     "assistant_sessions": 2,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 0,
+     "rag_issues": 1,
+     "rag_knowledge": 0,
+     "rag_knowledge_revisions": 0,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 1,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 0,
+     "usage_counters": 1,
+     "users": 8
+    }
+   },
+   "business_delta": {
+    "tables": {
+     "admin_audit_log": {
+      "added": [],
+      "removed": []
+     },
+     "api_tokens": {
+      "added": [],
+      "removed": []
+     },
+     "assignment_items": {
+      "added": [],
+      "removed": []
+     },
+     "assignments": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_citations": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_messages": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_sessions": {
+      "added": [],
+      "removed": []
+     },
+     "grading_submissions": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_chunks": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_documents": {
+      "added": [],
+      "removed": []
+     },
+     "li_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "password_reset_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_index_state": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issue_events": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issues": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge_revisions": {
+      "added": [],
+      "removed": []
+     },
+     "rag_release_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "rag_releases": {
+      "added": [],
+      "removed": []
+     },
+     "rag_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_inputs": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_jobs": {
+      "added": [],
+      "removed": []
+     },
+     "upstream_usage_records": {
+      "added": [],
+      "removed": []
+     },
+     "usage_counters": {
+      "added": [],
+      "removed": []
+     },
+     "users": {
+      "added": [],
+      "removed": []
+     }
+    }
+   },
+   "case_id": "GET /api/assignments/{assignment_id}/export::success",
+   "expected_status": 200,
+   "headers": {
+    "content-security-policy": "default-src 'self'",
+    "referrer-policy": "no-referrer",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "DENY"
+   },
+   "input_identity_assertions": {},
+   "kind": "success",
+   "media_type": "text/csv",
+   "precondition": "seeded-synthetic-tree",
+   "request": {
+    "actor": "teacher_a",
+    "input": null,
+    "method": "GET",
+    "params": null,
+    "path_parameters": {
+     "assignment_id": "<identity:19>"
+    },
+    "path_template": "/api/assignments/{assignment_id}/export"
+   },
+   "route_id": "GET /api/assignments/{assignment_id}/export",
+   "side_effect_counts": {
+    "llm": 0,
+    "mcp": 0
+   },
+   "status": 200,
+   "upstream_script": "fixed-kb-tool-call-and-answer/mcp-grade-80"
+  },
+  {
+   "after_boundary": "response-consumed-and-accepted-tasks-settled",
+   "body": {
+    "created_at": "2026-10-24 04:00:00.000054+00:00",
+    "created_by": "U20270000002",
+    "deadline": "2099-01-01 00:00:00+00:00",
+    "description": "P0",
+    "id": "<identity:19>",
+    "items": [
+     {
+      "points": 20,
+      "protocol": "dns"
+     }
+    ],
+    "scope": "class",
+    "status": "withdrawn",
+    "title": "合成DNS作业修订",
+    "updated_at": "2026-10-24 04:00:00.000071+00:00"
+   },
+   "business_after": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 4,
+     "assistant_messages": 4,
+     "assistant_sessions": 3,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 0,
+     "rag_issues": 1,
+     "rag_knowledge": 0,
+     "rag_knowledge_revisions": 0,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 2,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 3,
+     "usage_counters": 2,
+     "users": 8
+    }
+   },
+   "business_before": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 4,
+     "assistant_messages": 4,
+     "assistant_sessions": 3,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 0,
+     "rag_issues": 1,
+     "rag_knowledge": 0,
+     "rag_knowledge_revisions": 0,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 2,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 3,
+     "usage_counters": 2,
+     "users": 8
+    }
+   },
+   "business_delta": {
+    "tables": {
+     "admin_audit_log": {
+      "added": [],
+      "removed": []
+     },
+     "api_tokens": {
+      "added": [],
+      "removed": []
+     },
+     "assignment_items": {
+      "added": [],
+      "removed": []
+     },
+     "assignments": {
+      "added": [
+       {
+        "assignment_id": "<identity:19>",
+        "created_at": "2026-10-24T04:00:00.000054+00:00",
+        "created_by": "U20270000002",
+        "deadline": "2099-01-01T00:00:00+00:00",
+        "description": "P0",
+        "scope": "class",
+        "status": "withdrawn",
+        "title": "合成DNS作业修订",
+        "updated_at": "2026-10-24T04:00:00.000071+00:00"
+       }
+      ],
+      "removed": [
+       {
+        "assignment_id": "<identity:19>",
+        "created_at": "2026-10-24T04:00:00.000054+00:00",
+        "created_by": "U20270000002",
+        "deadline": "2099-01-01T00:00:00+00:00",
+        "description": "P0",
+        "scope": "class",
+        "status": "active",
+        "title": "合成DNS作业修订",
+        "updated_at": "2026-10-24T04:00:00.000056+00:00"
+       }
+      ]
+     },
+     "assistant_citations": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_messages": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_sessions": {
+      "added": [],
+      "removed": []
+     },
+     "grading_submissions": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_chunks": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_documents": {
+      "added": [],
+      "removed": []
+     },
+     "li_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "password_reset_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_index_state": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issue_events": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issues": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge_revisions": {
+      "added": [],
+      "removed": []
+     },
+     "rag_release_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "rag_releases": {
+      "added": [],
+      "removed": []
+     },
+     "rag_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_inputs": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_jobs": {
+      "added": [],
+      "removed": []
+     },
+     "upstream_usage_records": {
+      "added": [],
+      "removed": []
+     },
+     "usage_counters": {
+      "added": [],
+      "removed": []
+     },
+     "users": {
+      "added": [],
+      "removed": []
+     }
+    }
+   },
+   "case_id": "POST /api/assignments/{assignment_id}/withdraw::success",
+   "expected_status": 200,
+   "headers": {
+    "content-security-policy": "default-src 'self'",
+    "referrer-policy": "no-referrer",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "DENY"
+   },
+   "input_identity_assertions": {},
+   "kind": "success",
+   "media_type": "application/json",
+   "precondition": "seeded-synthetic-tree",
+   "request": {
+    "actor": "teacher_a",
+    "input": null,
+    "method": "POST",
+    "params": null,
+    "path_parameters": {
+     "assignment_id": "<identity:19>"
+    },
+    "path_template": "/api/assignments/{assignment_id}/withdraw"
+   },
+   "route_id": "POST /api/assignments/{assignment_id}/withdraw",
+   "side_effect_counts": {
+    "llm": 0,
+    "mcp": 0
+   },
+   "status": 200,
+   "upstream_script": "fixed-kb-tool-call-and-answer/mcp-grade-80"
+  },
+  {
+   "after_boundary": "response-consumed-and-accepted-tasks-settled",
+   "body": {
+    "created_at": "2026-10-24 04:00:00.000054+00:00",
+    "created_by": "U20270000002",
+    "deadline": "2099-01-01 00:00:00+00:00",
+    "description": "P0",
+    "id": "<identity:19>",
+    "items": [
+     {
+      "points": 20,
+      "protocol": "dns"
+     }
+    ],
+    "scope": "class",
+    "status": "active",
+    "title": "合成DNS作业修订",
+    "updated_at": "2026-10-24 04:00:00.000072+00:00"
+   },
+   "business_after": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 4,
+     "assistant_messages": 4,
+     "assistant_sessions": 3,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 0,
+     "rag_issues": 1,
+     "rag_knowledge": 0,
+     "rag_knowledge_revisions": 0,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 2,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 3,
+     "usage_counters": 2,
+     "users": 8
+    }
+   },
+   "business_before": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 4,
+     "assistant_messages": 4,
+     "assistant_sessions": 3,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 0,
+     "rag_issues": 1,
+     "rag_knowledge": 0,
+     "rag_knowledge_revisions": 0,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 2,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 3,
+     "usage_counters": 2,
+     "users": 8
+    }
+   },
+   "business_delta": {
+    "tables": {
+     "admin_audit_log": {
+      "added": [],
+      "removed": []
+     },
+     "api_tokens": {
+      "added": [],
+      "removed": []
+     },
+     "assignment_items": {
+      "added": [],
+      "removed": []
+     },
+     "assignments": {
+      "added": [
+       {
+        "assignment_id": "<identity:19>",
+        "created_at": "2026-10-24T04:00:00.000054+00:00",
+        "created_by": "U20270000002",
+        "deadline": "2099-01-01T00:00:00+00:00",
+        "description": "P0",
+        "scope": "class",
+        "status": "active",
+        "title": "合成DNS作业修订",
+        "updated_at": "2026-10-24T04:00:00.000072+00:00"
+       }
+      ],
+      "removed": [
+       {
+        "assignment_id": "<identity:19>",
+        "created_at": "2026-10-24T04:00:00.000054+00:00",
+        "created_by": "U20270000002",
+        "deadline": "2099-01-01T00:00:00+00:00",
+        "description": "P0",
+        "scope": "class",
+        "status": "withdrawn",
+        "title": "合成DNS作业修订",
+        "updated_at": "2026-10-24T04:00:00.000071+00:00"
+       }
+      ]
+     },
+     "assistant_citations": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_messages": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_sessions": {
+      "added": [],
+      "removed": []
+     },
+     "grading_submissions": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_chunks": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_documents": {
+      "added": [],
+      "removed": []
+     },
+     "li_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "password_reset_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_index_state": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issue_events": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issues": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge_revisions": {
+      "added": [],
+      "removed": []
+     },
+     "rag_release_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "rag_releases": {
+      "added": [],
+      "removed": []
+     },
+     "rag_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_inputs": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_jobs": {
+      "added": [],
+      "removed": []
+     },
+     "upstream_usage_records": {
+      "added": [],
+      "removed": []
+     },
+     "usage_counters": {
+      "added": [],
+      "removed": []
+     },
+     "users": {
+      "added": [],
+      "removed": []
+     }
+    }
+   },
+   "case_id": "POST /api/assignments/{assignment_id}/reactivate::success",
+   "expected_status": 200,
+   "headers": {
+    "content-security-policy": "default-src 'self'",
+    "referrer-policy": "no-referrer",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "DENY"
+   },
+   "input_identity_assertions": {},
+   "kind": "success",
+   "media_type": "application/json",
+   "precondition": "seeded-synthetic-tree",
+   "request": {
+    "actor": "teacher_a",
+    "input": null,
+    "method": "POST",
+    "params": null,
+    "path_parameters": {
+     "assignment_id": "<identity:19>"
+    },
+    "path_template": "/api/assignments/{assignment_id}/reactivate"
+   },
+   "route_id": "POST /api/assignments/{assignment_id}/reactivate",
+   "side_effect_counts": {
+    "llm": 0,
+    "mcp": 0
+   },
+   "status": 200,
+   "upstream_script": "fixed-kb-tool-call-and-answer/mcp-grade-80"
+  },
+  {
+   "after_boundary": "response-consumed-and-accepted-tasks-settled",
+   "body": {
+    "detail": "missing or malformed bearer token"
+   },
+   "business_after": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 7,
+     "assistant_messages": 6,
+     "assistant_sessions": 4,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 3,
+     "rag_issues": 1,
+     "rag_knowledge": 1,
+     "rag_knowledge_revisions": 2,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 4,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 11,
+     "usage_counters": 3,
+     "users": 8
+    }
+   },
+   "business_before": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 7,
+     "assistant_messages": 6,
+     "assistant_sessions": 4,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 3,
+     "rag_issues": 1,
+     "rag_knowledge": 1,
+     "rag_knowledge_revisions": 2,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 4,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 11,
+     "usage_counters": 3,
+     "users": 8
+    }
+   },
+   "business_delta": {
+    "tables": {
+     "admin_audit_log": {
+      "added": [],
+      "removed": []
+     },
+     "api_tokens": {
+      "added": [],
+      "removed": []
+     },
+     "assignment_items": {
+      "added": [],
+      "removed": []
+     },
+     "assignments": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_citations": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_messages": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_sessions": {
+      "added": [],
+      "removed": []
+     },
+     "grading_submissions": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_chunks": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_documents": {
+      "added": [],
+      "removed": []
+     },
+     "li_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "password_reset_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_index_state": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issue_events": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issues": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge_revisions": {
+      "added": [],
+      "removed": []
+     },
+     "rag_release_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "rag_releases": {
+      "added": [],
+      "removed": []
+     },
+     "rag_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_inputs": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_jobs": {
+      "added": [],
+      "removed": []
+     },
+     "upstream_usage_records": {
+      "added": [],
+      "removed": []
+     },
+     "usage_counters": {
+      "added": [],
+      "removed": []
+     },
+     "users": {
+      "added": [],
+      "removed": []
+     }
+    }
+   },
+   "case_id": "GET /api/assignments::unauthorized",
+   "expected_status": 401,
+   "headers": {
+    "content-security-policy": "default-src 'self'",
+    "referrer-policy": "no-referrer",
+    "www-authenticate": "Bearer",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "DENY"
+   },
+   "input_identity_assertions": {},
+   "kind": "unauthorized",
+   "media_type": "application/json",
+   "precondition": "seeded-synthetic-tree",
+   "request": {
+    "actor": "",
+    "input": {},
+    "method": "GET",
+    "params": null,
+    "path_parameters": {},
+    "path_template": "/api/assignments"
+   },
+   "route_id": "GET /api/assignments",
+   "side_effect_counts": {
+    "llm": 0,
+    "mcp": 0
+   },
+   "status": 401,
+   "upstream_script": "fixed-kb-tool-call-and-answer/mcp-grade-80"
+  },
+  {
+   "after_boundary": "response-consumed-and-accepted-tasks-settled",
+   "body": {
+    "detail": "missing or malformed bearer token"
+   },
+   "business_after": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 7,
+     "assistant_messages": 6,
+     "assistant_sessions": 4,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 3,
+     "rag_issues": 1,
+     "rag_knowledge": 1,
+     "rag_knowledge_revisions": 2,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 4,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 11,
+     "usage_counters": 3,
+     "users": 8
+    }
+   },
+   "business_before": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 7,
+     "assistant_messages": 6,
+     "assistant_sessions": 4,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 3,
+     "rag_issues": 1,
+     "rag_knowledge": 1,
+     "rag_knowledge_revisions": 2,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 4,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 11,
+     "usage_counters": 3,
+     "users": 8
+    }
+   },
+   "business_delta": {
+    "tables": {
+     "admin_audit_log": {
+      "added": [],
+      "removed": []
+     },
+     "api_tokens": {
+      "added": [],
+      "removed": []
+     },
+     "assignment_items": {
+      "added": [],
+      "removed": []
+     },
+     "assignments": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_citations": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_messages": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_sessions": {
+      "added": [],
+      "removed": []
+     },
+     "grading_submissions": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_chunks": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_documents": {
+      "added": [],
+      "removed": []
+     },
+     "li_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "password_reset_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_index_state": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issue_events": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issues": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge_revisions": {
+      "added": [],
+      "removed": []
+     },
+     "rag_release_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "rag_releases": {
+      "added": [],
+      "removed": []
+     },
+     "rag_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_inputs": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_jobs": {
+      "added": [],
+      "removed": []
+     },
+     "upstream_usage_records": {
+      "added": [],
+      "removed": []
+     },
+     "usage_counters": {
+      "added": [],
+      "removed": []
+     },
+     "users": {
+      "added": [],
+      "removed": []
+     }
+    }
+   },
+   "case_id": "GET /api/assignments/protocols::unauthorized",
+   "expected_status": 401,
+   "headers": {
+    "content-security-policy": "default-src 'self'",
+    "referrer-policy": "no-referrer",
+    "www-authenticate": "Bearer",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "DENY"
+   },
+   "input_identity_assertions": {},
+   "kind": "unauthorized",
+   "media_type": "application/json",
+   "precondition": "seeded-synthetic-tree",
+   "request": {
+    "actor": "",
+    "input": {},
+    "method": "GET",
+    "params": null,
+    "path_parameters": {},
+    "path_template": "/api/assignments/protocols"
+   },
+   "route_id": "GET /api/assignments/protocols",
+   "side_effect_counts": {
+    "llm": 0,
+    "mcp": 0
+   },
+   "status": 401,
+   "upstream_script": "fixed-kb-tool-call-and-answer/mcp-grade-80"
+  },
+  {
+   "after_boundary": "response-consumed-and-accepted-tasks-settled",
+   "body": {
+    "detail": "missing or malformed bearer token"
+   },
+   "business_after": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 7,
+     "assistant_messages": 6,
+     "assistant_sessions": 4,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 3,
+     "rag_issues": 1,
+     "rag_knowledge": 1,
+     "rag_knowledge_revisions": 2,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 4,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 11,
+     "usage_counters": 3,
+     "users": 8
+    }
+   },
+   "business_before": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 7,
+     "assistant_messages": 6,
+     "assistant_sessions": 4,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 3,
+     "rag_issues": 1,
+     "rag_knowledge": 1,
+     "rag_knowledge_revisions": 2,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 4,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 11,
+     "usage_counters": 3,
+     "users": 8
+    }
+   },
+   "business_delta": {
+    "tables": {
+     "admin_audit_log": {
+      "added": [],
+      "removed": []
+     },
+     "api_tokens": {
+      "added": [],
+      "removed": []
+     },
+     "assignment_items": {
+      "added": [],
+      "removed": []
+     },
+     "assignments": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_citations": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_messages": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_sessions": {
+      "added": [],
+      "removed": []
+     },
+     "grading_submissions": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_chunks": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_documents": {
+      "added": [],
+      "removed": []
+     },
+     "li_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "password_reset_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_index_state": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issue_events": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issues": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge_revisions": {
+      "added": [],
+      "removed": []
+     },
+     "rag_release_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "rag_releases": {
+      "added": [],
+      "removed": []
+     },
+     "rag_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_inputs": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_jobs": {
+      "added": [],
+      "removed": []
+     },
+     "upstream_usage_records": {
+      "added": [],
+      "removed": []
+     },
+     "usage_counters": {
+      "added": [],
+      "removed": []
+     },
+     "users": {
+      "added": [],
+      "removed": []
+     }
+    }
+   },
+   "case_id": "GET /api/assignments/{assignment_id}::unauthorized",
+   "expected_status": 401,
+   "headers": {
+    "content-security-policy": "default-src 'self'",
+    "referrer-policy": "no-referrer",
+    "www-authenticate": "Bearer",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "DENY"
+   },
+   "input_identity_assertions": {},
+   "kind": "unauthorized",
+   "media_type": "application/json",
+   "precondition": "seeded-synthetic-tree",
+   "request": {
+    "actor": "",
+    "input": {},
+    "method": "GET",
+    "params": null,
+    "path_parameters": {
+     "assignment_id": "<identity:19>"
+    },
+    "path_template": "/api/assignments/{assignment_id}"
+   },
+   "route_id": "GET /api/assignments/{assignment_id}",
+   "side_effect_counts": {
+    "llm": 0,
+    "mcp": 0
+   },
+   "status": 401,
+   "upstream_script": "fixed-kb-tool-call-and-answer/mcp-grade-80"
+  },
+  {
+   "after_boundary": "response-consumed-and-accepted-tasks-settled",
+   "body": {
+    "detail": "not found"
+   },
+   "business_after": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 7,
+     "assistant_messages": 6,
+     "assistant_sessions": 4,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 3,
+     "rag_issues": 1,
+     "rag_knowledge": 1,
+     "rag_knowledge_revisions": 2,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 4,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 11,
+     "usage_counters": 3,
+     "users": 8
+    }
+   },
+   "business_before": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 7,
+     "assistant_messages": 6,
+     "assistant_sessions": 4,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 3,
+     "rag_issues": 1,
+     "rag_knowledge": 1,
+     "rag_knowledge_revisions": 2,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 4,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 11,
+     "usage_counters": 3,
+     "users": 8
+    }
+   },
+   "business_delta": {
+    "tables": {
+     "admin_audit_log": {
+      "added": [],
+      "removed": []
+     },
+     "api_tokens": {
+      "added": [],
+      "removed": []
+     },
+     "assignment_items": {
+      "added": [],
+      "removed": []
+     },
+     "assignments": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_citations": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_messages": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_sessions": {
+      "added": [],
+      "removed": []
+     },
+     "grading_submissions": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_chunks": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_documents": {
+      "added": [],
+      "removed": []
+     },
+     "li_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "password_reset_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_index_state": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issue_events": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issues": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge_revisions": {
+      "added": [],
+      "removed": []
+     },
+     "rag_release_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "rag_releases": {
+      "added": [],
+      "removed": []
+     },
+     "rag_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_inputs": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_jobs": {
+      "added": [],
+      "removed": []
+     },
+     "upstream_usage_records": {
+      "added": [],
+      "removed": []
+     },
+     "usage_counters": {
+      "added": [],
+      "removed": []
+     },
+     "users": {
+      "added": [],
+      "removed": []
+     }
+    }
+   },
+   "case_id": "GET /api/assignments/{assignment_id}::invalid-resource",
+   "expected_status": 404,
+   "headers": {
+    "content-security-policy": "default-src 'self'",
+    "referrer-policy": "no-referrer",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "DENY"
+   },
+   "input_identity_assertions": {},
+   "kind": "invalid-resource",
+   "media_type": "application/json",
+   "precondition": "seeded-synthetic-tree",
+   "request": {
+    "actor": "leader",
+    "input": null,
+    "method": "GET",
+    "params": null,
+    "path_parameters": {
+     "assignment_id": "p0-missing"
+    },
+    "path_template": "/api/assignments/{assignment_id}"
+   },
+   "route_id": "GET /api/assignments/{assignment_id}",
+   "side_effect_counts": {
+    "llm": 0,
+    "mcp": 0
+   },
+   "status": 404,
+   "upstream_script": "fixed-kb-tool-call-and-answer/mcp-grade-80"
+  },
+  {
+   "after_boundary": "response-consumed-and-accepted-tasks-settled",
+   "body": {
+    "detail": "missing or malformed bearer token"
+   },
+   "business_after": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 7,
+     "assistant_messages": 6,
+     "assistant_sessions": 4,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 3,
+     "rag_issues": 1,
+     "rag_knowledge": 1,
+     "rag_knowledge_revisions": 2,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 4,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 11,
+     "usage_counters": 3,
+     "users": 8
+    }
+   },
+   "business_before": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 7,
+     "assistant_messages": 6,
+     "assistant_sessions": 4,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 3,
+     "rag_issues": 1,
+     "rag_knowledge": 1,
+     "rag_knowledge_revisions": 2,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 4,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 11,
+     "usage_counters": 3,
+     "users": 8
+    }
+   },
+   "business_delta": {
+    "tables": {
+     "admin_audit_log": {
+      "added": [],
+      "removed": []
+     },
+     "api_tokens": {
+      "added": [],
+      "removed": []
+     },
+     "assignment_items": {
+      "added": [],
+      "removed": []
+     },
+     "assignments": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_citations": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_messages": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_sessions": {
+      "added": [],
+      "removed": []
+     },
+     "grading_submissions": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_chunks": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_documents": {
+      "added": [],
+      "removed": []
+     },
+     "li_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "password_reset_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_index_state": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issue_events": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issues": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge_revisions": {
+      "added": [],
+      "removed": []
+     },
+     "rag_release_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "rag_releases": {
+      "added": [],
+      "removed": []
+     },
+     "rag_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_inputs": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_jobs": {
+      "added": [],
+      "removed": []
+     },
+     "upstream_usage_records": {
+      "added": [],
+      "removed": []
+     },
+     "usage_counters": {
+      "added": [],
+      "removed": []
+     },
+     "users": {
+      "added": [],
+      "removed": []
+     }
+    }
+   },
+   "case_id": "GET /api/assignments/{assignment_id}/export::unauthorized",
+   "expected_status": 401,
+   "headers": {
+    "content-security-policy": "default-src 'self'",
+    "referrer-policy": "no-referrer",
+    "www-authenticate": "Bearer",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "DENY"
+   },
+   "input_identity_assertions": {},
+   "kind": "unauthorized",
+   "media_type": "application/json",
+   "precondition": "seeded-synthetic-tree",
+   "request": {
+    "actor": "",
+    "input": {},
+    "method": "GET",
+    "params": null,
+    "path_parameters": {
+     "assignment_id": "<identity:19>"
+    },
+    "path_template": "/api/assignments/{assignment_id}/export"
+   },
+   "route_id": "GET /api/assignments/{assignment_id}/export",
+   "side_effect_counts": {
+    "llm": 0,
+    "mcp": 0
+   },
+   "status": 401,
+   "upstream_script": "fixed-kb-tool-call-and-answer/mcp-grade-80"
+  },
+  {
+   "after_boundary": "response-consumed-and-accepted-tasks-settled",
+   "body": {
+    "detail": "not found"
+   },
+   "business_after": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 7,
+     "assistant_messages": 6,
+     "assistant_sessions": 4,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 3,
+     "rag_issues": 1,
+     "rag_knowledge": 1,
+     "rag_knowledge_revisions": 2,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 4,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 11,
+     "usage_counters": 3,
+     "users": 8
+    }
+   },
+   "business_before": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 7,
+     "assistant_messages": 6,
+     "assistant_sessions": 4,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 3,
+     "rag_issues": 1,
+     "rag_knowledge": 1,
+     "rag_knowledge_revisions": 2,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 4,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 11,
+     "usage_counters": 3,
+     "users": 8
+    }
+   },
+   "business_delta": {
+    "tables": {
+     "admin_audit_log": {
+      "added": [],
+      "removed": []
+     },
+     "api_tokens": {
+      "added": [],
+      "removed": []
+     },
+     "assignment_items": {
+      "added": [],
+      "removed": []
+     },
+     "assignments": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_citations": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_messages": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_sessions": {
+      "added": [],
+      "removed": []
+     },
+     "grading_submissions": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_chunks": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_documents": {
+      "added": [],
+      "removed": []
+     },
+     "li_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "password_reset_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_index_state": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issue_events": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issues": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge_revisions": {
+      "added": [],
+      "removed": []
+     },
+     "rag_release_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "rag_releases": {
+      "added": [],
+      "removed": []
+     },
+     "rag_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_inputs": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_jobs": {
+      "added": [],
+      "removed": []
+     },
+     "upstream_usage_records": {
+      "added": [],
+      "removed": []
+     },
+     "usage_counters": {
+      "added": [],
+      "removed": []
+     },
+     "users": {
+      "added": [],
+      "removed": []
+     }
+    }
+   },
+   "case_id": "GET /api/assignments/{assignment_id}/export::invalid-resource",
+   "expected_status": 404,
+   "headers": {
+    "content-security-policy": "default-src 'self'",
+    "referrer-policy": "no-referrer",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "DENY"
+   },
+   "input_identity_assertions": {},
+   "kind": "invalid-resource",
+   "media_type": "application/json",
+   "precondition": "seeded-synthetic-tree",
+   "request": {
+    "actor": "leader",
+    "input": null,
+    "method": "GET",
+    "params": null,
+    "path_parameters": {
+     "assignment_id": "p0-missing"
+    },
+    "path_template": "/api/assignments/{assignment_id}/export"
+   },
+   "route_id": "GET /api/assignments/{assignment_id}/export",
+   "side_effect_counts": {
+    "llm": 0,
+    "mcp": 0
+   },
+   "status": 404,
+   "upstream_script": "fixed-kb-tool-call-and-answer/mcp-grade-80"
+  },
+  {
+   "after_boundary": "response-consumed-and-accepted-tasks-settled",
+   "body": {
+    "detail": "missing or malformed bearer token"
+   },
+   "business_after": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 7,
+     "assistant_messages": 6,
+     "assistant_sessions": 4,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 3,
+     "rag_issues": 1,
+     "rag_knowledge": 1,
+     "rag_knowledge_revisions": 2,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 4,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 11,
+     "usage_counters": 3,
+     "users": 8
+    }
+   },
+   "business_before": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 7,
+     "assistant_messages": 6,
+     "assistant_sessions": 4,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 3,
+     "rag_issues": 1,
+     "rag_knowledge": 1,
+     "rag_knowledge_revisions": 2,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 4,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 11,
+     "usage_counters": 3,
+     "users": 8
+    }
+   },
+   "business_delta": {
+    "tables": {
+     "admin_audit_log": {
+      "added": [],
+      "removed": []
+     },
+     "api_tokens": {
+      "added": [],
+      "removed": []
+     },
+     "assignment_items": {
+      "added": [],
+      "removed": []
+     },
+     "assignments": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_citations": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_messages": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_sessions": {
+      "added": [],
+      "removed": []
+     },
+     "grading_submissions": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_chunks": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_documents": {
+      "added": [],
+      "removed": []
+     },
+     "li_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "password_reset_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_index_state": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issue_events": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issues": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge_revisions": {
+      "added": [],
+      "removed": []
+     },
+     "rag_release_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "rag_releases": {
+      "added": [],
+      "removed": []
+     },
+     "rag_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_inputs": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_jobs": {
+      "added": [],
+      "removed": []
+     },
+     "upstream_usage_records": {
+      "added": [],
+      "removed": []
+     },
+     "usage_counters": {
+      "added": [],
+      "removed": []
+     },
+     "users": {
+      "added": [],
+      "removed": []
+     }
+    }
+   },
+   "case_id": "GET /api/assignments/{assignment_id}/grades::unauthorized",
+   "expected_status": 401,
+   "headers": {
+    "content-security-policy": "default-src 'self'",
+    "referrer-policy": "no-referrer",
+    "www-authenticate": "Bearer",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "DENY"
+   },
+   "input_identity_assertions": {},
+   "kind": "unauthorized",
+   "media_type": "application/json",
+   "precondition": "seeded-synthetic-tree",
+   "request": {
+    "actor": "",
+    "input": {},
+    "method": "GET",
+    "params": null,
+    "path_parameters": {
+     "assignment_id": "<identity:19>"
+    },
+    "path_template": "/api/assignments/{assignment_id}/grades"
+   },
+   "route_id": "GET /api/assignments/{assignment_id}/grades",
+   "side_effect_counts": {
+    "llm": 0,
+    "mcp": 0
+   },
+   "status": 401,
+   "upstream_script": "fixed-kb-tool-call-and-answer/mcp-grade-80"
+  },
+  {
+   "after_boundary": "response-consumed-and-accepted-tasks-settled",
+   "body": {
+    "detail": "not found"
+   },
+   "business_after": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 7,
+     "assistant_messages": 6,
+     "assistant_sessions": 4,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 3,
+     "rag_issues": 1,
+     "rag_knowledge": 1,
+     "rag_knowledge_revisions": 2,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 4,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 11,
+     "usage_counters": 3,
+     "users": 8
+    }
+   },
+   "business_before": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 7,
+     "assistant_messages": 6,
+     "assistant_sessions": 4,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 3,
+     "rag_issues": 1,
+     "rag_knowledge": 1,
+     "rag_knowledge_revisions": 2,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 4,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 11,
+     "usage_counters": 3,
+     "users": 8
+    }
+   },
+   "business_delta": {
+    "tables": {
+     "admin_audit_log": {
+      "added": [],
+      "removed": []
+     },
+     "api_tokens": {
+      "added": [],
+      "removed": []
+     },
+     "assignment_items": {
+      "added": [],
+      "removed": []
+     },
+     "assignments": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_citations": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_messages": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_sessions": {
+      "added": [],
+      "removed": []
+     },
+     "grading_submissions": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_chunks": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_documents": {
+      "added": [],
+      "removed": []
+     },
+     "li_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "password_reset_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_index_state": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issue_events": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issues": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge_revisions": {
+      "added": [],
+      "removed": []
+     },
+     "rag_release_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "rag_releases": {
+      "added": [],
+      "removed": []
+     },
+     "rag_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_inputs": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_jobs": {
+      "added": [],
+      "removed": []
+     },
+     "upstream_usage_records": {
+      "added": [],
+      "removed": []
+     },
+     "usage_counters": {
+      "added": [],
+      "removed": []
+     },
+     "users": {
+      "added": [],
+      "removed": []
+     }
+    }
+   },
+   "case_id": "GET /api/assignments/{assignment_id}/grades::invalid-resource",
+   "expected_status": 404,
+   "headers": {
+    "content-security-policy": "default-src 'self'",
+    "referrer-policy": "no-referrer",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "DENY"
+   },
+   "input_identity_assertions": {},
+   "kind": "invalid-resource",
+   "media_type": "application/json",
+   "precondition": "seeded-synthetic-tree",
+   "request": {
+    "actor": "leader",
+    "input": null,
+    "method": "GET",
+    "params": null,
+    "path_parameters": {
+     "assignment_id": "p0-missing"
+    },
+    "path_template": "/api/assignments/{assignment_id}/grades"
+   },
+   "route_id": "GET /api/assignments/{assignment_id}/grades",
+   "side_effect_counts": {
+    "llm": 0,
+    "mcp": 0
+   },
+   "status": 404,
+   "upstream_script": "fixed-kb-tool-call-and-answer/mcp-grade-80"
+  },
+  {
+   "after_boundary": "response-consumed-and-accepted-tasks-settled",
+   "body": {
+    "detail": "missing or malformed bearer token"
+   },
+   "business_after": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 7,
+     "assistant_messages": 6,
+     "assistant_sessions": 4,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 3,
+     "rag_issues": 1,
+     "rag_knowledge": 1,
+     "rag_knowledge_revisions": 2,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 4,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 11,
+     "usage_counters": 3,
+     "users": 8
+    }
+   },
+   "business_before": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 7,
+     "assistant_messages": 6,
+     "assistant_sessions": 4,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 3,
+     "rag_issues": 1,
+     "rag_knowledge": 1,
+     "rag_knowledge_revisions": 2,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 4,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 11,
+     "usage_counters": 3,
+     "users": 8
+    }
+   },
+   "business_delta": {
+    "tables": {
+     "admin_audit_log": {
+      "added": [],
+      "removed": []
+     },
+     "api_tokens": {
+      "added": [],
+      "removed": []
+     },
+     "assignment_items": {
+      "added": [],
+      "removed": []
+     },
+     "assignments": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_citations": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_messages": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_sessions": {
+      "added": [],
+      "removed": []
+     },
+     "grading_submissions": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_chunks": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_documents": {
+      "added": [],
+      "removed": []
+     },
+     "li_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "password_reset_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_index_state": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issue_events": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issues": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge_revisions": {
+      "added": [],
+      "removed": []
+     },
+     "rag_release_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "rag_releases": {
+      "added": [],
+      "removed": []
+     },
+     "rag_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_inputs": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_jobs": {
+      "added": [],
+      "removed": []
+     },
+     "upstream_usage_records": {
+      "added": [],
+      "removed": []
+     },
+     "usage_counters": {
+      "added": [],
+      "removed": []
+     },
+     "users": {
+      "added": [],
+      "removed": []
+     }
+    }
+   },
+   "case_id": "PATCH /api/assignments/{assignment_id}::unauthorized",
+   "expected_status": 401,
+   "headers": {
+    "content-security-policy": "default-src 'self'",
+    "referrer-policy": "no-referrer",
+    "www-authenticate": "Bearer",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "DENY"
+   },
+   "input_identity_assertions": {},
+   "kind": "unauthorized",
+   "media_type": "application/json",
+   "precondition": "seeded-synthetic-tree",
+   "request": {
+    "actor": "",
+    "input": {},
+    "method": "PATCH",
+    "params": null,
+    "path_parameters": {
+     "assignment_id": "<identity:19>"
+    },
+    "path_template": "/api/assignments/{assignment_id}"
+   },
+   "route_id": "PATCH /api/assignments/{assignment_id}",
+   "side_effect_counts": {
+    "llm": 0,
+    "mcp": 0
+   },
+   "status": 401,
+   "upstream_script": "fixed-kb-tool-call-and-answer/mcp-grade-80"
+  },
+  {
+   "after_boundary": "response-consumed-and-accepted-tasks-settled",
+   "body": {
+    "detail": [
+     {
+      "ctx": {
+       "min_length": 1
+      },
+      "input": "",
+      "loc": [
+       "body",
+       "title"
+      ],
+      "msg": "String should have at least 1 character",
+      "type": "string_too_short"
+     }
+    ]
+   },
+   "business_after": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 7,
+     "assistant_messages": 6,
+     "assistant_sessions": 4,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 3,
+     "rag_issues": 1,
+     "rag_knowledge": 1,
+     "rag_knowledge_revisions": 2,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 4,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 11,
+     "usage_counters": 3,
+     "users": 8
+    }
+   },
+   "business_before": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 7,
+     "assistant_messages": 6,
+     "assistant_sessions": 4,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 3,
+     "rag_issues": 1,
+     "rag_knowledge": 1,
+     "rag_knowledge_revisions": 2,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 4,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 11,
+     "usage_counters": 3,
+     "users": 8
+    }
+   },
+   "business_delta": {
+    "tables": {
+     "admin_audit_log": {
+      "added": [],
+      "removed": []
+     },
+     "api_tokens": {
+      "added": [],
+      "removed": []
+     },
+     "assignment_items": {
+      "added": [],
+      "removed": []
+     },
+     "assignments": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_citations": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_messages": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_sessions": {
+      "added": [],
+      "removed": []
+     },
+     "grading_submissions": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_chunks": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_documents": {
+      "added": [],
+      "removed": []
+     },
+     "li_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "password_reset_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_index_state": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issue_events": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issues": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge_revisions": {
+      "added": [],
+      "removed": []
+     },
+     "rag_release_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "rag_releases": {
+      "added": [],
+      "removed": []
+     },
+     "rag_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_inputs": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_jobs": {
+      "added": [],
+      "removed": []
+     },
+     "upstream_usage_records": {
+      "added": [],
+      "removed": []
+     },
+     "usage_counters": {
+      "added": [],
+      "removed": []
+     },
+     "users": {
+      "added": [],
+      "removed": []
+     }
+    }
+   },
+   "case_id": "PATCH /api/assignments/{assignment_id}::invalid-input",
+   "expected_status": 422,
+   "headers": {
+    "content-security-policy": "default-src 'self'",
+    "referrer-policy": "no-referrer",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "DENY"
+   },
+   "input_identity_assertions": {},
+   "kind": "invalid-input",
+   "media_type": "application/json",
+   "precondition": "seeded-synthetic-tree",
+   "request": {
+    "actor": "leader",
+    "input": {
+     "title": ""
+    },
+    "method": "PATCH",
+    "params": null,
+    "path_parameters": {
+     "assignment_id": "<identity:19>"
+    },
+    "path_template": "/api/assignments/{assignment_id}"
+   },
+   "route_id": "PATCH /api/assignments/{assignment_id}",
+   "side_effect_counts": {
+    "llm": 0,
+    "mcp": 0
+   },
+   "status": 422,
+   "upstream_script": "fixed-kb-tool-call-and-answer/mcp-grade-80"
+  },
+  {
+   "after_boundary": "response-consumed-and-accepted-tasks-settled",
+   "body": {
+    "detail": "missing or malformed bearer token"
+   },
+   "business_after": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 7,
+     "assistant_messages": 6,
+     "assistant_sessions": 4,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 3,
+     "rag_issues": 1,
+     "rag_knowledge": 1,
+     "rag_knowledge_revisions": 2,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 4,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 11,
+     "usage_counters": 3,
+     "users": 8
+    }
+   },
+   "business_before": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 7,
+     "assistant_messages": 6,
+     "assistant_sessions": 4,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 3,
+     "rag_issues": 1,
+     "rag_knowledge": 1,
+     "rag_knowledge_revisions": 2,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 4,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 11,
+     "usage_counters": 3,
+     "users": 8
+    }
+   },
+   "business_delta": {
+    "tables": {
+     "admin_audit_log": {
+      "added": [],
+      "removed": []
+     },
+     "api_tokens": {
+      "added": [],
+      "removed": []
+     },
+     "assignment_items": {
+      "added": [],
+      "removed": []
+     },
+     "assignments": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_citations": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_messages": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_sessions": {
+      "added": [],
+      "removed": []
+     },
+     "grading_submissions": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_chunks": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_documents": {
+      "added": [],
+      "removed": []
+     },
+     "li_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "password_reset_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_index_state": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issue_events": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issues": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge_revisions": {
+      "added": [],
+      "removed": []
+     },
+     "rag_release_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "rag_releases": {
+      "added": [],
+      "removed": []
+     },
+     "rag_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_inputs": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_jobs": {
+      "added": [],
+      "removed": []
+     },
+     "upstream_usage_records": {
+      "added": [],
+      "removed": []
+     },
+     "usage_counters": {
+      "added": [],
+      "removed": []
+     },
+     "users": {
+      "added": [],
+      "removed": []
+     }
+    }
+   },
+   "case_id": "POST /api/assignments::unauthorized",
+   "expected_status": 401,
+   "headers": {
+    "content-security-policy": "default-src 'self'",
+    "referrer-policy": "no-referrer",
+    "www-authenticate": "Bearer",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "DENY"
+   },
+   "input_identity_assertions": {},
+   "kind": "unauthorized",
+   "media_type": "application/json",
+   "precondition": "seeded-synthetic-tree",
+   "request": {
+    "actor": "",
+    "input": {},
+    "method": "POST",
+    "params": null,
+    "path_parameters": {},
+    "path_template": "/api/assignments"
+   },
+   "route_id": "POST /api/assignments",
+   "side_effect_counts": {
+    "llm": 0,
+    "mcp": 0
+   },
+   "status": 401,
+   "upstream_script": "fixed-kb-tool-call-and-answer/mcp-grade-80"
+  },
+  {
+   "after_boundary": "response-consumed-and-accepted-tasks-settled",
+   "body": {
+    "detail": [
+     {
+      "input": {},
+      "loc": [
+       "body",
+       "title"
+      ],
+      "msg": "Field required",
+      "type": "missing"
+     },
+     {
+      "input": {},
+      "loc": [
+       "body",
+       "deadline"
+      ],
+      "msg": "Field required",
+      "type": "missing"
+     },
+     {
+      "input": {},
+      "loc": [
+       "body",
+       "items"
+      ],
+      "msg": "Field required",
+      "type": "missing"
+     }
+    ]
+   },
+   "business_after": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 7,
+     "assistant_messages": 6,
+     "assistant_sessions": 4,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 3,
+     "rag_issues": 1,
+     "rag_knowledge": 1,
+     "rag_knowledge_revisions": 2,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 4,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 11,
+     "usage_counters": 3,
+     "users": 8
+    }
+   },
+   "business_before": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 7,
+     "assistant_messages": 6,
+     "assistant_sessions": 4,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 3,
+     "rag_issues": 1,
+     "rag_knowledge": 1,
+     "rag_knowledge_revisions": 2,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 4,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 11,
+     "usage_counters": 3,
+     "users": 8
+    }
+   },
+   "business_delta": {
+    "tables": {
+     "admin_audit_log": {
+      "added": [],
+      "removed": []
+     },
+     "api_tokens": {
+      "added": [],
+      "removed": []
+     },
+     "assignment_items": {
+      "added": [],
+      "removed": []
+     },
+     "assignments": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_citations": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_messages": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_sessions": {
+      "added": [],
+      "removed": []
+     },
+     "grading_submissions": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_chunks": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_documents": {
+      "added": [],
+      "removed": []
+     },
+     "li_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "password_reset_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_index_state": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issue_events": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issues": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge_revisions": {
+      "added": [],
+      "removed": []
+     },
+     "rag_release_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "rag_releases": {
+      "added": [],
+      "removed": []
+     },
+     "rag_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_inputs": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_jobs": {
+      "added": [],
+      "removed": []
+     },
+     "upstream_usage_records": {
+      "added": [],
+      "removed": []
+     },
+     "usage_counters": {
+      "added": [],
+      "removed": []
+     },
+     "users": {
+      "added": [],
+      "removed": []
+     }
+    }
+   },
+   "case_id": "POST /api/assignments::invalid-input",
+   "expected_status": 422,
+   "headers": {
+    "content-security-policy": "default-src 'self'",
+    "referrer-policy": "no-referrer",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "DENY"
+   },
+   "input_identity_assertions": {},
+   "kind": "invalid-input",
+   "media_type": "application/json",
+   "precondition": "seeded-synthetic-tree",
+   "request": {
+    "actor": "leader",
+    "input": {},
+    "method": "POST",
+    "params": null,
+    "path_parameters": {},
+    "path_template": "/api/assignments"
+   },
+   "route_id": "POST /api/assignments",
+   "side_effect_counts": {
+    "llm": 0,
+    "mcp": 0
+   },
+   "status": 422,
+   "upstream_script": "fixed-kb-tool-call-and-answer/mcp-grade-80"
+  },
+  {
+   "after_boundary": "response-consumed-and-accepted-tasks-settled",
+   "body": {
+    "detail": "missing or malformed bearer token"
+   },
+   "business_after": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 7,
+     "assistant_messages": 6,
+     "assistant_sessions": 4,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 3,
+     "rag_issues": 1,
+     "rag_knowledge": 1,
+     "rag_knowledge_revisions": 2,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 4,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 11,
+     "usage_counters": 3,
+     "users": 8
+    }
+   },
+   "business_before": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 7,
+     "assistant_messages": 6,
+     "assistant_sessions": 4,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 3,
+     "rag_issues": 1,
+     "rag_knowledge": 1,
+     "rag_knowledge_revisions": 2,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 4,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 11,
+     "usage_counters": 3,
+     "users": 8
+    }
+   },
+   "business_delta": {
+    "tables": {
+     "admin_audit_log": {
+      "added": [],
+      "removed": []
+     },
+     "api_tokens": {
+      "added": [],
+      "removed": []
+     },
+     "assignment_items": {
+      "added": [],
+      "removed": []
+     },
+     "assignments": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_citations": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_messages": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_sessions": {
+      "added": [],
+      "removed": []
+     },
+     "grading_submissions": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_chunks": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_documents": {
+      "added": [],
+      "removed": []
+     },
+     "li_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "password_reset_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_index_state": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issue_events": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issues": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge_revisions": {
+      "added": [],
+      "removed": []
+     },
+     "rag_release_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "rag_releases": {
+      "added": [],
+      "removed": []
+     },
+     "rag_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_inputs": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_jobs": {
+      "added": [],
+      "removed": []
+     },
+     "upstream_usage_records": {
+      "added": [],
+      "removed": []
+     },
+     "usage_counters": {
+      "added": [],
+      "removed": []
+     },
+     "users": {
+      "added": [],
+      "removed": []
+     }
+    }
+   },
+   "case_id": "POST /api/assignments/{assignment_id}/reactivate::unauthorized",
+   "expected_status": 401,
+   "headers": {
+    "content-security-policy": "default-src 'self'",
+    "referrer-policy": "no-referrer",
+    "www-authenticate": "Bearer",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "DENY"
+   },
+   "input_identity_assertions": {},
+   "kind": "unauthorized",
+   "media_type": "application/json",
+   "precondition": "seeded-synthetic-tree",
+   "request": {
+    "actor": "",
+    "input": {},
+    "method": "POST",
+    "params": null,
+    "path_parameters": {
+     "assignment_id": "<identity:19>"
+    },
+    "path_template": "/api/assignments/{assignment_id}/reactivate"
+   },
+   "route_id": "POST /api/assignments/{assignment_id}/reactivate",
+   "side_effect_counts": {
+    "llm": 0,
+    "mcp": 0
+   },
+   "status": 401,
+   "upstream_script": "fixed-kb-tool-call-and-answer/mcp-grade-80"
+  },
+  {
+   "after_boundary": "response-consumed-and-accepted-tasks-settled",
+   "body": {
+    "detail": "not found"
+   },
+   "business_after": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 7,
+     "assistant_messages": 6,
+     "assistant_sessions": 4,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 3,
+     "rag_issues": 1,
+     "rag_knowledge": 1,
+     "rag_knowledge_revisions": 2,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 4,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 11,
+     "usage_counters": 3,
+     "users": 8
+    }
+   },
+   "business_before": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 7,
+     "assistant_messages": 6,
+     "assistant_sessions": 4,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 3,
+     "rag_issues": 1,
+     "rag_knowledge": 1,
+     "rag_knowledge_revisions": 2,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 4,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 11,
+     "usage_counters": 3,
+     "users": 8
+    }
+   },
+   "business_delta": {
+    "tables": {
+     "admin_audit_log": {
+      "added": [],
+      "removed": []
+     },
+     "api_tokens": {
+      "added": [],
+      "removed": []
+     },
+     "assignment_items": {
+      "added": [],
+      "removed": []
+     },
+     "assignments": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_citations": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_messages": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_sessions": {
+      "added": [],
+      "removed": []
+     },
+     "grading_submissions": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_chunks": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_documents": {
+      "added": [],
+      "removed": []
+     },
+     "li_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "password_reset_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_index_state": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issue_events": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issues": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge_revisions": {
+      "added": [],
+      "removed": []
+     },
+     "rag_release_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "rag_releases": {
+      "added": [],
+      "removed": []
+     },
+     "rag_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_inputs": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_jobs": {
+      "added": [],
+      "removed": []
+     },
+     "upstream_usage_records": {
+      "added": [],
+      "removed": []
+     },
+     "usage_counters": {
+      "added": [],
+      "removed": []
+     },
+     "users": {
+      "added": [],
+      "removed": []
+     }
+    }
+   },
+   "case_id": "POST /api/assignments/{assignment_id}/reactivate::invalid-resource",
+   "expected_status": 404,
+   "headers": {
+    "content-security-policy": "default-src 'self'",
+    "referrer-policy": "no-referrer",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "DENY"
+   },
+   "input_identity_assertions": {},
+   "kind": "invalid-resource",
+   "media_type": "application/json",
+   "precondition": "seeded-synthetic-tree",
+   "request": {
+    "actor": "leader",
+    "input": null,
+    "method": "POST",
+    "params": null,
+    "path_parameters": {
+     "assignment_id": "p0-missing"
+    },
+    "path_template": "/api/assignments/{assignment_id}/reactivate"
+   },
+   "route_id": "POST /api/assignments/{assignment_id}/reactivate",
+   "side_effect_counts": {
+    "llm": 0,
+    "mcp": 0
+   },
+   "status": 404,
+   "upstream_script": "fixed-kb-tool-call-and-answer/mcp-grade-80"
+  },
+  {
+   "after_boundary": "response-consumed-and-accepted-tasks-settled",
+   "body": {
+    "detail": "missing or malformed bearer token"
+   },
+   "business_after": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 7,
+     "assistant_messages": 6,
+     "assistant_sessions": 4,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 3,
+     "rag_issues": 1,
+     "rag_knowledge": 1,
+     "rag_knowledge_revisions": 2,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 4,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 11,
+     "usage_counters": 3,
+     "users": 8
+    }
+   },
+   "business_before": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 7,
+     "assistant_messages": 6,
+     "assistant_sessions": 4,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 3,
+     "rag_issues": 1,
+     "rag_knowledge": 1,
+     "rag_knowledge_revisions": 2,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 4,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 11,
+     "usage_counters": 3,
+     "users": 8
+    }
+   },
+   "business_delta": {
+    "tables": {
+     "admin_audit_log": {
+      "added": [],
+      "removed": []
+     },
+     "api_tokens": {
+      "added": [],
+      "removed": []
+     },
+     "assignment_items": {
+      "added": [],
+      "removed": []
+     },
+     "assignments": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_citations": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_messages": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_sessions": {
+      "added": [],
+      "removed": []
+     },
+     "grading_submissions": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_chunks": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_documents": {
+      "added": [],
+      "removed": []
+     },
+     "li_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "password_reset_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_index_state": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issue_events": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issues": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge_revisions": {
+      "added": [],
+      "removed": []
+     },
+     "rag_release_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "rag_releases": {
+      "added": [],
+      "removed": []
+     },
+     "rag_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_inputs": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_jobs": {
+      "added": [],
+      "removed": []
+     },
+     "upstream_usage_records": {
+      "added": [],
+      "removed": []
+     },
+     "usage_counters": {
+      "added": [],
+      "removed": []
+     },
+     "users": {
+      "added": [],
+      "removed": []
+     }
+    }
+   },
+   "case_id": "POST /api/assignments/{assignment_id}/withdraw::unauthorized",
+   "expected_status": 401,
+   "headers": {
+    "content-security-policy": "default-src 'self'",
+    "referrer-policy": "no-referrer",
+    "www-authenticate": "Bearer",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "DENY"
+   },
+   "input_identity_assertions": {},
+   "kind": "unauthorized",
+   "media_type": "application/json",
+   "precondition": "seeded-synthetic-tree",
+   "request": {
+    "actor": "",
+    "input": {},
+    "method": "POST",
+    "params": null,
+    "path_parameters": {
+     "assignment_id": "<identity:19>"
+    },
+    "path_template": "/api/assignments/{assignment_id}/withdraw"
+   },
+   "route_id": "POST /api/assignments/{assignment_id}/withdraw",
+   "side_effect_counts": {
+    "llm": 0,
+    "mcp": 0
+   },
+   "status": 401,
+   "upstream_script": "fixed-kb-tool-call-and-answer/mcp-grade-80"
+  },
+  {
+   "after_boundary": "response-consumed-and-accepted-tasks-settled",
+   "body": {
+    "detail": "not found"
+   },
+   "business_after": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 7,
+     "assistant_messages": 6,
+     "assistant_sessions": 4,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 3,
+     "rag_issues": 1,
+     "rag_knowledge": 1,
+     "rag_knowledge_revisions": 2,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 4,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 11,
+     "usage_counters": 3,
+     "users": 8
+    }
+   },
+   "business_before": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 7,
+     "assistant_messages": 6,
+     "assistant_sessions": 4,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 3,
+     "rag_issues": 1,
+     "rag_knowledge": 1,
+     "rag_knowledge_revisions": 2,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 4,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 11,
+     "usage_counters": 3,
+     "users": 8
+    }
+   },
+   "business_delta": {
+    "tables": {
+     "admin_audit_log": {
+      "added": [],
+      "removed": []
+     },
+     "api_tokens": {
+      "added": [],
+      "removed": []
+     },
+     "assignment_items": {
+      "added": [],
+      "removed": []
+     },
+     "assignments": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_citations": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_messages": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_sessions": {
+      "added": [],
+      "removed": []
+     },
+     "grading_submissions": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_chunks": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_documents": {
+      "added": [],
+      "removed": []
+     },
+     "li_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "password_reset_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_index_state": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issue_events": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issues": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge_revisions": {
+      "added": [],
+      "removed": []
+     },
+     "rag_release_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "rag_releases": {
+      "added": [],
+      "removed": []
+     },
+     "rag_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_inputs": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_jobs": {
+      "added": [],
+      "removed": []
+     },
+     "upstream_usage_records": {
+      "added": [],
+      "removed": []
+     },
+     "usage_counters": {
+      "added": [],
+      "removed": []
+     },
+     "users": {
+      "added": [],
+      "removed": []
+     }
+    }
+   },
+   "case_id": "POST /api/assignments/{assignment_id}/withdraw::invalid-resource",
+   "expected_status": 404,
+   "headers": {
+    "content-security-policy": "default-src 'self'",
+    "referrer-policy": "no-referrer",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "DENY"
+   },
+   "input_identity_assertions": {},
+   "kind": "invalid-resource",
+   "media_type": "application/json",
+   "precondition": "seeded-synthetic-tree",
+   "request": {
+    "actor": "leader",
+    "input": null,
+    "method": "POST",
+    "params": null,
+    "path_parameters": {
+     "assignment_id": "p0-missing"
+    },
+    "path_template": "/api/assignments/{assignment_id}/withdraw"
+   },
+   "route_id": "POST /api/assignments/{assignment_id}/withdraw",
+   "side_effect_counts": {
+    "llm": 0,
+    "mcp": 0
+   },
+   "status": 404,
+   "upstream_script": "fixed-kb-tool-call-and-answer/mcp-grade-80"
+  },
+  {
+   "after_boundary": "response-consumed-and-accepted-tasks-settled",
+   "body": {
+    "detail": "not found"
+   },
+   "business_after": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 7,
+     "assistant_messages": 6,
+     "assistant_sessions": 4,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 3,
+     "rag_issues": 1,
+     "rag_knowledge": 1,
+     "rag_knowledge_revisions": 2,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 4,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 11,
+     "usage_counters": 3,
+     "users": 8
+    }
+   },
+   "business_before": {
+    "row_counts": {
+     "admin_audit_log": 1,
+     "api_tokens": 7,
+     "assignment_items": 1,
+     "assignments": 1,
+     "assistant_citations": 7,
+     "assistant_messages": 6,
+     "assistant_sessions": 4,
+     "grading_submissions": 1,
+     "knowledge_chunks": 1,
+     "knowledge_documents": 1,
+     "li_nodes": 3,
+     "password_reset_requests": 2,
+     "rag_index_state": 1,
+     "rag_issue_events": 3,
+     "rag_issues": 1,
+     "rag_knowledge": 1,
+     "rag_knowledge_revisions": 2,
+     "rag_release_nodes": 3,
+     "rag_releases": 1,
+     "rag_requests": 4,
+     "rag_task_inputs": 0,
+     "rag_task_jobs": 0,
+     "upstream_usage_records": 11,
+     "usage_counters": 3,
+     "users": 8
+    }
+   },
+   "business_delta": {
+    "tables": {
+     "admin_audit_log": {
+      "added": [],
+      "removed": []
+     },
+     "api_tokens": {
+      "added": [],
+      "removed": []
+     },
+     "assignment_items": {
+      "added": [],
+      "removed": []
+     },
+     "assignments": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_citations": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_messages": {
+      "added": [],
+      "removed": []
+     },
+     "assistant_sessions": {
+      "added": [],
+      "removed": []
+     },
+     "grading_submissions": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_chunks": {
+      "added": [],
+      "removed": []
+     },
+     "knowledge_documents": {
+      "added": [],
+      "removed": []
+     },
+     "li_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "password_reset_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_index_state": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issue_events": {
+      "added": [],
+      "removed": []
+     },
+     "rag_issues": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge": {
+      "added": [],
+      "removed": []
+     },
+     "rag_knowledge_revisions": {
+      "added": [],
+      "removed": []
+     },
+     "rag_release_nodes": {
+      "added": [],
+      "removed": []
+     },
+     "rag_releases": {
+      "added": [],
+      "removed": []
+     },
+     "rag_requests": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_inputs": {
+      "added": [],
+      "removed": []
+     },
+     "rag_task_jobs": {
+      "added": [],
+      "removed": []
+     },
+     "upstream_usage_records": {
+      "added": [],
+      "removed": []
+     },
+     "usage_counters": {
+      "added": [],
+      "removed": []
+     },
+     "users": {
+      "added": [],
+      "removed": []
+     }
+    }
+   },
+   "case_id": "GET /api/assignments/{assignment_id}::foreign-tree",
+   "expected_status": 404,
+   "headers": {
+    "content-security-policy": "default-src 'self'",
+    "referrer-policy": "no-referrer",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "DENY"
+   },
+   "input_identity_assertions": {},
+   "kind": "foreign-tree",
+   "media_type": "application/json",
+   "precondition": "seeded-synthetic-tree",
+   "request": {
+    "actor": "student_b",
+    "input": null,
+    "method": "GET",
+    "params": null,
+    "path_parameters": {
+     "assignment_id": "<identity:19>"
+    },
+    "path_template": "/api/assignments/{assignment_id}"
+   },
+   "route_id": "GET /api/assignments/{assignment_id}",
+   "side_effect_counts": {
+    "llm": 0,
+    "mcp": 0
+   },
+   "status": 404,
+   "upstream_script": "fixed-kb-tool-call-and-answer/mcp-grade-80"
+  }
+ ]
+}
