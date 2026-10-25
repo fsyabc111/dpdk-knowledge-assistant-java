@@ -1,7 +1,11 @@
 # 主 Agent 恢复点
 
-- 日期：2026-10-25（U11批次，P2 中段）；集成分支 `codex/p1-p2-longrun`，远程最新 bed823a（已核验）。P1 已收口（工程门禁通过，双轴审查 0 阻断）。
-- P2 进度：J2-01（183/183）、J2-02（218/218）、J2-03（240/240，CSV 字节级）、J2-05（含 MessageInput 扩展，全量 277/277）均已集成并推送核验（最新 a6bf0d1）；**J2-04（正式提交+替身评测，末卡）已派工**（worktree j2-04，基线 a6bf0d1）。后续：J2-04 回收集成 → P2 集成回归（真实 Java+PG 业务闭环：启动应用对 8090 端口、三模式认证/班级权限/作业CRUD/替身提交/配额成绩副作用/汇总CSV/会话用量读取全链路、React 联调 vite+5173、IP-3 差分补跑）→ P2 双轴审查与 phase-report → 批次收口（不进 P3）。
+- 日期：2026-10-25（U11批次，P2 收口段）；集成分支 `codex/p1-p2-longrun` 最新 9ba2378（已推送核验）。会话与子 Agent 均已切换 GLM-5.3 Flash（用户指示）。
+- **P2 五卡全部集成**：J2-01（183）、J2-02（218）、J2-03（240，CSV 字节级）、J2-05（277，含 MessageInput 扩展）、J2-04（298，69fef5e）。全量 298/298。
+- **Boot 启动端到端已打通**（候选库 p1_java_candidate，8090）：health UP、启动迁移完成（catalogVerified=true）、FastAPI 422 形态实测。修复批次 9ba2378：多构造器 @Autowired（AuthSettingsProvider/SessionService/SystemClockAdapter）、Bean 注册清扫 16 类（Repository/Store/Service/Writer/Reader/Parser/NoOp 占位）、SubmissionWiring/SessionWiring/SourceWiring 接线、catalog 基准入 main/resources（运行时可校验）。
+- **P2 集成回归 worker 运行中**（worker/p2-regression@9ba2378）：真实应用业务闭环（认证/管理/作业/替身提交/配额/CSV/会话用量）+ React vite 联调最小接线 + golden 对照（IP-3）。回收集成后进 P2 双轴审查与 phase-report。
+- 已知 integration_pending：IP-1 停号→任务取消（J3-01）、IP-J205-2 活动会话删除（J3-01）、TaskGradeParticipant（J3-01）、500 异常渲染缺口（平台层，收口前评估）、IP-3 本轮回归覆盖中。
+- 运行资源：PG 55481 持续；origin pushurl=ssh://git@ssh.github.com:443/...（HTTPS fetch 仍劣化，fetch 走 ls-remote 失败不影响 push）。
 - 运行资源：P1 独立测试 PG 127.0.0.1:55481（.migration-artifacts/p1/pgdata，角色 p1_java）持续运行，多 worker 动态建删库隔离；origin pushurl=ssh://git@ssh.github.com:443/...（HTTPS 劣化临时切换）。
 - 已知 integration_pending：IP-1 停号→任务取消（J3-01）；J2-05 活动会话删除同类（worker 登记中）；IP-3 差分 suite 集成回归补跑。
 - 目录：`/Volumes/study/code/new_project/dpdk-knowledge-assistant-java`；分支`codex/p0-baseline-oracle`；初始基线`80b29135faddd16d5e39fdbf0633291ea6a20489`。
