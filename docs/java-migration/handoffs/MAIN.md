@@ -1,17 +1,18 @@
 # 主 Agent 恢复点
 
-- 日期：2026-10-25（U11批次，P2 收口段）；集成分支 `codex/p1-p2-longrun` 最新 9ba2378（已推送核验）。会话与子 Agent 均已切换 GLM-5.3 Flash（用户指示）。
-- **P2 五卡全部集成**：J2-01（183）、J2-02（218）、J2-03（240，CSV 字节级）、J2-05（277，含 MessageInput 扩展）、J2-04（298，69fef5e）。全量 298/298。
-- **Boot 启动端到端已打通**（候选库 p1_java_candidate，8090）：health UP、启动迁移完成（catalogVerified=true）、FastAPI 422 形态实测。修复批次 9ba2378：多构造器 @Autowired（AuthSettingsProvider/SessionService/SystemClockAdapter）、Bean 注册清扫 16 类（Repository/Store/Service/Writer/Reader/Parser/NoOp 占位）、SubmissionWiring/SessionWiring/SourceWiring 接线、catalog 基准入 main/resources（运行时可校验）。
-- **P2 集成回归 worker 运行中**（worker/p2-regression@9ba2378）：真实应用业务闭环（认证/管理/作业/替身提交/配额/CSV/会话用量）+ React vite 联调最小接线 + golden 对照（IP-3）。回收集成后进 P2 双轴审查与 phase-report。
-- 已知 integration_pending：IP-1 停号→任务取消（J3-01）、IP-J205-2 活动会话删除（J3-01）、TaskGradeParticipant（J3-01）、500 异常渲染缺口（平台层，收口前评估）、IP-3 本轮回归覆盖中。
-- 运行资源：PG 55481 持续；origin pushurl=ssh://git@ssh.github.com:443/...（HTTPS fetch 仍劣化，fetch 走 ls-remote 失败不影响 push）。
-- 运行资源：P1 独立测试 PG 127.0.0.1:55481（.migration-artifacts/p1/pgdata，角色 p1_java）持续运行，多 worker 动态建删库隔离；origin pushurl=ssh://git@ssh.github.com:443/...（HTTPS 劣化临时切换）。
-- 已知 integration_pending：IP-1 停号→任务取消（J3-01）；J2-05 活动会话删除同类（worker 登记中）；IP-3 差分 suite 集成回归补跑。
-- 目录：`/Volumes/study/code/new_project/dpdk-knowledge-assistant-java`；分支`codex/p0-baseline-oracle`；初始基线`80b29135faddd16d5e39fdbf0633291ea6a20489`。
-- 当前授权：仅J0-01/J0-02、多Agent、合成PG/替身/依赖/测试/本地提交；U10现已直接授权推送同名开发分支。禁止P1/真实上游/旧环境写入/main合并/部署/删除恢复资产。
+- 日期：2026-10-25（**U11 批次工程收口**）；集成分支 `codex/p1-p2-longrun`，收口提交见 git log（全程 SSH 通路推送，每次 ls-remote 核对本地/远程 SHA 一致）。会话与子 Agent 均在 GLM-5.3 Flash。
+- **P1 工程门禁通过**（双轴 0 阻断，ef728cb）：四卡 150/150、三路径迁移链实测、身份预检负例、最小问答全链路。
+- **P2 工程门禁通过**（双轴 0 阻断）：五卡集成 298/298；启动端到端（9ba2378 装配修复批次后 health UP/迁移完成/422 形态）；集成回归零阻塞（c7cbab3：场景 1-7、契约 DIFF=0、React 联调接线）；规格建议 D2/S1/S3 已关闭（060a185，500 兜底 Starlette 平价+断言更新+SKIP 分类）；规范建议 S-1/S-2/S-4 已处理（口令脱敏、STATUS 更正、DECISIONS P2-D1 差异登记），S-3/S-5 说明入报告。
+- **批次边界**：不进入 P3、不合并 main、不部署、未删除任何恢复资产。用户验收由用户统一进行（工程门禁通过≠用户验收）。
+- integration_pending 交接 P3：IP-1 停号→任务取消、IP-J205-2 活动会话删除、TaskGradeParticipant（均 J3-01）；secure-headers 与 CORS 403 差异在 DECISIONS P2-D1（J4-03 评估实现）；500 形状 P5 全矩阵复核。
+- 运行资源：PG 55481 实例运行中（.migration-artifacts/p1/pgdata，保留）；candidate 库已由回归 worker 清理。全部 worker worktree 已删除；集成分支工作区干净。
+
+## 历史（P0→P1→P2 过程记录，以上方当前状态为准）
+
+- 目录：`/Volumes/study/code/new_project/dpdk-knowledge-assistant-java`；P0 于 `codex/p0-baseline-oracle` 完成（初始基线`80b29135faddd16d5e39fdbf0633291ea6a20489`）。
 - 当前源码目标：本仓库冻结Python副本；原目录仅来源，不同步变化；backend/前端原件未改。
-- 验证代码/证据提交：08158c6初版、c94f43d修复、099dca2最终v2数据、a207a4a最后CLI类型守卫；之后仅文档/状态/审查收口。用户已验收交付7c76c31；验收记录提交d96bf4c已推送到同名origin分支，本地/远程SHA一致，证据evidence/P0/push-verification.json；其后仅补发布记录。
+- 验证代码/证据提交：08158c6初版、c94f43d修复、099dca2最终v2数据、a207a4a最后CLI类型守卫；用户已验收交付7c76c31；验收记录提交d96bf4c已推送到同名origin分支，本地/远程SHA一致，证据evidence/P0/push-verification.json。
+- U11 授权/联调接线/瞬态失败记录：CORS 对等配置与 README（e0a5c26）；一次与 worker 并发占用测试 PG 的瞬态 BUILD FAILURE，复跑全绿（记录在案）。
 
 ## P1 收口完成，P2 进行中（2026-10-25）
 

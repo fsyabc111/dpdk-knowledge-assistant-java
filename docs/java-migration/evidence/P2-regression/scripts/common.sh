@@ -10,7 +10,8 @@ mkdir -p "$LOG_DIR" /tmp/p2reg
 
 BASE=http://127.0.0.1:8090
 PGHOST=127.0.0.1; PGPORT=55481; PGUSER=p1_java; PGDATABASE=p1_java_candidate
-export PGPASSWORD=p1-java-synthetic
+# 合成实例口令从环境读取（不提交字面量；实例为仓库专属合成PG，见 .env.example）
+export PGPASSWORD="${DPDK_TEST_PG_PASSWORD:?需要 DPDK_TEST_PG_PASSWORD}"
 
 psqlq() { psql -h "$PGHOST" -p "$PGPORT" -U "$PGUSER" -d "$PGDATABASE" -tAc "$1"; }
 
