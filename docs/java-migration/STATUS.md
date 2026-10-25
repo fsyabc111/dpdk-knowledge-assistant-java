@@ -28,7 +28,8 @@
 | J2-01 | implemented | j2-01 worker；主Agent集成 | 完成并已集成（17b5c95） | 通过（本卡33/33；全量183/183；golden 19条零差异） | 未执行 | evidence/J2-01/ |
 | J2-02 | implemented | j2-02 worker；主Agent集成 | 完成并已集成（f92ccab） | 通过（本卡35/35；全量218/218；golden 36条对照；IP-1/2/3如实登记） | 未执行 | evidence/J2-02/ |
 | J2-03 | implemented | j2-03 worker；主Agent集成 | 完成并已集成 | 通过（本卡22/22；全量240/240；golden 28条，CSV字节级一致） | 未执行 | evidence/J2-03/ |
-| J2-04 | implemented | j2-04 worker；主Agent集成 | 完成并已集成（69fef5e） | 通过（本卡21/21；全量298/298；fake MCP 调用计数/停号竞争实测） | 未执行 | evidence/J2-04/ |
+| J2-04 | implemented | j2-04 worker；主Agent集成 | 完成并已集成（69fef5e） | 通过（本卡21/21；全量298/298；fake MCP 调用计数/停号竞争实测） | 合成场景集成回归通过（P2-regression，c7cbab3） | evidence/J2-04/；evidence/P2-regression/ |
+| P2回归 | completed | p2-reg worker；主Agent集成 | 真实应用业务闭环+React联调+golden对照 | 契约DIFF=0（PASS 78/STATE-DIFF 6登记/SKIP 87登记）；零阻塞 | 场景1-7通过（合成域） | evidence/P2-regression/ |
 | J2-05 | implemented | j2-05 worker；主Agent集成 | 完成并已集成（含MessageInput扩展） | 通过（本卡37/37；全量277/277；golden 33条含模板字节级） | 未执行 | evidence/J2-05/ |
 | J3-01 | planned | — | 未开始 | 未执行 | 未执行 | — |
 | J3-02 | planned | — | 未开始 | 未执行 | 未执行 | — |
