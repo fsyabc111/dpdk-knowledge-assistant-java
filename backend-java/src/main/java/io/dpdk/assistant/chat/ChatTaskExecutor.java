@@ -36,6 +36,11 @@ public final class ChatTaskExecutor implements TaskExecutor {
             new ConcurrentHashMap<>();
     private volatile Function<TaskExecutionContext, Map<String, Object>> explainResolver =
             c -> null;
+
+    private record UsagePolicy(
+            boolean enabled, Map<String, UsageCore.ModelPrice> prices, String version) {}
+
+    private volatile UsagePolicy usagePolicy = new UsagePolicy(true, Map.of(), "");
     private volatile AnswerValidator.Judge judge;
 
     public ChatTaskExecutor(
@@ -62,6 +67,11 @@ public final class ChatTaskExecutor implements TaskExecutor {
         this.ports = new ChatAgentPorts(tasks, tx, clock, quotas);
         this.usage = usage;
         this.settings = settings;
+    }
+
+    public void setUsagePolicy(
+            boolean enabled, Map<String, UsageCore.ModelPrice> prices, String version) {
+        usagePolicy = new UsagePolicy(enabled, Map.copyOf(prices), Objects.toString(version, ""));
     }
 
     public String modelName() {
@@ -123,6 +133,8 @@ public final class ChatTaskExecutor implements TaskExecutor {
 
     private void flushUsage(
             UsageCore.UsageRecorder recorder, String requestId, String subject, String sessionId) {
+        UsagePolicy policy = usagePolicy;
+        if (!policy.enabled()) return;
         try {
             List<UsageCore.UsageEntry> entries;
             synchronized (recorder) {
@@ -131,8 +143,8 @@ public final class ChatTaskExecutor implements TaskExecutor {
             usage.recordRows(
                     UsageCore.entriesToRows(
                             entries,
-                            Map.of(),
-                            "",
+                            policy.prices(),
+                            policy.version(),
                             requestId,
                             subject,
                             sessionId,

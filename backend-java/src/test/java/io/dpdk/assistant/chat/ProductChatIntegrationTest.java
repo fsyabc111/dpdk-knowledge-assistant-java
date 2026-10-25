@@ -269,6 +269,53 @@ class ProductChatIntegrationTest {
         }
     }
 
+    @Test
+    void usagePolicyDisablesWritesAndConfiguredPriceIsRecordedAtWriteTime() throws Exception {
+        AgentChatModel known =
+                (m, t) ->
+                        new AgentChatModel.AgentReply(
+                                "answer", List.of(), new AgentUsage(1000, 500, 1500));
+        try (var h = ChatTestHarness.create("usageoff", known, null)) {
+            h.executor.setUsagePolicy(false, Map.of(), "");
+            h.product.chat(h.student, h.input("Q"));
+            assertThat(h.task.countRows("upstream_usage_records", null)).isZero();
+        }
+        try (var h = ChatTestHarness.create("usageprice", known, null)) {
+            h.executor.setUsagePolicy(
+                    true,
+                    io.dpdk.assistant.usage.UsageCore.parsePrices(
+                            "{\"scripted-test-model\":{\"input_per_1k\":\"0.01\",\"output_per_1k\":\"0.02\",\"currency\":\"CNY\"}}"),
+                    "synthetic-price-v1");
+            var input = h.input("Q");
+            h.product.chat(h.student, input);
+            assertThat(
+                            h.task.countRows(
+                                    "upstream_usage_records", "request_id=?", input.requestId()))
+                    .isEqualTo(1);
+            assertThat(
+                            h.task.columnValue(
+                                    "upstream_usage_records",
+                                    "cost_micros",
+                                    "request_id=?",
+                                    input.requestId()))
+                    .isEqualTo("20000");
+            assertThat(
+                            h.task.columnValue(
+                                    "upstream_usage_records",
+                                    "price_version",
+                                    "request_id=?",
+                                    input.requestId()))
+                    .isEqualTo("synthetic-price-v1");
+            assertThat(
+                            h.task.columnValue(
+                                    "upstream_usage_records",
+                                    "total_tokens",
+                                    "request_id=?",
+                                    input.requestId()))
+                    .isEqualTo("1500");
+        }
+    }
+
     static List<SseEvent> collect(Flow.Publisher<SseEvent> publisher) throws Exception {
         List<SseEvent> out = new CopyOnWriteArrayList<>();
         CountDownLatch done = new CountDownLatch(1);
