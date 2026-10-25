@@ -14,9 +14,22 @@ final class WorkflowBody {
     WorkflowBody(String raw) {
         if (raw == null || raw.isEmpty()) throw KnowledgeWorkflowService.error(422,
                 List.of(entry("missing", List.of("body"), "Field required", null, null)));
-        try { root = JSON.readTree(raw); }
+        JsonNode parsed;
+        int consumed;
+        try (var parser = JSON.createParser(raw)) {
+            parsed = JSON.readTree(parser);
+            consumed = (int) parser.currentLocation().getCharOffset();
+        }
         catch (Exception e) { throw KnowledgeWorkflowService.error(422, List.of(entry("json_invalid",
                 List.of("body", 0), "JSON decode error", Map.of(), Map.of("error", "Invalid JSON")))); }
+        int after = consumed;
+        while (after < raw.length() && " \t\r\n".indexOf(raw.charAt(after)) >= 0) { after++; }
+        if (parsed != null && after < raw.length()) {
+            throw KnowledgeWorkflowService.error(422, List.of(entry("json_invalid",
+                    List.of("body", raw.codePointCount(0, after)), "JSON decode error", Map.of(),
+                    Map.of("error", "Extra data"))));
+        }
+        root = parsed;
         if (root == null || !root.isObject()) throw KnowledgeWorkflowService.error(422, List.of(entry(
                 "model_attributes_type", List.of("body"), "Input should be a valid dictionary or object to extract fields from",
                 plain(root), null)));

@@ -1,0 +1,74 @@
+[
+  {
+    "name": "second_object",
+    "raw": "{\"title\":\"DNS😀\",\"body\":\"公开教学材料\",\"status\":\"published\",\"shared_confirmed\":true}{}",
+    "detail": [
+      {
+        "type": "json_invalid",
+        "loc": [
+          "body",
+          77
+        ],
+        "msg": "JSON decode error",
+        "input": {},
+        "ctx": {
+          "error": "Extra data"
+        }
+      }
+    ]
+  },
+  {
+    "name": "garbage",
+    "raw": "{\"title\":\"DNS😀\",\"body\":\"公开教学材料\",\"status\":\"published\",\"shared_confirmed\":true}oops",
+    "detail": [
+      {
+        "type": "json_invalid",
+        "loc": [
+          "body",
+          77
+        ],
+        "msg": "JSON decode error",
+        "input": {},
+        "ctx": {
+          "error": "Extra data"
+        }
+      }
+    ]
+  },
+  {
+    "name": "after_whitespace",
+    "raw": "{\"title\":\"DNS😀\",\"body\":\"公开教学材料\",\"status\":\"published\",\"shared_confirmed\":true} \r\n\t{}",
+    "detail": [
+      {
+        "type": "json_invalid",
+        "loc": [
+          "body",
+          81
+        ],
+        "msg": "JSON decode error",
+        "input": {},
+        "ctx": {
+          "error": "Extra data"
+        }
+      }
+    ]
+  },
+  {
+    "name": "scalar_tail",
+    "raw": "{\"title\":\"DNS😀\",\"body\":\"公开教学材料\",\"status\":\"published\",\"shared_confirmed\":true} 1",
+    "detail": [
+      {
+        "type": "json_invalid",
+        "loc": [
+          "body",
+          78
+        ],
+        "msg": "JSON decode error",
+        "input": {},
+        "ctx": {
+          "error": "Extra data"
+        }
+      }
+    ]
+  }
+]

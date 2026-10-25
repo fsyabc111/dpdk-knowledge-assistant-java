@@ -568,6 +568,17 @@
           "symbol": "task_events"
         }
       ]
+    },
+    {
+      "id": "knowledge.PublishedKnowledgeReader",
+      "owner_task": "J4-02",
+      "java_target": "io.dpdk.assistant.contracts.knowledge.PublishedKnowledgeReader",
+      "signature": "List<Entry> published(); Entry(id,title,body,revision)",
+      "semantics": "仅返回status=published，按id排序的只读知识快照；索引消费者不得直接查询知识表，不提供隐式空来源回退。",
+      "consumers": [
+        "J4-01",
+        "J4-03"
+      ]
     }
   ]
 }
