@@ -131,7 +131,7 @@ public class AssignmentCatalogController {
                 f.deadline(), f.items());
         return ResponseEntity.status(HttpStatus.CREATED)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(MAPPER.writeValueAsString(assignmentInfo(assignment)));
+                .body(MAPPER.writeValueAsString(AssignmentJson.assignmentInfo(assignment)));
     }
 
     /* ------------------------------------------------------------------ */
@@ -147,7 +147,7 @@ public class AssignmentCatalogController {
             List<Map<String, Object>> rows = new ArrayList<>();
             for (AssignmentCatalogRepository.ManagerListRow row
                     : service.listForManager(principal.subject(), principal.roles())) {
-                Map<String, Object> item = assignmentInfo(row.assignment());
+                Map<String, Object> item = AssignmentJson.assignmentInfo(row.assignment());
                 item.put("submission_count", row.submissionCount());
                 item.put("student_count", row.studentCount());
                 rows.add(item);
@@ -157,7 +157,7 @@ public class AssignmentCatalogController {
             List<Map<String, Object>> rows = new ArrayList<>();
             for (StudentAssignmentView view : service.listVisibleForStudent(
                     principal.subject(), studentCreatedBy(principal))) {
-                rows.add(studentAssignment(view));
+                rows.add(AssignmentJson.studentAssignment(view));
             }
             body.put("assignments", rows);
         }
@@ -182,14 +182,14 @@ public class AssignmentCatalogController {
             if (!manageable) {
                 throw notFound();
             }
-            return json(assignmentInfo(assignment));
+            return json(AssignmentJson.assignmentInfo(assignment));
         }
         StudentAssignmentView view = service.getVisibleAssignment(assignmentId,
                 principal.subject(), studentCreatedBy(principal)).orElse(null);
         if (view == null) {
             throw notFound();
         }
-        return json(studentAssignment(view));
+        return json(AssignmentJson.studentAssignment(view));
     }
 
     /* ------------------------------------------------------------------ */
@@ -215,7 +215,7 @@ public class AssignmentCatalogController {
         if (assignment == null) {
             throw notFound();
         }
-        return json(assignmentInfo(assignment));
+        return json(AssignmentJson.assignmentInfo(assignment));
     }
 
     /* ------------------------------------------------------------------ */
@@ -250,7 +250,7 @@ public class AssignmentCatalogController {
         if (assignment == null) {
             throw notFound();
         }
-        return json(assignmentInfo(assignment));
+        return json(AssignmentJson.assignmentInfo(assignment));
     }
 
     /* ------------------------------------------------------------------ */
@@ -289,68 +289,18 @@ public class AssignmentCatalogController {
                 || principal.roles().contains("leader");
     }
 
-    /** AssignmentInfo JSON（schemas.AssignmentInfo 字段序）。 */
-    static Map<String, Object> assignmentInfo(AssignmentRow a) {
-        Map<String, Object> out = new LinkedHashMap<>();
-        out.put("id", a.id());
-        out.put("title", a.title());
-        out.put("description", a.description());
-        out.put("created_by", a.createdBy());
-        out.put("scope", a.scope());
-        out.put("deadline", PythonDateTime.pythonStr(a.deadline()));
-        out.put("status", a.status());
-        out.put("created_at", PythonDateTime.pythonStr(a.createdAt()));
-        out.put("updated_at", PythonDateTime.pythonStr(a.updatedAt()));
-        List<Map<String, Object>> items = new ArrayList<>();
-        for (AssignmentRow.ItemRow item : a.items()) {
-            items.add(new LinkedHashMap<>(Map.of("protocol", item.protocol(), "points",
-                    item.points())));
-        }
-        out.put("items", items);
-        return out;
-    }
-
-    /** StudentAssignment JSON（schemas.StudentAssignment 字段序）。 */
-    static Map<String, Object> studentAssignment(StudentAssignmentView v) {
-        Map<String, Object> out = new LinkedHashMap<>();
-        out.put("id", v.id());
-        out.put("title", v.title());
-        out.put("description", v.description());
-        out.put("created_by", v.createdBy());
-        out.put("deadline", PythonDateTime.pythonStr(v.deadline()));
-        out.put("status", v.status());
-        List<Map<String, Object>> items = new ArrayList<>();
-        for (StudentAssignmentView.StudentItemGrade item : v.items()) {
-            Map<String, Object> row = new LinkedHashMap<>();
-            row.put("protocol", item.protocol());
-            row.put("points", item.points());
-            row.put("best_score", item.bestScore());
-            row.put("earned", item.earned());
-            row.put("submission_count", item.submissionCount());
-            items.add(row);
-        }
-        out.put("items", items);
-        out.put("total_points", v.totalPoints());
-        out.put("total_earned", v.totalEarned());
-        out.put("submission_count", v.submissionCount());
-        return out;
-    }
-
     private static int intValueOrZero(JsonNode node) {
         if (node == null) {
             return 0;
         }
-        if (node.isNumber()) {
-            return node.asInt();
-        }
-        return 0;
+        return node.isNumber() ? node.asInt() : 0;
     }
 
     private static Map<String, Object> objectValueOrEmpty(JsonNode node) {
         if (node != null && node.isObject()) {
-            return MAPPER.convertValue(node, new com.fasterxml.jackson.core.type.TypeReference<
-                    Map<String, Object>>() {
-            });
+            return MAPPER.convertValue(node,
+                    new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() {
+                    });
         }
         return new LinkedHashMap<>();
     }
