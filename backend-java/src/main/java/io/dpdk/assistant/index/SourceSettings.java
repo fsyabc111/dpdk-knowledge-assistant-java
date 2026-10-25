@@ -7,7 +7,7 @@ import java.util.Objects;
 public record SourceSettings(Path knowledgeConfig, Path dpdkRoot, Path assistantRoot, Path workingDirectory) {
     public SourceSettings {
         Objects.requireNonNull(workingDirectory, "workingDirectory");
-        workingDirectory = workingDirectory.toAbsolutePath().normalize();
+        workingDirectory = workingDirectory.toAbsolutePath();
         knowledgeConfig = absolute(knowledgeConfig, workingDirectory);
         dpdkRoot = absolute(dpdkRoot, workingDirectory);
         assistantRoot = absolute(assistantRoot, workingDirectory);
@@ -15,6 +15,6 @@ public record SourceSettings(Path knowledgeConfig, Path dpdkRoot, Path assistant
 
     private static Path absolute(Path value, Path cwd) {
         Objects.requireNonNull(value, "知识源路径");
-        return (value.isAbsolute() ? value : cwd.resolve(value)).normalize();
+        return value.isAbsolute() ? value : cwd.resolve(value);
     }
 }

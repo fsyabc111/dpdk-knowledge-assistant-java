@@ -257,4 +257,59 @@ class PgIndexIntegrationTest {
         assertThat(brokenLedger.ingest(brokenLedger.plan(snapshot("still publishes"))).insertedOrUpdated()).isEqualTo(1);
         assertThat(service.health(active()).healthy()).isTrue();
     }
+    @Test void completeSnapshotMatchesFrozenPythonContentMetadataConfigurationAndOrdering() throws Exception {
+        var json = new com.fasterxml.jackson.databind.ObjectMapper();
+        var fixture = json.readTree(getClass().getResourceAsStream("/migration/J4-01/snapshot-golden.json"));
+        Path root = Files.createTempDirectory(temp, "snapshot-golden-");
+        for (var it = fixture.get("files").fields(); it.hasNext();) {
+            var entry = it.next(); Path file = root.resolve(entry.getKey());
+            Files.createDirectories(file.getParent()); Files.writeString(file, entry.getValue().asText());
+        }
+        Path yaml = root.resolve("sources.yml"); Files.writeString(yaml, fixture.get("source_yaml").asText());
+        try (Connection c = ds.getConnection(); PreparedStatement insert = c.prepareStatement(
+                "INSERT INTO rag_knowledge(id,title,body,revision,status,updated_at) VALUES (?,?,?,?,'published','now')")) {
+            for (var knowledge : fixture.get("published")) {
+                insert.setString(1, knowledge.get("id").asText()); insert.setString(2, knowledge.get("title").asText());
+                insert.setString(3, knowledge.get("body").asText()); insert.setInt(4, knowledge.get("revision").asInt()); insert.addBatch();
+            }
+            insert.executeBatch();
+        }
+        var snapshot = service.scan(new SourceSettings(yaml, root.resolve("repo"), root.resolve("assistant"), root));
+        var actual = snapshot.nodes().stream().map(n -> Map.of("content", n.content(), "metadata", n.metadata())).toList();
+        com.fasterxml.jackson.databind.JsonNode actualJson = json.valueToTree(actual);
+        assertThat(actualJson).isEqualTo(fixture.get("expected"));
+        assertThat(service.plan(snapshot).prepared().configuration()).isEqualTo(fixture.get("configuration").asText());
+        assertThat(snapshot.nodes()).hasSize(10);
+    }
+
+    @Test void publicScanThenPlanDoesNotOverwritePublicationDuringScanWindow() throws Exception {
+        var original = service.ingest(service.plan(snapshot("original")));
+        SourceSnapshot scanned = service.scan(sources("# Captured\nsource"));
+        var newer = service.ingest(service.plan(snapshot("newer")));
+        var plan = service.plan(scanned);
+        assertThat(plan.expectedActive()).isEqualTo(original.releaseId());
+        assertThatThrownBy(() -> service.ingest(plan)).isInstanceOf(IllegalStateException.class);
+        assertThat(active()).isEqualTo(newer.releaseId()); assertThat(count("rag_releases")).isEqualTo(2);
+    }
+
+    @Test void invalidEmbeddingsDoNotMutateActiveOrReleaseTables() throws Exception {
+        var original = service.ingest(service.plan(snapshot("original")));
+        for (String kind : List.of("zero", "nan", "infinity", "dimension", "count", "failure")) {
+            var broken = newService((texts, usage) -> {
+                float[] values = new float[1024];
+                return switch (kind) {
+                    case "zero" -> List.of(new Vector1024(values));
+                    case "nan" -> { values[0] = Float.NaN; yield List.of(new Vector1024(values)); }
+                    case "infinity" -> { values[0] = Float.POSITIVE_INFINITY; yield List.of(new Vector1024(values)); }
+                    case "dimension" -> List.of(new Vector1024(new float[12]));
+                    case "count" -> List.of();
+                    default -> throw new IllegalStateException("synthetic failure");
+                };
+            }, usage -> {}, 10);
+            assertThatThrownBy(() -> broken.ingest(broken.plan(snapshot("new")))).isInstanceOf(RuntimeException.class);
+            assertThat(active()).isEqualTo(original.releaseId()); assertThat(count("rag_releases")).isEqualTo(1);
+            assertThat(count("data_li_knowledge_v1")).isEqualTo(1);
+        }
+    }
+
 }

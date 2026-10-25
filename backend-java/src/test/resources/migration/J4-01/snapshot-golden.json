@@ -1,0 +1,149 @@
+{
+  "source_yaml": "sources:\n  - name: docs\n    root: ${DPDK_REPO_PATH}\n    include: [a, a-z.md, nested, '\ue000.md', '\ud83d\ude42.md']\n  - name: duplicate\n    root: ${DPDK_REPO_PATH}\n    include: [nested]\n  - name: inner\n    root: ${DPDK_REPO_PATH}/nested\n    include: [function.c]\n  - name: knowledge_base\n    root: ${ASSISTANT_PROJECT_PATH}\n    include: [knowledge]\n",
+  "files": {
+    "repo/a/b.md": "# \u4e2d\u6587\r\n\u6b63\u6587\ud83d\ude42\r\u5c3e\n",
+    "repo/a-z.md": "\u00e9 e\u0301",
+    "repo/nested/function.c": "/* \u524d\u8a00 */\nint parse_dns(void) {\n return 1;\n}\n",
+    "repo/\ue000.md": "BMP",
+    "repo/\ud83d\ude42.md": "ASTRAL",
+    "assistant/knowledge/a.yaml": "# \u914d\u7f6e\nkey: value\n"
+  },
+  "published": [
+    {
+      "id": "a",
+      "title": "\u53d1\u5e03\u7532",
+      "body": "\u6b63\u6587\ud83d\ude42",
+      "revision": 2
+    },
+    {
+      "id": "b",
+      "title": "\u53d1\u5e03\u4e59",
+      "body": "# \u5185\u5d4c\n\u5185\u5bb9",
+      "revision": 1
+    }
+  ],
+  "expected": [
+    {
+      "content": "# \u914d\u7f6e\nkey: value",
+      "metadata": {
+        "source_type": "doc",
+        "source_key": "knowledge_base/knowledge/a.yaml",
+        "source_path": "knowledge/a.yaml",
+        "section": "\u914d\u7f6e",
+        "title": "\u914d\u7f6e",
+        "ordinal": 0
+      }
+    },
+    {
+      "content": "# \u4e2d\u6587\n\u6b63\u6587\ud83d\ude42\n\u5c3e",
+      "metadata": {
+        "source_type": "doc",
+        "source_key": "docs/a/b.md",
+        "source_path": "a/b.md",
+        "section": "\u4e2d\u6587",
+        "title": "\u4e2d\u6587",
+        "ordinal": 0
+      }
+    },
+    {
+      "content": "\u00e9 e\u0301",
+      "metadata": {
+        "source_type": "doc",
+        "source_key": "docs/a-z.md",
+        "source_path": "a-z.md",
+        "section": "a-z.md",
+        "title": "a-z.md",
+        "ordinal": 0
+      }
+    },
+    {
+      "content": "/* \u524d\u8a00 */",
+      "metadata": {
+        "source_type": "code",
+        "start_line": "1",
+        "source_key": "inner/function.c",
+        "source_path": "function.c",
+        "section": "function.c",
+        "title": "function.c",
+        "ordinal": 0
+      }
+    },
+    {
+      "content": "int parse_dns(void) {\n return 1;\n}",
+      "metadata": {
+        "source_type": "code",
+        "symbol": "parse_dns",
+        "language": "c",
+        "start_line": "2",
+        "end_line": "4",
+        "source_key": "inner/function.c",
+        "source_path": "function.c",
+        "section": "parse_dns",
+        "title": "parse_dns",
+        "ordinal": 1
+      }
+    },
+    {
+      "content": "BMP",
+      "metadata": {
+        "source_type": "doc",
+        "source_key": "docs/\ue000.md",
+        "source_path": "\ue000.md",
+        "section": "\ue000.md",
+        "title": "\ue000.md",
+        "ordinal": 0
+      }
+    },
+    {
+      "content": "ASTRAL",
+      "metadata": {
+        "source_type": "doc",
+        "source_key": "docs/\ud83d\ude42.md",
+        "source_path": "\ud83d\ude42.md",
+        "section": "\ud83d\ude42.md",
+        "title": "\ud83d\ude42.md",
+        "ordinal": 0
+      }
+    },
+    {
+      "content": "# \u53d1\u5e03\u7532\n\n\u6b63\u6587\ud83d\ude42",
+      "metadata": {
+        "source_type": "doc",
+        "source_key": "knowledge/published/a.md",
+        "source_path": "knowledge/published/a.md",
+        "section": "\u53d1\u5e03\u7532",
+        "title": "\u53d1\u5e03\u7532",
+        "ordinal": 0,
+        "knowledge_id": "a",
+        "revision": 2
+      }
+    },
+    {
+      "content": "# \u53d1\u5e03\u4e59",
+      "metadata": {
+        "source_type": "doc",
+        "source_key": "knowledge/published/b.md",
+        "source_path": "knowledge/published/b.md",
+        "section": "\u53d1\u5e03\u4e59",
+        "title": "\u53d1\u5e03\u4e59",
+        "ordinal": 0,
+        "knowledge_id": "b",
+        "revision": 1
+      }
+    },
+    {
+      "content": "# \u5185\u5d4c\n\u5185\u5bb9",
+      "metadata": {
+        "source_type": "doc",
+        "source_key": "knowledge/published/b.md",
+        "source_path": "knowledge/published/b.md",
+        "section": "\u5185\u5d4c",
+        "title": "\u53d1\u5e03\u4e59",
+        "ordinal": 1,
+        "knowledge_id": "b",
+        "revision": 1
+      }
+    }
+  ],
+  "configuration": "{\"api_base\": \"http://127.0.0.1:1/v1\", \"chunker\": \"bounded-lines-v2\", \"dimensions\": 1024, \"model\": \"\\u5408\\u6210-model\"}"
+}

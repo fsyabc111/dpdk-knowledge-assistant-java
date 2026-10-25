@@ -48,7 +48,7 @@ public final class YamlKnowledgeSource {
                     if (file.startsWith(candidate.root()) && (owner == null || candidate.root().getNameCount() > owner.root().getNameCount())) owner = candidate;
                 }
                 if (owner == null) throw new IllegalStateException("知识源归属丢失");
-                String relative = owner.root().relativize(file).toString().replace('\\', '/');
+                String relative = owner.root().relativize(file).toString().replace(java.io.File.separatorChar, '/');
                 List<BoundedLinesChunker.Chunk> chunks = chunker.chunk(Files.readString(file, StandardCharsets.UTF_8), relative);
                 for (int ordinal = 0; ordinal < chunks.size(); ordinal++) {
                     var chunk = chunks.get(ordinal);
@@ -101,10 +101,10 @@ public final class YamlKnowledgeSource {
     }
 
     private static Path realOrNormalized(Path path) throws IOException {
-        Path absolute = path.toAbsolutePath().normalize();
+        Path absolute = path.toAbsolutePath();
         if (Files.exists(absolute)) return absolute.toRealPath();
         if (absolute.getParent() == null) return absolute;
-        return realOrNormalized(absolute.getParent()).resolve(absolute.getFileName());
+        return realOrNormalized(absolute.getParent()).resolve(absolute.getFileName()).normalize();
     }
     private static boolean supported(Path path) {
         return EXTENSIONS.contains(BoundedLinesChunker.extension(path.toString()).toLowerCase(java.util.Locale.ROOT));

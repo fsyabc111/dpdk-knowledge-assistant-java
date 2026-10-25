@@ -47,3 +47,53 @@ target = ROOT / "backend-java/src/test/resources/migration/J4-01/chunker-golden.
 target.write_text(json.dumps(fixture, ensure_ascii=True, indent=2) + "\n", encoding="utf-8")
 print(json.dumps({"cases": len(output), "chunks": sum(len(c["chunks"]) for c in output),
                   "fixture_sha256": hashlib.sha256(target.read_bytes()).hexdigest()}))
+
+# 完整 snapshot_sources 仍调用实际 YAML/文件/切块纯源路径，数据库仅注入 published 行。
+from contextlib import contextmanager
+from tempfile import TemporaryDirectory
+from types import SimpleNamespace
+from unittest.mock import patch
+from app.services import rag_index_service as index
+source_yaml = """sources:
+  - name: docs
+    root: ${DPDK_REPO_PATH}
+    include: [a, a-z.md, nested, '\ue000.md', '🙂.md']
+  - name: duplicate
+    root: ${DPDK_REPO_PATH}
+    include: [nested]
+  - name: inner
+    root: ${DPDK_REPO_PATH}/nested
+    include: [function.c]
+  - name: knowledge_base
+    root: ${ASSISTANT_PROJECT_PATH}
+    include: [knowledge]
+"""
+files = {"repo/a/b.md": "# 中文\r\n正文🙂\r尾\n", "repo/a-z.md": "é e\u0301",
+         "repo/nested/function.c": "/* 前言 */\nint parse_dns(void) {\n return 1;\n}\n",
+         "repo/\ue000.md": "BMP", "repo/🙂.md": "ASTRAL", "assistant/knowledge/a.yaml": "# 配置\nkey: value\n"}
+published = [{"id": "a", "title": "发布甲", "body": "正文🙂", "revision": 2},
+             {"id": "b", "title": "发布乙", "body": "# 内嵌\n内容", "revision": 1}]
+class Rows:
+    def execute(self, sql):
+        assert "status='published' ORDER BY id" in sql
+        return self
+    def fetchall(self): return published
+@contextmanager
+def fake_db(): yield Rows()
+with TemporaryDirectory(prefix="j401-oracle-") as directory:
+    root = Path(directory)
+    for path, text in files.items():
+        target_file = root / path
+        target_file.parent.mkdir(parents=True, exist_ok=True)
+        target_file.write_text(text, encoding="utf-8", newline="")
+    (root / "sources.yml").write_text(source_yaml, encoding="utf-8")
+    settings = SimpleNamespace(knowledge_config=root / "sources.yml", dpdk_repo_path=root / "repo",
+                               assistant_project_path=root / "assistant", embedding_model_name="合成-model",
+                               embedding_api_base="http://127.0.0.1:1/v1")
+    with patch("app.services.knowledge_sources.get_settings", return_value=settings), patch.object(index, "get_conn", fake_db):
+        snapshot = index.snapshot_sources(settings)
+    snapshot_fixture = {"source_yaml": source_yaml, "files": files, "published": published, "expected": snapshot,
+                        "configuration": index.index_configuration(settings)}
+snapshot_target = ROOT / "backend-java/src/test/resources/migration/J4-01/snapshot-golden.json"
+snapshot_target.write_text(json.dumps(snapshot_fixture, ensure_ascii=True, indent=2) + "\n", encoding="utf-8")
+print(json.dumps({"snapshot_nodes": len(snapshot), "snapshot_sha256": hashlib.sha256(snapshot_target.read_bytes()).hexdigest()}))

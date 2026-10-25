@@ -71,4 +71,16 @@ class YamlKnowledgeSourceTest {
         assertThatThrownBy(() -> new YamlKnowledgeSource().scan(settings)).isInstanceOf(org.yaml.snakeyaml.error.YAMLException.class);
         assertThat(temp.resolve("bad")).doesNotExist();
     }
+    @Test void realpathBeforeDotDotAndPosixBackslashIdentity() throws Exception {
+        file("target/nested/unused.md", "unused"); file("target/a\\b.md", "backslash");
+        Files.createDirectories(temp.resolve("root"));
+        Files.createSymbolicLink(temp.resolve("root/link"), temp.resolve("target/nested"));
+        Path yaml = temp.resolve("symlink-root.yml");
+        Files.writeString(yaml, "sources:\n  - name: repo\n    root: ${DPDK_REPO_PATH}\n    include: ['a\\b.md']\n");
+        var settings = new SourceSettings(yaml, temp.resolve("root/link/.."), temp, temp);
+        var scanned = new YamlKnowledgeSource().scan(settings);
+        assertThat(scanned).hasSize(1);
+        assertThat(scanned.getFirst().metadata()).containsEntry("source_key", "repo/a\\b.md");
+    }
+
 }

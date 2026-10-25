@@ -152,5 +152,5 @@ final class JdbcIndexStore {
     private static String vector(List<Float> vector) {
         return "[" + String.join(",", vector.stream().map(Object::toString).toList()) + "]";
     }
-    private static IllegalStateException failure(Exception e) { return new IllegalStateException("索引数据库操作失败", e); }
+    private static IllegalStateException failure(Exception e) { return e instanceof IllegalStateException state ? state : new IllegalStateException("索引数据库操作失败", e); }
 }
