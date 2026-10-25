@@ -69,7 +69,8 @@ public final class ChatTaskExecutor implements TaskExecutor {
     }
 
     public void ensureAvailable() {
-        if (model == null) throw ChatRequestParser.error(503, "服务暂时不可用，请保留问题后重试");
+        if (model == null || retrieval == null)
+            throw ChatRequestParser.error(503, "服务暂时不可用，请保留问题后重试");
     }
 
     public void setExplainResolver(Function<TaskExecutionContext, Map<String, Object>> resolver) {
@@ -82,8 +83,63 @@ public final class ChatTaskExecutor implements TaskExecutor {
 
     /** 受理前构建记忆；任何必要依赖装配失败时没有 pending 行。 */
     public Prepared prepare(String sessionId) {
+        return prepare(sessionId, null, null);
+    }
+
+    public Prepared prepare(String sessionId, String requestId, String subject) {
         ensureAvailable();
-        return new Prepared(ChatMemory.build(sessionId, sessions, tx, model, settings));
+        UsageCore.UsageRecorder recorder = new UsageCore.UsageRecorder(subject, sessionId);
+        try {
+            return new Prepared(
+                    ChatMemory.build(sessionId, sessions, tx, summaryModel(recorder), settings));
+        } finally {
+            if (requestId != null) flushUsage(recorder, requestId, subject, sessionId);
+        }
+    }
+
+    private AgentChatModel summaryModel(UsageCore.UsageRecorder recorder) {
+        return (messages, tools) -> {
+            AgentChatModel.AgentReply reply = null;
+            try {
+                reply = model.call(messages, tools);
+                return reply;
+            } finally {
+                recordUsage(recorder, "summary", reply == null ? null : reply.usage());
+            }
+        };
+    }
+
+    private void recordUsage(UsageCore.UsageRecorder recorder, String stage, AgentUsage tokens) {
+        Map<String, Object> values = new LinkedHashMap<>();
+        if (tokens != null) {
+            values.put("prompt_tokens", tokens.promptTokens());
+            values.put("completion_tokens", tokens.completionTokens());
+            values.put("total_tokens", tokens.totalTokens());
+        }
+        synchronized (recorder) {
+            recorder.recordLlm(stage, agentSettings.modelName(), values);
+        }
+    }
+
+    private void flushUsage(
+            UsageCore.UsageRecorder recorder, String requestId, String subject, String sessionId) {
+        try {
+            List<UsageCore.UsageEntry> entries;
+            synchronized (recorder) {
+                entries = recorder.entries();
+            }
+            usage.recordRows(
+                    UsageCore.entriesToRows(
+                            entries,
+                            Map.of(),
+                            "",
+                            requestId,
+                            subject,
+                            sessionId,
+                            clock.nextSessionIso()));
+        } catch (RuntimeException ignored) {
+            /* 与源相同的 best-effort 记账。 */
+        }
     }
 
     public record Prepared(ChatMemory.View memory) {
@@ -140,19 +196,7 @@ public final class ChatTaskExecutor implements TaskExecutor {
             wall.shutdownNow();
             preparedMemory.remove(context.taskId());
             explainContexts.remove(context.taskId());
-            try {
-                usage.recordRows(
-                        UsageCore.entriesToRows(
-                                recorder.entries(),
-                                Map.of(),
-                                "",
-                                context.requestId(),
-                                context.subject(),
-                                context.sessionId(),
-                                clock.nextSessionIso()));
-            } catch (RuntimeException ignored) {
-                /* 源 flush_trace_usage 为 best-effort，日志不输出问题/源码。 */
-            }
+            flushUsage(recorder, context.requestId(), context.subject(), context.sessionId());
         }
     }
 
@@ -161,7 +205,9 @@ public final class ChatTaskExecutor implements TaskExecutor {
             throws Exception {
         long candidateStarted = System.nanoTime();
         ChatMemory.View memory = preparedMemory.get(c.taskId());
-        if (memory == null) memory = ChatMemory.build(c.sessionId(), sessions, tx, model, settings);
+        if (memory == null)
+            memory =
+                    ChatMemory.build(c.sessionId(), sessions, tx, summaryModel(recorder), settings);
         final String[] pinned = {""};
         final String[] retrievalFailure = {null};
         KnowledgeRetriever retriever =
@@ -170,26 +216,33 @@ public final class ChatTaskExecutor implements TaskExecutor {
                         retrievalFailure[0] = "retrieval_unavailable";
                         throw new IllegalStateException("retrieval unavailable");
                     }
-                    String release = sessions.resolveRelease(c.sessionId()).orElse("");
-                    pinned[0] = release;
-                    SearchResult result =
-                            retrieval.searchPinned(
-                                    retrieval.pin(release), new SearchInput(query, null), limit);
-                    if (result.trace() instanceof RetrievalTrace trace) {
-                        retrievalFailure[0] = trace.blockedReason();
-                        return trace.nodes().stream()
-                                .map(
-                                        n ->
-                                                new KbChunk(
-                                                        n.id(),
-                                                        n.sourcePath(),
-                                                        n.section(),
-                                                        n.title(),
-                                                        n.content(),
-                                                        n.score()))
-                                .toList();
+                    try {
+                        String release = sessions.resolveRelease(c.sessionId()).orElse("");
+                        pinned[0] = release;
+                        SearchResult result =
+                                retrieval.searchPinned(
+                                        retrieval.pin(release),
+                                        new SearchInput(query, null),
+                                        limit);
+                        if (result.trace() instanceof RetrievalTrace trace) {
+                            retrievalFailure[0] = trace.blockedReason();
+                            return trace.nodes().stream()
+                                    .map(
+                                            n ->
+                                                    new KbChunk(
+                                                            n.id(),
+                                                            n.sourcePath(),
+                                                            n.section(),
+                                                            n.title(),
+                                                            n.content(),
+                                                            n.score()))
+                                    .toList();
+                        }
+                        throw new IllegalStateException("检索富结果缺失");
+                    } catch (RuntimeException failure) {
+                        retrievalFailure[0] = "retrieval_failed";
+                        throw failure;
                     }
-                    throw new IllegalStateException("检索富结果缺失");
                 };
         AgentUsageSink sink =
                 new AgentUsageSink() {
@@ -287,7 +340,7 @@ public final class ChatTaskExecutor implements TaskExecutor {
                 };
         var result =
                 new AgentOrchestrator(recordingModel, agentSettings)
-                        .run(
+                        .runProduct(
                                 c.subject(),
                                 c.roles(),
                                 c.sessionId(),
@@ -302,7 +355,7 @@ public final class ChatTaskExecutor implements TaskExecutor {
                                         emit.accept(
                                                 TaskEvent.of(
                                                         "tool_start",
-                                                        Map.of("tool", tool, "label", label)));
+                                                        Map.of("tool", tool, "label", tool)));
                                     }
 
                                     public void onToolEnd(Map<String, Object> summary) {
@@ -408,7 +461,7 @@ public final class ChatTaskExecutor implements TaskExecutor {
     }
 
     private static double round4(double value) {
-        return java.math.BigDecimal.valueOf(value)
+        return new java.math.BigDecimal(value)
                 .setScale(4, java.math.RoundingMode.HALF_EVEN)
                 .doubleValue();
     }

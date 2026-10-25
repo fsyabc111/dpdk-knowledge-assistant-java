@@ -166,6 +166,109 @@ class ProductChatIntegrationTest {
         }
     }
 
+    @Test
+    void emptyAndFailedGenerationUseProductVerdictsRatherThanAgentFallback() throws Exception {
+        try (var h =
+                ChatTestHarness.create(
+                        "empty", (m, t) -> AgentChatModel.AgentReply.text(""), null)) {
+            var answer = h.product.chat(h.student, h.input("Q"));
+            assertThat(answer.answerStatus()).isEqualTo("unanswered");
+            assertThat(answer.answerReason()).isEqualTo("empty_answer");
+        }
+        try (var h =
+                ChatTestHarness.create(
+                        "generation",
+                        (m, t) -> {
+                            throw new IllegalStateException("upstream failed");
+                        },
+                        null)) {
+            var answer = h.product.chat(h.student, h.input("Q"));
+            assertThat(answer.answerStatus()).isEqualTo("system_error");
+            assertThat(answer.answerReason()).isEqualTo("generation_failed");
+        }
+    }
+
+    @Test
+    void prepareTimeoutCreatesNoTaskAndReturnsAdmissionSlot() throws Exception {
+        var defaults = ChatSettings.defaults();
+        var settings =
+                new ChatSettings(
+                        defaults.requestTimeout(),
+                        java.time.Duration.ofMillis(40),
+                        defaults.validationTimeout(),
+                        defaults.evidenceMaxChars(),
+                        defaults.requestTokenBudget(),
+                        defaults.ratePerMinute(),
+                        0,
+                        defaults.summaryMaxChars(),
+                        defaults.memoryMaxChars(),
+                        defaults.summaryMaxTokens(),
+                        false);
+        try (var h =
+                ChatTestHarness.create(
+                        "preparewall",
+                        (m, t) -> {
+                            try {
+                                Thread.sleep(5000);
+                            } catch (InterruptedException interrupted) {
+                                Thread.currentThread().interrupt();
+                                throw new IllegalStateException(interrupted);
+                            }
+                            return AgentChatModel.AgentReply.text("summary");
+                        },
+                        null,
+                        settings)) {
+            h.task.seedSession("old", "student");
+            h.task.runner.required(
+                    tx -> {
+                        try {
+                            h.task.sessions.appendMessage(
+                                    tx, "old", "user", "old question", Map.of());
+                            return null;
+                        } catch (java.sql.SQLException e) {
+                            throw new IllegalStateException(e);
+                        }
+                    });
+            ChatInput request =
+                    new ChatInput("old", UUID.randomUUID().toString(), "Q", Map.of(), null);
+            assertThatThrownBy(() -> h.product.start(h.student, request))
+                    .isInstanceOf(io.dpdk.assistant.platform.errors.ApiDetailException.class);
+            assertThat(h.task.countRows("rag_requests", null)).isZero();
+            assertThat(h.task.countRows("usage_counters", null)).isZero();
+            assertThat(h.task.gate.active()).isZero();
+        }
+    }
+
+    @Test
+    void explicitJudgeTimeoutUsesValidationFailureAndNeverPublishesCandidateBody()
+            throws Exception {
+        var defaults = ChatSettings.defaults();
+        var settings =
+                new ChatSettings(
+                        defaults.requestTimeout(),
+                        defaults.prepareTimeout(),
+                        java.time.Duration.ofSeconds(1),
+                        defaults.evidenceMaxChars(),
+                        defaults.requestTokenBudget(),
+                        defaults.ratePerMinute(),
+                        defaults.recentTurns(),
+                        defaults.summaryMaxChars(),
+                        defaults.memoryMaxChars(),
+                        defaults.summaryMaxTokens(),
+                        false);
+        try (var h = ChatTestHarness.create("judgewall", kbModel(), null, settings)) {
+            h.seedKnowledge("r1", "li_judge", "DNS UDP protocol");
+            h.executor.setJudge(
+                    (q, a, e, t) -> {
+                        Thread.sleep(5000);
+                        return Map.of("status", "answered", "supported", true);
+                    });
+            var answer = h.product.chat(h.student, h.input("DNS"));
+            assertThat(answer.answerReason()).isEqualTo("validation_failed");
+            assertThat(answer.answer()).isEqualTo(AnswerValidator.UNAVAILABLE);
+        }
+    }
+
     static List<SseEvent> collect(Flow.Publisher<SseEvent> publisher) throws Exception {
         List<SseEvent> out = new CopyOnWriteArrayList<>();
         CountDownLatch done = new CountDownLatch(1);

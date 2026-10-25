@@ -175,15 +175,72 @@ public final class AgentOrchestrator {
      * @param taskContext         产品任务锚点（任务 id/恢复寄存源/讲解元数据）
      * @throws RetryableTaskFailure 任务账本/成绩持久化失败（保留输入重驱动）
      */
-    public AgentRunResult run(String userId, List<String> userRoles, String sessionId,
-                              String question, Attachment attachment, MemoryView memory,
-                              String conversationContext, TaskContext taskContext,
-                              AgentRunListener listener,
-                              AgentToolContext toolContext) {
+    /** 产品严格入口：不将空答案/生成异常转换为 Agent 自身降级正文。 */
+    public AgentRunResult runProduct(
+            String userId,
+            List<String> userRoles,
+            String sessionId,
+            String question,
+            Attachment attachment,
+            MemoryView memory,
+            String conversationContext,
+            TaskContext taskContext,
+            AgentRunListener listener,
+            AgentToolContext toolContext) {
+        return runInternal(
+                userId,
+                userRoles,
+                sessionId,
+                question,
+                attachment,
+                memory,
+                conversationContext,
+                taskContext,
+                listener,
+                toolContext,
+                true);
+    }
+
+    public AgentRunResult run(
+            String userId,
+            List<String> userRoles,
+            String sessionId,
+            String question,
+            Attachment attachment,
+            MemoryView memory,
+            String conversationContext,
+            TaskContext taskContext,
+            AgentRunListener listener,
+            AgentToolContext toolContext) {
+        return runInternal(
+                userId,
+                userRoles,
+                sessionId,
+                question,
+                attachment,
+                memory,
+                conversationContext,
+                taskContext,
+                listener,
+                toolContext,
+                false);
+    }
+
+    private AgentRunResult runInternal(
+            String userId,
+            List<String> userRoles,
+            String sessionId,
+            String question,
+            Attachment attachment,
+            MemoryView memory,
+            String conversationContext,
+            TaskContext taskContext,
+            AgentRunListener listener,
+            AgentToolContext toolContext,
+            boolean strictProduct) {
         AgentRunResult result = new AgentRunResult();
         if (listener == null) {
-            listener = new AgentRunListener() {
-            };
+            listener = new AgentRunListener() {};
         }
         // S3-d 讲解模式：成绩行元数据进提示词块的数据源，并把该次评测预播种进
         // grading_results——形状对齐 harness 原始载荷，参考答案注入与降级评分
@@ -195,18 +252,19 @@ public final class AgentOrchestrator {
         toolContext.setConversationContext(conversationContext);
         PromptBuild build = new PromptBuild(toolContext, question, userId);
         List<AgentTool> tools = AgentTools.buildTools(toolContext);
-        AgentGraph graph = AgentGraph.builder()
-                .model(model)
-                .tools(tools)
-                .promptBuilder(build::buildPrompt)
-                .maxRounds(settings.agentMaxToolRounds())
-                // M4a E9：图内 token 预算（0=关闭）。
-                .tokenBudget(settings.agentRequestTokenBudget())
-                // M4a E5/E12：上下文修剪+预算检查护栏（独立开关可关，默认开）。
-                .contextMaxChars(settings.contextMaxChars())
-                .modelName(settings.modelName())
-                .toolContext(toolContext)
-                .build();
+        AgentGraph graph =
+                AgentGraph.builder()
+                        .model(model)
+                        .tools(tools)
+                        .promptBuilder(build::buildPrompt)
+                        .maxRounds(settings.agentMaxToolRounds())
+                        // M4a E9：图内 token 预算（0=关闭）。
+                        .tokenBudget(settings.agentRequestTokenBudget())
+                        // M4a E5/E12：上下文修剪+预算检查护栏（独立开关可关，默认开）。
+                        .contextMaxChars(settings.contextMaxChars())
+                        .modelName(settings.modelName())
+                        .toolContext(toolContext)
+                        .build();
         List<AgentMessage> graphMessages = buildGraphMessages(memory, question, attachment);
         EventBridge bridge = new EventBridge(listener, result, toolContext);
         try {
@@ -214,7 +272,7 @@ public final class AgentOrchestrator {
             result.toolRounds = graphResult.state().toolRounds;
             result.tokensUsed = graphResult.state().tokensUsed;
             String answer = graphResult.lastContent();
-            if (answer.isEmpty()) {
+            if (answer.isEmpty() && !strictProduct) {
                 throw new IllegalStateException("agent graph returned an empty final message");
             }
             result.answer = answer;
@@ -224,17 +282,27 @@ public final class AgentOrchestrator {
         } catch (RetryableTaskFailure e) {
             throw e;
         } catch (ContextBudgetExceededException e) {
+            if (strictProduct) throw e;
             // 安全降级：保留评分事实、不回显源码（P0.1）。
             result.fallback = true;
             result.fallbackReason = "context_budget";
-            result.answer = FallbackAnswer.build(question, toolContext.collectedChunks,
-                    toolContext.gradingResults, "context_budget");
+            result.answer =
+                    FallbackAnswer.build(
+                            question,
+                            toolContext.collectedChunks,
+                            toolContext.gradingResults,
+                            "context_budget");
             result.confidence = toolContext.collectedChunks.isEmpty() ? "low" : "medium";
         } catch (Exception e) {
+            if (strictProduct)
+                throw e instanceof RuntimeException runtime
+                        ? runtime
+                        : new IllegalStateException(e);
             result.fallback = true;
             result.fallbackReason = "";
-            result.answer = FallbackAnswer.build(question, toolContext.collectedChunks,
-                    toolContext.gradingResults, "");
+            result.answer =
+                    FallbackAnswer.build(
+                            question, toolContext.collectedChunks, toolContext.gradingResults, "");
             result.confidence = toolContext.collectedChunks.isEmpty() ? "low" : "medium";
         }
         result.collectedChunks = new ArrayList<>(toolContext.collectedChunks);

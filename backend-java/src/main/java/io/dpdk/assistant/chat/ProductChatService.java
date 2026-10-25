@@ -101,7 +101,8 @@ public final class ProductChatService {
                                     CodePoints.truncate(Redact.redact(input.message()), 100),
                                     principal.subject())
                             .value();
-            ChatTaskExecutor.Prepared prepared = prepareWithinDeadline(session);
+            ChatTaskExecutor.Prepared prepared =
+                    prepareWithinDeadline(session, request, principal.subject());
             String source = a == null ? FencedSource.extract(input.message()) : a.source();
             String origin = a == null ? (source == null ? null : "pasted") : "upload";
             String redacted =
@@ -169,10 +170,12 @@ public final class ProductChatService {
         }
     }
 
-    private ChatTaskExecutor.Prepared prepareWithinDeadline(String session) {
-        try (var workers = Executors.newVirtualThreadPerTaskExecutor()) {
+    private ChatTaskExecutor.Prepared prepareWithinDeadline(
+            String session, String requestId, String subject) {
+        var workers = Executors.newVirtualThreadPerTaskExecutor();
+        try {
             Future<ChatTaskExecutor.Prepared> future =
-                    workers.submit(() -> executor.prepare(session));
+                    workers.submit(() -> executor.prepare(session, requestId, subject));
             try {
                 return future.get(settings.prepareTimeout().toMillis(), TimeUnit.MILLISECONDS);
             } catch (InterruptedException interrupted) {
@@ -183,6 +186,8 @@ public final class ProductChatService {
                 future.cancel(true);
                 throw ChatRequestParser.error(503, "服务暂时不可用，请保留问题后重试");
             }
+        } finally {
+            workers.shutdownNow();
         }
     }
 

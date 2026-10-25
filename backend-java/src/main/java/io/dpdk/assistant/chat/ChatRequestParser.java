@@ -41,7 +41,12 @@ public final class ChatRequestParser {
                 TaskInputHash.pythonStrip(Objects.toString(request.getParameter("session_id"), ""));
         JsonNode context;
         try {
-            context = STRICT.readValue(Objects.toString(request.getParameter("context"), "{}"));
+            context =
+                    STRICT.readValue(
+                            (request.getParameter("context") == null
+                                            || request.getParameter("context").isEmpty()
+                                    ? "{}"
+                                    : request.getParameter("context")));
         } catch (Exception bad) {
             throw error(400, "context must be a JSON object");
         }
@@ -90,25 +95,36 @@ public final class ChatRequestParser {
     static ChatInput validate(JsonNode body, ChatInput.Attachment attachment) {
         List<Map<String, Object>> errors = new ArrayList<>();
         String session = optionalString(body, "session_id", errors);
-        String requestId = optionalString(body, "request_id", errors);
-        if (requestId != null) {
-            try {
-                String v = requestId.replace("urn:uuid:", "").replace("{", "").replace("}", "");
-                if (v.matches("[0-9a-fA-F]{32}"))
-                    v = v.replaceFirst("(.{8})(.{4})(.{4})(.{4})(.{12})", "$1-$2-$3-$4-$5");
-                if (!v.matches(
-                        "[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"))
-                    throw new IllegalArgumentException();
-                requestId = UUID.fromString(v).toString();
-            } catch (Exception bad) {
+        String requestId = null;
+        JsonNode requestNode = body.get("request_id");
+        if (requestNode != null && !requestNode.isNull()) {
+            if (!requestNode.isTextual()) {
                 errors.add(
                         entry(
-                                "uuid_parsing",
+                                "uuid_type",
                                 "request_id",
-                                "Input should be a valid UUID, invalid length: expected length 32"
-                                    + " for simple format, found "
-                                        + requestId.length(),
-                                requestId));
+                                "UUID input should be a string, bytes or UUID object",
+                                JSON.convertValue(requestNode, Object.class)));
+            } else {
+                String raw = requestNode.asText();
+                String error = uuidError(raw);
+                if (error != null)
+                    errors.add(
+                            entry(
+                                    "uuid_parsing",
+                                    "request_id",
+                                    "Input should be a valid UUID, " + error,
+                                    raw));
+                else {
+                    String value = raw.startsWith("urn:uuid:") ? raw.substring(9) : raw;
+                    if (value.startsWith("{") && value.endsWith("}"))
+                        value = value.substring(1, value.length() - 1);
+                    if (value.length() == 32)
+                        value =
+                                value.replaceFirst(
+                                        "(.{8})(.{4})(.{4})(.{4})(.{12})", "$1-$2-$3-$4-$5");
+                    requestId = UUID.fromString(value).toString();
+                }
             }
         }
         JsonNode messageNode = body.get("message");
@@ -164,6 +180,38 @@ public final class ChatRequestParser {
         }
         if (!errors.isEmpty()) throw error(422, errors);
         return new ChatInput(session, requestId, message, context, attachment);
+    }
+
+    private static String uuidError(String raw) {
+        String value = raw.startsWith("urn:uuid:") ? raw.substring(9) : raw;
+        if (value.startsWith("{") && value.endsWith("}"))
+            value = value.substring(1, value.length() - 1);
+        for (int i = 0; i < value.length(); i++) {
+            char ch = value.charAt(i);
+            if ("0123456789abcdefABCDEF-".indexOf(ch) < 0)
+                return "invalid character: expected an optional prefix of `urn:uuid:` followed by"
+                        + " [0-9a-fA-F-], found `"
+                        + ch
+                        + "` at "
+                        + (i + 1);
+        }
+        if (!value.contains("-"))
+            return value.length() == 32
+                    ? null
+                    : "invalid length: expected length 32 for simple format, found "
+                            + value.length();
+        String[] groups = value.split("-", -1);
+        if (groups.length != 5) return "invalid group count: expected 5, found " + groups.length;
+        int[] expected = {8, 4, 4, 4, 12};
+        for (int i = 0; i < 5; i++)
+            if (groups[i].length() != expected[i])
+                return "invalid group length in group "
+                        + i
+                        + ": expected "
+                        + expected[i]
+                        + ", found "
+                        + groups[i].length();
+        return null;
     }
 
     private static String optionalString(
