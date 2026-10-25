@@ -300,7 +300,7 @@ public final class J205TestHarness {
             throws Exception {
         try (Connection conn = ds.getConnection();
              PreparedStatement ps = conn.prepareStatement(
-                     "INSERT INTO usage_counters(subject, day, kind, chat_count) VALUES (?,?,?,?)")) {
+                     "INSERT INTO usage_counters(subject, day, kind, chat_count) VALUES (?,?,?,?) ON CONFLICT(subject, day, kind) DO UPDATE SET chat_count = excluded.chat_count")) {
             ps.setString(1, subject);
             ps.setString(2, day);
             ps.setString(3, kind);

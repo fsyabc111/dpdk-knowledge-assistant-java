@@ -172,8 +172,8 @@ public class UsageQueryController {
             Set<String> visible = new LinkedHashSet<>();
             visible.add(principal.subject());
             visible.addAll(classScope.studentIds(principal.subject()));
-            subjects = subjects.stream()
-                    .filter(item -> visible.contains(item.get("subject"))).toList();
+            subjects = new ArrayList<>(subjects.stream()
+                    .filter(item -> visible.contains(item.get("subject"))).toList());
         }
         subjects.sort((a, b) -> {
             int byToday = Integer.compare((int) b.get("today_count"), (int) a.get("today_count"));
