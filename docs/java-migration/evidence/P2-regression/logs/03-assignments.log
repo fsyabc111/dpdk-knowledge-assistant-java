@@ -1,0 +1,151 @@
+### student03 login
+$ curl -s -i -X POST http://127.0.0.1:8090/api/auth/login -H Content-Type: application/json -d {"username":"U90000000003","password":"<PW_MASKED>"}
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 176
+Date: Sun, 25 Oct 2026 03:58:33 GMT
+
+{"token":"<TOKEN_MASKED>","subject":"U90000000003","roles":["viewer"],"expires_at":"2026-11-01T03:58:33.019632+00:00","must_change_password":false}
+
+
+=== S3.1 admin 创建作业（2 协议项 dns/arp） ===
+### admin create assignment
+$ curl -s -i -X POST http://127.0.0.1:8090/api/assignments -H Authorization: Bearer <TOKEN_MASKED> -H Content-Type: application/json -d {"title":"回归DNS作业","description":"P2回归","deadline":"2099-01-01T00:00:00Z","items":[{"protocol":"dns","points":20},{"protocol":"arp","points":30}]}
+HTTP/1.1 201 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 349
+Date: Sun, 25 Oct 2026 03:58:33 GMT
+
+{"id":"asg_a03f90646f844013","title":"回归DNS作业","description":"P2回归","created_by":"U90000000002","scope":"class","deadline":"2099-01-01 00:00:00+00:00","status":"active","created_at":"2026-10-25 03:58:33.055670+00:00","updated_at":"2026-10-25 03:58:33.055670+00:00","items":[{"protocol":"arp","points":30},{"protocol":"dns","points":20}]}
+
+
+created id saved; status= active items= [{'protocol': 'arp', 'points': 30}, {'protocol': 'dns', 'points': 20}] deadline= 2099-01-01 00:00:00+00:00
+=== S3.2 学生列表可见（学生视角带 best_score 等字段） ===
+### student list assignments
+$ curl -s -i -H Authorization: Bearer <TOKEN_MASKED> http://127.0.0.1:8090/api/assignments
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 419
+Date: Sun, 25 Oct 2026 03:58:33 GMT
+
+{"assignments":[{"id":"asg_a03f90646f844013","title":"回归DNS作业","description":"P2回归","created_by":"U90000000002","deadline":"2099-01-01 00:00:00+00:00","status":"active","items":[{"protocol":"arp","points":30,"best_score":null,"earned":null,"submission_count":0},{"protocol":"dns","points":20,"best_score":null,"earned":null,"submission_count":0}],"total_points":50,"total_earned":0.0,"submission_count":0}]}
+
+
+### admin list assignments (manager view)
+$ curl -s -i -H Authorization: Bearer <TOKEN_MASKED> http://127.0.0.1:8090/api/assignments
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 406
+Date: Sun, 25 Oct 2026 03:58:33 GMT
+
+{"assignments":[{"id":"asg_a03f90646f844013","title":"回归DNS作业","description":"P2回归","created_by":"U90000000002","scope":"class","deadline":"2099-01-01 00:00:00+00:00","status":"active","created_at":"2026-10-25 03:58:33.055670+00:00","updated_at":"2026-10-25 03:58:33.055670+00:00","items":[{"protocol":"arp","points":30},{"protocol":"dns","points":20}],"submission_count":0,"student_count":0}]}
+
+
+=== S3.3 截止（PATCH deadline 到过去）→ 学生详情仍可见；提交被拒留待 S4 ===
+### admin patch deadline to past
+$ curl -s -i -X PATCH http://127.0.0.1:8090/api/assignments/asg_a03f90646f844013 -H Authorization: Bearer <TOKEN_MASKED> -H Content-Type: application/json -d {"deadline":"2020-01-01T00:00:00Z"}
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 349
+Date: Sun, 25 Oct 2026 03:58:33 GMT
+
+{"id":"asg_a03f90646f844013","title":"回归DNS作业","description":"P2回归","created_by":"U90000000002","scope":"class","deadline":"2020-01-01 00:00:00+00:00","status":"active","created_at":"2026-10-25 03:58:33.055670+00:00","updated_at":"2026-10-25 03:58:33.160584+00:00","items":[{"protocol":"arp","points":30},{"protocol":"dns","points":20}]}
+
+
+### student detail after deadline
+$ curl -s -i -H Authorization: Bearer <TOKEN_MASKED> http://127.0.0.1:8090/api/assignments/asg_a03f90646f844013
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 401
+Date: Sun, 25 Oct 2026 03:58:33 GMT
+
+{"id":"asg_a03f90646f844013","title":"回归DNS作业","description":"P2回归","created_by":"U90000000002","deadline":"2020-01-01 00:00:00+00:00","status":"active","items":[{"protocol":"arp","points":30,"best_score":null,"earned":null,"submission_count":0},{"protocol":"dns","points":20,"best_score":null,"earned":null,"submission_count":0}],"total_points":50,"total_earned":0.0,"submission_count":0}
+
+
+### admin patch deadline back to future
+$ curl -s -i -X PATCH http://127.0.0.1:8090/api/assignments/asg_a03f90646f844013 -H Authorization: Bearer <TOKEN_MASKED> -H Content-Type: application/json -d {"deadline":"2099-01-01T00:00:00Z"} -o /dev/null
+
+
+=== S3.4 撤回 → 学生列表消失；恢复（reactivate）→ 重新可见 ===
+### admin withdraw
+$ curl -s -i -X POST http://127.0.0.1:8090/api/assignments/asg_a03f90646f844013/withdraw -H Authorization: Bearer <TOKEN_MASKED>
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 352
+Date: Sun, 25 Oct 2026 03:58:33 GMT
+
+{"id":"asg_a03f90646f844013","title":"回归DNS作业","description":"P2回归","created_by":"U90000000002","scope":"class","deadline":"2099-01-01 00:00:00+00:00","status":"withdrawn","created_at":"2026-10-25 03:58:33.055670+00:00","updated_at":"2026-10-25 03:58:33.234601+00:00","items":[{"protocol":"arp","points":30},{"protocol":"dns","points":20}]}
+
+### student list after withdraw
+$ curl -s -i -H Authorization: Bearer <TOKEN_MASKED> http://127.0.0.1:8090/api/assignments
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 18
+Date: Sun, 25 Oct 2026 03:58:33 GMT
+
+{"assignments":[]}
+
+
+### student detail after withdraw (404 expected)
+$ curl -s -i -H Authorization: Bearer <TOKEN_MASKED> http://127.0.0.1:8090/api/assignments/asg_a03f90646f844013
+HTTP/1.1 404 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 22
+Date: Sun, 25 Oct 2026 03:58:33 GMT
+
+{"detail":"not found"}
+
+
+### admin reactivate
+$ curl -s -i -X POST http://127.0.0.1:8090/api/assignments/asg_a03f90646f844013/reactivate -H Authorization: Bearer <TOKEN_MASKED>
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 349
+Date: Sun, 25 Oct 2026 03:58:33 GMT
+
+{"id":"asg_a03f90646f844013","title":"回归DNS作业","description":"P2回归","created_by":"U90000000002","scope":"class","deadline":"2099-01-01 00:00:00+00:00","status":"active","created_at":"2026-10-25 03:58:33.055670+00:00","updated_at":"2026-10-25 03:58:33.287360+00:00","items":[{"protocol":"arp","points":30},{"protocol":"dns","points":20}]}
+
+### student list after reactivate
+$ curl -s -i -H Authorization: Bearer <TOKEN_MASKED> http://127.0.0.1:8090/api/assignments
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 419
+Date: Sun, 25 Oct 2026 03:58:33 GMT
+
+{"assignments":[{"id":"asg_a03f90646f844013","title":"回归DNS作业","description":"P2回归","created_by":"U90000000002","deadline":"2099-01-01 00:00:00+00:00","status":"active","items":[{"protocol":"arp","points":30,"best_score":null,"earned":null,"submission_count":0},{"protocol":"dns","points":20,"best_score":null,"earned":null,"submission_count":0}],"total_points":50,"total_earned":0.0,"submission_count":0}]}
+
+
+scenario 03 done
