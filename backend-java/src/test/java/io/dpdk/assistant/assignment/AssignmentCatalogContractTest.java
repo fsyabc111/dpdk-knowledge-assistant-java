@@ -23,6 +23,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 /**
  * J2-03 目录契约测试（验收 A/B/C + protocols + 受理快照端口）：
@@ -423,17 +424,13 @@ class AssignmentCatalogContractTest {
         String aid = createAssignment(mvc, teacherToken);
 
         // 同一请求内重复协议 → UNIQUE(assignment_id, protocol) 冲突（Python 同样不预校验，
-        // 500 由约束拒绝触发）；主行 title 更新必须随事务一并回滚（验收 C/PG 原子性）。
-        boolean failed = false;
-        try {
-            mvc.perform(patch("/api/assignments/" + aid).contentType("application/json")
-                    .header("Authorization", auth(teacherToken))
-                    .content("{\"title\":\"不应生效\",\"items\":[{\"protocol\":\"dns\",\"points\":10},"
-                            + "{\"protocol\":\"dns\",\"points\":20}]}")).andReturn();
-        } catch (Exception e) {
-            failed = true;
-        }
-        assertThat(failed).as("重复协议必须以存储失败终止（oracle 为 500），不能静默成功").isTrue();
+        // 500 由约束拒绝触发，经全局兜底渲染纯文本）；主行 title 更新必须随事务一并回滚。
+        mvc.perform(patch("/api/assignments/" + aid).contentType("application/json")
+                        .header("Authorization", auth(teacherToken))
+                        .content("{\"title\":\"不应生效\",\"items\":[{\"protocol\":\"dns\",\"points\":10},"
+                                + "{\"protocol\":\"dns\",\"points\":20}]}"))
+                .andExpect(status().isInternalServerError())
+                .andExpect(content().string("Internal Server Error"));
         assertThat(h.columnValue("assignments", "title", "id = ?", aid)).isEqualTo("作业一");
         assertThat(h.countRows("assignment_items", "assignment_id = ?", aid)).isEqualTo(2);
     }

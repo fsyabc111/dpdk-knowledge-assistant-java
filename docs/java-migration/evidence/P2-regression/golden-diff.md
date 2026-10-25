@@ -30,6 +30,17 @@ fake MCP harness 等价替身提供 grade_plugin/list_protocols）。环境对�
 | SKIP | 87 | 逐条登记，理由分五类（见 log） |
 | **契约 DIFF** | **0** | 未发现状态码或响应体契约差异 |
 
+## 分类附注（P2 收口，集成者补；规格审查 S3 关闭）
+
+原脚本未映射的 4 条 SKIP 属**状态依赖用例**（golden 用例顺序前置），等价成功流已在场景 1-6 留证：
+
+| route::case | 分类 | 等价证据 |
+|---|---|---|
+| GET /api/admin/password-reset-requests::success-after-request | 依赖前置申请 POST（golden 顺序） | 场景2 改密审批流（申请→审批→列表断言） |
+| GET /api/admin/password-reset-requests::success-second | 同会话第二次查询（状态序） | 场景2 审批列表两次断言 |
+| GET /api/assignments::success-nonempty-manager | 需预置作业行的角色列表 | 场景3 admin 视角列表可见性 |
+| GET /api/assignments::success-nonempty-student | 同上（学生视角） | 场景3 学生视角可见性/撤回断言 |
+
 ## 登记的平台/环境差异（不阻塞）
 
 1. **secure-headers 中间件头缺失**（J2-01 已登记，P2 live 确认）：golden 401/422 响应含

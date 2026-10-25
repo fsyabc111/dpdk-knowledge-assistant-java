@@ -24,4 +24,18 @@ public class ApiExceptionHandler {
         ex.headers().forEach(builder::header);
         return builder.body(body);
     }
+
+    /**
+     * 未捕获异常兜底：对齐 FastAPI/Starlette ServerErrorMiddleware 默认行为——
+     * 500 + 纯文本 "Internal Server Error"（p0-v2 未钉死 500 体，P5 全矩阵复核；
+     * 见 interface-changes.md D2 关闭记录）。不向客户端回显异常细节。
+     */
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleUnexpected(Exception ex) {
+        org.slf4j.LoggerFactory.getLogger(ApiExceptionHandler.class)
+                .warn("未捕获异常（500 兜底）: {}", ex.getClass().getSimpleName());
+        return ResponseEntity.status(500)
+                .contentType(MediaType.TEXT_PLAIN)
+                .body("Internal Server Error");
+    }
 }

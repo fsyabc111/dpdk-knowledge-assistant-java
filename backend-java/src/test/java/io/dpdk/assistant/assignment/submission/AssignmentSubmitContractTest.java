@@ -464,17 +464,14 @@ class AssignmentSubmitContractTest {
         assertThat(both.path("detail").path(0).path("loc").path(0).asText()).isEqualTo("protocol");
         assertThat(both.path("detail").path(0).path("input").path("extra").asInt()).isEqualTo(1);
         assertThat(both.path("detail").path(1).path("loc").path(0).asText()).isEqualTo("code");
-        // 非法 JSON → 422 明文；非对象 body → 500（Python TypeError 面，异常未渲染）。
+        // 非法 JSON → 422 明文；非对象 body → 500 纯文本（Python TypeError 面，经全局兜底）。
         MvcResult badJson = submitRaw(aid, "{oops", studentA1);
         assertThat(badJson.getResponse().getStatus()).isEqualTo(422);
         assertThat(MAPPER.readTree(badJson.getResponse().getContentAsByteArray())
                 .path("detail").asText()).isEqualTo("request body must be valid JSON");
-        try {
-            submitRaw(aid, "[]", studentA1);
-            throw new AssertionError("expected TypeError-parity IllegalStateException");
-        } catch (Exception expected) {
-            assertThat(expected).hasCauseInstanceOf(IllegalStateException.class);
-        }
+        MvcResult nonObject = submitRaw(aid, "[]", studentA1);
+        assertThat(nonObject.getResponse().getStatus()).isEqualTo(500);
+        assertThat(nonObject.getResponse().getContentAsString()).isEqualTo("Internal Server Error");
     }
 
     /* ------------------------------------------------------------------ */
@@ -592,16 +589,13 @@ class AssignmentSubmitContractTest {
         JsonNode chars = submitJson(aid, "{\"protocol\":\"dns\",\"code\":\"x\"}", studentA1);
         assertThat(chars.path("results").path(0).asText()).isEqualTo("a");
         assertThat(chars.path("results").path(1).asText()).isEqualTo("b");
-        // score 非数值 → 500（Python ValueError 面；异常未渲染为 {"detail"}，登记平台差异）。
+        // score 非数值 → 500 纯文本（Python ValueError 面；全局兜底渲染，登记平台差异）。
         h.harness.successPayloadJson = "{\"ok\":true,\"protocol\":\"dns\",\"score\":\"abc\","
                 + "\"passed\":4,\"cases_total\":5,\"results\":[]}";
         int rowsBefore = h.countRows("grading_submissions", null);
-        try {
-            submitRaw(aid, "{\"protocol\":\"dns\",\"code\":\"x\"}", studentA1);
-            throw new AssertionError("expected NumberFormatException to propagate as 500");
-        } catch (Exception expected) {
-            assertThat(expected).hasCauseInstanceOf(NumberFormatException.class);
-        }
+        MvcResult nanScore = submitRaw(aid, "{\"protocol\":\"dns\",\"code\":\"x\"}", studentA1);
+        assertThat(nanScore.getResponse().getStatus()).isEqualTo(500);
+        assertThat(nanScore.getResponse().getContentAsString()).isEqualTo("Internal Server Error");
         assertThat(h.countRows("grading_submissions", null)).isEqualTo(rowsBefore);
         // ok=false 未知错误 → 502 + detail；detail 缺失 → 兜底文案。
         h.harness.successPayloadJson = "{\"ok\":false,\"error\":\"cheat\",\"detail\":\"作弊嫌疑\"}";

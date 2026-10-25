@@ -84,6 +84,26 @@
   的失败计数源现状保留；storage_bytes 物理字段归一化（session_count 精确）。
 - 求值序按源固化：401→422→404；维护端点 503（未配置）/403（缺失/不符）、dry-run/apply 分离。
 
+## J2-04（正式提交/MCP评测/成绩）已接受（2026-10-25）
+
+- 消费端口落地：`assignment.submission` 实现 contracts.grading.FormalSubmissionPort，
+  成绩只读经 `SubmissionRecordReader`（显式来源/assignment_id）；TaskGradeParticipant
+  （聊天任务成绩）**归 J3-01 接线**，本卡不实现。
+- **登记差异**：U+FFFD 计数 JVM/CPython 不一致（ED 代理区 1↔3）——自实现
+  `PythonUtf8`（assignment.submission）以 CPython 冻结 hash 电池锁定（验收 F 路径）。
+- 「已提交后挂起」：Python 504 / Java 502（均不重发、账本保留）；500 异常渲染缺口
+  归平台层（P2 收口前由集成者补；未补前不宣称该分支兼容）。
+- 求值序（源证实）：快照404→截止400→协议400→评测413/429/504/502→受理口径响应。
+
+## P2 规格审查收口（2026-10-25，review-spec.md 建议 S1/S3/D2）
+
+- S1 已关闭：J2-04 登记节随本提交入库（审查基线 c7cbab3 时未提交）。
+- S3 已关闭：4 条"未分类"SKIP 为状态依赖用例，等价证据映射见
+  evidence/P2-regression/golden-diff.md 分类附注。
+- D2 已关闭：500 兜底渲染实现为 Starlette 平价（500 + 纯文本 "Internal Server Error"，
+  不回显异常细节）。注意：p0-v2 未包含 500 观测，该形状未经差分钉死，按 FastAPI/Starlette
+  默认实现，P5 全矩阵 oracle 复核后定稿。
+
 ## 消费指引（P1 内）
 
 - J1-04/P2 消费模型端口：经 `io.dpdk.assistant.model.ModelClients` / `harness.HarnessClients` 入口。

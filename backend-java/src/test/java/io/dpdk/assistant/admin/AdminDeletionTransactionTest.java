@@ -24,6 +24,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 /**
  * J2-02 删除事务测试（验收 D/E/G）：密码确认、静态 token 挡删除、自保护、
@@ -263,8 +264,7 @@ class AdminDeletionTransactionTest {
         int usersBefore = h.countRows("users", null, (String[]) null);
 
         // 在第二个目标的级联删除中段注入 SQLException → 整笔回滚（第一个已删的也回滚）。
-        // MockMvc standalone 对未捕获运行时异常向上抛 ServletException（真容器为 500），
-        // 断言其 cause 链即为注入的 SQLException。
+        // 异常经全局兜底渲染为 500 纯文本（Starlette 平价），事务回滚由下方行数断言。
         h.users.setProbe(step -> {
             if ("delete-user-rows:U20260000072".equals(step)) {
                 throw new SQLException("injected mid-transaction failure");
@@ -272,19 +272,13 @@ class AdminDeletionTransactionTest {
         });
         MockMvc mvc = h.newMvc();
         String leaderToken = h.login(mvc, LEADER, LEADER);
-        try {
-            mvc.perform(post("/api/admin/users/delete").contentType("application/json")
-                            .header("Authorization", auth(leaderToken))
-                            .content("{\"ids\":[\"U20260000071\",\"U20260000072\"],\"password\":\""
-                                    + LEADER + "\"}"));
-            throw new AssertionError("注入的 SQLException 应向上传播");
-        } catch (jakarta.servlet.ServletException e) {
-            assertThat(e.getCause()).isInstanceOf(IllegalStateException.class);
-            assertThat(e.getCause().getCause()).isInstanceOf(SQLException.class);
-            assertThat(e.getCause().getCause()).hasMessageContaining("injected mid-transaction failure");
-        } finally {
-            h.users.setProbe(null);
-        }
+        mvc.perform(post("/api/admin/users/delete").contentType("application/json")
+                        .header("Authorization", auth(leaderToken))
+                        .content("{\"ids\":[\"U20260000071\",\"U20260000072\"],\"password\":\""
+                                + LEADER + "\"}"))
+                .andExpect(status().isInternalServerError())
+                .andExpect(content().string("Internal Server Error"));
+        h.users.setProbe(null);
         assertThat(h.countRows("users", null, (String[]) null)).isEqualTo(usersBefore);
         assertThat(h.countRows("users", "id=?", "U20260000071")).isEqualTo(1);
         assertThat(h.countRows("users", "id=?", "U20260000072")).isEqualTo(1);
