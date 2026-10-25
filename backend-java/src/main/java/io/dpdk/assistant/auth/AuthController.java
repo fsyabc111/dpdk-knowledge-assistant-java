@@ -116,8 +116,10 @@ public class AuthController {
     @PostMapping("/api/auth/change-password")
     public ResponseEntity<Void> changePassword(@RequestBody(required = false) String rawBody,
                                                HttpServletRequest request) {
-        Map<String, String> f = PydanticBody.parseStringObject(rawBody, CHANGE_PASSWORD_FIELDS);
+        // FastAPI 依赖(require_auth)先于请求体校验：401 → 422 → 404（golden
+        // change-password::unauthorized 以空体 {} 得 401 而非 422 为准）。
         Principal principal = resolver.resolve(requestHeaders(request), contractSettings());
+        Map<String, String> f = PydanticBody.parseStringObject(rawBody, CHANGE_PASSWORD_FIELDS);
         requireAccountMode();
         String keepToken = BearerTokens.extract(request);
         boolean ok;

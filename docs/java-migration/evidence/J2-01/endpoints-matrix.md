@@ -6,11 +6,11 @@ HTTP golden：`migration/fixtures/p0-v2/python-golden.json`（/api/auth 前缀 1
 
 ## 0. 执行顺序总纲（决定状态码优先级）
 
-- FastAPI 请求体 Pydantic 校验先于端点函数体执行 → **422 先于一切端点内逻辑**。
-- `/api/auth/logout`、`/api/auth/change-password` 的 `require_auth` 依赖在函数体之前 →
-  **401 先于 404（非 account 模式隐藏）**。
-- login/password-reset-requests/password-reset 无认证依赖：函数体首行 `_require_account_mode()`
-  → **404 先于限流/锁定/业务**。
+- FastAPI 求值顺序：**依赖（require_auth）→ 请求体 Pydantic 校验 → 端点函数体**。
+  即 logout/change-password：**401 → 422 → 404**（golden change-password::unauthorized
+  空/不完整体得 401 "missing or malformed bearer token" 而非 422 为准）。
+- login/password-reset-requests/password-reset 无认证依赖：体校验 422 先于函数体。
+- login 函数体首行 `_require_account_mode()` → **404 先于限流/锁定/业务**。
 - login 函数内顺序：每 IP 限流(429) → 按学号锁定检查(429，密码验证之前) → 凭据校验(401)。
 - password-reset-requests 顺序：限流(429) → 学号格式(400) → 落库。
 - password-reset 顺序：限流(429) → 一次性消费(400)。
@@ -35,8 +35,8 @@ HTTP golden：`migration/fixtures/p0-v2/python-golden.json`（/api/auth 前缀 1
 | 端点 | 方法 | account 模式 | local / token 模式 |
 |---|---|---|---|
 | /api/auth/login | POST | 完整行为（见 §3） | 请求体不合法 → 422；体合法 → 404 `{"detail":"not found"}` |
-| /api/auth/logout | POST | 请求体不合法 → 422（无体模型，恒合法）→ 无 token → 401；token 无效 → 401 → 404 检查 → 撤销 → 204 | 401（无/坏 token）先于 404；token 为 local 模式不适用（local 免凭证但模式先 401? 见注） |
-| /api/auth/change-password | POST | 422 → 401 → 404 → 旧密错/静态兜底主体无账号行 → 400 `old password is incorrect`；新密规则不满足 → 400 `str(ValueError)`；成功 → 204（保留当前 token，撤销其他） | 422 → 401（token 模式下无 token/坏 token）→（不达）404 |
+| /api/auth/logout | POST | 401（认证依赖：无/无效 token）→ 404（模式检查）→ 撤销 → 204 | 401 先于 404；local 模式免凭证主体通过认证后仍 404（见注） |
+| /api/auth/change-password | POST | 401（认证依赖）→ 422（体校验）→ 404 → 旧密错/静态兜底主体无账号行 → 400 `old password is incorrect`；新密规则不满足 → 400 `str(ValueError)`；成功 → 204（保留当前 token，撤销其他） | 401（无 token/坏 token）→（不达）422/404 |
 | /api/auth/password-reset-requests | POST | 422 → 404 → 429 → 格式非法 400 `invalid username format` → 幂等落库 → 202 空体 | 422 → 404 |
 | /api/auth/password-reset | POST | 422 → 404 → 429 → 无效/过期/已用/新密不合规 → 400 `invalid or expired reset token`（不区分）→ 204 | 422 → 404 |
 

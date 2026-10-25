@@ -151,8 +151,8 @@ public class UserAuthRepository implements CredentialInvalidationPort, PasswordR
                     "INSERT INTO api_tokens(token_hash, user_id, issued_at, expires_at) VALUES (?,?,?,?)")) {
                 ps.setString(1, TokenMint.digest(token));
                 ps.setString(2, userId);
-                ps.setString(3, issuedIso);
-                ps.setString(4, expiresIso);
+                ps.setObject(3, OffsetDateTime.parse(issuedIso));
+                ps.setObject(4, OffsetDateTime.parse(expiresIso));
                 ps.executeUpdate();
                 return null;
             }
@@ -200,7 +200,7 @@ public class UserAuthRepository implements CredentialInvalidationPort, PasswordR
         inTx(conn -> {
             try (PreparedStatement ps = conn.prepareStatement(
                     "UPDATE api_tokens SET revoked_at = ? WHERE token_hash = ? AND revoked_at IS NULL")) {
-                ps.setString(1, clock.nextSessionIso());
+                ps.setObject(1, OffsetDateTime.parse(clock.nextSessionIso()));
                 ps.setString(2, TokenMint.digest(token));
                 ps.executeUpdate();
                 return null;
@@ -340,7 +340,7 @@ public class UserAuthRepository implements CredentialInvalidationPort, PasswordR
                             + "VALUES (?, ?, 'pending', ?)")) {
                 ps.setString(1, UUID.randomUUID().toString().replace("-", ""));
                 ps.setString(2, userId);
-                ps.setString(3, clock.nextSessionIso());
+                ps.setObject(3, OffsetDateTime.parse(clock.nextSessionIso()));
                 ps.executeUpdate();
             }
             return null;
@@ -408,8 +408,8 @@ public class UserAuthRepository implements CredentialInvalidationPort, PasswordR
                     "UPDATE password_reset_requests SET status = 'approved', reset_token_hash = ?, "
                             + "reset_expires_at = ?, decided_at = ?, decided_by = ? WHERE id = ?")) {
                 ps.setString(1, TokenMint.digest(token));
-                ps.setString(2, expiresIso);
-                ps.setString(3, clock.nextSessionIso());
+                ps.setObject(2, OffsetDateTime.parse(expiresIso));
+                ps.setObject(3, OffsetDateTime.parse(clock.nextSessionIso()));
                 ps.setString(4, adminId);
                 ps.setString(5, requestId);
                 ps.executeUpdate();
@@ -436,7 +436,7 @@ public class UserAuthRepository implements CredentialInvalidationPort, PasswordR
             try (PreparedStatement ps = conn.prepareStatement(
                     "UPDATE password_reset_requests SET status = 'rejected', decided_at = ?, decided_by = ? "
                             + "WHERE id = ? AND status = 'pending'")) {
-                ps.setString(1, clock.nextSessionIso());
+                ps.setObject(1, OffsetDateTime.parse(clock.nextSessionIso()));
                 ps.setString(2, adminId);
                 ps.setString(3, requestId);
                 return ps.executeUpdate() > 0;
@@ -517,7 +517,7 @@ public class UserAuthRepository implements CredentialInvalidationPort, PasswordR
         if (exceptTokenHash == null) {
             try (PreparedStatement ps = conn.prepareStatement(
                     "UPDATE api_tokens SET revoked_at = ? WHERE user_id = ? AND revoked_at IS NULL")) {
-                ps.setString(1, now);
+                ps.setObject(1, OffsetDateTime.parse(now));
                 ps.setString(2, userId);
                 ps.executeUpdate();
             }
@@ -525,7 +525,7 @@ public class UserAuthRepository implements CredentialInvalidationPort, PasswordR
             try (PreparedStatement ps = conn.prepareStatement(
                     "UPDATE api_tokens SET revoked_at = ? WHERE user_id = ? AND revoked_at IS NULL "
                             + "AND token_hash <> ?")) {
-                ps.setString(1, now);
+                ps.setObject(1, OffsetDateTime.parse(now));
                 ps.setString(2, userId);
                 ps.setString(3, exceptTokenHash);
                 ps.executeUpdate();
