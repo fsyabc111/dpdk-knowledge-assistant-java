@@ -1,7 +1,9 @@
 package io.dpdk.assistant.assignment.submission;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 import io.dpdk.assistant.platform.errors.ApiDetailException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -42,6 +44,11 @@ public final class SubmitRequestParser {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
+    /** json.loads 语义：完整文档 + 尾随 token 拒绝（SP-02）。 */
+    private static final ObjectReader STRICT_JSON = MAPPER
+            .readerFor(JsonNode.class)
+            .with(DeserializationFeature.FAIL_ON_TRAILING_TOKENS);
+
     private SubmitRequestParser() {
     }
 
@@ -76,12 +83,16 @@ public final class SubmitRequestParser {
         }
         JsonNode body;
         try {
-            body = MAPPER.readTree(text);
+            // Python request.json() = json.loads：空/纯空白/多文档/尾随垃圾都抛
+            // JSONDecodeError → 422；SP-02（2026-10-25 验收修复）以
+            // FAIL_ON_TRAILING_TOKENS 恢复该语义，readTree 只取首个文档会放过垃圾。
+            body = STRICT_JSON.readValue(text);
         } catch (Exception e) {
             throw invalidJson();
         }
-        if (!body.isObject()) {
-            // Python `AssignmentSubmitRequest(**body)` 对非映射抛 TypeError → 500。
+        if (body == null || !body.isObject()) {
+            // Python `AssignmentSubmitRequest(**body)` 对非映射（JSON null/标量/数组）
+            // 抛 TypeError → 500。
             throw new IllegalStateException(
                     "submit body is not a JSON object (TypeError parity)");
         }

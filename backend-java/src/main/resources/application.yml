@@ -26,8 +26,10 @@ logging:
 # 数据源与数据库身份没有默认值：缺失或身份不符直接 fail-closed（J1-01 验收项）。
 # 只接受独立测试/受控目标；禁止回退 .env、宿主机默认库或旧部署。
 dpdk:
-  # React 联调来源（vite dev server）；逗号分隔，空=不放开任何来源
-  cors-origins: ${DPDK_JAVA_CORS_ORIGINS:http://localhost:5173,http://127.0.0.1:5173}
+  # React 联调来源（vite dev server）；逗号分隔，空=不放开任何来源。
+  # SP-05（2026-10-25 验收修复）：默认对齐冻结 Python 基线 FRONTEND_ORIGINS
+  # （config.py:116 = 5174，与 frontend/vite.config.js dev 端口一致）。
+  cors-origins: ${DPDK_JAVA_CORS_ORIGINS:http://localhost:5174,http://127.0.0.1:5174}
   datasource:
     url: ${DPDK_JAVA_DB_URL:}
     username: ${DPDK_JAVA_DB_USER:}

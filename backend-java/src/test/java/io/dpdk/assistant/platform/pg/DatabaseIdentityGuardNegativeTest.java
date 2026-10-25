@@ -23,21 +23,27 @@ class DatabaseIdentityGuardNegativeTest {
 
     @Test
     void wrongDatabaseRejected() throws Exception {
-        try (Connection c = TestPg.connect(TestPg.createDatabase("guard_wrongdb", TestPg.COMMENT))) {
+        String db = TestPg.createDatabase("guard_wrongdb", TestPg.COMMENT);
+        try (Connection c = TestPg.connect(db)) {
             assertThatThrownBy(() -> DatabaseIdentityGuard.verify(c,
                     spec("some_other_db", TestPg.user(), TestPg.COMMENT, DATA_DIR)))
                     .isInstanceOf(DatabaseIdentityException.class)
                     .hasMessageContaining("database");
+        } finally {
+            TestPg.dropDatabase(db);
         }
     }
 
     @Test
     void wrongUserRejected() throws Exception {
-        try (Connection c = TestPg.connect(TestPg.createDatabase("guard_wronguser", TestPg.COMMENT))) {
+        String db = TestPg.createDatabase("guard_wronguser", TestPg.COMMENT);
+        try (Connection c = TestPg.connect(db)) {
             assertThatThrownBy(() -> DatabaseIdentityGuard.verify(c,
                     spec(currentDb(c), "not_the_role", TestPg.COMMENT, DATA_DIR)))
                     .isInstanceOf(DatabaseIdentityException.class)
                     .hasMessageContaining("user");
+        } finally {
+            TestPg.dropDatabase(db);
         }
     }
 
@@ -50,16 +56,21 @@ class DatabaseIdentityGuardNegativeTest {
                     spec(currentDb(c), TestPg.user(), TestPg.COMMENT, DATA_DIR)))
                     .isInstanceOf(DatabaseIdentityException.class)
                     .hasMessageContaining("comment");
+        } finally {
+            TestPg.dropDatabase(db);
         }
     }
 
     @Test
     void wrongDataDirectoryRejected() throws Exception {
-        try (Connection c = TestPg.connect(TestPg.createDatabase("guard_wrongdir", TestPg.COMMENT))) {
+        String db = TestPg.createDatabase("guard_wrongdir", TestPg.COMMENT);
+        try (Connection c = TestPg.connect(db)) {
             assertThatThrownBy(() -> DatabaseIdentityGuard.verify(c,
                     spec(currentDb(c), TestPg.user(), TestPg.COMMENT, "/definitely/not/our/pgdata")))
                     .isInstanceOf(DatabaseIdentityException.class)
                     .hasMessageContaining("data_directory");
+        } finally {
+            TestPg.dropDatabase(db);
         }
     }
 
@@ -68,6 +79,8 @@ class DatabaseIdentityGuardNegativeTest {
         String db = TestPg.createDatabase("guard_ok", TestPg.COMMENT);
         try (Connection c = TestPg.connect(db)) {
             DatabaseIdentityGuard.verify(c, spec(currentDb(c), TestPg.user(), TestPg.COMMENT, DATA_DIR));
+        } finally {
+            TestPg.dropDatabase(db);
         }
     }
 

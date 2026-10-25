@@ -41,8 +41,11 @@ export DPDK_JAVA_DB_URL='jdbc:postgresql://127.0.0.1:55481/p1_java_candidate' \
 cd frontend && npm install && VITE_API_BASE=http://127.0.0.1:8090 npm run dev
 ```
 
-CORS：`dpdk.cors-origins`（默认放行 vite 5173 来源）；方法/头/credentials 与
-Python CORSMiddleware 对齐（platform/web/CorsConfig）。
+CORS：`dpdk.cors-origins` 默认放行 vite **5174** 来源（SP-05：对齐冻结 Python 基线
+FRONTEND_ORIGINS 与 frontend/vite.config.js 的 dev 端口 5174；`npm run dev` 原样
+即可联调）；方法/头/credentials 与 Python CORSMiddleware 对齐（platform/web/CorsConfig）。
+覆盖默认：`DPDK_JAVA_CORS_ORIGINS`（与 `dpdk.cors-origins` 同语义）。非允许来源
+预检仍被拒绝（Spring 403，语义差异见 DECISIONS.md P2-D1）。
 
 ## 差分 oracle（对齐验证）
 

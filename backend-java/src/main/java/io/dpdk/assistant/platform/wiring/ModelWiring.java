@@ -10,8 +10,10 @@ import io.dpdk.assistant.platform.config.HarnessProperties;
 import io.dpdk.assistant.platform.config.ModelChatProperties;
 import io.dpdk.assistant.platform.config.ModelEmbeddingProperties;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -20,12 +22,17 @@ import org.springframework.context.annotation.Configuration;
  * 端点未配置时不创建任何 Bean（不加载 .env、无默认回退）；配置存在但缺
  * base-url/api-key 时由 Settings 构造器 fail-closed。共享上游并发门
  * （默认 20，对齐 rag_upstream_concurrency）。
+ *
+ * SP-01（2026-10-25 验收修复）：chat 与 embedding 分离配置（J1-02），四种启动
+ * 组合都必须可装配——ModelClients 在 chat.base-url 或 embedding.base-url 任一
+ * 存在时创建；chat-only / embedding-only / 两者 / 均未配置各自只装配所属客户端，
+ * 均无默认外部端点、无真实调用。
  */
 @Configuration
 public class ModelWiring {
 
     @Bean(destroyMethod = "close")
-    @ConditionalOnProperty("dpdk.model.chat.base-url")
+    @Conditional(ModelClientsNeeded.class)
     public ModelClients modelClients(@Value("${dpdk.upstream-concurrency:20}") int upstreamConcurrency) {
         return new ModelClients(upstreamConcurrency);
     }
@@ -53,5 +60,21 @@ public class ModelWiring {
     @ConditionalOnProperty(prefix = "dpdk.harness", name = "url", matchIfMissing = true)
     public StreamableHttpHarnessClient harnessClient(HarnessProperties props) {
         return io.dpdk.assistant.harness.HarnessClients.forUrl(props.url());
+    }
+
+    /** chat 或 embedding 任一配置即需要共享上游并发门（SP-01 四组合）。 */
+    static class ModelClientsNeeded extends AnyNestedCondition {
+
+        ModelClientsNeeded() {
+            super(ConfigurationPhase.REGISTER_BEAN);
+        }
+
+        @ConditionalOnProperty("dpdk.model.chat.base-url")
+        static class ChatPresent {
+        }
+
+        @ConditionalOnProperty("dpdk.model.embedding.base-url")
+        static class EmbeddingPresent {
+        }
     }
 }

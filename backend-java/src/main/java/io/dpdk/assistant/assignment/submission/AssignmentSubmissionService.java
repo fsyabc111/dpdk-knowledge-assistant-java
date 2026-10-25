@@ -189,10 +189,12 @@ public class AssignmentSubmissionService implements FormalSubmissionPort {
     /**
      * list(payload["results"] or [])：falsy → []；字符串拆字符；数组透传；
      * 非空对象取键序列表（Python list(dict)）；其余 TypeError → 500。
+     * SP-03（2026-10-25 验收修复）：falsy 判定走 truthy()——false/0/0.0/空串/
+     * 空对象均回退空数组（Python `or []` 链），不再落入 TypeError 分支丢成绩。
      */
     private static JsonNode resultsOf(JsonNode node) {
         List<JsonNode> items = new ArrayList<>();
-        if (node == null || node.isNull() || node.isMissingNode()) {
+        if (node == null || node.isNull() || node.isMissingNode() || !truthy(node)) {
             return MAPPER.createArrayNode();
         }
         if (node.isArray()) {

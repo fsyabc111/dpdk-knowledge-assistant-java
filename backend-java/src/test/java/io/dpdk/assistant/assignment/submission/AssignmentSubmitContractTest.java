@@ -66,6 +66,10 @@ class AssignmentSubmitContractTest {
     private static String teacherA;
     private static String teacherB;
     private static String leader;
+    // SP-02/03 专用学生：高配额（settings 默认 grading_daily_quota=20 会拦截累积提交，
+    // 干扰“零副作用/精确增量”断言）。
+    private static final String SP_STUDENT = "U20260000012";
+    private static String spStudent;
 
     @BeforeAll
     static void setup() throws Exception {
@@ -77,11 +81,13 @@ class AssignmentSubmitContractTest {
         h.seedUser(STUDENT_A1, "[\"viewer\"]", null, true, STUDENT_A1, TEACHER_A);
         h.seedUser(STUDENT_B1, "[\"viewer\"]", null, true, STUDENT_B1, TEACHER_B);
         h.seedUser(STUDENT_FREE, "[\"viewer\"]", null, true, STUDENT_FREE, null);
+        h.seedUser(SP_STUDENT, "[\"viewer\"]", 10000, true, SP_STUDENT, TEACHER_A);
         mvc = h.newMvc();
         studentA1 = h.login(mvc, STUDENT_A1, STUDENT_A1);
         teacherA = h.login(mvc, TEACHER_A, TEACHER_A);
         teacherB = h.login(mvc, TEACHER_B, TEACHER_B);
         leader = h.login(mvc, LEADER, LEADER);
+        spStudent = h.login(mvc, SP_STUDENT, SP_STUDENT);
     }
 
     @AfterAll
@@ -704,5 +710,137 @@ class AssignmentSubmitContractTest {
         String surrogateCode = "a\ud800b";
         assertThat(PythonUtf8.sha256Hex(PythonUtf8.encodeReplace(surrogateCode)))
                 .isEqualTo("c2a7b64a2d2520047bfc9248fdda834c9cc2c0c9e89826355c7a6ae16fe11179");
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* SP-02（U12 验收修复）：JSON 边界 = Python json.loads 语义            */
+    /* ------------------------------------------------------------------ */
+
+    /** 断言一次拒绝提交的三零副作用：零 MCP、零配额、零成绩行。 */
+    private void assertNoSideEffects(String subject, int callsBefore, int countersBefore,
+            int rowsBefore) throws Exception {
+        assertThat(h.harness.gradeCallCount()).as("MCP 调用数").isEqualTo(callsBefore);
+        assertThat(h.counterValue(subject, "grading")).as("配额计数").isEqualTo(countersBefore);
+        assertThat(h.countRows("grading_submissions", null)).as("成绩行").isEqualTo(rowsBefore);
+    }
+
+    @Test
+    @Order(12)
+    void submitJsonBoundariesMatchPythonLoads() throws Exception {
+        String aid = createDefaultAssignment(teacherA, "SP02边界作业");
+        h.harness.setSuccessPayload("dns", 80, 4, 5, "[]");
+        int calls0 = h.harness.gradeCallCount();
+        int counters0 = h.counterValue(SP_STUDENT, "grading");
+        int rows0 = h.countRows("grading_submissions", null);
+
+        // 空 body / 纯空白：json.loads 抛 JSONDecodeError → 422（此前 Java 500）。
+        MvcResult empty = mvc.perform(post("/api/assignments/" + aid + "/submit")
+                        .contentType("application/json")
+                        .header("Authorization", bearer(spStudent)).content(""))
+                .andReturn();
+        assertThat(empty.getResponse().getStatus()).isEqualTo(422);
+        assertThat(MAPPER.readTree(empty.getResponse().getContentAsByteArray())
+                .path("detail").asText()).isEqualTo("request body must be valid JSON");
+        MvcResult blank = mvc.perform(post("/api/assignments/" + aid + "/submit")
+                        .contentType("application/json")
+                        .header("Authorization", bearer(spStudent)).content("  \n\t "))
+                .andReturn();
+        assertThat(blank.getResponse().getStatus()).isEqualTo(422);
+        assertNoSideEffects(SP_STUDENT, calls0, counters0, rows0);
+
+        // 合法对象 + 尾随垃圾：json.loads "Extra data" → 422（此前 Java 200 且已扣次）。
+        MvcResult trailing = mvc.perform(post("/api/assignments/" + aid + "/submit")
+                        .contentType("application/json")
+                        .header("Authorization", bearer(spStudent))
+                        .content("{\"protocol\":\"dns\",\"code\":\"x\"} trailing-garbage"))
+                .andReturn();
+        assertThat(trailing.getResponse().getStatus()).isEqualTo(422);
+        // 多个根对象 → 422。
+        MvcResult twoRoots = mvc.perform(post("/api/assignments/" + aid + "/submit")
+                        .contentType("application/json")
+                        .header("Authorization", bearer(spStudent))
+                        .content("{\"protocol\":\"dns\",\"code\":\"x\"}"
+                                + "{\"protocol\":\"dns\",\"code\":\"y\"}"))
+                .andReturn();
+        assertThat(twoRoots.getResponse().getStatus()).isEqualTo(422);
+        assertNoSideEffects(SP_STUDENT, calls0, counters0, rows0);
+
+        // 控制：首文档后仅空白合法（Python json.loads 容忍）→ 200 + 1次MCP/扣次/落库。
+        h.harness.setSuccessPayload("dns", 80, 4, 5, "[]");
+        MvcResult trailingSpace = mvc.perform(post("/api/assignments/" + aid + "/submit")
+                        .contentType("application/json")
+                        .header("Authorization", bearer(spStudent))
+                        .content("{\"protocol\":\"dns\",\"code\":\"x\"}  "))
+                .andReturn();
+        assertThat(trailingSpace.getResponse().getStatus()).isEqualTo(200);
+        assertThat(h.harness.gradeCallCount()).isEqualTo(calls0 + 1);
+        assertThat(h.counterValue(SP_STUDENT, "grading")).isEqualTo(counters0 + 1);
+        assertThat(h.countRows("grading_submissions", null)).isEqualTo(rows0 + 1);
+
+        // 合法 JSON 非对象（null/标量/数组）：解析在受理前拒绝 → **body 的 TypeError
+        // 面 → 500；零 MCP、零配额、零成绩行。
+        for (String body : new String[] {"null", "123", "\"text\"", "[1,2]", "true"}) {
+            MvcResult nonObject = submitRaw(aid, body, spStudent);
+            assertThat(nonObject.getResponse().getStatus()).as("body=%s", body).isEqualTo(500);
+        }
+        assertThat(h.harness.gradeCallCount()).isEqualTo(calls0 + 1);
+        assertThat(h.counterValue(SP_STUDENT, "grading")).isEqualTo(counters0 + 1);
+        assertThat(h.countRows("grading_submissions", null)).isEqualTo(rows0 + 1);
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* SP-03（U12 验收修复）：results 假值 = Python or-[] 真值语义           */
+    /* ------------------------------------------------------------------ */
+
+    @Test
+    @Order(13)
+    void resultsFalsyPayloadsPreserveGradedOutcome() throws Exception {
+        String aid = createDefaultAssignment(teacherA, "SP03真值作业");
+        int calls0 = h.harness.gradeCallCount();
+        int counters0 = h.counterValue(SP_STUDENT, "grading");
+        int rows0 = h.countRows("grading_submissions", "assignment_id=?", aid);
+
+        // falsy：false/0/0.0/null/空串/空对象 全部 200 + results:[] + 完整落库
+        // （SP-03：此前 false/0 → 500 丢成绩）。
+        for (String results : new String[] {"false", "0", "0.0", "null", "\"\"", "{}"}) {
+            h.harness.successPayloadJson = "{\"ok\":true,\"protocol\":\"dns\",\"score\":80,"
+                    + "\"passed\":4,\"cases_total\":5,\"results\":" + results + "}";
+            JsonNode body = submitJson(aid, "{\"protocol\":\"dns\",\"code\":\"x\"}", spStudent);
+            assertThat(body.path("score").asInt()).as("results=%s", results).isEqualTo(80);
+            assertThat(body.path("results").isArray()).isTrue();
+            assertThat(body.path("results").size()).as("results=%s", results).isZero();
+        }
+        // 每个假值 payload：MCP 各 1 次、扣次各 1、成绩行各 1（评测已执行不丢成绩）。
+        assertThat(h.harness.gradeCallCount()).isEqualTo(calls0 + 6);
+        assertThat(h.counterValue(SP_STUDENT, "grading")).isEqualTo(counters0 + 6);
+        assertThat(h.countRows("grading_submissions", "assignment_id=?", aid))
+                .isEqualTo(rows0 + 6);
+
+        // 空数组与正常数组照常；结果元素透传。
+        h.harness.successPayloadJson = "{\"ok\":true,\"protocol\":\"dns\",\"score\":80,"
+                + "\"passed\":4,\"cases_total\":5,\"results\":[]}";
+        assertThat(submitJson(aid, "{\"protocol\":\"dns\",\"code\":\"x\"}", spStudent)
+                .path("results").size()).isZero();
+        h.harness.successPayloadJson = "{\"ok\":true,\"protocol\":\"dns\",\"score\":80,"
+                + "\"passed\":4,\"cases_total\":5,\"results\":[{\"name\":\"synthetic-case\","
+                + "\"result\":\"PASS\",\"category\":\"basic\",\"failures\":[]}]}";
+        JsonNode normal = submitJson(aid, "{\"protocol\":\"dns\",\"code\":\"x\"}", spStudent);
+        assertThat(normal.path("results").size()).isEqualTo(1);
+        assertThat(normal.path("results").path(0).path("name").asText())
+                .isEqualTo("synthetic-case");
+
+        // truthy 非列表（true/数字）→ Python list() TypeError → 500；照源评测已执行：
+        // MCP 与扣次已发生，零成绩行。
+        int rowsBefore500 = h.countRows("grading_submissions", "assignment_id=?", aid);
+        for (String results : new String[] {"true", "5"}) {
+            h.harness.successPayloadJson = "{\"ok\":true,\"protocol\":\"dns\",\"score\":80,"
+                    + "\"passed\":4,\"cases_total\":5,\"results\":" + results + "}";
+            MvcResult boom = submitRaw(aid, "{\"protocol\":\"dns\",\"code\":\"x\"}", spStudent);
+            assertThat(boom.getResponse().getStatus()).as("results=%s", results).isEqualTo(500);
+        }
+        assertThat(h.harness.gradeCallCount()).isEqualTo(calls0 + 10);
+        assertThat(h.counterValue(SP_STUDENT, "grading")).isEqualTo(counters0 + 10);
+        assertThat(h.countRows("grading_submissions", "assignment_id=?", aid))
+                .isEqualTo(rowsBefore500);
     }
 }
