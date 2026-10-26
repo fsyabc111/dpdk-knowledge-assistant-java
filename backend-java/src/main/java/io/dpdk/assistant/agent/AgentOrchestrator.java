@@ -308,6 +308,8 @@ public final class AgentOrchestrator {
         result.collectedChunks = new ArrayList<>(toolContext.collectedChunks);
         result.gradingResults = new ArrayList<>(toolContext.gradingResults);
         result.toolsUsed = bridge.toolsUsed;
+        // 源独立Agent._log_trace才记录此hist；产品raw graph路径不新增事件。
+        if (!strictProduct) toolContext.metrics.agentTokens(result.tokensUsed);
         return result;
     }
 

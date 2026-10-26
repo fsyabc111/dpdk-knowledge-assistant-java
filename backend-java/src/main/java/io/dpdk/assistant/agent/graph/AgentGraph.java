@@ -170,25 +170,20 @@ public final class AgentGraph {
         while (true) {
             String route = routeAfterPlanner(state);
             if (route.equals("END")) {
-                return finish(state);
+                return new GraphResult(state);
             }
             if (route.equals("finalize")) {
                 finalizeNode(state, listener);
-                return finish(state);
+                return new GraphResult(state);
             }
             runTools(state, listener);
             // tools 回填后若预算已爆，跳过下一次 planner 调用直接 finalize。
             if (tokenBudget > 0 && state.tokensUsed >= tokenBudget) {
                 finalizeNode(state, listener);
-                return finish(state);
+                return new GraphResult(state);
             }
             planner(state, listener);
         }
-    }
-
-    private GraphResult finish(GraphState state) {
-        if (toolContext != null) toolContext.metrics.agentTokens(state.tokensUsed);
-        return new GraphResult(state);
     }
 
     private static AgentRunListener noop() {

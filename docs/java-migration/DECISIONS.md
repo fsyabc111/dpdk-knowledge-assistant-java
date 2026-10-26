@@ -104,3 +104,15 @@ P0 已获授权，Java 业务实现、P1 和生产切换仍未获授权。下表
 ### P5关闭P2-D1（2026-10-26）
 
 P2登记的Spring CORS拒绝403不是已批准产品差异。P5全矩阵暴露成功预检头/正文也不一致，现采用显式Starlette协议filter：成功200/OK、拒绝400/Disallowed CORS及白名单头，普通OPTIONS仍405，安全头覆盖。3项平台纯MVC测试通过；真实全矩阵待下一次新trace复验。未改Python黄金。
+
+### P5-O01：观测完整性独立修复范围（2026-10-26，主集成裁定）
+
+用户已直接选择补齐源过程指标；独立规范轴发现取消后candidate/shared loader晚于一次性flush，源Python实际AsyncTTLCache+UsageRecorder闩锁探针也复现同缺陷（owner取消时flush0，loader完后recorder1但持久0）。本片单独限定为活进程内计量完整性：checkpoint与迟到sink原子分界，真实收据归原request/subject/session追加账本及afterCommit过程counter，不双计；共享loader不因某waiter取消而杀，waiter不伪记实际调用，取消不等待90秒。普通已产生unknown回执照记。不能据cache正在等待推造上游调用1。
+
+不改变业务扣次/成绩/权限/答案终态/COMP003，也不改Python基线/黄金/阈值。SIGKILL发生于transport已发但未回执时，durable unknown ticket+稳定receiptID/upsert不在本片保证，列明限制；本工程不把这一成本缺口假称跨进程RPO0。依据为本批次异常/取消已发调用计量要求及用户明确补齐观测裁决，未授权真实上游/财务付费动作。实现owner model_adapter，公共接线主Agent。
+
+### P5-O02：过程事件归属与失败标签
+
+SP-P5-02按实际源入口关闭：产品trace没有rag_engine，LLM engine用unknown；agent_request_tokens只由独立Agent facade记录，产品raw graph不新增该hist事件。正常产品的事件增量与源对照。
+
+ST-P5-02另限定为真实失败归因：strict runProduct抛异常不能被Java局部result=null误记success，分error/cancelled，fallback仍按真实降级标记。冻结Python产品的部分图异常也可能经record_chat_trace缺fallback_reason落success；这个源观测缺陷单列，不反写黄金，不影响产品响应/业务状态，仅在补齐真实过程指标范围内修正错误分类；不得把此有意观测修正称为逐字源事件等价。正常/失败/取消/重放均需实际增量回归与独立复审。

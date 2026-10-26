@@ -412,7 +412,10 @@ public final class ChatTaskExecutor implements TaskExecutor {
                                 tools);
         } finally {
             boolean fallback = (result != null && result.fallback) || retrievalFailure[0] != null;
-            metrics.llm("llama_index", fallback ? "fallback" : "success", (System.nanoTime()-generationStarted)/1e9);
+            String outcome = result == null ? (Thread.currentThread().isInterrupted() ? "cancelled" : "error")
+                    : fallback ? "fallback" : "success";
+            // 产品自己的RequestTrace没有rag_engine，源默认标签为unknown。
+            metrics.llm("unknown", outcome, (System.nanoTime()-generationStarted)/1e9);
             if (fallback) metrics.fallback();
         }
         if (Thread.currentThread().isInterrupted()) throw new InterruptedException();

@@ -23,7 +23,7 @@ class ProductProcessMetricsPgTest {
                 public void validation(String status,double seconds) { assertEquals("answered",status);events.add("validation"); }
                 public void retrieval(double seconds) { assertTrue(seconds>=0);events.add("retrieval"); }
                 public void retrievalStage(String name,double seconds) { events.add(name); }
-                public void llm(String engine,String status,double seconds) { assertEquals("llama_index",engine);assertEquals("success",status);events.add("llm"); }
+                public void llm(String engine,String status,double seconds) { assertEquals("unknown",engine);assertEquals("success",status);events.add("llm"); }
                 public void rag(String status,String reason,double seconds) {
                     assertEquals("answered",status);
                     try { assertEquals(1,h.task.countRows("rag_requests","status=?","answered")); }
@@ -35,12 +35,23 @@ class ProductProcessMetricsPgTest {
             h.executor.setMetrics(metrics);h.product.setMetrics(metrics);
             var input=h.input("DNS 做什么");
             assertEquals("answered",h.product.chat(h.student,input).answerStatus());
-            for(String event:List.of("tool","validation","rag","retrieval","rewrite","embedding","llm","tokens"))
+            for(String event:List.of("tool","validation","rag","retrieval","rewrite","embedding","llm"))
                 assertEquals(1,Collections.frequency(events,event),event);
+            assertEquals(0,Collections.frequency(events,"tokens"));
             assertTrue(events.indexOf("rag")<events.indexOf("llm"));
             int count=events.size(),calls=h.modelCalls.get();
             h.product.chat(h.student,input);
             assertEquals(count,events.size());assertEquals(calls,h.modelCalls.get());
+        }
+    }
+    @Test void generationExceptionCannotCountAsSuccess() throws Exception {
+        try(var h=ChatTestHarness.create("processfailure",(messages,names)->{throw new IllegalStateException("synthetic model failure");},null)) {
+            var outcomes=new CopyOnWriteArrayList<String>();
+            h.executor.setMetrics(new ProcessMetrics() {
+                public void llm(String engine,String outcome,double seconds) { assertEquals("unknown",engine);outcomes.add(outcome); }
+            });
+            assertEquals("system_error",h.product.chat(h.student,h.input("DNS")).answerStatus());
+            assertEquals(List.of("error"),outcomes);
         }
     }
 }
