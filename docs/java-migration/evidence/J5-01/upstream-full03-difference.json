@@ -1,0 +1,408 @@
+{
+  "scope": "full-03历史候选实际值差；本恢复轮未跑PG，不代表修复后通过",
+  "fixture_sha256": "8d0658661fedb31c6a0690ea97cb3167534504049c65861b3c67e6691337de14",
+  "candidate_sha256": "6451189f9cf3a180c2c3a16e5ac44bca2411f5a7cd5ff3f1386b0ef886a1e086",
+  "cases": [
+    {
+      "observation_index_zero_based": 58,
+      "case_id": "POST /api/assignments/{assignment_id}/submissions/{submission_id}/explain::success",
+      "expected_before": 0,
+      "actual_before": 0,
+      "expected_after": 3,
+      "actual_after": 3,
+      "expected_delta": {
+        "removed": [],
+        "added": [
+          {
+            "kind": "llm",
+            "stage": "planner",
+            "model": "qwen3.8-flash",
+            "usage_source": "upstream",
+            "prompt_tokens": 20,
+            "completion_tokens": 4,
+            "total_tokens": 24,
+            "call_count": 1,
+            "cost_micros": null
+          },
+          {
+            "kind": "llm",
+            "stage": "planner",
+            "model": "qwen3.8-flash",
+            "usage_source": "upstream",
+            "prompt_tokens": 30,
+            "completion_tokens": 8,
+            "total_tokens": 38,
+            "call_count": 1,
+            "cost_micros": null
+          },
+          {
+            "kind": "llm",
+            "stage": "rewrite",
+            "model": "qwen3.8-flash",
+            "usage_source": "local",
+            "prompt_tokens": null,
+            "completion_tokens": null,
+            "total_tokens": null,
+            "call_count": 0,
+            "cost_micros": null
+          }
+        ]
+      },
+      "actual_delta": {
+        "removed": [],
+        "added": [
+          {
+            "kind": "mcp",
+            "stage": "get_reference_answer",
+            "model": null,
+            "usage_source": "operation",
+            "prompt_tokens": null,
+            "completion_tokens": null,
+            "total_tokens": null,
+            "call_count": 1,
+            "cost_micros": null
+          },
+          {
+            "kind": "llm",
+            "stage": "planner",
+            "model": "qwen3.8-flash",
+            "usage_source": "upstream",
+            "prompt_tokens": 20,
+            "completion_tokens": 4,
+            "total_tokens": 24,
+            "call_count": 1,
+            "cost_micros": null
+          },
+          {
+            "kind": "llm",
+            "stage": "planner",
+            "model": "qwen3.8-flash",
+            "usage_source": "upstream",
+            "prompt_tokens": 30,
+            "completion_tokens": 8,
+            "total_tokens": 38,
+            "call_count": 1,
+            "cost_micros": null
+          }
+        ]
+      }
+    },
+    {
+      "observation_index_zero_based": 68,
+      "case_id": "POST /api/chat::success",
+      "expected_before": 3,
+      "actual_before": 3,
+      "expected_after": 7,
+      "actual_after": 5,
+      "expected_delta": {
+        "removed": [],
+        "added": [
+          {
+            "kind": "llm",
+            "stage": "planner",
+            "model": "qwen3.8-flash",
+            "usage_source": "upstream",
+            "prompt_tokens": 20,
+            "completion_tokens": 4,
+            "total_tokens": 24,
+            "call_count": 1,
+            "cost_micros": null
+          },
+          {
+            "kind": "llm",
+            "stage": "planner",
+            "model": "qwen3.8-flash",
+            "usage_source": "upstream",
+            "prompt_tokens": 30,
+            "completion_tokens": 8,
+            "total_tokens": 38,
+            "call_count": 1,
+            "cost_micros": null
+          },
+          {
+            "kind": "embedding",
+            "stage": "query_embed",
+            "model": "text-embedding-v4",
+            "usage_source": "cache_hit",
+            "prompt_tokens": null,
+            "completion_tokens": null,
+            "total_tokens": null,
+            "call_count": 0,
+            "cost_micros": null
+          },
+          {
+            "kind": "llm",
+            "stage": "rewrite",
+            "model": "qwen3.8-flash",
+            "usage_source": "cache_hit",
+            "prompt_tokens": null,
+            "completion_tokens": null,
+            "total_tokens": null,
+            "call_count": 0,
+            "cost_micros": null
+          }
+        ]
+      },
+      "actual_delta": {
+        "removed": [],
+        "added": [
+          {
+            "kind": "llm",
+            "stage": "planner",
+            "model": "qwen3.8-flash",
+            "usage_source": "upstream",
+            "prompt_tokens": 20,
+            "completion_tokens": 4,
+            "total_tokens": 24,
+            "call_count": 1,
+            "cost_micros": null
+          },
+          {
+            "kind": "llm",
+            "stage": "planner",
+            "model": "qwen3.8-flash",
+            "usage_source": "upstream",
+            "prompt_tokens": 30,
+            "completion_tokens": 8,
+            "total_tokens": 38,
+            "call_count": 1,
+            "cost_micros": null
+          }
+        ]
+      }
+    },
+    {
+      "observation_index_zero_based": 69,
+      "case_id": "POST /api/chat/stream::success",
+      "expected_before": 7,
+      "actual_before": 5,
+      "expected_after": 11,
+      "actual_after": 7,
+      "expected_delta": {
+        "removed": [],
+        "added": [
+          {
+            "kind": "llm",
+            "stage": "planner",
+            "model": "qwen3.8-flash",
+            "usage_source": "upstream",
+            "prompt_tokens": 20,
+            "completion_tokens": 4,
+            "total_tokens": 24,
+            "call_count": 1,
+            "cost_micros": null
+          },
+          {
+            "kind": "llm",
+            "stage": "planner",
+            "model": "qwen3.8-flash",
+            "usage_source": "upstream",
+            "prompt_tokens": 30,
+            "completion_tokens": 8,
+            "total_tokens": 38,
+            "call_count": 1,
+            "cost_micros": null
+          },
+          {
+            "kind": "embedding",
+            "stage": "query_embed",
+            "model": "text-embedding-v4",
+            "usage_source": "cache_hit",
+            "prompt_tokens": null,
+            "completion_tokens": null,
+            "total_tokens": null,
+            "call_count": 0,
+            "cost_micros": null
+          },
+          {
+            "kind": "llm",
+            "stage": "rewrite",
+            "model": "qwen3.8-flash",
+            "usage_source": "cache_hit",
+            "prompt_tokens": null,
+            "completion_tokens": null,
+            "total_tokens": null,
+            "call_count": 0,
+            "cost_micros": null
+          }
+        ]
+      },
+      "actual_delta": {
+        "removed": [],
+        "added": [
+          {
+            "kind": "llm",
+            "stage": "planner",
+            "model": "qwen3.8-flash",
+            "usage_source": "upstream",
+            "prompt_tokens": 20,
+            "completion_tokens": 4,
+            "total_tokens": 24,
+            "call_count": 1,
+            "cost_micros": null
+          },
+          {
+            "kind": "llm",
+            "stage": "planner",
+            "model": "qwen3.8-flash",
+            "usage_source": "upstream",
+            "prompt_tokens": 30,
+            "completion_tokens": 8,
+            "total_tokens": 38,
+            "call_count": 1,
+            "cost_micros": null
+          }
+        ]
+      }
+    },
+    {
+      "observation_index_zero_based": 183,
+      "case_id": "POST /api/chat::retry-first",
+      "expected_before": 11,
+      "actual_before": 7,
+      "expected_after": 15,
+      "actual_after": 9,
+      "expected_delta": {
+        "removed": [],
+        "added": [
+          {
+            "kind": "llm",
+            "stage": "planner",
+            "model": "qwen3.8-flash",
+            "usage_source": "upstream",
+            "prompt_tokens": 20,
+            "completion_tokens": 4,
+            "total_tokens": 24,
+            "call_count": 1,
+            "cost_micros": null
+          },
+          {
+            "kind": "llm",
+            "stage": "planner",
+            "model": "qwen3.8-flash",
+            "usage_source": "upstream",
+            "prompt_tokens": 30,
+            "completion_tokens": 8,
+            "total_tokens": 38,
+            "call_count": 1,
+            "cost_micros": null
+          },
+          {
+            "kind": "embedding",
+            "stage": "query_embed",
+            "model": "text-embedding-v4",
+            "usage_source": "cache_hit",
+            "prompt_tokens": null,
+            "completion_tokens": null,
+            "total_tokens": null,
+            "call_count": 0,
+            "cost_micros": null
+          },
+          {
+            "kind": "llm",
+            "stage": "rewrite",
+            "model": "qwen3.8-flash",
+            "usage_source": "cache_hit",
+            "prompt_tokens": null,
+            "completion_tokens": null,
+            "total_tokens": null,
+            "call_count": 0,
+            "cost_micros": null
+          }
+        ]
+      },
+      "actual_delta": {
+        "removed": [],
+        "added": [
+          {
+            "kind": "llm",
+            "stage": "planner",
+            "model": "qwen3.8-flash",
+            "usage_source": "upstream",
+            "prompt_tokens": 20,
+            "completion_tokens": 4,
+            "total_tokens": 24,
+            "call_count": 1,
+            "cost_micros": null
+          },
+          {
+            "kind": "llm",
+            "stage": "planner",
+            "model": "qwen3.8-flash",
+            "usage_source": "upstream",
+            "prompt_tokens": 30,
+            "completion_tokens": 8,
+            "total_tokens": 38,
+            "call_count": 1,
+            "cost_micros": null
+          }
+        ]
+      }
+    }
+  ],
+  "auth_state_row_counts": {
+    "expected": 15,
+    "actual": 9
+  },
+  "final_signatures_columns": [
+    "kind",
+    "stage",
+    "model",
+    "usage_source",
+    "call_count",
+    "rows"
+  ],
+  "expected_final_signatures": [
+    [
+      "embedding",
+      "query_embed",
+      "text-embedding-v4",
+      "cache_hit",
+      0,
+      3
+    ],
+    [
+      "llm",
+      "planner",
+      "qwen3.8-flash",
+      "upstream",
+      1,
+      8
+    ],
+    [
+      "llm",
+      "rewrite",
+      "qwen3.8-flash",
+      "cache_hit",
+      0,
+      3
+    ],
+    [
+      "llm",
+      "rewrite",
+      "qwen3.8-flash",
+      "local",
+      0,
+      1
+    ]
+  ],
+  "actual_final_signatures": [
+    [
+      "llm",
+      "planner",
+      "qwen3.8-flash",
+      "upstream",
+      1,
+      8
+    ],
+    [
+      "mcp",
+      "get_reference_answer",
+      null,
+      "operation",
+      1,
+      1
+    ]
+  ],
+  "explanation": "相同8条planner真实调用；Java缺3条embedding/query_embed/cache_hit、3条llm/rewrite/cache_hit、1条llm/rewrite/local，多1条mcp/get_reference_answer/operation；15-7+1=9。"
+}

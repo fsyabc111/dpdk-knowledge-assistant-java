@@ -123,6 +123,10 @@ class PgIsolation:
         return db
 
     def verify_owned(self, db):
+        if not re.fullmatch(r"[a-z][a-z0-9_]{0,62}", db.name) or not re.fullmatch(r"[0-9a-f]{16}", db.round_id):
+            raise IsolationError("非法 manifest 数据库标识符或轮次")
+        if db.url != self.base_url + db.name or db.comment != "p5-owned:" + db.round_id + ":" + db.name:
+            raise IsolationError("manifest URL/comment 不符合本轮构造规则")
         recorded = self.manifest["owned"].get(db.name)
         if not recorded or recorded.get("state") != "created" or recorded != {**asdict(db), "state": "created"}:
             raise IsolationError("数据库不属于本轮 manifest")

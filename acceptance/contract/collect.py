@@ -148,11 +148,36 @@ class Collector:
         for i,g in enumerate(golden['observations']):
             if limit is not None and i>=limit:break
             self.request(g)
+        auth_before=snapshot(self.h,self.db)
+        st,_,raw=self.http('POST','/auth-vector',payload={'student_token':self.tokens.get('student_a',''),'disabled_token':self.tokens.get('disabled','')},base=self.server['control_url'])
+        auth_result=json.loads(raw);write(self.out/'auth-vector.json',auth_result)
+        if st!=200:self.blocked.append({'kind':'auth_vector_failure','actual':auth_result})
+        auth_after=snapshot(self.h,self.db)
+        auth_step={'case_id':'auth-vector-group',**step(auth_before,auth_after)}
+        tx_cases=[]
+        for gcase in golden['transaction_cases']:
+            before=snapshot(self.h,self.db)
+            st,_,raw=self.http('POST','/transaction',raw=gcase['case_id'].encode(),base=self.server['control_url'])
+            result=json.loads(raw);after=snapshot(self.h,self.db)
+            if st!=200:self.blocked.append({'kind':'transaction_failure','case_id':gcase['case_id'],'actual':result})
+            tx_cases.append({'case_id':gcase['case_id'],'assertion':gcase['assertion'],**result,**step(before,after)})
+        st,_,raw=self.http('GET','/upstream-vectors',base=self.server['control_url'])
+        upstream=json.loads(raw)
+        if st!=200:self.blocked.append({'kind':'upstream_failure','actual':upstream});upstream=[]
+        semantic=json.load(urlopen(self.server['control_url']+'/semantic'))
         final=snapshot(self.h,self.db)
+        with self.h._connect(self.db.name) as conn:
+            counts={name:conn.execute('SELECT COUNT(*) FROM '+name).fetchone()[0] for name in ['users','api_tokens','assignments','assignment_items','grading_submissions','rag_requests','rag_task_inputs','rag_task_jobs','assistant_sessions','assistant_messages','assistant_citations','rag_issues','rag_knowledge','rag_knowledge_revisions']}
+            from psycopg.rows import dict_row
+            conn.row_factory=dict_row
+            associations=[dict(r) for r in conn.execute("SELECT r.id AS task_id,r.request_id,r.session_id,r.message_id,r.status,r.purpose,m.id AS stored_message_id,m.session_id AS stored_session_id FROM rag_requests r LEFT JOIN assistant_messages m ON m.id=r.message_id ORDER BY r.question,r.purpose,r.user_id").fetchall()]
+            marker_hits=[]
+            for table,column in [('assistant_messages','content'),('rag_requests','question'),('rag_requests','context_text'),('grading_submissions','results_json')]:
+                n=conn.execute('SELECT COUNT(*) AS n FROM '+table+' WHERE '+column+'::text LIKE %s',('%'+self.source_marker+'%',)).fetchone()['n']
+                if n:marker_hits.append({'table':table,'column':column,'count':n})
         trace={'version':'p0-v2','baseline_id':BASELINE,'fixture_version':'p0-v2','business_initial':initial,'observations':self.observations,
-            'auth_state_step':{'case_id':'auth-vector-group',**step(final,final)},'transaction_cases':[],
-            'upstream_vectors':[],'semantic_vectors':{},'state':{'business':final}}
-        self.blocked.extend({'kind':'helper_not_yet_implemented','section':s} for s in ('auth-vector-group','transaction_cases(11)','upstream_vectors(14)','semantic_vectors','state.counts/associations/privacy'))
+            'auth_state_step':auth_step,'transaction_cases':tx_cases,'upstream_vectors':upstream,'semantic_vectors':semantic,
+            'state':{'counts':counts,'associations':associations,'source_marker_hits':marker_hits,'business':final}}
         write(self.out/'java-candidate-trace-p0-v2.json',trace);write(self.out/'collection-blockers.json',self.blocked)
         try:compare(golden,trace);verdict={'status':'pass'}
         except (Difference,InvalidTrace) as e:verdict={'status':'difference','detail':str(e)}

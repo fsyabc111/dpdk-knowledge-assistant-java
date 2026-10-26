@@ -21,6 +21,8 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--out',required=True,type=Path);p.add_argument('--limit',type=int);p.add_argument('--keep',action='store_true');a=p.parse_args()
     out=a.out.resolve();out.mkdir(parents=True,exist_ok=True)
     if (out/'isolation.json').exists():raise RuntimeError('产物轮次目录已存在；请新建输出目录，不覆盖既有证据')
+    from migration.oracle.verify import load_manifest
+    load_manifest(ROOT/'migration/fixtures/p0-v2','p0-v2')
     h=PgIsolation.from_env(out/'isolation.json');h.verify_instance();db=h.create('candidate');write(out/'database.json',db.__dict__)
     procs=[];logs=[]
     try:
@@ -34,6 +36,14 @@ def main():
         write(out/'seed.json',seed(h,db,state['control_url']))
         golden=json.loads((ROOT/'migration/fixtures/p0-v2/python-golden.json').read_text())
         collector=Collector(h,db,state,upstream,out);trace,verdict=collector.collect(golden,a.limit)
+        status,_,raw=collector.http('GET','/verify-diagnostic',base=state['control_url'])
+        write(out/'verify-diagnostic.json',{'http_status':status,'result':json.loads(raw)})
+        from acceptance.contract.collect import snapshot
+        before=snapshot(h,db)
+        status,_,raw=collector.http('GET','/fingerprint-negative',base=state['control_url'])
+        after=snapshot(h,db)
+        write(out/'fingerprint-negative.json',{'http_status':status,'result':json.loads(raw),'business_unchanged':before==after})
+        if status!=200 or before!=after:raise RuntimeError('fingerprint negative or restoration failed')
         return 0 if verdict['status']=='pass' and not collector.blocked else 1
     finally:
         if not a.keep:

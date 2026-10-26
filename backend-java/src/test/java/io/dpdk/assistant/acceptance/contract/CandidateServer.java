@@ -28,11 +28,13 @@ public final class CandidateServer {
         private volatile Instant base = Instant.parse("2026-10-24T04:00:00Z");
         private final AtomicLong ticks = new AtomicLong();
         private Instant last = Instant.EPOCH;
+        private volatile boolean frozen=false;
         public synchronized void set(Instant value) { base=value; ticks.set(0); last=Instant.EPOCH; }
-        public Instant nowUtc() { return base.plusNanos(ticks.getAndIncrement()*1000); }
+        public Instant nowUtc() { return frozen?base:base.plusNanos(ticks.getAndIncrement()*1000); }
+        public void freeze(Instant value) { set(value);frozen=true; }
         public long monotonicNanos() { return System.nanoTime(); }
         public synchronized String nextSessionIso() {
-            Instant current=nowUtc(); if (!current.isAfter(last)) current=last.plusNanos(1000);
+            Instant current=nowUtc(); if(frozen)return SystemClockAdapter.pythonIso(current); if (!current.isAfter(last)) current=last.plusNanos(1000);
             last=current;return SystemClockAdapter.pythonIso(current);
         }
     }
@@ -60,16 +62,22 @@ public final class CandidateServer {
         settings.put("dpdk.database-identity.expected-comment",required("J5_DATABASE_COMMENT"));
         settings.put("dpdk.database-identity.expected-data-dir",required("DPDK_TEST_PG_DATA_DIR"));
         settings.put("dpdk.task.background-enabled",false);
-        settings.put("dpdk.model.chat.base-url",upstream+"/v1");settings.put("dpdk.model.chat.api-key","j5-loopback-only");
-        settings.put("dpdk.model.chat.model-name","synthetic-model");
-        settings.put("dpdk.model.embedding.base-url",upstream+"/v1");settings.put("dpdk.model.embedding.api-key","j5-loopback-only");
-        settings.put("dpdk.model.embedding.model-name","synthetic-embedding");
+        settings.put("dpdk.model.chat.base-url","http://127.0.0.1:9/v1");settings.put("dpdk.model.chat.api-key","j5-loopback-only");
+        settings.put("dpdk.model.chat.model-name","qwen3.8-flash");
+        settings.put("dpdk.model.embedding.base-url","http://127.0.0.1:9/v1");settings.put("dpdk.model.embedding.api-key","j5-loopback-only");
+        settings.put("dpdk.model.embedding.model-name","text-embedding-v4");
         settings.put("dpdk.harness.url",upstream+"/mcp");
-        settings.put("MAINTENANCE_KEY","p0-synthetic-maintenance");
+        settings.put("dpdk.maintenance.api-key","p0-synthetic-maintenance");
         FixedClock clock=new FixedClock();
+        var boundaryGate=new io.dpdk.assistant.model.UpstreamGate(20);
+        var chatBoundary=new io.dpdk.assistant.model.OpenAiCompatibleChatClient(new io.dpdk.assistant.model.ChatClientSettings(upstream+"/v1","synthetic","qwen3.8-flash",2048,3,.5,90,true),boundaryGate);
+        var embeddingBoundary=new io.dpdk.assistant.model.OpenAiCompatibleEmbeddingClient(new io.dpdk.assistant.model.EmbeddingClientSettings(upstream+"/v1","synthetic","text-embedding-v4",10,5,1,60,()->0d),boundaryGate);
         var ctx=new SpringApplicationBuilder(Application.class).initializers(context->{
             context.getEnvironment().getPropertySources().addFirst(new org.springframework.core.env.MapPropertySource("j5-explicit",settings));
             ((GenericApplicationContext)context).registerBean("j5Clock",ClockPort.class,()->clock,d->d.setPrimary(true));
+            // 仅替换外部客户端传输，Model*Properties/EmbeddingConfig和真正fingerprint仍为冻结逻辑配置。
+            ((GenericApplicationContext)context).registerBean("j5ChatBoundary",io.dpdk.assistant.model.OpenAiCompatibleChatClient.class,()->chatBoundary,d->{d.setPrimary(true);d.setDestroyMethodName("close");});
+            ((GenericApplicationContext)context).registerBean("j5EmbeddingBoundary",io.dpdk.assistant.model.OpenAiCompatibleEmbeddingClient.class,()->embeddingBoundary,d->{d.setPrimary(true);d.setDestroyMethodName("close");});
         }).run();
         HttpServer control=HttpServer.create(new InetSocketAddress("127.0.0.1",Integer.parseInt(System.getenv().getOrDefault("J5_CONTROL_PORT","0"))),0);
         control.setExecutor(java.util.concurrent.Executors.newVirtualThreadPerTaskExecutor());
@@ -102,6 +110,60 @@ public final class CandidateServer {
                 byte[] bytes=JSON.writeValueAsBytes(Map.of("redaction",redaction,"input_hash",hashes));
                 exchange.sendResponseHeaders(200,bytes.length);exchange.getResponseBody().write(bytes);
             }catch(Exception e){exchange.sendResponseHeaders(500,-1);}finally{exchange.close();}
+        });
+        TransactionCases transactionCases=new TransactionCases(ctx);
+        control.createContext("/transaction",exchange->{
+            try {String caseName=new String(exchange.getRequestBody().readAllBytes(),StandardCharsets.UTF_8);
+                if(caseName.equals("pg-admission-race"))clock.freeze(Instant.parse("2026-10-24T04:10:00Z"));
+                byte[] bytes=JSON.writeValueAsBytes(transactionCases.run(caseName));exchange.sendResponseHeaders(200,bytes.length);exchange.getResponseBody().write(bytes);
+            }catch(Exception failure){byte[] bytes=JSON.writeValueAsBytes(Map.of("status","失败","error_type",failure.getClass().getSimpleName(),"detail",String.valueOf(failure.getMessage())));exchange.sendResponseHeaders(500,bytes.length);exchange.getResponseBody().write(bytes);}finally{exchange.close();}
+        });
+        control.createContext("/auth-vector",exchange->{
+            var provider=ctx.getBean(io.dpdk.assistant.auth.AuthSettingsProvider.class);var original=provider.current();
+            try {
+                var input=JSON.readTree(exchange.getRequestBody());var resolver=ctx.getBean(io.dpdk.assistant.auth.AuthPrincipalResolver.class);
+                provider.replace(io.dpdk.assistant.auth.AuthServerSettings.of("local","{}",7,8,4,10000));
+                var local=resolver.resolve(new io.dpdk.assistant.contracts.identity.RequestHeaders(Map.of()),new io.dpdk.assistant.contracts.identity.AuthSettings());
+                if(!local.subject().equals("local")||!local.roles().equals(java.util.List.of("admin")))throw new IllegalStateException("local vector");
+                String fixed="p0-synthetic-static-token-value-0001";
+                provider.replace(io.dpdk.assistant.auth.AuthServerSettings.of("token",JSON.writeValueAsString(Map.of(fixed,Map.of("subject","p0-token-viewer","roles",java.util.List.of("viewer"),"daily_quota",5))),7,8,4,10000));
+                var token=resolver.resolve(new io.dpdk.assistant.contracts.identity.RequestHeaders(Map.of("Authorization","Bearer "+fixed)),new io.dpdk.assistant.contracts.identity.AuthSettings());
+                if(!token.subject().equals("p0-token-viewer")||token.dailyQuota()!=5)throw new IllegalStateException("static vector");
+                for(String bad:java.util.List.of("","synthetic-invalid")){boolean rejected=false;try{resolver.resolve(new io.dpdk.assistant.contracts.identity.RequestHeaders(Map.of("Authorization","Bearer "+bad)),new io.dpdk.assistant.contracts.identity.AuthSettings());}catch(io.dpdk.assistant.platform.errors.ApiDetailException expected){rejected=expected.status().value()==401;}if(!rejected)throw new IllegalStateException("invalid token accepted");}
+                provider.replace(original);var users=ctx.getBean(io.dpdk.assistant.auth.UserAuthRepository.class);
+                if(users.resolveToken(input.path("student_token").asText()).isEmpty())throw new IllegalStateException("student token unresolved");
+                var admin=ctx.getBean(io.dpdk.assistant.admin.AdminUserRepository.class);admin.setEnabled("U20270000051",false);
+                if(users.resolveToken(input.path("disabled_token").asText()).isPresent())throw new IllegalStateException("disabled revoked token accepted");
+                admin.setEnabled("U20270000051",true);
+                if(users.resolveToken(input.path("disabled_token").asText()).isPresent())throw new IllegalStateException("reenabled revived old token");
+                byte[] bytes=JSON.writeValueAsBytes(Map.of("status","通过","local",true,"static",true,"account_revocation",true));exchange.sendResponseHeaders(200,bytes.length);exchange.getResponseBody().write(bytes);
+            }catch(Exception failure){byte[] bytes=JSON.writeValueAsBytes(Map.of("status","失败","error_type",failure.getClass().getSimpleName(),"detail",String.valueOf(failure.getMessage())));exchange.sendResponseHeaders(500,bytes.length);exchange.getResponseBody().write(bytes);}finally{provider.replace(original);exchange.close();}
+        });
+        control.createContext("/upstream-vectors",exchange->{
+            try {byte[] bytes=JSON.writeValueAsBytes(UpstreamVectors.run());exchange.sendResponseHeaders(200,bytes.length);exchange.getResponseBody().write(bytes);}
+            catch(Exception failure){byte[] bytes=JSON.writeValueAsBytes(Map.of("status","失败","error_type",failure.getClass().getSimpleName(),"detail",String.valueOf(failure.getMessage())));exchange.sendResponseHeaders(500,bytes.length);exchange.getResponseBody().write(bytes);}finally{exchange.close();}
+        });
+        control.createContext("/verify-diagnostic",exchange->{
+            try {
+                var principal=new io.dpdk.assistant.contracts.identity.Principal("U20270000001",java.util.List.of("leader"),10000,false);
+                var verifier=ctx.getBean(io.dpdk.assistant.knowledge.workflow.OriginalQuestionVerifier.class);
+                var method=io.dpdk.assistant.chat.GroundedQuestionVerifier.class.getDeclaredMethod("check",String.class,String.class);method.setAccessible(true);
+                Object result;try{result=method.invoke(verifier,"合成未解答问题","");}catch(java.lang.reflect.InvocationTargetException wrapped){throw (Exception)wrapped.getCause();}
+                byte[] bytes=JSON.writeValueAsBytes(result);exchange.sendResponseHeaders(200,bytes.length);exchange.getResponseBody().write(bytes);
+            }catch(Exception failure){byte[] bytes=JSON.writeValueAsBytes(Map.of("status","失败","error_type",failure.getClass().getSimpleName(),"detail",String.valueOf(failure.getMessage())));exchange.sendResponseHeaders(500,bytes.length);exchange.getResponseBody().write(bytes);}finally{exchange.close();}
+        });
+        control.createContext("/fingerprint-negative",exchange->{
+            javax.sql.DataSource ds=ctx.getBean(javax.sql.DataSource.class);String original=null;
+            try {
+                try(var c=ds.getConnection();var q=c.prepareStatement("SELECT configuration FROM rag_releases WHERE id='p0-synthetic-release-1'")){try(var r=q.executeQuery()){r.next();original=r.getString(1);}}
+                try(var c=ds.getConnection();var q=c.prepareStatement("UPDATE rag_releases SET configuration=? WHERE id='p0-synthetic-release-1'")){q.setString(1,original+"-synthetic-mismatch");q.executeUpdate();}
+                var retrieval=ctx.getBean(io.dpdk.assistant.retrieval.PgReleaseReader.class);float[] vector=new float[1024];vector[0]=1;
+                var result=retrieval.searchPinned(retrieval.pin("p0-synthetic-release-1"),new io.dpdk.assistant.contracts.retrieval.SearchInput("DNS",new io.dpdk.assistant.contracts.model.Vector1024(vector)),6);
+                var trace=(io.dpdk.assistant.retrieval.RetrievalTrace)result.trace();
+                if(!result.chunks().isEmpty()||trace.blockedReason()==null)throw new IllegalStateException("逻辑指纹变化未fail-closed");
+                byte[] bytes=JSON.writeValueAsBytes(Map.of("status","通过","chunks",result.chunks().size(),"blocked_reason",trace.blockedReason()));exchange.sendResponseHeaders(200,bytes.length);exchange.getResponseBody().write(bytes);
+            }catch(Exception failure){byte[] bytes=JSON.writeValueAsBytes(Map.of("status","失败","error_type",failure.getClass().getSimpleName()));exchange.sendResponseHeaders(500,bytes.length);exchange.getResponseBody().write(bytes);}
+            finally{if(original!=null)try(var c=ds.getConnection();var q=c.prepareStatement("UPDATE rag_releases SET configuration=? WHERE id='p0-synthetic-release-1'")){q.setString(1,original);q.executeUpdate();}catch(Exception failedRestore){System.err.println("J5_FINGERPRINT_RESTORE_FAILED");}exchange.close();}
         });
         control.start();
         Runtime.getRuntime().addShutdownHook(new Thread(()->{control.stop(0);ctx.close();}));

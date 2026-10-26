@@ -27,8 +27,24 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path=='/ledger':return self.respond(STATE.snapshot())
         return self.respond({'detail':'not found'},404)
+    def request_body(self):
+        if self.headers.get('Transfer-Encoding','').lower()=='chunked':
+            chunks=[];size_total=0
+            while True:
+                size=int(self.rfile.readline().split(b';',1)[0].strip(),16)
+                if size==0:
+                    while self.rfile.readline().strip():pass
+                    break
+                size_total+=size
+                if size_total>1024*1024:raise ValueError('request too large')
+                chunks.append(self.rfile.read(size))
+                if self.rfile.read(2)!=b'\r\n':raise ValueError('invalid chunk framing')
+            return b''.join(chunks)
+        size=int(self.headers.get('Content-Length','0'))
+        if size>1024*1024:raise ValueError('request too large')
+        return self.rfile.read(size)
     def do_POST(self):
-        try: data=json.loads(self.rfile.read(int(self.headers.get('Content-Length','0'))) or b'{}')
+        try: data=json.loads(self.request_body() or b'{}')
         except Exception:return self.respond({'detail':'invalid JSON'},400)
         if self.path=='/control':
             STATE.delay=float(data.get('delay',0));return self.respond({'ok':True})
@@ -36,14 +52,14 @@ class Handler(BaseHTTPRequestHandler):
             texts=data.get('input',[]);texts=[texts] if isinstance(texts,str) else texts
             STATE.record(kind='embedding',items=len(texts));return self.respond({'data':[{'index':i,'embedding':[1.0]+[0.0]*1023} for i,_ in enumerate(texts)],'usage':{'prompt_tokens':len(texts),'total_tokens':len(texts)}})
         if self.path.endswith('/chat/completions'):
-            STATE.record(kind='llm')
+            STATE.record(kind='llm',tool_definitions=len(data.get('tools',[])))
             if STATE.delay:time.sleep(STATE.delay)
             messages=data.get('messages',[]);last_user=max((i for i,x in enumerate(messages) if x.get('role')=='user'),default=-1)
             has_tool=any(x.get('role')=='tool' for x in messages[last_user+1:])
             text=str(messages)
-            if 'supported' in text or '核验' in text: msg={'role':'assistant','content':'{"status":"answered","supported":true}'};tokens=(20,4)
-            elif data.get('tools') and not has_tool:
+            if data.get('tools') and not has_tool:
                 msg={'role':'assistant','content':'','tool_calls':[{'id':'p0-call-1','type':'function','function':{'name':'kb_search','arguments':'{"query":"DNS"}'}}]};tokens=(20,4)
+            elif not data.get('tools') and messages and 'supported' in str(messages[0].get('content','')):msg={'role':'assistant','content':'{"status":"answered","supported":true}'};tokens=(20,4)
             else:msg={'role':'assistant','content':'DNS 解析报文中的域名 [1]。'};tokens=(30,8)
             return self.respond({'id':'j5-fixed','object':'chat.completion','model':'synthetic-model','choices':[{'index':0,'message':msg,'finish_reason':'tool_calls' if 'tool_calls' in msg else 'stop'}], 'usage':{'prompt_tokens':tokens[0],'completion_tokens':tokens[1],'total_tokens':sum(tokens)}})
         if self.path.startswith('/mcp'):
