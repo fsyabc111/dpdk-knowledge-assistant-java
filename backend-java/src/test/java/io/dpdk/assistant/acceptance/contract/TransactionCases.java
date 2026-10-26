@@ -90,7 +90,11 @@ final class TransactionCases {
             }
             case "pg-grade-job-dedup" -> {
                 gradeSession=session("PG成绩去重");gradeTask=begin(gradeSession,"PG成绩去重");store.recordJob(gradeTask,"p0-dedup-job","grade_plugin","dns","1".repeat(64));
+                // 冻结grade_args显式source_origin=pasted；当前生产参与者从真实临时输入读取来源。
+                // 用同case短期真实寄存传递等价输入，完成后立即清理，不伪填成绩JSON。
+                tx.required(t->{try{store.storeInputs(t,gradeTask,"PG成绩去重",null,null,null,"pasted");return null;}catch(SQLException e){throw new IllegalStateException(e);}});
                 var results=parallel(()->grades.recordTaskGrade(new TaskGradeInput(gradeTask,"p0-dedup-job","dns","1".repeat(64),80,4,5,"[]")));
+                store.dropInputs(gradeTask);
                 require(results.stream().allMatch(x->x==TaskGradeResult.persisted),"all callers persisted");require(scalar("SELECT count(*) FROM grading_submissions WHERE task_job_id='p0-dedup-job'")==1,"one grade");require(scalar("SELECT submission_done FROM rag_task_jobs WHERE job_id='p0-dedup-job'")==1,"submission flag");out.put("workers",12);
             }
             case "pg-recovery-claim" -> {

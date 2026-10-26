@@ -108,6 +108,11 @@ class Collector:
         lb=self.ledger();status,hd,raw=self.http(req['method'],path,payload=inp,token=self.tokens.get(actor),headers=headers,params=params)
         self.settle();after=snapshot(self.h,self.db);la=self.ledger()
         media=hd.get('content-type','').split(';')[0]
+        # 先存精确wire，再解析；失败原件也必须保留，不能仅记录hash/计数。
+        if media=='text/event-stream' or path=='/metrics':
+            wire=self.out/'wire'/str(len(self.observations));wire.parent.mkdir(parents=True,exist_ok=True)
+            wire.with_suffix('.sse' if media=='text/event-stream' else '.prom').write_bytes(raw)
+            wire.with_suffix('.sse' if media=='text/event-stream' else '.prom').chmod(0o600)
         if req['method']=='HEAD' or status==204:body=None
         elif media=='text/event-stream':body=parse_sse([raw])
         elif media=='application/json':body=json.loads(raw)

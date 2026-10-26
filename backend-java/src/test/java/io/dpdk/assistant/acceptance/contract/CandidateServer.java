@@ -96,6 +96,10 @@ public final class CandidateServer {
         var ctx=new SpringApplicationBuilder(Application.class).initializers(context->{
             context.getEnvironment().getPropertySources().addFirst(new org.springframework.core.env.MapPropertySource("j5-explicit",settings));
             ((GenericApplicationContext)context).registerBean("j5Clock",ClockPort.class,()->clock,d->d.setPrimary(true));
+            ((GenericApplicationContext)context).registerBean("j5FixedQueryEmbedding",io.dpdk.assistant.retrieval.PgReleaseReader.QueryEmbeddingClient.class,()->(text,usage,stage)->{
+                // 冻结Python FixedEmbedding边界不记录usage；真实reader负责cache与0-call账本。
+                float[] vector=new float[1024];vector[0]=1;return java.util.List.of(new io.dpdk.assistant.contracts.model.Vector1024(vector));
+            },d->d.setPrimary(true));
             ((GenericApplicationContext)context).registerBean("j5GradeUuid",io.dpdk.assistant.contracts.platform.UuidPort.class,()->()->gradeUuid(gradeIds.incrementAndGet()),d->d.setPrimary(true));
             // 仅替换外部客户端传输，Model*Properties/EmbeddingConfig和真正fingerprint仍为冻结逻辑配置。
             ((GenericApplicationContext)context).registerBean("j5ChatBoundary",io.dpdk.assistant.model.OpenAiCompatibleChatClient.class,()->chatBoundary,d->{d.setPrimary(true);d.setDestroyMethodName("close");});

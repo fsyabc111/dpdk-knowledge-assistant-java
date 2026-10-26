@@ -1,0 +1,97 @@
+{
+  "scope": "full-05真实候选，raw严格失败保留",
+  "fixture_sha256": "8d0658661fedb31c6a0690ea97cb3167534504049c65861b3c67e6691337de14",
+  "candidate_sha256": "296ab542d94580f8396c38de237a5b1259592855d39d255879fd4a18225c4bb2",
+  "observations": 186,
+  "route_ids": 69,
+  "business_tables": 25,
+  "business_steps": 198,
+  "transaction_assertions": [
+    {
+      "case_id": "pg-admission-race",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-admission-rollback",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-finish-rollback",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-finish-once",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-cancel-idempotent",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-grade-job-dedup",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-recovery-claim",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-input-ttl",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-vector-rrf-mmr",
+      "status": "通过"
+    },
+    {
+      "case_id": "citation-six-same-file",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-cleanup-terminal",
+      "status": "通过"
+    }
+  ],
+  "upstream_vectors_exact": true,
+  "semantic_vectors_exact": true,
+  "auth_state_upstream_rows": 15,
+  "raw_strict": {
+    "status": "difference",
+    "detail": "$.observations[30].body.families: 数组长度不同"
+  },
+  "cases_with_difference": 16,
+  "observation_difference_paths": 74,
+  "difference_case_ids": [
+    "GET /metrics::success",
+    "POST /api/assignments/{assignment_id}/submissions/{submission_id}/explain::success",
+    "POST /api/assignments/{assignment_id}/withdraw::success",
+    "POST /api/assignments/{assignment_id}/reactivate::success",
+    "POST /api/rag/knowledge::success",
+    "PATCH /api/rag/knowledge/{knowledge_id}::success",
+    "GET /api/rag/knowledge/{knowledge_id}/revisions::success",
+    "PATCH /api/rag/issues/{issue_id}::success",
+    "POST /api/rag/feedback::success",
+    "POST /api/rag/issues/{issue_id}/verify::success",
+    "POST /api/chat::success",
+    "POST /api/chat/stream::success",
+    "GET /api/chat/sessions::success",
+    "DELETE /api/chat/sessions/{session_id}::success",
+    "POST /api/auth/logout::success",
+    "POST /api/chat::retry-first"
+  ],
+  "remaining": "仅metrics families与持久时间字段；全部仍计失败，不排除/归一化时间；详见raw路径索引与clock证据。",
+  "metrics_wire": {
+    "artifact": "full-05/wire/30.prom",
+    "sha256": "c6f6f6f68413d187a1a7b9ac6511de19e58cfd83f80d61876076095c89504896",
+    "http_status": 200,
+    "media_type": "text/plain"
+  },
+  "comparator_mutations": {
+    "total": 17,
+    "false_pass": 0,
+    "scope": "真实Java候选自身正例与故意变异，不能代替与Python黄金等价"
+  },
+  "owned_database_states": [
+    "dropped"
+  ]
+}

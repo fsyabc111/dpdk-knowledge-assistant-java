@@ -1,0 +1,2401 @@
+{
+  "scope": "冻结186之外独立HTTP角色/模式/输入/来源场景；不替代全量oracle/UI验收",
+  "total": 224,
+  "failed": 0,
+  "production_commits_consumed": [
+    "862eaf5",
+    "55adb04",
+    "e836a55",
+    "16d1e68",
+    "9237fe5",
+    "531bc06",
+    "01df30c",
+    "9445b52",
+    "6b32cee",
+    "80701c8"
+  ],
+  "raw_trace_sha256": "552cf93b47f379119198c452d43ea0bb30f704bd487147d0d25b31279ba0a44d",
+  "cases": [
+    {
+      "case_id": "account-login-leader",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true
+      }
+    },
+    {
+      "case_id": "account-login-teacher_a",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true
+      }
+    },
+    {
+      "case_id": "account-login-teacher_b",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true
+      }
+    },
+    {
+      "case_id": "account-login-student_a",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true
+      }
+    },
+    {
+      "case_id": "account-login-student_b",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true
+      }
+    },
+    {
+      "case_id": "account-login-operator",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true
+      }
+    },
+    {
+      "case_id": "account-leader-/api/admin/users",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-leader-/api/rag/issues",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-leader-/api/grading/summary",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-leader-/api/assignments",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-leader-/api/usage/subjects",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-leader-/api/sources/p0-history",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-teacher_a-/api/admin/users",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-teacher_a-/api/rag/issues",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-teacher_a-/api/grading/summary",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-teacher_a-/api/assignments",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-teacher_a-/api/usage/subjects",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-teacher_a-/api/sources/p0-history",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-teacher_b-/api/admin/users",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-teacher_b-/api/rag/issues",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-teacher_b-/api/grading/summary",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-teacher_b-/api/assignments",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-teacher_b-/api/usage/subjects",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-teacher_b-/api/sources/p0-history",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-student_a-/api/admin/users",
+      "expected_status": 404,
+      "actual_status": 404,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-student_a-/api/rag/issues",
+      "expected_status": 404,
+      "actual_status": 404,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-student_a-/api/grading/summary",
+      "expected_status": 404,
+      "actual_status": 404,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-student_a-/api/assignments",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-student_a-/api/usage/subjects",
+      "expected_status": 404,
+      "actual_status": 404,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-student_a-/api/sources/p0-history",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-student_b-/api/admin/users",
+      "expected_status": 404,
+      "actual_status": 404,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-student_b-/api/rag/issues",
+      "expected_status": 404,
+      "actual_status": 404,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-student_b-/api/grading/summary",
+      "expected_status": 404,
+      "actual_status": 404,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-student_b-/api/assignments",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-student_b-/api/usage/subjects",
+      "expected_status": 404,
+      "actual_status": 404,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-student_b-/api/sources/p0-history",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-operator-/api/admin/users",
+      "expected_status": 404,
+      "actual_status": 404,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-operator-/api/rag/issues",
+      "expected_status": 404,
+      "actual_status": 404,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-operator-/api/grading/summary",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-operator-/api/assignments",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-operator-/api/usage/subjects",
+      "expected_status": 404,
+      "actual_status": 404,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-operator-/api/sources/p0-history",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-leader-chat",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "answered": true,
+        "sources_present": true
+      }
+    },
+    {
+      "case_id": "account-leader-owned-task",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "task_identity": true
+      }
+    },
+    {
+      "case_id": "account-leader-active-terminal",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-leader-terminal-events-zero-call",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "account-leader-owned-session",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "history_present": true
+      }
+    },
+    {
+      "case_id": "account-leader-cancel-already-terminal",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "account-leader-delete-own-session",
+      "expected_status": 204,
+      "actual_status": 204,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "empty_body": true
+      }
+    },
+    {
+      "case_id": "account-teacher_a-chat",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "answered": true,
+        "sources_present": true
+      }
+    },
+    {
+      "case_id": "account-teacher_a-owned-task",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "task_identity": true
+      }
+    },
+    {
+      "case_id": "account-teacher_a-active-terminal",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-teacher_a-terminal-events-zero-call",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "account-teacher_a-owned-session",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "history_present": true
+      }
+    },
+    {
+      "case_id": "account-teacher_a-cancel-already-terminal",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "account-teacher_a-delete-own-session",
+      "expected_status": 204,
+      "actual_status": 204,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "empty_body": true
+      }
+    },
+    {
+      "case_id": "account-teacher_b-chat",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "answered": true,
+        "sources_present": true
+      }
+    },
+    {
+      "case_id": "account-teacher_b-owned-task",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "task_identity": true
+      }
+    },
+    {
+      "case_id": "account-teacher_b-active-terminal",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-teacher_b-terminal-events-zero-call",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "account-teacher_b-owned-session",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "history_present": true
+      }
+    },
+    {
+      "case_id": "account-teacher_b-cancel-already-terminal",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "account-teacher_b-delete-own-session",
+      "expected_status": 204,
+      "actual_status": 204,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "empty_body": true
+      }
+    },
+    {
+      "case_id": "account-student_a-chat",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "answered": true,
+        "sources_present": true
+      }
+    },
+    {
+      "case_id": "account-student_a-owned-task",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "task_identity": true
+      }
+    },
+    {
+      "case_id": "account-student_a-active-terminal",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-student_a-terminal-events-zero-call",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "account-student_a-owned-session",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "history_present": true
+      }
+    },
+    {
+      "case_id": "account-student_a-cancel-already-terminal",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "account-student_a-delete-own-session",
+      "expected_status": 204,
+      "actual_status": 204,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "empty_body": true
+      }
+    },
+    {
+      "case_id": "account-student_b-chat",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "answered": true,
+        "sources_present": true
+      }
+    },
+    {
+      "case_id": "account-student_b-owned-task",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "task_identity": true
+      }
+    },
+    {
+      "case_id": "account-student_b-active-terminal",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-student_b-terminal-events-zero-call",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "account-student_b-owned-session",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "history_present": true
+      }
+    },
+    {
+      "case_id": "account-student_b-cancel-already-terminal",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "account-student_b-delete-own-session",
+      "expected_status": 204,
+      "actual_status": 204,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "empty_body": true
+      }
+    },
+    {
+      "case_id": "account-operator-chat",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "answered": true,
+        "sources_present": true
+      }
+    },
+    {
+      "case_id": "account-operator-owned-task",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "task_identity": true
+      }
+    },
+    {
+      "case_id": "account-operator-active-terminal",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-operator-terminal-events-zero-call",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "account-operator-owned-session",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "history_present": true
+      }
+    },
+    {
+      "case_id": "account-operator-cancel-already-terminal",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "account-operator-delete-own-session",
+      "expected_status": 204,
+      "actual_status": 204,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "empty_body": true
+      }
+    },
+    {
+      "case_id": "account-static-viewer-admin",
+      "expected_status": 404,
+      "actual_status": 404,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-static-viewer-subject",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "exact_static_subject": true
+      }
+    },
+    {
+      "case_id": "account-static-operator-admin",
+      "expected_status": 404,
+      "actual_status": 404,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-static-operator-subject",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "exact_static_subject": true
+      }
+    },
+    {
+      "case_id": "account-static-admin-admin",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-static-admin-subject",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "exact_static_subject": true
+      }
+    },
+    {
+      "case_id": "account-static-leader-admin",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "account-static-leader-subject",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "exact_static_subject": true
+      }
+    },
+    {
+      "case_id": "token-mode-DELETE /api/chat/sessions/{session_id}::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-GET /api/admin/audit-log::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-GET /api/admin/password-reset-requests::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-GET /api/admin/users::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-GET /api/assignments::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-GET /api/assignments/protocols::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-GET /api/assignments/{assignment_id}::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-GET /api/assignments/{assignment_id}/export::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-GET /api/assignments/{assignment_id}/grades::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-GET /api/chat/sessions::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-GET /api/chat/sessions/{session_id}::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-GET /api/grading/submissions::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-GET /api/grading/summary::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-GET /api/rag/issues::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-GET /api/rag/issues/{issue_id}::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-GET /api/rag/knowledge::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-GET /api/rag/knowledge/{knowledge_id}/revisions::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-GET /api/sources/{chunk_id}::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-GET /api/tasks/active::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-GET /api/tasks/{task_id}::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-GET /api/tasks/{task_id}/events::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-GET /api/usage/cost::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-GET /api/usage/me::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-GET /api/usage/subjects::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-PATCH /api/admin/users/{user_id}::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-PATCH /api/assignments/{assignment_id}::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-PATCH /api/rag/issues/{issue_id}::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-PATCH /api/rag/knowledge/{knowledge_id}::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-POST /api/admin/password-reset-requests/{request_id}/approve::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-POST /api/admin/password-reset-requests/{request_id}/reject::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-POST /api/admin/users::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-POST /api/admin/users/assign::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-POST /api/admin/users/delete::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-POST /api/admin/users/{user_id}/reset-password::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-POST /api/admin/users/{user_id}/set-password::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-POST /api/admin/users/{user_id}/status::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-POST /api/assignments::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-POST /api/assignments/{assignment_id}/reactivate::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-POST /api/assignments/{assignment_id}/submissions/{submission_id}/explain::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-POST /api/assignments/{assignment_id}/submit::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-POST /api/assignments/{assignment_id}/withdraw::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-POST /api/auth/change-password::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-POST /api/auth/logout::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-POST /api/chat::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-POST /api/chat/stream::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-POST /api/plugin-template::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-POST /api/rag/feedback::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-POST /api/rag/issues/{issue_id}/verify::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-POST /api/rag/knowledge::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-mode-POST /api/tasks/{task_id}/cancel::unauthorized",
+      "expected_status": 401,
+      "actual_status": 401,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-viewer-gated-/api/admin/users",
+      "expected_status": 404,
+      "actual_status": 404,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "token-viewer-gated-/api/assignments",
+      "expected_status": 404,
+      "actual_status": 404,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "token-viewer-gated-/api/grading/summary",
+      "expected_status": 404,
+      "actual_status": 404,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "token-viewer-source",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "token-viewer-own-usage",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "static_subject": true
+      }
+    },
+    {
+      "case_id": "token-viewer-chat",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "answered": true,
+        "sources_present": true
+      }
+    },
+    {
+      "case_id": "token-viewer-owned-task",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "task_identity": true
+      }
+    },
+    {
+      "case_id": "token-viewer-active-terminal",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "token-viewer-terminal-events-zero-call",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-viewer-owned-session",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "history_present": true
+      }
+    },
+    {
+      "case_id": "token-viewer-cancel-already-terminal",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-viewer-delete-own-session",
+      "expected_status": 204,
+      "actual_status": 204,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "empty_body": true
+      }
+    },
+    {
+      "case_id": "token-operator-gated-/api/admin/users",
+      "expected_status": 404,
+      "actual_status": 404,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "token-operator-gated-/api/assignments",
+      "expected_status": 404,
+      "actual_status": 404,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "token-operator-gated-/api/grading/summary",
+      "expected_status": 404,
+      "actual_status": 404,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "token-operator-source",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "token-operator-own-usage",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "static_subject": true
+      }
+    },
+    {
+      "case_id": "token-operator-chat",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "answered": true,
+        "sources_present": true
+      }
+    },
+    {
+      "case_id": "token-operator-owned-task",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "task_identity": true
+      }
+    },
+    {
+      "case_id": "token-operator-active-terminal",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "token-operator-terminal-events-zero-call",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-operator-owned-session",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "history_present": true
+      }
+    },
+    {
+      "case_id": "token-operator-cancel-already-terminal",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-operator-delete-own-session",
+      "expected_status": 204,
+      "actual_status": 204,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "empty_body": true
+      }
+    },
+    {
+      "case_id": "token-admin-gated-/api/admin/users",
+      "expected_status": 404,
+      "actual_status": 404,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "token-admin-gated-/api/assignments",
+      "expected_status": 404,
+      "actual_status": 404,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "token-admin-gated-/api/grading/summary",
+      "expected_status": 404,
+      "actual_status": 404,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "token-admin-source",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "token-admin-own-usage",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "static_subject": true
+      }
+    },
+    {
+      "case_id": "token-admin-chat",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "answered": true,
+        "sources_present": true
+      }
+    },
+    {
+      "case_id": "token-admin-owned-task",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "task_identity": true
+      }
+    },
+    {
+      "case_id": "token-admin-active-terminal",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "token-admin-terminal-events-zero-call",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-admin-owned-session",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "history_present": true
+      }
+    },
+    {
+      "case_id": "token-admin-cancel-already-terminal",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-admin-delete-own-session",
+      "expected_status": 204,
+      "actual_status": 204,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "empty_body": true
+      }
+    },
+    {
+      "case_id": "token-leader-gated-/api/admin/users",
+      "expected_status": 404,
+      "actual_status": 404,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "token-leader-gated-/api/assignments",
+      "expected_status": 404,
+      "actual_status": 404,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "token-leader-gated-/api/grading/summary",
+      "expected_status": 404,
+      "actual_status": 404,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "token-leader-source",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "token-leader-own-usage",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "static_subject": true
+      }
+    },
+    {
+      "case_id": "token-leader-chat",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "answered": true,
+        "sources_present": true
+      }
+    },
+    {
+      "case_id": "token-leader-owned-task",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "task_identity": true
+      }
+    },
+    {
+      "case_id": "token-leader-active-terminal",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "token-leader-terminal-events-zero-call",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-leader-owned-session",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "history_present": true
+      }
+    },
+    {
+      "case_id": "token-leader-cancel-already-terminal",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "token-leader-delete-own-session",
+      "expected_status": 204,
+      "actual_status": 204,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "empty_body": true
+      }
+    },
+    {
+      "case_id": "local-gated-/api/admin/users",
+      "expected_status": 404,
+      "actual_status": 404,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "local-gated-/api/assignments",
+      "expected_status": 404,
+      "actual_status": 404,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "local-gated-/api/grading/summary",
+      "expected_status": 404,
+      "actual_status": 404,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "local-no-bearer-source",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "local-unique-subject",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "local_subject": true,
+        "admin_role": true
+      }
+    },
+    {
+      "case_id": "local-chat",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "answered": true,
+        "sources_present": true
+      }
+    },
+    {
+      "case_id": "local-owned-task",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "task_identity": true
+      }
+    },
+    {
+      "case_id": "local-active-terminal",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "local-terminal-events-zero-call",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "local-owned-session",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "history_present": true
+      }
+    },
+    {
+      "case_id": "local-cancel-already-terminal",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "local-delete-own-session",
+      "expected_status": 204,
+      "actual_status": 204,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "empty_body": true
+      }
+    },
+    {
+      "case_id": "teacher-A-assignment-create",
+      "expected_status": 201,
+      "actual_status": 201,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true
+      }
+    },
+    {
+      "case_id": "teacher-B-foreign-assignment",
+      "expected_status": 404,
+      "actual_status": 404,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "student-B-foreign-assignment",
+      "expected_status": 404,
+      "actual_status": 404,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "formal-upload-合成_姓名_dns.c",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "score80": true,
+        "execution_hash": true
+      }
+    },
+    {
+      "case_id": "formal-upload-合成.so",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "score80": true,
+        "execution_hash": true
+      }
+    },
+    {
+      "case_id": "formal-upload-UPPER.C",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "score80": true,
+        "execution_hash": true
+      }
+    },
+    {
+      "case_id": "formal-byte-exact",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true
+      }
+    },
+    {
+      "case_id": "formal-byte-over",
+      "expected_status": 413,
+      "actual_status": 413,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "chat-context-array-rejected",
+      "expected_status": 400,
+      "actual_status": 400,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "chat-nfc-first",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true
+      }
+    },
+    {
+      "case_id": "chat-nfc-byte-identical-replay",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true,
+        "task_identity": true,
+        "session_identity": true,
+        "message_identity": true
+      }
+    },
+    {
+      "case_id": "chat-raw-byte-different-conflict",
+      "expected_status": 409,
+      "actual_status": 409,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "chat-source-priority-upload-over-paste-and-args",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "grade_source_hash": true,
+        "terminal_source_cleared": true
+      }
+    },
+    {
+      "case_id": "student-A-cannot-read-B-admin",
+      "expected_status": 404,
+      "actual_status": 404,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true
+      }
+    },
+    {
+      "case_id": "chat-six-sources-two-tool-rounds",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "six_citations": true,
+        "unique_chunks": true,
+        "same_file_fragments_kept": true
+      }
+    },
+    {
+      "case_id": "terminal-six-SSE-replay-zero-upstream",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "zero_new_external_calls": true
+      }
+    },
+    {
+      "case_id": "historical-six-source-li_p5_six_0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "source_path": true,
+        "section": true
+      }
+    },
+    {
+      "case_id": "historical-six-source-li_p5_six_2",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "source_path": true,
+        "section": true
+      }
+    },
+    {
+      "case_id": "historical-six-source-li_p5_six_4",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "source_path": true,
+        "section": true
+      }
+    },
+    {
+      "case_id": "historical-six-source-li_p5_six_1",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "source_path": true,
+        "section": true
+      }
+    },
+    {
+      "case_id": "historical-six-source-li_p5_six_3",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "source_path": true,
+        "section": true
+      }
+    },
+    {
+      "case_id": "historical-six-source-li_p5_six_5",
+      "expected_status": 200,
+      "actual_status": 200,
+      "checks": {
+        "http_status": true,
+        "response_json_valid": true,
+        "zero_business_delta": true,
+        "source_path": true,
+        "section": true
+      }
+    }
+  ],
+  "owned_database_states": [
+    "dropped"
+  ],
+  "extra_positive_chains": "account六主体+token四角色+local各chat/owned task/active/events/session/cancel terminal/delete七步，共77项，新增到已验证147项。",
+  "build_isolation": "clean test-compile，清除移动测试配置后旧target class；不是沿用旧target扫描结果。",
+  "limits": [
+    "UI独立验收",
+    "完整原始golden strict仍失败，不能以224扩展通过替代186/198严格等价"
+  ]
+}

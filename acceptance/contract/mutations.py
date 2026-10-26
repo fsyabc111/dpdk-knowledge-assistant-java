@@ -4,7 +4,7 @@ import copy
 import json
 from pathlib import Path
 from migration.oracle.compare import compare,Difference,InvalidTrace
-from migration.oracle.verify_v2_regressions import mutate_business
+from migration.oracle.verify_v2_regressions import mutate_business,replace
 
 
 def run(candidate):
@@ -30,6 +30,20 @@ def run(candidate):
     def sse_drift(x):
         o=next(o for o in x['observations'] if o['media_type']=='text/event-stream');o['body'][0]['data']['task_id']='f'*32
     mutation('sse-start-task-identity-drift',sse_drift)
+    formal=next((r for r in candidate['state']['business']['tables']['grading_submissions'] if r['assignment_id'] is not None),None)
+    if formal:
+        digest=formal['code_hash']
+        mutation('source-all-linked-hash-replacement',lambda x:x.update(replace(x,digest,'f'*64)))
+    six=next((r for r in candidate['transaction_cases'] if r['case_id']=='citation-six-same-file' and len(r.get('citations',[]))==6),None)
+    if six:
+        def sixrow(x):return next(r for r in x['transaction_cases'] if r['case_id']=='citation-six-same-file')
+        mutation('same-file-six-drop-last',lambda x:sixrow(x)['citations'].pop())
+        mutation('same-file-six-reverse',lambda x:sixrow(x)['citations'].reverse())
+        mutation('same-file-six-duplicate-last-identity',lambda x:sixrow(x)['citations'].__setitem__(5,copy.deepcopy(sixrow(x)['citations'][4])))
+    def reverse_sse_sources(x):
+        o=next(o for o in x['observations'] if o['media_type']=='text/event-stream')
+        next(e for e in o['body'] if e['event']=='sources')['data']['citations'].reverse()
+    mutation('sse-source-order-reversed',reverse_sse_sources)
     return rows
 
 def main():

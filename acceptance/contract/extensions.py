@@ -23,6 +23,12 @@ def multipart(fields,filename=None,content=b''):
     if filename is not None:parts.append(('--'+boundary+'\r\nContent-Disposition: form-data; name="file"; filename="'+filename+'"\r\nContent-Type: application/octet-stream\r\n\r\n').encode()+content+b'\r\n')
     parts.append(('--'+boundary+'--\r\n').encode());return b''.join(parts),{'Content-Type':'multipart/form-data; boundary='+boundary}
 
+def response_json(method,status,headers,wire):
+    if method=='HEAD' or status==204 or not headers.get('content-type','').startswith('application/json'):
+        return None,True
+    try:return json.loads(wire),True
+    except (ValueError,UnicodeError):return None,False
+
 class Extensions:
     def __init__(self,h,db,server,upstream,out):
         self.h,self.db,self.server,self.upstream,self.out=h,db,server,upstream,Path(out)
@@ -42,8 +48,8 @@ class Extensions:
         before=snapshot(self.h,self.db);ledger_before=self.client.ledger()
         st,hd,wire=self.client.http(method,path,payload=payload,raw=raw,headers=headers,params=params,token=self.actor_token(actor))
         self.client.settle();after=snapshot(self.h,self.db);ledger_after=self.client.ledger()
-        body=json.loads(wire) if hd.get('content-type','').startswith('application/json') else None
-        checks={'http_status':st==expected}
+        body,json_ok=response_json(method,st,hd,wire)
+        checks={'http_status':st==expected,'response_json_valid':json_ok}
         if no_change:checks['zero_business_delta']=before==after
         if zero_upstream:checks['zero_new_external_calls']=ledger_before==ledger_after
         if predicate is not None:
@@ -59,12 +65,24 @@ class Extensions:
             body,_,_=self.check('account-login-'+actor,'POST','/api/auth/login',200,payload={'username':IDS[actor],'password':IDS[actor]})
             if not body or not body.get('token'):raise RuntimeError('login failed: '+actor)
             self.tokens[actor]=body['token']
+    def chat_task_chain(self,label,actor):
+        answer,_,_=self.check(label+'-chat','POST','/api/chat',200,actor=actor,payload={'message':'DNS做什么','request_id':str(uuid4())},predicate=lambda b,*_:{'answered':b['answer_status']=='answered','sources_present':len(b['citations'])>=1})
+        task=answer['task_id'];session=answer['session_id']
+        self.check(label+'-owned-task','GET','/api/tasks/'+task,200,actor=actor,no_change=True,predicate=lambda b,*_:{'task_identity':b['task_id']==task})
+        self.check(label+'-active-terminal','GET','/api/tasks/active',200,actor=actor,params={'session_id':session},no_change=True)
+        _,wire,_=self.check(label+'-terminal-events-zero-call','GET','/api/tasks/'+task+'/events',200,actor=actor,no_change=True,zero_upstream=True)
+        validate_sse(parse_sse([wire]))
+        self.check(label+'-owned-session','GET','/api/chat/sessions/'+session,200,actor=actor,no_change=True,predicate=lambda b,*_:{'history_present':bool(b['messages'])})
+        self.check(label+'-cancel-already-terminal','POST','/api/tasks/'+task+'/cancel',200,actor=actor,no_change=True,zero_upstream=True)
+        self.check(label+'-delete-own-session','DELETE','/api/chat/sessions/'+session,204,actor=actor,predicate=lambda b,w,*_:{'empty_body':w==b''})
     def mode_roles(self):
         self.configure('account');self.login()
         for actor in ('leader','teacher_a','teacher_b','student_a','student_b','operator'):
             manager=actor in ('leader','teacher_a','teacher_b');grades=manager or actor=='operator'
             for path,status in [('/api/admin/users',200 if manager else 404),('/api/rag/issues',200 if manager else 404),('/api/grading/summary',200 if grades else 404),('/api/assignments',200),('/api/usage/subjects',200 if manager else 404),('/api/sources/p0-history',200)]:
                 self.check('account-'+actor+'-'+path,'GET',path,status,actor=actor,no_change=True)
+        for actor in ('leader','teacher_a','teacher_b','student_a','student_b','operator'):
+            self.chat_task_chain('account-'+actor,actor)
         for role in self.static:
             self.check('account-static-'+role+'-admin','GET','/api/admin/users',200 if role in ('admin','leader') else 404,actor='static/'+role,no_change=True)
             self.check('account-static-'+role+'-subject','GET','/api/usage/me',200,actor='static/'+role,no_change=True,predicate=lambda b,*_,role=role:{'exact_static_subject':b['subject']=='p5-static-'+role})
@@ -81,11 +99,13 @@ class Extensions:
                 self.check('token-'+role+'-gated-'+path,'GET',path,404,actor='static/'+role,no_change=True)
             self.check('token-'+role+'-source','GET','/api/sources/p0-history',200,actor='static/'+role,no_change=True)
             self.check('token-'+role+'-own-usage','GET','/api/usage/me',200,actor='static/'+role,no_change=True,predicate=lambda b,*_: {'static_subject':b['subject'].startswith('p5-static-')})
+            self.chat_task_chain('token-'+role,'static/'+role)
         self.configure('local')
         for path in ('/api/admin/users','/api/assignments','/api/grading/summary'):
             self.check('local-gated-'+path,'GET',path,404,no_change=True)
         self.check('local-no-bearer-source','GET','/api/sources/p0-history',200,no_change=True)
         self.check('local-unique-subject','GET','/api/usage/me',200,no_change=True,predicate=lambda b,*_: {'local_subject':b['subject']=='local','admin_role':b['roles']==['admin']})
+        self.chat_task_chain('local',None)
         self.configure('account')
     def uploads_identity(self):
         assignment,_,_=self.check('teacher-A-assignment-create','POST','/api/assignments',201,actor='teacher_a',payload={'title':'P5合成上传作业','description':'仅隔离验收','deadline':'2099-01-01T00:00:00Z','items':[{'protocol':'dns','points':20}]})
