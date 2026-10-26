@@ -29,15 +29,20 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
 /** 真PG/模型HTTP边界，闩锁控制shared loader晚于任务终态返回，禁止sleep碰绿。 */
 @EnabledIfEnvironmentVariable(named="DPDK_TEST_PG_URL", matches=".+")
 class LateUsageClosureIntegrationTest {
+    static java.util.stream.Stream<org.junit.jupiter.params.provider.Arguments> cases() {
+        return java.util.stream.Stream.of(org.junit.jupiter.params.provider.Arguments.of(false,false),
+                org.junit.jupiter.params.provider.Arguments.of(true,false),
+                org.junit.jupiter.params.provider.Arguments.of(false,true));
+    }
     @ParameterizedTest
-    @ValueSource(booleans={false,true})
-    void cancelledOwnerPersistsExactlyOneLateEmbeddingReceiptAfterItsTerminalCheckpoint(boolean unknownUsage) throws Exception {
+    @MethodSource("cases")
+    void cancelledOwnerPersistsExactlyOneLateEmbeddingReceiptAfterItsTerminalCheckpoint(boolean unknownUsage, boolean rejectLateSink) throws Exception {
         CountDownLatch entered = new CountDownLatch(1), release = new CountDownLatch(1);
         CountDownLatch lateCommitted = new CountDownLatch(1);
         AtomicInteger httpCalls = new AtomicInteger();
@@ -89,6 +94,7 @@ class LateUsageClosureIntegrationTest {
             var input=h.input("DNS");
             var start=product.start(h.student,input);
             assertThat(entered.await(3,TimeUnit.SECONDS)).isTrue();
+            var accounting=executor.accountingCompletion(start.taskId()).toCompletableFuture();
             long cancelledAt=System.nanoTime();
             h.task.service.cancel(start.taskId(),"student");
             assertThat(start.managed().awaitDone(Duration.ofSeconds(2))).isTrue();
@@ -96,9 +102,25 @@ class LateUsageClosureIntegrationTest {
             assertThat(h.task.columnValue("rag_requests","status","id=?",start.taskId())).isEqualTo("cancelled");
             assertThat(h.task.countRows("rag_task_inputs","task_id=?",start.taskId())).isZero();
             assertThat(h.task.countRows("upstream_usage_records","request_id=? AND stage='query_embed'",input.requestId())).isZero();
+            assertThat(accounting.isDone()).isFalse();
+            assertThat(executor.awaitAccountingReceipts(Duration.ZERO)).isFalse();
+            if(rejectLateSink) {
+                try(var c=h.task.ds.getConnection();var ps=c.prepareStatement(
+                        "ALTER TABLE upstream_usage_records ADD CONSTRAINT synthetic_reject_late CHECK(stage <> 'query_embed')")) { ps.executeUpdate(); }
+            }
             // HTTP仍被关在闩锁后；取消不能等响应，也不能杀掉共享loader。
             release.countDown();
+            if(rejectLateSink) {
+                org.assertj.core.api.Assertions.assertThatThrownBy(()->accounting.get(3,TimeUnit.SECONDS))
+                        .hasCauseInstanceOf(IllegalStateException.class);
+                assertThat(executor.awaitAccountingReceipts(Duration.ZERO)).isFalse();
+                assertThat(h.task.countRows("upstream_usage_records","request_id=? AND stage='query_embed'",input.requestId())).isZero();
+                assertThat(lateCommitted.getCount()).isEqualTo(1);
+                return;
+            }
             assertThat(lateCommitted.await(3,TimeUnit.SECONDS)).as("终态后真实HTTP收据仍须归原request并afterCommit计量").isTrue();
+            accounting.get(3,TimeUnit.SECONDS);
+            assertThat(executor.awaitAccountingReceipts(Duration.ZERO)).isTrue();
             assertThat(httpCalls.get()).isEqualTo(1);
             assertThat(h.task.countRows("upstream_usage_records","request_id=? AND stage='query_embed'",input.requestId())).isEqualTo(1);
             assertThat(h.task.columnValue("upstream_usage_records","total_tokens","request_id=? AND stage='query_embed'",input.requestId()))
@@ -109,6 +131,56 @@ class LateUsageClosureIntegrationTest {
             assertThat(samples.stream().filter(s->"query_embed".equals(s.stage())).count()).isEqualTo(1);
         } finally { release.countDown();server.stop(0); }
     }
+    @org.junit.jupiter.api.Test
+    void interruptibleRealModelCallCheckpointsUnknownBeforeTerminalWithoutWaitingForRemoteResponse() throws Exception {
+        CountDownLatch entered=new CountDownLatch(1),release=new CountDownLatch(1);
+        AtomicInteger calls=new AtomicInteger();
+        HttpServer server=HttpServer.create(new InetSocketAddress("127.0.0.1",0),0);
+        server.createContext("/v1/chat/completions",exchange->{
+            exchange.getRequestBody().readAllBytes();calls.incrementAndGet();entered.countDown();
+            try {
+                if(!release.await(10,TimeUnit.SECONDS))throw new IllegalStateException("test model gate timeout");
+                byte[] body=new ObjectMapper().writeValueAsBytes(Map.of("choices",List.of(Map.of("message",Map.of("content","late synthetic response"))),
+                        "usage",Map.of("total_tokens",4)));
+                exchange.getResponseHeaders().set("Content-Type","application/json");
+                exchange.sendResponseHeaders(200,body.length);exchange.getResponseBody().write(body);
+            } catch(InterruptedException interrupted){Thread.currentThread().interrupt();}
+            finally{exchange.close();}
+        });
+        server.start();
+        String endpoint="http://127.0.0.1:"+server.getAddress().getPort()+"/v1";
+        var client=new io.dpdk.assistant.model.OpenAiCompatibleChatClient(
+                new io.dpdk.assistant.model.ChatClientSettings(endpoint,"synthetic-key","synthetic-model",64,0,0,5,false),new UpstreamGate(2));
+        try(var h=ChatTestHarness.create("modelinterrupt",(m,t)->AgentChatModel.AgentReply.text("unused"),null)) {
+            List<ProcessMetrics.UsageSample> samples=new CopyOnWriteArrayList<>();
+            var usage=new UsageLedgerStore(h.task.runner);
+            usage.setMetrics(new ProcessMetrics(){@Override public void usage(UsageSample sample){samples.add(sample);}});
+            var settings=ChatSettings.defaults();
+            var executor=new ChatTaskExecutor(h.task.sessions,h.task.runner,h.task.clock,
+                    new io.dpdk.assistant.model.AgentModelAdapter(client,"synthetic-model"),AgentSettings.defaults(),h.retrieval,
+                    (tool,args,deadline)->{throw new AssertionError("no MCP");},h.task.store,
+                    new TaskGradeLedger(h.task.store,h.task.guard,h.task.runner,h.task.clock),h.task.counters,usage,settings);
+            var product=new ProductChatService(h.task.service,h.task.gate,h.task.sessions,executor,settings,h.task.clock);
+            var input=h.input("synthetic cancellation question");
+            var start=product.start(h.student,input);
+            assertThat(entered.await(3,TimeUnit.SECONDS)).isTrue();
+            var accounting=executor.accountingCompletion(start.taskId()).toCompletableFuture();
+            long cancelled=System.nanoTime();
+            h.task.service.cancel(start.taskId(),"student");
+            assertThat(start.managed().awaitDone(Duration.ofSeconds(2))).isTrue();
+            assertThat(Duration.ofNanos(System.nanoTime()-cancelled)).isLessThan(Duration.ofSeconds(2));
+            accounting.get(2,TimeUnit.SECONDS);
+            assertThat(executor.awaitAccountingReceipts(Duration.ZERO)).isTrue();
+            assertThat(release.getCount()).isEqualTo(1); // 远端还没返回，不能为等usage阻塞取消。
+            assertThat(calls.get()).isEqualTo(1);
+            assertThat(h.task.countRows("upstream_usage_records","request_id=? AND stage='planner'",input.requestId())).isEqualTo(1);
+            assertThat(h.task.columnValue("upstream_usage_records","usage_source","request_id=? AND stage='planner'",input.requestId())).isEqualTo("unknown");
+            assertThat(h.task.columnValue("upstream_usage_records","total_tokens","request_id=? AND stage='planner'",input.requestId())).isNull();
+            assertThat(h.task.columnValue("upstream_usage_records","call_count","request_id=? AND stage='planner'",input.requestId())).isEqualTo("1");
+            assertThat(samples.stream().filter(v->"planner".equals(v.stage())).count()).isEqualTo(1);
+        } finally {release.countDown();client.close();server.stop(0);}
+    }
+
     private static final class AutoEmbedding implements AutoCloseable {
         final OpenAiCompatibleEmbeddingClient value;
         AutoEmbedding(String endpoint) {

@@ -4,7 +4,7 @@ import io.dpdk.assistant.contracts.observability.ProcessMetrics;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** 源RequestTrace的观测部分：检索阶段累计后在请求收尾发布，工具/校验按源即时记录。 */
+/** 源RequestTrace观测：等candidate及迟到收据ack排空后发布一次，工具/校验按源即时记录。 */
 final class RequestMetrics implements ProcessMetrics {
     private final ProcessMetrics target;
     private final Map<String,Double> stages = new LinkedHashMap<>();

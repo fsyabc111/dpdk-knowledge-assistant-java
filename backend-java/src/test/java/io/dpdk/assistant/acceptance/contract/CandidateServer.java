@@ -122,7 +122,8 @@ public final class CandidateServer {
         control.createContext("/settled",exchange->{
             long end=System.nanoTime()+30_000_000_000L;
             try {while(!ctx.getBean(ManagedTaskRegistry.class).runningIds().isEmpty()&&System.nanoTime()<end)Thread.sleep(5);
-                boolean settled=ctx.getBean(ManagedTaskRegistry.class).runningIds().isEmpty();
+                boolean settled=ctx.getBean(ManagedTaskRegistry.class).runningIds().isEmpty()
+                        && ctx.getBean(io.dpdk.assistant.chat.ChatTaskExecutor.class).awaitAccountingReceipts(java.time.Duration.ofSeconds(2));
                 byte[] bytes=JSON.writeValueAsBytes(Map.of("settled",settled));exchange.sendResponseHeaders(settled?200:503,bytes.length);exchange.getResponseBody().write(bytes);
             } catch(Exception e){exchange.sendResponseHeaders(500,-1);}finally{exchange.close();}
         });

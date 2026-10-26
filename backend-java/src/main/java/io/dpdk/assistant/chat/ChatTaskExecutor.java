@@ -35,11 +35,14 @@ public final class ChatTaskExecutor implements TaskExecutor {
     private final ConcurrentMap<String, Map<String, Object>> explainContexts =
             new ConcurrentHashMap<>();
     private record PendingUsage(UsageCore.UsageRecorder recorder, String requestId, String subject,
-                                String sessionId, long startedNanos, RequestMetrics metrics) {}
+                                String sessionId, long startedNanos, RequestMetrics metrics,
+                                CompletableFuture<Void> candidateExited, CompletableFuture<Void> accountingAck) {}
     private volatile io.dpdk.assistant.contracts.observability.ProcessMetrics metrics = io.dpdk.assistant.contracts.observability.ProcessMetrics.NONE;
     public void setMetrics(io.dpdk.assistant.contracts.observability.ProcessMetrics metrics) { this.metrics = java.util.Objects.requireNonNull(metrics); }
     private final ConcurrentMap<String, Long> preparedStarts = new ConcurrentHashMap<>();
     private final ConcurrentMap<String, PendingUsage> completionUsage = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, Set<CompletableFuture<Void>>> accountingAcks = new ConcurrentHashMap<>();
+    private final java.util.concurrent.atomic.AtomicReference<Throwable> accountingFailure = new java.util.concurrent.atomic.AtomicReference<>();
     private volatile Function<TaskExecutionContext, Map<String, Object>> explainResolver =
             c -> null;
 
@@ -133,32 +136,55 @@ public final class ChatTaskExecutor implements TaskExecutor {
             values.put("completion_tokens", tokens.completionTokens());
             values.put("total_tokens", tokens.totalTokens());
         }
-        synchronized (recorder) {
-            recorder.recordLlm(stage, agentSettings.modelName(), values);
-        }
+        recorder.recordLlm(stage, agentSettings.modelName(), values);
     }
 
     private void flushUsage(
             UsageCore.UsageRecorder recorder, String requestId, String subject, String sessionId) {
-        UsagePolicy policy = usagePolicy;
-        if (!policy.enabled()) return;
+        try { flushUsageEntries(recorder.entries(), requestId, subject, sessionId, usagePolicy); }
+        catch (RuntimeException failure) { usageWarning(failure); }
+    }
+
+    /** JDBC只在recorder锁外运行；取消线程的interrupt暂清、原样恢复。 */
+    private void flushUsageEntries(List<UsageCore.UsageEntry> entries, String requestId,
+            String subject, String sessionId, UsagePolicy policy) {
+        if (!policy.enabled() || entries.isEmpty()) return;
+        boolean interrupted = Thread.interrupted();
         try {
-            List<UsageCore.UsageEntry> entries;
-            synchronized (recorder) {
-                entries = recorder.entries();
-            }
-            if (entries.isEmpty()) return;
-            usage.recordRows(
-                    UsageCore.entriesToRows(
-                            entries,
-                            policy.prices(),
-                            policy.version(),
-                            requestId,
-                            subject,
-                            sessionId,
-                            clock.nextSessionIso()));
-        } catch (RuntimeException ignored) {
-            /* 与源相同的 best-effort 记账。 */
+            usage.recordRows(UsageCore.entriesToRows(entries, policy.prices(), policy.version(),
+                    requestId, subject, sessionId, clock.nextSessionIso()));
+        } finally { if (interrupted) Thread.currentThread().interrupt(); }
+    }
+
+    private static void usageWarning(Throwable failure) {
+        org.slf4j.LoggerFactory.getLogger(ChatTaskExecutor.class).warn(
+                "[usage_receipt_failed] error_type={}", failure.getClass().getSimpleName());
+    }
+
+    /** 调用方可在取消前取得此ack；不暴露request正文/执行源，完成后内部map即移除。 */
+    public CompletionStage<Void> accountingCompletion(String taskId) {
+        Set<CompletableFuture<Void>> pending = accountingAcks.get(taskId);
+        return (pending == null ? CompletableFuture.<Void>completedFuture(null)
+                : CompletableFuture.allOf(pending.toArray(CompletableFuture[]::new))).minimalCompletionStage();
+    }
+
+    /** collector/停机的显式排空屏障；失败或超时一律false，不把终态当成已落完账。 */
+    public boolean awaitAccountingReceipts(Duration timeout) {
+        long deadline = System.nanoTime() + Math.max(0, timeout.toNanos());
+        var acknowledgments = accountingAcks.values().stream().flatMap(Set::stream).toList();
+        for (var pending : acknowledgments) {
+            try { pending.get(Math.max(0, deadline-System.nanoTime()), TimeUnit.NANOSECONDS); }
+            catch (InterruptedException interrupted) { Thread.currentThread().interrupt(); return false; }
+            catch (ExecutionException | TimeoutException failed) { return false; }
+        }
+        return accountingFailure.get() == null && accountingAcks.values().stream()
+                .flatMap(Set::stream).allMatch(CompletableFuture::isDone);
+    }
+
+    @jakarta.annotation.PreDestroy
+    public void checkpointOnShutdown() {
+        if (!awaitAccountingReceipts(Duration.ofMillis(250))) {
+            org.slf4j.LoggerFactory.getLogger(ChatTaskExecutor.class).warn("[usage_receipts_pending_at_shutdown]");
         }
     }
 
@@ -183,10 +209,29 @@ public final class ChatTaskExecutor implements TaskExecutor {
                 new UsageCore.UsageRecorder(context.subject(), context.sessionId());
         Long started = preparedStarts.remove(context.taskId());
         RequestMetrics requestMetrics = new RequestMetrics(metrics);
+        var candidateExited = new CompletableFuture<Void>();
+        var candidateState = new java.util.concurrent.atomic.AtomicInteger(); // 0待启动/1已启动/2取消前放弃
+        var producer = recorder.retainProducer();
+        var accountingAck = new CompletableFuture<Void>();
+        accountingAcks.compute(context.taskId(), (taskId, active) -> {
+            if (active == null) active = ConcurrentHashMap.newKeySet();
+            active.add(accountingAck);
+            return active;
+        });
         completionUsage.put(context.taskId(), new PendingUsage(recorder, context.requestId(),
-                context.subject(), context.sessionId(), started == null ? System.nanoTime() : started, requestMetrics));
+                context.subject(), context.sessionId(), started == null ? System.nanoTime() : started,
+                requestMetrics, candidateExited, accountingAck));
         ExecutorService wall = Executors.newVirtualThreadPerTaskExecutor();
-        Future<TaskExecutionResult> future = wall.submit(() -> candidate(context, emit, recorder, requestMetrics));
+        Future<TaskExecutionResult> future;
+        try {
+            future = wall.submit(() -> {
+                if (!candidateState.compareAndSet(0, 1)) throw new CancellationException("candidate abandoned");
+                try { return candidate(context, emit, recorder, requestMetrics); }
+                finally { producer.close(); candidateExited.complete(null); }
+            });
+        } catch (RuntimeException rejected) {
+            producer.close(); candidateExited.complete(null); wall.shutdownNow(); throw rejected;
+        }
         try {
             return future.get(settings.requestTimeout().toMillis(), TimeUnit.MILLISECONDS);
         } catch (TimeoutException timeout) {
@@ -220,6 +265,7 @@ public final class ChatTaskExecutor implements TaskExecutor {
             throw interrupted;
         } finally {
             wall.shutdownNow();
+            if (candidateState.compareAndSet(0, 2)) { producer.close(); candidateExited.complete(null); }
             preparedMemory.remove(context.taskId());
             explainContexts.remove(context.taskId());
         }
@@ -229,10 +275,38 @@ public final class ChatTaskExecutor implements TaskExecutor {
 
     @Override public void afterCompletion(TaskExecutionContext context, TaskExecutionResult persisted) {
         PendingUsage pending = completionUsage.remove(context.taskId());
-        if (pending != null) {
+        if (pending == null) return;
+        // 普通可中断调用尽快完成finally；共享loader不在此等待，取消最多握手100ms。
+        try { pending.candidateExited().get(100, TimeUnit.MILLISECONDS); }
+        catch (InterruptedException interrupted) { Thread.currentThread().interrupt(); }
+        catch (ExecutionException | TimeoutException notYetExited) { /* 由迟到sink继续归账。 */ }
+        String requestId = pending.requestId(), subject = pending.subject(), sessionId = pending.sessionId();
+        String taskId = context.taskId();
+        UsagePolicy policy = usagePolicy;
+        RequestMetrics requestMetrics = pending.metrics();
+        var checkpoint = pending.recorder().checkpointAndSubscribe(entry ->
+                flushUsageEntries(List.of(entry), requestId, subject, sessionId, policy));
+        CompletableFuture<Void> ack = pending.accountingAck();
+        checkpoint.completion().whenComplete((ignored, failure) -> {
+            Throwable completedFailure = failure;
+            try { requestMetrics.publish(); }
+            catch (RuntimeException metricFailure) { if (completedFailure == null) completedFailure = metricFailure; }
+            if (completedFailure != null) {
+                accountingFailure.compareAndSet(null, completedFailure);
+                usageWarning(completedFailure);
+                ack.completeExceptionally(completedFailure);
+            } else ack.complete(null);
+            accountingAcks.computeIfPresent(taskId, (id, active) -> {
+                active.remove(ack);
+                return active.isEmpty() ? null : active;
+            });
+        });
+        try {
             if (persisted != null) metrics.rag(persisted.status(), persisted.reason(), (System.nanoTime()-pending.startedNanos())/1e9);
-            flushUsage(pending.recorder(), pending.requestId(), pending.subject(), pending.sessionId());
-            pending.metrics().publish();
+            flushUsageEntries(checkpoint.entries(), requestId, subject, sessionId, policy);
+            checkpoint.acknowledge();
+        } catch (RuntimeException failure) {
+            checkpoint.fail(failure);
         }
     }
 
@@ -262,7 +336,9 @@ public final class ChatTaskExecutor implements TaskExecutor {
                                         new SearchInput(query, null, conversation),
                                         limit, recorder, metrics);
                         if (result.trace() instanceof RetrievalTrace trace) {
-                            retrievalFailure[0] = trace.blockedReason();
+                            retrievalFailure[0] = trace.blockedReason() != null ? trace.blockedReason()
+                                    : trace.fallbacks().contains(PgReleaseReader.QUERY_EMBEDDING_FAILED_FALLBACK)
+                                            ? "query_embedding_failed" : null;
                             return trace.nodes().stream()
                                     .map(
                                             n ->
@@ -290,16 +366,11 @@ public final class ChatTaskExecutor implements TaskExecutor {
                             tokens.put("completion_tokens", u.completionTokens());
                             tokens.put("total_tokens", u.totalTokens());
                         }
-                        synchronized (recorder) {
-                            recorder.recordLlm(stage, name, tokens);
-                        }
+                        recorder.recordLlm(stage, name, tokens);
                     }
 
                     public void recordOperation(String kind, String stage, long duration) {
-                        synchronized (recorder) {
-                            recorder.recordOperation(
-                                    kind, stage, (int) Math.min(Integer.MAX_VALUE, duration), 1);
-                        }
+                        recorder.recordOperation(kind, stage, (int) Math.min(Integer.MAX_VALUE, duration), 1);
                     }
                 };
         HarnessPort external =
