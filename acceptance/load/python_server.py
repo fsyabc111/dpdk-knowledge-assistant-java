@@ -136,6 +136,8 @@ class Boundaries:
         class Embeddings:
             async def embed(self, texts, **kwargs):
                 state.calls["embedding"] += 1
+                # 50ms仅属于真实外部向量调用；Python原始缓存命中不额外补睡眠。
+                await asyncio.sleep(state.retrieval_delay)
                 return [[1.0] + [0.0] * 1023 for _ in texts]
         class Summary:
             async def generate(self, messages, **kwargs):
@@ -145,14 +147,7 @@ class Boundaries:
         agent.build_agent_chat_model = lambda settings: Model()
         conversation_memory.build_chat_model = lambda settings: Summary()
         retrieval_service.build_embedding_model = lambda settings: Embeddings()
-        # 保留真实HybridDpdkRetriever/LiNodeRetrievalStore与查询缓存；每次检索的固定50ms
-        # 置于外部向量预算边界，再委托原完整检索，不能返回伪造chunk冒充数据库召回。
-        original = llama_index_service.LlamaIndexRetrievalAdapter.search
-        async def delayed_search(adapter, query, limit=6, trace=None, conversation_context=None):
-            state.calls["retrieval"] += 1
-            await asyncio.sleep(state.retrieval_delay)
-            return await original(adapter, query, limit, trace, conversation_context)
-        llama_index_service.LlamaIndexRetrievalAdapter.search = delayed_search
+        # HybridDpdkRetriever/LiNodeRetrievalStore、rewrite/embedding缓存与SQL均原样保留。
         # warm仅创建外部LlamaIndex embedding客户端；真实startup/维护/心跳全部保留。
         llama_index_service.warm_llama_index_runtime = lambda: None
         async def mcp(_client, tool, arguments):
@@ -223,7 +218,8 @@ def main():
     manifest.update({"base_url": "http://127.0.0.1:" + str(listener.getsockname()[1]), "pid": os.getpid(), "runtime": "python",
         "comparison_processes": [os.getpid()], "db_name": db.name, "control_key": os.environ["J5_CONTROL_KEY"],
         "settings": {"pool": 32, "bcrypt": 12, "model_delay_seconds": state.model_delay, "retrieval_delay_seconds": state.retrieval_delay,
-                     "mcp_delay_seconds": state.mcp_delay, "active": 20, "waiting": 20, "queue_seconds": 10, "task_seconds": 600, "input_ttl_hours": 24}})
+                     "mcp_delay_seconds": state.mcp_delay, "active": 20, "waiting": 20, "queue_seconds": 10, "task_seconds": 600, "input_ttl_hours": 24,
+                     "retrieval_delay_scope": "external_embedding_call_only", "cache_ttl_seconds": 600, "cache_maxsize": 512}})
     # 在startup完成后写ready文件，避免负载先于真实维护/心跳启动。
     async def ready():
         output = Path(os.environ["J5_MANIFEST"])

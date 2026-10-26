@@ -20,7 +20,7 @@ import uuid
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 from acceptance.contract.isolation import PgIsolation
-from acceptance.load.statistics import GROUPS, combine_resources, evaluate, percentiles
+from acceptance.load.statistics import GROUPS, clock_validity, combine_resources, evaluate, percentiles
 
 
 def write_json(path, data):
@@ -39,9 +39,9 @@ def cpu_seconds(text):
 
 
 class Resources:
-    def __init__(self, app_pid, isolation, db):
-        self.pids = (app_pid, os.getpid())
-        if len(set(self.pids)) != 2:
+    def __init__(self, app_pid, isolation, db, control_pids=()):
+        self.pids = (app_pid, os.getpid(), *control_pids)
+        if app_pid == os.getpid() or len(set(self.pids)) != len(self.pids):
             raise ValueError("必须为独立应用与负载进程")
         self.isolation, self.db = isolation, db
         self.previous = None
@@ -49,6 +49,7 @@ class Resources:
 
     def sample(self):
         now = time.monotonic()
+        wall_now = time.time()
         raw = subprocess.run(["ps", "-o", "pid=,rss=,time=", "-p", ",".join(map(str, self.pids))],
                              check=True, capture_output=True, text=True).stdout
         rows = {int(pid): (int(rss), cpu_seconds(cpu)) for pid, rss, cpu in (line.split() for line in raw.splitlines())}
@@ -62,7 +63,7 @@ class Resources:
         # PG独立域：记录实例活动库，禁止将共享页RSS声称应用独占。
         with self.isolation._connect(self.db.name) as conn:
             active = dict(conn.execute("SELECT datname,count(*) FROM pg_stat_activity WHERE backend_type='client backend' AND state='active' AND pid<>pg_backend_pid() GROUP BY datname").fetchall())
-        sample = {"utc": datetime.now(timezone.utc).isoformat(), "monotonic_seconds": now,
+        sample = {"utc": datetime.fromtimestamp(wall_now, timezone.utc).isoformat(), "wall_seconds": wall_now, "monotonic_seconds": now,
                   "processes": processes, "pg_active_by_database": active}
         pg_pidfile = self.isolation.data_dir / "postmaster.pid"
         if pg_pidfile.exists():
@@ -101,7 +102,7 @@ async def phase(manifest, isolation, db, seconds, number, label, output, source)
                              headers={"X-J5-Control": manifest["control_key"]})
     deadline = time.monotonic() + seconds
     latency, errors = defaultdict(list), defaultdict(Counter)
-    resource = Resources(manifest["pid"], isolation, db)
+    resource = Resources(manifest["pid"], isolation, db, manifest.get("measurement_control_pids", ()))
     slots = asyncio.Semaphore(10)
     next_account = 0
     stop = asyncio.Event()
@@ -203,6 +204,10 @@ async def phase(manifest, isolation, db, seconds, number, label, output, source)
         monitor_result = await asyncio.gather(monitor_task, return_exceptions=True)
         if isinstance(monitor_result[0], Exception):
             failure = failure or type(monitor_result[0]).__name__
+        try:
+            resource.sample()  # 末尾样本也覆盖排空/采样停止前的睡眠空洞。
+        except Exception as exc:
+            failure = failure or type(exc).__name__
         for client in clients:
             await client.aclose()
         await admin.aclose()
@@ -217,6 +222,7 @@ async def phase(manifest, isolation, db, seconds, number, label, output, source)
         "resource_samples": resource.samples, "resource_summary": combine_resources(resource.samples) if resource.samples else None,
         "task_samples": control, "after": after}
     report["aborted_error_type"] = failure
+    report["validity"] = clock_validity(resource.samples)
     write_json(output / f"round-{number}-{label}-latencies.json", dict(latency))
     write_json(output / f"round-{number}-{label}.json", report)
     if failure:
@@ -292,10 +298,12 @@ async def run_runtime(runtime, isolation, output, source, args):
     import httpx
     db = isolation.create(runtime)
     process, manifest = launch(runtime, isolation, db, output, source, args)
+    manifest["measurement_control_pids"] = [args.sleep_guard["pid"]] if args.sleep_guard.get("pid") else []
     report = {"runtime": runtime, "db": asdict(db), "warmups": [], "rounds": [], "layout_gate": False,
               "layout": "loopback TCP; trusted XFF proxy=driver; real PG retrieval; per-call fixed external boundaries; app+driver synchronous resources",
               "server_settings": manifest["settings"], "environment": {"platform": platform.platform(), "python": sys.version,
-                  "cpu_count": os.cpu_count(), "runner_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest()},
+                  "cpu_count": os.cpu_count(), "runner_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+                  "sleep_prevention": args.sleep_guard},
               "qualification_only": args.qualification}
     try:
         report["same_ip_rate_limit_counterexample"] = await ip_counterexample(manifest)
@@ -332,7 +340,21 @@ async def run_runtime(runtime, isolation, output, source, args):
     return report
 
 
+def sleep_prevention():
+    """macOS caffeinate先fork守护子进程，再exec目标命令；不假定它一定是父进程。"""
+    children = subprocess.run(["pgrep", "-P", str(os.getpid())], capture_output=True, text=True).stdout.split()
+    for pid in (*children, str(os.getppid())):
+        command = subprocess.run(["ps", "-o", "comm=", "-p", pid], capture_output=True, text=True).stdout.strip()
+        if Path(command).name != "caffeinate":
+            continue
+        arguments = subprocess.run(["ps", "-o", "args=", "-p", pid], capture_output=True, text=True).stdout.split()
+        if "-i" in arguments:
+            return {"tool": "caffeinate", "idle_sleep_disabled": True, "pid": int(pid), "included_in_resource_sum": True}
+    raise RuntimeError("macOS正式测量必须由caffeinate -i启动；拒绝无睡眠保护运行")
+
+
 async def main_async(args):
+    args.sleep_guard = sleep_prevention() if sys.platform == "darwin" and not args.qualification else {"tool": "not_required_for_qualification_or_non_macos"}
     output = Path(args.output).resolve()
     if not any(parent.name == ".migration-artifacts" for parent in output.parents):
         raise RuntimeError("原始统计/manifest只能写入gitignored .migration-artifacts目录")
@@ -351,8 +373,16 @@ async def main_async(args):
     for report in reports.values():
         report["layout_gate"] = aligned
         report["evaluation"] = evaluate(report, threshold) if not args.qualification else {"pass": False, "qualification_only": True}
+        if args.qualification:
+            phases = report["warmups"]+report["rounds"]
+            report["qualification_pass"] = bool(phases) and all(report.get("correctness", {}).values()) and all(
+                phase["validity"]["valid"] and all(phase["groups"][group]["requests"] > 0 and phase["groups"][group]["unexpected_errors"] == 0
+                    for group in GROUPS) for phase in phases)
         write_json(output / report["runtime"] / "summary.json", report)
-    write_json(output / "pair-summary.json", {r: {"layout_gate": v["layout_gate"], "evaluation": v["evaluation"]} for r, v in reports.items()})
+    write_json(output / "pair-summary.json", {r: {"layout_gate": v["layout_gate"], "evaluation": v["evaluation"],
+        "qualification_pass": v.get("qualification_pass")} for r, v in reports.items()})
+    if args.qualification:
+        return 0 if reports and all(r["qualification_pass"] for r in reports.values()) else 1
     return 0 if all(r["evaluation"]["pass"] for r in reports.values()) else 1
 
 

@@ -7,6 +7,24 @@ import math
 GROUPS = ("login", "assignment_read", "chat", "formal_submit", "explain_admission", "explain_terminal")
 
 
+def clock_validity(samples):
+    """采样大空洞/墙钟与单调时钟分离使轮次不可判定；保留样本，不改容量门槛。"""
+    failures = []
+    if len(samples) < 2:
+        failures.append("insufficient_clock_samples")
+    for before, after in zip(samples, samples[1:]):
+        mono = after["monotonic_seconds"] - before["monotonic_seconds"]
+        wall = after["wall_seconds"] - before["wall_seconds"]
+        if mono <= 0:
+            failures.append("monotonic_non_increasing")
+        if mono > 5:
+            failures.append("sampler_gap_over_5s")
+        if abs(wall-mono) > 2:
+            failures.append("wall_monotonic_leap_over_2s")
+    return {"valid": not failures, "failures": sorted(set(failures)),
+            "sampler_gap_limit_seconds": 5, "wall_monotonic_difference_limit_seconds": 2}
+
+
 def percentiles(values):
     ordered = sorted(values)
     if not ordered:
@@ -47,6 +65,8 @@ def evaluate(report, thresholds):
         label = f"round-{round_.get('round')}"
         if round_.get("target_seconds") != 600:
             failures.append(label + "测量窗口不是600s")
+        if round_.get("validity", {}).get("valid") is not True:
+            failures.append(label + "睡眠/时钟/采样完整性门禁未通过")
         for name in GROUPS:
             group = round_.get("groups", {}).get(name)
             if group is None or group.get("requests", 0) <= 0:
@@ -70,6 +90,8 @@ def evaluate(report, thresholds):
     for warmup in report.get("warmups", []):
         if warmup.get("target_seconds") != 120:
             failures.append("预热窗口不是120s")
+        if warmup.get("validity", {}).get("valid") is not True:
+            failures.append("预热睡眠/时钟/采样完整性门禁未通过")
     correctness = report.get("correctness", {})
     required = ("no_unauthorized_access", "all_accepted_terminal", "one_chat_charge_per_task", "no_duplicate_grade", "terminal_inputs_deleted",
                 "formal_successes_equal_grades", "mcp_formal_count_matches", "no_grade_from_explanation", "no_network_denial")

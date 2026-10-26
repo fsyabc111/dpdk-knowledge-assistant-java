@@ -66,12 +66,16 @@ public final class CapacityServer {
         properties.put("dpdk.datasource.url", required("J5_JDBC_URL"));
         properties.put("dpdk.datasource.username", required("J5_DB_USER"));
         properties.put("dpdk.datasource.password", System.getenv().getOrDefault("J5_DB_PASSWORD", ""));
+        properties.put("dpdk.datasource.maximum-pool-size", 32);
         properties.put("dpdk.database-identity.expected-database", database);
         properties.put("dpdk.database-identity.expected-user", required("J5_DB_USER"));
         properties.put("dpdk.database-identity.expected-comment", required("J5_DB_COMMENT"));
         properties.put("dpdk.database-identity.expected-data-dir", required("J5_DB_DATA_DIR"));
         properties.put("dpdk.harness.url", "false");
         properties.put("dpdk.model.chat.model-name", "j5-fixed-model");
+        properties.put("dpdk.model.embedding.base-url", EMBEDDING_BASE);
+        properties.put("dpdk.model.embedding.api-key", "j5-synthetic-not-secret");
+        properties.put("dpdk.model.embedding.model-name", "j5-fixed-embedding");
         properties.put("dpdk.grading.daily-quota", 20);
         properties.put("dpdk.rate-limit-chat-per-minute", 20);
         properties.put("logging.level.root", "ERROR");
@@ -80,8 +84,8 @@ public final class CapacityServer {
                 .initializers(ctx -> ctx.getEnvironment().getPropertySources().addFirst(
                         new org.springframework.core.env.MapPropertySource("j5-explicit", properties))).run();
         DataSource ds = application.getBean(DataSource.class);
-        // 仅测试装配对齐冻结32；不修改生产DataSourceConfig的默认值。
-        if (ds instanceof com.zaxxer.hikari.HikariDataSource pool) pool.setMaximumPoolSize(32);
+        if (!(ds instanceof com.zaxxer.hikari.HikariDataSource pool) || pool.getMaximumPoolSize() != 32)
+            throw new IllegalStateException("冻结容量必须通过生产配置建立32连接池");
         int port = ((WebServerApplicationContext) application).getWebServer().getPort();
         Map<String, Object> manifest;
         if ("true".equals(System.getenv("J5_ATTACH"))) {
@@ -95,9 +99,13 @@ public final class CapacityServer {
         manifest.put("control_key", required("J5_CONTROL_KEY"));
         manifest.put("db_name", database);
         manifest.put("runtime", "java");
-        manifest.put("settings", Map.of("pool", 32, "bcrypt", 12, "model_delay_seconds", STATE.modelDelay,
+        var capacitySettings = new LinkedHashMap<String, Object>(Map.of("pool", 32, "bcrypt", 12, "model_delay_seconds", STATE.modelDelay,
                 "retrieval_delay_seconds", STATE.retrievalDelay, "mcp_delay_seconds", STATE.mcpDelay,
                 "active", 20, "waiting", 20, "queue_seconds", 10, "task_seconds", 600, "input_ttl_hours", 24));
+        capacitySettings.put("retrieval_delay_scope", "external_embedding_call_only");
+        capacitySettings.put("cache_ttl_seconds", 600);
+        capacitySettings.put("cache_maxsize", 512);
+        manifest.put("settings", capacitySettings);
         manifest.put("java", Map.of("version", System.getProperty("java.version"), "vm", System.getProperty("java.vm.name"),
                 "arguments", java.lang.management.ManagementFactory.getRuntimeMXBean().getInputArguments()));
         Files.createDirectories(output.toAbsolutePath().getParent());
@@ -229,14 +237,13 @@ public final class CapacityServer {
                 return new AgentChatModel.AgentReply("", List.of(new ToolCallSpec("j5-call-1", tool, arguments)), new AgentUsage(32, 12, 44));
             };
         }
-        @Bean @Primary PgReleaseReader capacityReader(DataSource ds) {
-            return new PgReleaseReader(ds, RetrievalSettings.defaults(),
-                    new EmbeddingConfig("j5-fixed-embedding", EMBEDDING_BASE, 1024, "bounded-lines-v2"),
-                    new IndexConfigurationFingerprint(), new HeuristicQueryRewriter(), input -> {
-                        STATE.count("embedding"); STATE.pause(STATE.retrievalDelay);
-                        float[] values = new float[1024]; values[0] = 1;
-                        return List.of(new Vector1024(values));
-                    });
+        @Bean @Primary PgReleaseReader.QueryEmbeddingClient capacityEmbeddingBoundary() {
+            // 仅替换外部向量边界；reader由生产RetrievalWiring创建，真实缓存命中不补延迟。
+            return (input, ledger, stage) -> {
+                STATE.count("embedding"); STATE.pause(STATE.retrievalDelay);
+                float[] values = new float[1024]; values[0] = 1;
+                return List.of(new Vector1024(values));
+            };
         }
         @Bean @Primary HarnessPort capacityHarness() {
             return (tool, arguments, deadline) -> {
