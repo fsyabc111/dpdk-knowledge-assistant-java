@@ -1,0 +1,198 @@
+{
+  "status": "local_regression_passed_final_full_replay_pending",
+  "python_baseline": "80b29135faddd16d5e39fdbf0633291ea6a20489",
+  "raw_clock_evidence": "/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/worktrees/j5-01/.migration-artifacts/j5-01/python-clock-03/python-clock-calls.json",
+  "raw_clock_sha256": "e9aa689708500a052ae2753fff0f366d516991a4357e5acec5c63cd0ea799225",
+  "selected_synthetic_calls": [
+    {
+      "case_id": "POST /api/rag/knowledge::success",
+      "value": "2026-10-24T04:00:00.000073+00:00",
+      "callers": [
+        "app/services/user_service.py:_resolve_token_db:878",
+        "app/services/user_service.py:_resolve_token_sync:860"
+      ]
+    },
+    {
+      "case_id": "POST /api/rag/knowledge::success",
+      "value": "2026-10-24T04:00:00.000074+00:00",
+      "callers": [
+        "app/services/rag_index_service.py:now:21",
+        "app/api/rag.py:_write_knowledge:174"
+      ]
+    },
+    {
+      "case_id": "POST /api/rag/knowledge::success",
+      "value": "2026-10-24T04:00:00.000075+00:00",
+      "callers": [
+        "app/services/rag_index_service.py:now:21",
+        "app/api/rag.py:_write_knowledge:177"
+      ]
+    },
+    {
+      "case_id": "PATCH /api/rag/knowledge/{knowledge_id}::success",
+      "value": "2026-10-24T04:00:00.000076+00:00",
+      "callers": [
+        "app/services/rag_index_service.py:now:21",
+        "app/api/rag.py:_write_knowledge:166"
+      ]
+    },
+    {
+      "case_id": "PATCH /api/rag/knowledge/{knowledge_id}::success",
+      "value": "2026-10-24T04:00:00.000077+00:00",
+      "callers": [
+        "app/services/rag_index_service.py:now:21",
+        "app/api/rag.py:_write_knowledge:177"
+      ]
+    },
+    {
+      "case_id": "PATCH /api/rag/issues/{issue_id}::success",
+      "value": "2026-10-24T04:00:00.000078+00:00",
+      "callers": [
+        "app/services/rag_index_service.py:now:21",
+        "app/api/rag.py:update:110"
+      ]
+    },
+    {
+      "case_id": "PATCH /api/rag/issues/{issue_id}::success",
+      "value": "2026-10-24T04:00:00.000079+00:00",
+      "callers": [
+        "app/services/rag_index_service.py:now:21",
+        "app/services/rag_issue_service.py:event:438",
+        "app/api/rag.py:update:114"
+      ]
+    },
+    {
+      "case_id": "POST /api/rag/feedback::success",
+      "value": "2026-10-24T04:00:00.000080+00:00",
+      "callers": [
+        "app/services/rag_index_service.py:now:21",
+        "app/services/rag_issue_service.py:_issue:381",
+        "app/services/rag_issue_service.py:feedback:429"
+      ]
+    },
+    {
+      "case_id": "POST /api/rag/feedback::success",
+      "value": "2026-10-24T04:00:00.000081+00:00",
+      "callers": [
+        "app/services/rag_index_service.py:now:21",
+        "app/services/rag_issue_service.py:feedback:431"
+      ]
+    },
+    {
+      "case_id": "POST /api/rag/feedback::success",
+      "value": "2026-10-24T04:00:00.000082+00:00",
+      "callers": [
+        "app/services/rag_index_service.py:now:21",
+        "app/services/rag_issue_service.py:event:438",
+        "app/services/rag_issue_service.py:feedback:432"
+      ]
+    },
+    {
+      "case_id": "POST /api/rag/issues/{issue_id}/verify::success",
+      "value": "2026-10-24T04:00:00.000083+00:00",
+      "callers": [
+        "app/core/rate_limit.py:increment_daily_in_conn:80",
+        "app/core/rate_limit.py:_increment_daily_sync:75"
+      ]
+    },
+    {
+      "case_id": "POST /api/rag/issues/{issue_id}/verify::success",
+      "value": "2026-10-24T04:00:00.000084+00:00",
+      "callers": [
+        "app/services/rag_index_service.py:now:21",
+        "app/services/rag_issue_service.py:mark_verified:449",
+        "app/api/rag.py:save:233"
+      ]
+    },
+    {
+      "case_id": "POST /api/rag/issues/{issue_id}/verify::success",
+      "value": "2026-10-24T04:00:00.000085+00:00",
+      "callers": [
+        "app/services/rag_index_service.py:now:21",
+        "app/services/rag_issue_service.py:mark_verified:449",
+        "app/api/rag.py:save:233"
+      ]
+    },
+    {
+      "case_id": "POST /api/rag/issues/{issue_id}/verify::success",
+      "value": "2026-10-24T04:00:00.000086+00:00",
+      "callers": [
+        "app/services/rag_index_service.py:now:21",
+        "app/services/rag_issue_service.py:event:438",
+        "app/services/rag_issue_service.py:mark_verified:454",
+        "app/api/rag.py:save:233"
+      ]
+    }
+  ],
+  "java_scope": [
+    "KnowledgeWorkflowService",
+    "new WorkflowTimestampContractPgTest"
+  ],
+  "source_contracts": {
+    "knowledge_row_and_revision": "api/rag.py166/174 row now;177 revision own now",
+    "issue_patch": "api/rag.py110 row now;rag_issue_service.py438 event own now",
+    "feedback": "rag_issue_service.py381 insert now;431 update now;438 event own now",
+    "verification": "rag_issue_service.py449 answered verified_at own now elseNULL;updated_at own now;438 event own now"
+  },
+  "red_green": [
+    {
+      "stage": "knowledge row/revision",
+      "red": "revision expected .000001 actual .000000",
+      "green": "publication and patch strict microsecond literals pass"
+    },
+    {
+      "stage": "issue PATCH and feedback event",
+      "red": "event expected next logical microsecond but reused row",
+      "green": "independent event clock with existing monotonic lower bound pass"
+    },
+    {
+      "stage": "answered and nonanswered verification",
+      "red": "updated_at expected .000001 actual verified_at .000000",
+      "green": "answered verified/updated/event independent;nonanswered NULL with only updated/event clocks"
+    }
+  ],
+  "final_runs": [
+    {
+      "name": "io.dpdk.assistant.knowledge.workflow.WorkflowTimestampContractPgTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "io.dpdk.assistant.knowledge.workflow.KnowledgeWorkflowContractTest",
+      "tests": "9",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "io.dpdk.assistant.knowledge.workflow.IssueConcurrencyIntegrationTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "io.dpdk.assistant.knowledge.workflow.KnowledgePublicationIntegrationTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    }
+  ],
+  "total": 23,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "pg_window": "root authorized local dynamic TestPg only; four identity preflight; teardown completed; released",
+  "unchanged": [
+    "CAS WHERE checks",
+    "permissions/redaction/status business semantics",
+    "event transaction atomicity",
+    "shared wiring/contracts",
+    "golden/strict comparator/waivers"
+  ],
+  "nonanswered_semantics": "writes verified_at=NULL as frozen Python; root corrected earlier keep-old-value wording",
+  "final_matrix_replay": "pending root/matrix new source"
+}

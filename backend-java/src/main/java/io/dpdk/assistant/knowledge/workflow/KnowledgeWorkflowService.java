@@ -132,9 +132,11 @@ public final class KnowledgeWorkflowService {
         requireManager(principal);
         transactions.required(tx -> {
             get(tx, id, principal, false);
-            String changed = timestamp(expected);
+            // 冻结源分别为验证事实、问题更新和后续事件读取now；未通过仍写NULL且不读验证时钟。
+            String verifiedAt = "answered".equals(verdict) ? timestamp(expected) : null;
+            String changed = timestamp(verifiedAt == null ? expected : verifiedAt);
             int count = execute(tx, "UPDATE rag_issues SET verified_release_id=?,verified_at=?,updated_at=? "
-                    + "WHERE id=? AND updated_at=?", release, "answered".equals(verdict) ? changed : null,
+                    + "WHERE id=? AND updated_at=?", release, verifiedAt,
                     changed, id, expected);
             if (count != 1) throw error(409, "问题已更新（可能有新反馈），请刷新后重新验证");
             event(tx, id, principal.subject(), "verify", verdict, changed);
@@ -179,8 +181,9 @@ public final class KnowledgeWorkflowService {
                 execute(tx, "INSERT INTO rag_knowledge(id,created_by,title,body,revision,status,updated_at) "
                         + "VALUES (?,?,?,?,?,?,?)", identity, principal.subject(), title, text, revision, body.status(), changed);
             }
+            // 修订是独立持久记录，使用自己的墙钟；主记录时点仅作为单调下限。
             execute(tx, "INSERT INTO rag_knowledge_revisions(id,knowledge_id,revision,actor_id,title,body,status,created_at) "
-                    + "VALUES (?,?,?,?,?,?,?,?)", uuid(), identity, revision, principal.subject(), title, text, body.status(), changed);
+                    + "VALUES (?,?,?,?,?,?,?,?)", uuid(), identity, revision, principal.subject(), title, text, body.status(), timestamp(changed));
             return Map.of("id", identity, "revision", revision, "status", body.status(), "index_status", "pending");
         });
     }
@@ -228,9 +231,10 @@ public final class KnowledgeWorkflowService {
         if (!leader(p) && !p.roles().contains("admin")) throw error(404, "not found");
     }
 
-    private void event(DbTx tx, String id, String actor, String action, String detail, String when) {
+    private void event(DbTx tx, String id, String actor, String action, String detail, String previous) {
+        // 冻结源event独立调用now；主记录时点只作单调下限，不能复用为事件创建时间。
         execute(tx, "INSERT INTO rag_issue_events(id,issue_id,actor_id,action,detail,created_at) VALUES (?,?,?,?,?,?)",
-                uuid(), id, actor, action, detail, when);
+                uuid(), id, actor, action, detail, timestamp(previous));
     }
 
     private String timestamp(String previous) {
