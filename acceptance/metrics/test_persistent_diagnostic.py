@@ -4,9 +4,9 @@ from pathlib import Path
 import unittest
 import sys
 sys.path.insert(0,str(Path(__file__).parent))
-from validate import MetricsError,parse,validate
+from persistent_diagnostic import MetricsError,parse,validate
 ROOT=Path(__file__).parent
-class MetricsValidationTest(unittest.TestCase):
+class HistoricalGaugeDiagnosticTest(unittest.TestCase):
     def setUp(self):
         self.text=(ROOT/'fixtures/known-and-unknown.prom').read_text()
         self.expect=json.loads((ROOT/'fixtures/known-and-unknown.expectations.json').read_text())
@@ -43,7 +43,7 @@ class MetricsValidationTest(unittest.TestCase):
         with self.assertRaises(MetricsError):validate(self.text+'assistant_upstream_usage_cost_micros_total{stage="answer",kind="llm",model="synthetic",currency="UNKNOWN"} 0\n',expectations=self.expect)
         with self.assertRaises(MetricsError):validate(self.text.replace('assistant_java_http_requests_total{method="GET",status="200"} 3\n',''))
     def test_mapping_covers_frozen_34_without_mutating_the_golden(self):
-        mapping=json.loads((ROOT/'mapping.json').read_text())
+        mapping=json.loads((ROOT/'persistent-diagnostic-mapping.json').read_text())
         repo=ROOT.resolve().parents[1]
         golden=json.loads((repo/'migration/fixtures/p0-v2/python-golden.json').read_text())
         case=next(x for x in golden['observations'] if x['case_id']=='GET /metrics::success')

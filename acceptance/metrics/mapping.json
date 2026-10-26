@@ -1,375 +1,472 @@
 {
-  "mapping_version": "p5-metrics-v1",
-  "source_case_id": "GET /metrics::success",
-  "source_golden": "migration/fixtures/p0-v2/python-golden.json",
-  "source_golden_sha256": "8d0658661fedb31c6a0690ea97cb3167534504049c65861b3c67e6691337de14",
+  "mapping_version": "source-process-v2",
+  "policy": "user_requires_all16_real_process_metrics_no_persisted_gauge_or_unavailable_waiver",
   "source_family_count": 34,
   "rows": [
     {
       "source_family": "python_gc_objects_collected_total",
       "source_type": "counter",
-      "category": "python_runtime_not_reproduced",
+      "source_group": "python_runtime",
       "java_family": null,
-      "semantics": "Python GC/runtime专属观测；Java未伪造python_*，当前无运行时family替代",
-      "source_group": "python_runtime"
+      "status": "intrinsic_runtime_capability_difference_not_object_counter_equivalence",
+      "difference": "JVM has no collected-object count equivalent; actual collection events/time are diagnostics, never object counts",
+      "supplementary_java": [
+        "jvm_gc_collections_total",
+        "jvm_gc_collection_seconds_total"
+      ]
     },
     {
       "source_family": "python_gc_objects_uncollectable_total",
       "source_type": "counter",
-      "category": "python_runtime_not_reproduced",
+      "source_group": "python_runtime",
       "java_family": null,
-      "semantics": "Python GC/runtime专属观测；Java未伪造python_*，当前无运行时family替代",
-      "source_group": "python_runtime"
+      "status": "intrinsic_runtime_capability_difference_not_object_counter_equivalence",
+      "difference": "JVM has no uncollectable-object count equivalent; actual used heap/nonheap memory is supplemental, not an object count",
+      "supplementary_java": [
+        "jvm_memory_used_bytes"
+      ]
     },
     {
       "source_family": "python_gc_collections_total",
       "source_type": "counter",
-      "category": "python_runtime_not_reproduced",
-      "java_family": null,
-      "semantics": "Python GC/runtime专属观测；Java未伪造python_*，当前无运行时family替代",
-      "source_group": "python_runtime"
+      "source_group": "python_runtime",
+      "java_family": "jvm_gc_collections_total",
+      "status": "intrinsic_runtime_capability_difference_not_object_counter_equivalence",
+      "difference": "actual JVM collection count is per collector, not Python generation; jvm_gc_collection_seconds_total additionally reports actual elapsed time",
+      "supplementary_java": []
     },
     {
       "source_family": "python_info",
       "source_type": "gauge",
-      "category": "python_runtime_not_reproduced",
-      "java_family": null,
-      "semantics": "Python GC/runtime专属观测；Java未伪造python_*，当前无运行时family替代",
-      "source_group": "python_runtime"
+      "source_group": "python_runtime",
+      "java_family": "jvm_info",
+      "status": "intrinsic_runtime_capability_difference_not_object_counter_equivalence",
+      "difference": "actual Java version/vendor/VM; never pretend to be Python version",
+      "supplementary_java": []
     },
     {
       "source_family": "assistant_llm_requests_total",
       "source_type": "counter",
-      "category": "unavailable_process_observation",
-      "java_family": null,
-      "required_marker": {
-        "metric": "assistant_llm_requests_total",
-        "value": 0
-      },
-      "semantics": "缺少真实过程观测证据，禁止伪造静态0原family",
-      "source_group": "application_domain"
+      "source_group": "application_domain",
+      "java_family": "assistant_llm_requests_total",
+      "java_type": "counter",
+      "status": "real_process_registry_and_business_hooks_required",
+      "labels": [
+        "engine",
+        "result"
+      ],
+      "buckets": null,
+      "historical_gauge_waiver": false
     },
     {
       "source_family": "assistant_llm_request_duration_seconds",
       "source_type": "histogram",
-      "category": "unavailable_process_observation",
-      "java_family": null,
-      "required_marker": {
-        "metric": "assistant_llm_request_duration_seconds",
-        "value": 0
-      },
-      "semantics": "缺少真实过程观测证据，禁止伪造静态0原family",
-      "source_group": "application_domain"
+      "source_group": "application_domain",
+      "java_family": "assistant_llm_request_duration_seconds",
+      "java_type": "histogram",
+      "status": "real_process_registry_and_business_hooks_required",
+      "labels": [
+        "engine"
+      ],
+      "buckets": [
+        0.005,
+        0.01,
+        0.025,
+        0.05,
+        0.075,
+        0.1,
+        0.25,
+        0.5,
+        0.75,
+        1,
+        2.5,
+        5,
+        7.5,
+        10
+      ],
+      "historical_gauge_waiver": false
     },
     {
       "source_family": "assistant_chat_retrieval_duration_seconds",
       "source_type": "histogram",
-      "category": "unavailable_process_observation",
-      "java_family": null,
-      "required_marker": {
-        "metric": "assistant_chat_retrieval_duration_seconds",
-        "value": 0
-      },
-      "semantics": "缺少真实过程观测证据，禁止伪造静态0原family",
-      "source_group": "application_domain"
+      "source_group": "application_domain",
+      "java_family": "assistant_chat_retrieval_duration_seconds",
+      "java_type": "histogram",
+      "status": "real_process_registry_and_business_hooks_required",
+      "labels": [],
+      "buckets": [
+        0.005,
+        0.01,
+        0.025,
+        0.05,
+        0.075,
+        0.1,
+        0.25,
+        0.5,
+        0.75,
+        1,
+        2.5,
+        5,
+        7.5,
+        10
+      ],
+      "historical_gauge_waiver": false
     },
     {
       "source_family": "assistant_chat_retrieval_duration_seconds_created",
       "source_type": "gauge",
-      "category": "python_client_created_metadata_not_reproduced",
-      "java_family": null,
-      "semantics": "Python客户端创建时间元数据，Java未导出；不是业务count缺失补0",
-      "source_group": "python_client_domain_created_metadata"
+      "source_group": "python_client_domain_created_metadata",
+      "java_family": "assistant_chat_retrieval_duration_seconds_created",
+      "java_type": "gauge",
+      "status": "actual_source_header_or_creation_observation",
+      "meaning": "created metadata only for initialized child; HTTP size Content-Length missing0 and duration includes full stream"
     },
     {
       "source_family": "assistant_chat_stage_duration_seconds",
       "source_type": "histogram",
-      "category": "unavailable_process_observation",
-      "java_family": null,
-      "required_marker": {
-        "metric": "assistant_chat_stage_duration_seconds",
-        "value": 0
-      },
-      "semantics": "缺少真实过程观测证据，禁止伪造静态0原family",
-      "source_group": "application_domain"
+      "source_group": "application_domain",
+      "java_family": "assistant_chat_stage_duration_seconds",
+      "java_type": "histogram",
+      "status": "real_process_registry_and_business_hooks_required",
+      "labels": [
+        "stage"
+      ],
+      "buckets": [
+        0.005,
+        0.01,
+        0.025,
+        0.05,
+        0.075,
+        0.1,
+        0.25,
+        0.5,
+        0.75,
+        1,
+        2.5,
+        5,
+        7.5,
+        10
+      ],
+      "historical_gauge_waiver": false
     },
     {
       "source_family": "assistant_chat_fallbacks_total",
       "source_type": "counter",
-      "category": "unavailable_process_observation",
-      "java_family": null,
-      "required_marker": {
-        "metric": "assistant_chat_fallbacks_total",
-        "value": 0
-      },
-      "semantics": "缺少真实过程观测证据，禁止伪造静态0原family",
-      "source_group": "application_domain"
+      "source_group": "application_domain",
+      "java_family": "assistant_chat_fallbacks_total",
+      "java_type": "counter",
+      "status": "real_process_registry_and_business_hooks_required",
+      "labels": [],
+      "buckets": null,
+      "historical_gauge_waiver": false
     },
     {
       "source_family": "assistant_chat_fallbacks_created",
       "source_type": "gauge",
-      "category": "python_client_created_metadata_not_reproduced",
-      "java_family": null,
-      "semantics": "Python客户端创建时间元数据，Java未导出；不是业务count缺失补0",
-      "source_group": "python_client_domain_created_metadata"
+      "source_group": "python_client_domain_created_metadata",
+      "java_family": "assistant_chat_fallbacks_created",
+      "java_type": "gauge",
+      "status": "actual_source_header_or_creation_observation",
+      "meaning": "created metadata only for initialized child; HTTP size Content-Length missing0 and duration includes full stream"
     },
     {
       "source_family": "assistant_rate_limit_hits_total",
       "source_type": "counter",
-      "category": "unavailable_process_observation",
-      "java_family": null,
-      "required_marker": {
-        "metric": "assistant_rate_limit_hits_total",
-        "value": 0
-      },
-      "semantics": "缺少真实过程观测证据，禁止伪造静态0原family",
-      "source_group": "application_domain"
+      "source_group": "application_domain",
+      "java_family": "assistant_rate_limit_hits_total",
+      "java_type": "counter",
+      "status": "real_process_registry_and_business_hooks_required",
+      "labels": [
+        "kind"
+      ],
+      "buckets": null,
+      "historical_gauge_waiver": false
     },
     {
       "source_family": "assistant_rag_outcomes_total",
       "source_type": "counter",
-      "category": "persistent_gauge_mapping",
+      "source_group": "application_domain",
       "java_family": "assistant_rag_outcomes_total",
-      "java_type": "gauge",
-      "semantics": "非pending现存任务行数，status/reason；留存删除可下降",
-      "equivalence": "not_counter_wire_equivalent",
-      "source_group": "application_domain"
+      "java_type": "counter",
+      "status": "real_process_registry_and_business_hooks_required",
+      "labels": [
+        "status",
+        "reason"
+      ],
+      "buckets": null,
+      "historical_gauge_waiver": false
     },
     {
       "source_family": "assistant_rag_duration_seconds",
       "source_type": "histogram",
-      "category": "unavailable_process_observation",
-      "java_family": null,
-      "required_marker": {
-        "metric": "assistant_rag_duration_seconds",
-        "value": 0
-      },
-      "semantics": "缺少真实过程观测证据，禁止伪造静态0原family",
-      "source_group": "application_domain"
+      "source_group": "application_domain",
+      "java_family": "assistant_rag_duration_seconds",
+      "java_type": "histogram",
+      "status": "real_process_registry_and_business_hooks_required",
+      "labels": [],
+      "buckets": [
+        1,
+        5,
+        10,
+        20,
+        30,
+        60,
+        120,
+        240
+      ],
+      "historical_gauge_waiver": false
     },
     {
       "source_family": "assistant_rag_duration_seconds_created",
       "source_type": "gauge",
-      "category": "python_client_created_metadata_not_reproduced",
-      "java_family": null,
-      "semantics": "Python客户端创建时间元数据，Java未导出；不是业务count缺失补0",
-      "source_group": "python_client_domain_created_metadata"
+      "source_group": "python_client_domain_created_metadata",
+      "java_family": "assistant_rag_duration_seconds_created",
+      "java_type": "gauge",
+      "status": "actual_source_header_or_creation_observation",
+      "meaning": "created metadata only for initialized child; HTTP size Content-Length missing0 and duration includes full stream"
     },
     {
       "source_family": "assistant_rag_validation_duration_seconds",
       "source_type": "histogram",
-      "category": "unavailable_process_observation",
-      "java_family": null,
-      "required_marker": {
-        "metric": "assistant_rag_validation_duration_seconds",
-        "value": 0
-      },
-      "semantics": "缺少真实过程观测证据，禁止伪造静态0原family",
-      "source_group": "application_domain"
+      "source_group": "application_domain",
+      "java_family": "assistant_rag_validation_duration_seconds",
+      "java_type": "histogram",
+      "status": "real_process_registry_and_business_hooks_required",
+      "labels": [
+        "result"
+      ],
+      "buckets": [
+        1,
+        5,
+        10,
+        20,
+        30
+      ],
+      "historical_gauge_waiver": false
     },
     {
       "source_family": "assistant_agent_tool_calls_total",
       "source_type": "counter",
-      "category": "unavailable_process_observation",
-      "java_family": null,
-      "required_marker": {
-        "metric": "assistant_agent_tool_calls_total",
-        "value": 0
-      },
-      "semantics": "缺少真实过程观测证据，禁止伪造静态0原family",
-      "source_group": "application_domain"
+      "source_group": "application_domain",
+      "java_family": "assistant_agent_tool_calls_total",
+      "java_type": "counter",
+      "status": "real_process_registry_and_business_hooks_required",
+      "labels": [
+        "tool",
+        "ok"
+      ],
+      "buckets": null,
+      "historical_gauge_waiver": false
     },
     {
       "source_family": "assistant_agent_tool_duration_seconds",
       "source_type": "histogram",
-      "category": "unavailable_process_observation",
-      "java_family": null,
-      "required_marker": {
-        "metric": "assistant_agent_tool_duration_seconds",
-        "value": 0
-      },
-      "semantics": "缺少真实过程观测证据，禁止伪造静态0原family",
-      "source_group": "application_domain"
+      "source_group": "application_domain",
+      "java_family": "assistant_agent_tool_duration_seconds",
+      "java_type": "histogram",
+      "status": "real_process_registry_and_business_hooks_required",
+      "labels": [
+        "tool"
+      ],
+      "buckets": [
+        0.05,
+        0.25,
+        1,
+        5,
+        15,
+        30,
+        60,
+        120,
+        240
+      ],
+      "historical_gauge_waiver": false
     },
     {
       "source_family": "assistant_agent_tool_result_bytes",
       "source_type": "histogram",
-      "category": "unavailable_process_observation",
-      "java_family": null,
-      "required_marker": {
-        "metric": "assistant_agent_tool_result_bytes",
-        "value": 0
-      },
-      "semantics": "缺少真实过程观测证据，禁止伪造静态0原family",
-      "source_group": "application_domain"
+      "source_group": "application_domain",
+      "java_family": "assistant_agent_tool_result_bytes",
+      "java_type": "histogram",
+      "status": "real_process_registry_and_business_hooks_required",
+      "labels": [
+        "tool"
+      ],
+      "buckets": [
+        256,
+        1024,
+        4096,
+        16384,
+        65536,
+        262144
+      ],
+      "historical_gauge_waiver": false
     },
     {
       "source_family": "assistant_agent_request_tokens",
       "source_type": "histogram",
-      "category": "unavailable_process_observation",
-      "java_family": null,
-      "required_marker": {
-        "metric": "assistant_agent_request_tokens",
-        "value": 0
-      },
-      "semantics": "缺少真实过程观测证据，禁止伪造静态0原family",
-      "source_group": "application_domain"
+      "source_group": "application_domain",
+      "java_family": "assistant_agent_request_tokens",
+      "java_type": "histogram",
+      "status": "real_process_registry_and_business_hooks_required",
+      "labels": [],
+      "buckets": [
+        1000,
+        4000,
+        16000,
+        32000,
+        48000,
+        64000,
+        96000
+      ],
+      "historical_gauge_waiver": false
     },
     {
       "source_family": "assistant_agent_request_tokens_created",
       "source_type": "gauge",
-      "category": "python_client_created_metadata_not_reproduced",
-      "java_family": null,
-      "semantics": "Python客户端创建时间元数据，Java未导出；不是业务count缺失补0",
-      "source_group": "python_client_domain_created_metadata"
+      "source_group": "python_client_domain_created_metadata",
+      "java_family": "assistant_agent_request_tokens_created",
+      "java_type": "gauge",
+      "status": "actual_source_header_or_creation_observation",
+      "meaning": "created metadata only for initialized child; HTTP size Content-Length missing0 and duration includes full stream"
     },
     {
       "source_family": "assistant_upstream_usage_tokens_total",
       "source_type": "counter",
-      "category": "persistent_gauge_mapping",
+      "source_group": "application_domain",
       "java_family": "assistant_upstream_usage_tokens_total",
-      "java_type": "gauge",
-      "semantics": "仅已知total_tokens之和，全NULL组不输出0",
-      "equivalence": "not_counter_wire_equivalent",
-      "source_group": "application_domain"
+      "java_type": "counter",
+      "status": "real_process_registry_and_business_hooks_required",
+      "labels": [
+        "stage",
+        "kind",
+        "source"
+      ],
+      "buckets": null,
+      "historical_gauge_waiver": false
     },
     {
       "source_family": "assistant_upstream_usage_cost_micros_total",
       "source_type": "counter",
-      "category": "persistent_gauge_mapping",
+      "source_group": "application_domain",
       "java_family": "assistant_upstream_usage_cost_micros_total",
-      "java_type": "gauge",
-      "semantics": "仅已知已定价成本，model/currency分别聚合",
-      "equivalence": "not_counter_wire_equivalent",
-      "source_group": "application_domain"
+      "java_type": "counter",
+      "status": "real_process_registry_and_business_hooks_required",
+      "labels": [
+        "stage",
+        "kind",
+        "model",
+        "currency"
+      ],
+      "buckets": null,
+      "historical_gauge_waiver": false
     },
     {
       "source_family": "assistant_upstream_usage_unknown_total",
       "source_type": "counter",
-      "category": "persistent_gauge_mapping",
+      "source_group": "application_domain",
       "java_family": "assistant_upstream_usage_unknown_total",
-      "java_type": "gauge",
-      "semantics": "usage_source=unknown账本行数，不能当成0",
-      "equivalence": "not_counter_wire_equivalent",
-      "source_group": "application_domain"
+      "java_type": "counter",
+      "status": "real_process_registry_and_business_hooks_required",
+      "labels": [
+        "stage",
+        "kind"
+      ],
+      "buckets": null,
+      "historical_gauge_waiver": false
     },
     {
       "source_family": "http_requests_total",
       "source_type": "counter",
-      "category": "http_request_counter_partial_mapping",
-      "java_family": "assistant_java_http_requests_total",
+      "source_group": "http_automatic",
+      "java_family": "http_requests_total",
       "java_type": "counter",
-      "semantics": "真实servlet dispatch method/status计数；标签/框架域不同，不是源handler family逐字兼容",
-      "source_group": "http_automatic"
+      "status": "actual_source_header_or_creation_observation",
+      "meaning": "created metadata only for initialized child; HTTP size Content-Length missing0 and duration includes full stream"
     },
     {
       "source_family": "http_requests_created",
       "source_type": "gauge",
-      "category": "python_client_created_metadata_not_reproduced",
-      "java_family": null,
-      "semantics": "Python客户端创建时间元数据，Java未导出；不是业务count缺失补0",
-      "source_group": "http_automatic"
+      "source_group": "http_automatic",
+      "java_family": "http_requests_created",
+      "java_type": "gauge",
+      "status": "actual_source_header_or_creation_observation",
+      "meaning": "created metadata only for initialized child; HTTP size Content-Length missing0 and duration includes full stream"
     },
     {
       "source_family": "http_request_size_bytes",
       "source_type": "summary",
-      "category": "http_size_observation_not_implemented",
-      "java_family": null,
-      "semantics": "Java未实现请求/响应bytes summary；当前无available0 marker，不伪称覆盖",
-      "source_group": "http_automatic"
+      "source_group": "http_automatic",
+      "java_family": "http_request_size_bytes",
+      "java_type": "summary",
+      "status": "actual_source_header_or_creation_observation",
+      "meaning": "created metadata only for initialized child; HTTP size Content-Length missing0 and duration includes full stream"
     },
     {
       "source_family": "http_request_size_bytes_created",
       "source_type": "gauge",
-      "category": "python_client_created_metadata_not_reproduced",
-      "java_family": null,
-      "semantics": "Python客户端创建时间元数据，Java未导出；不是业务count缺失补0",
-      "source_group": "http_automatic"
+      "source_group": "http_automatic",
+      "java_family": "http_request_size_bytes_created",
+      "java_type": "gauge",
+      "status": "actual_source_header_or_creation_observation",
+      "meaning": "created metadata only for initialized child; HTTP size Content-Length missing0 and duration includes full stream"
     },
     {
       "source_family": "http_response_size_bytes",
       "source_type": "summary",
-      "category": "http_size_observation_not_implemented",
-      "java_family": null,
-      "semantics": "Java未实现请求/响应bytes summary；当前无available0 marker，不伪称覆盖",
-      "source_group": "http_automatic"
+      "source_group": "http_automatic",
+      "java_family": "http_response_size_bytes",
+      "java_type": "summary",
+      "status": "actual_source_header_or_creation_observation",
+      "meaning": "created metadata only for initialized child; HTTP size Content-Length missing0 and duration includes full stream"
     },
     {
       "source_family": "http_response_size_bytes_created",
       "source_type": "gauge",
-      "category": "python_client_created_metadata_not_reproduced",
-      "java_family": null,
-      "semantics": "Python客户端创建时间元数据，Java未导出；不是业务count缺失补0",
-      "source_group": "http_automatic"
+      "source_group": "http_automatic",
+      "java_family": "http_response_size_bytes_created",
+      "java_type": "gauge",
+      "status": "actual_source_header_or_creation_observation",
+      "meaning": "created metadata only for initialized child; HTTP size Content-Length missing0 and duration includes full stream"
     },
     {
       "source_family": "http_request_duration_highr_seconds",
       "source_type": "histogram",
-      "category": "http_dispatch_duration_partial_mapping",
-      "java_family": "assistant_java_http_dispatch_duration_seconds",
-      "java_type": "summary",
-      "semantics": "仅dispatch count/sum；无源histogram bucket/高精度分布或完整SSE流寿命等价",
-      "source_group": "http_automatic"
+      "source_group": "http_automatic",
+      "java_family": "http_request_duration_highr_seconds",
+      "java_type": "histogram",
+      "status": "actual_source_header_or_creation_observation",
+      "meaning": "created metadata only for initialized child; HTTP size Content-Length missing0 and duration includes full stream"
     },
     {
       "source_family": "http_request_duration_highr_seconds_created",
       "source_type": "gauge",
-      "category": "python_client_created_metadata_not_reproduced",
-      "java_family": null,
-      "semantics": "Python客户端创建时间元数据，Java未导出；不是业务count缺失补0",
-      "source_group": "http_automatic"
+      "source_group": "http_automatic",
+      "java_family": "http_request_duration_highr_seconds_created",
+      "java_type": "gauge",
+      "status": "actual_source_header_or_creation_observation",
+      "meaning": "created metadata only for initialized child; HTTP size Content-Length missing0 and duration includes full stream"
     },
     {
       "source_family": "http_request_duration_seconds",
       "source_type": "histogram",
-      "category": "http_dispatch_duration_partial_mapping",
-      "java_family": "assistant_java_http_dispatch_duration_seconds",
-      "java_type": "summary",
-      "semantics": "仅dispatch count/sum；无源histogram bucket/高精度分布或完整SSE流寿命等价",
-      "source_group": "http_automatic"
+      "source_group": "http_automatic",
+      "java_family": "http_request_duration_seconds",
+      "java_type": "histogram",
+      "status": "actual_source_header_or_creation_observation",
+      "meaning": "created metadata only for initialized child; HTTP size Content-Length missing0 and duration includes full stream"
     },
     {
       "source_family": "http_request_duration_seconds_created",
       "source_type": "gauge",
-      "category": "python_client_created_metadata_not_reproduced",
-      "java_family": null,
-      "semantics": "Python客户端创建时间元数据，Java未导出；不是业务count缺失补0",
-      "source_group": "http_automatic"
+      "source_group": "http_automatic",
+      "java_family": "http_request_duration_seconds_created",
+      "java_type": "gauge",
+      "status": "actual_source_header_or_creation_observation",
+      "meaning": "created metadata only for initialized child; HTTP size Content-Length missing0 and duration includes full stream"
     }
   ],
-  "required_domain_unavailable": [
-    "assistant_llm_requests_total",
-    "assistant_llm_request_duration_seconds",
-    "assistant_chat_retrieval_duration_seconds",
-    "assistant_chat_stage_duration_seconds",
-    "assistant_chat_fallbacks_total",
-    "assistant_rate_limit_hits_total",
-    "assistant_rag_duration_seconds",
-    "assistant_rag_validation_duration_seconds",
-    "assistant_agent_tool_calls_total",
-    "assistant_agent_tool_duration_seconds",
-    "assistant_agent_tool_result_bytes",
-    "assistant_agent_request_tokens"
-  ],
-  "existing_spec_basis": [
-    {
-      "path": "docs/java-migration/foundation-slices.md",
-      "lines": "48,55",
-      "meaning": "映射写清，不假设自动指标同名"
-    },
-    {
-      "revision": "ab9c603",
-      "path": "docs/java-migration/evidence/P4/review-spec.md",
-      "line": 23,
-      "meaning": "领域gauge/过程unavailable已明确，不是完整counter兼容"
-    },
-    {
-      "revision": "ab9c603",
-      "path": "docs/java-migration/evidence/P4/review-standards.md",
-      "line": 17,
-      "meaning": "不据明确缺项自动新增阻断，不宣称全覆盖"
-    }
-  ],
-  "raw_wire_equivalence": "not_established_preserve_original_strict_mismatch",
-  "acceptance_authority": "root_decision_required_no_new_waiver_here"
+  "process_spec": "process-spec.json",
+  "historical_diagnostic_only": "persistent-diagnostic-mapping.json",
+  "raw_strict_comparator": "unchanged",
+  "registration_does_not_prove_hooks": "must validate independent known event deltas; labeled unobserved children cannot be fabricated"
 }

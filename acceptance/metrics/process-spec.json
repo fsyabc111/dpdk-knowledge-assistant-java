@@ -1,0 +1,347 @@
+{
+  "version": "source-process-v2",
+  "authority": "user_requires_true_process_metrics_not_persistent_gauge_waiver",
+  "source": "backend/app/core/metrics.py",
+  "http_source": "prometheus-fastapi-instrumentator 7.0.2 metrics.default/middleware",
+  "domain": [
+    {
+      "name": "assistant_llm_requests_total",
+      "type": "counter",
+      "labels": [
+        "engine",
+        "result"
+      ]
+    },
+    {
+      "name": "assistant_llm_request_duration_seconds",
+      "type": "histogram",
+      "labels": [
+        "engine"
+      ],
+      "buckets": [
+        0.005,
+        0.01,
+        0.025,
+        0.05,
+        0.075,
+        0.1,
+        0.25,
+        0.5,
+        0.75,
+        1,
+        2.5,
+        5,
+        7.5,
+        10
+      ]
+    },
+    {
+      "name": "assistant_chat_retrieval_duration_seconds",
+      "type": "histogram",
+      "labels": [],
+      "buckets": [
+        0.005,
+        0.01,
+        0.025,
+        0.05,
+        0.075,
+        0.1,
+        0.25,
+        0.5,
+        0.75,
+        1,
+        2.5,
+        5,
+        7.5,
+        10
+      ]
+    },
+    {
+      "name": "assistant_chat_stage_duration_seconds",
+      "type": "histogram",
+      "labels": [
+        "stage"
+      ],
+      "buckets": [
+        0.005,
+        0.01,
+        0.025,
+        0.05,
+        0.075,
+        0.1,
+        0.25,
+        0.5,
+        0.75,
+        1,
+        2.5,
+        5,
+        7.5,
+        10
+      ]
+    },
+    {
+      "name": "assistant_chat_fallbacks_total",
+      "type": "counter",
+      "labels": []
+    },
+    {
+      "name": "assistant_rate_limit_hits_total",
+      "type": "counter",
+      "labels": [
+        "kind"
+      ]
+    },
+    {
+      "name": "assistant_rag_outcomes_total",
+      "type": "counter",
+      "labels": [
+        "status",
+        "reason"
+      ]
+    },
+    {
+      "name": "assistant_rag_duration_seconds",
+      "type": "histogram",
+      "labels": [],
+      "buckets": [
+        1,
+        5,
+        10,
+        20,
+        30,
+        60,
+        120,
+        240
+      ]
+    },
+    {
+      "name": "assistant_rag_validation_duration_seconds",
+      "type": "histogram",
+      "labels": [
+        "result"
+      ],
+      "buckets": [
+        1,
+        5,
+        10,
+        20,
+        30
+      ]
+    },
+    {
+      "name": "assistant_agent_tool_calls_total",
+      "type": "counter",
+      "labels": [
+        "tool",
+        "ok"
+      ]
+    },
+    {
+      "name": "assistant_agent_tool_duration_seconds",
+      "type": "histogram",
+      "labels": [
+        "tool"
+      ],
+      "buckets": [
+        0.05,
+        0.25,
+        1,
+        5,
+        15,
+        30,
+        60,
+        120,
+        240
+      ]
+    },
+    {
+      "name": "assistant_agent_tool_result_bytes",
+      "type": "histogram",
+      "labels": [
+        "tool"
+      ],
+      "buckets": [
+        256,
+        1024,
+        4096,
+        16384,
+        65536,
+        262144
+      ],
+      "unit_note": "frozen source Unicode codepoints of json.dumps ensure_asciiFalse, not UTF8 bytes"
+    },
+    {
+      "name": "assistant_agent_request_tokens",
+      "type": "histogram",
+      "labels": [],
+      "buckets": [
+        1000,
+        4000,
+        16000,
+        32000,
+        48000,
+        64000,
+        96000
+      ]
+    },
+    {
+      "name": "assistant_upstream_usage_tokens_total",
+      "type": "counter",
+      "labels": [
+        "stage",
+        "kind",
+        "source"
+      ]
+    },
+    {
+      "name": "assistant_upstream_usage_cost_micros_total",
+      "type": "counter",
+      "labels": [
+        "stage",
+        "kind",
+        "model",
+        "currency"
+      ]
+    },
+    {
+      "name": "assistant_upstream_usage_unknown_total",
+      "type": "counter",
+      "labels": [
+        "stage",
+        "kind"
+      ]
+    }
+  ],
+  "http": [
+    {
+      "name": "http_requests_total",
+      "type": "counter",
+      "labels": [
+        "method",
+        "status",
+        "handler"
+      ]
+    },
+    {
+      "name": "http_request_size_bytes",
+      "type": "summary",
+      "labels": [
+        "handler"
+      ],
+      "unit_note": "Content-Length header, missing0; not consumed body or socket bytes"
+    },
+    {
+      "name": "http_response_size_bytes",
+      "type": "summary",
+      "labels": [
+        "handler"
+      ],
+      "unit_note": "Content-Length header, missing0; streaming unknown length is0 by source"
+    },
+    {
+      "name": "http_request_duration_highr_seconds",
+      "type": "histogram",
+      "labels": [],
+      "buckets": [
+        0.01,
+        0.025,
+        0.05,
+        0.075,
+        0.1,
+        0.25,
+        0.5,
+        0.75,
+        1,
+        1.5,
+        2,
+        2.5,
+        3,
+        3.5,
+        4,
+        4.5,
+        5,
+        7.5,
+        10,
+        30,
+        60
+      ]
+    },
+    {
+      "name": "http_request_duration_seconds",
+      "type": "histogram",
+      "labels": [
+        "method",
+        "handler"
+      ],
+      "buckets": [
+        0.1,
+        0.5,
+        1
+      ]
+    }
+  ],
+  "jvm": [
+    {
+      "name": "jvm_gc_collections_total",
+      "type": "counter",
+      "labels": [
+        "collector"
+      ]
+    },
+    {
+      "name": "jvm_gc_collection_seconds_total",
+      "type": "counter",
+      "labels": [
+        "collector"
+      ]
+    },
+    {
+      "name": "jvm_memory_used_bytes",
+      "type": "gauge",
+      "labels": [
+        "area"
+      ]
+    },
+    {
+      "name": "jvm_info",
+      "type": "gauge",
+      "labels": [
+        "version",
+        "vendor",
+        "runtime"
+      ]
+    }
+  ],
+  "python_runtime_mapping": [
+    {
+      "source": "python_gc_objects_collected_total",
+      "java": null,
+      "supplementary_java": [
+        "jvm_gc_collections_total",
+        "jvm_gc_collection_seconds_total"
+      ],
+      "difference": "JVM has no collected-object count equivalent; actual collection events/time are diagnostics, never object counts"
+    },
+    {
+      "source": "python_gc_objects_uncollectable_total",
+      "java": null,
+      "supplementary_java": [
+        "jvm_memory_used_bytes"
+      ],
+      "difference": "JVM has no uncollectable-object count equivalent; actual used heap/nonheap memory is supplemental, not an object count"
+    },
+    {
+      "source": "python_gc_collections_total",
+      "java": "jvm_gc_collections_total",
+      "difference": "actual JVM collection count is per collector, not Python generation; jvm_gc_collection_seconds_total additionally reports actual elapsed time"
+    },
+    {
+      "source": "python_info",
+      "java": "jvm_info",
+      "difference": "actual Java version/vendor/VM; never pretend to be Python version"
+    }
+  ],
+  "http_duration": "from request filter entry to final synchronous/AsyncListener completion including SSE streaming; abort preserves committed status",
+  "unobserved_labeled_children": "TYPE registered but no sample/created family until first actual event",
+  "creation_metadata": "counter base-total suffix becomes _created; histogram/summary _created; actual child creation system epoch time not business ClockPort"
+}
