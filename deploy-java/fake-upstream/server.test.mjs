@@ -50,6 +50,19 @@ test('new process-local ledger starts empty; fixed model/vector routes remain lo
   const chat=await (await fetch(origin+'/v1/chat/completions',{method:'POST',body:'{}'})).json();
   assert.equal(chat.choices[0].message.content,'合成隔离演练回答');
 });
+test('model script waits for a real tool response and returns explicit judge JSON',async t=>{
+  const f=await fixture(t), origin=f.url.slice(0,-4);
+  const ask=async body=>(await (await fetch(origin+'/v1/chat/completions',{
+    method:'POST',body:JSON.stringify(body)})).json()).choices[0].message;
+  const user={role:'user',content:'DNS是什么'}, tools=[{type:'function',function:{name:'kb_search'}}];
+  const first=await ask({messages:[user],tools});
+  assert.equal(first.tool_calls[0].function.name,'kb_search');
+  const final=await ask({messages:[user,first,{role:'tool',tool_call_id:'synthetic-kb-1',content:'actual tool boundary'}],tools});
+  assert.match(final.content,/\[1\]/); assert.equal(final.tool_calls,undefined);
+  const judge=await ask({messages:[{role:'system',content:'supported; 不得重写答案。'},user]});
+  assert.deepEqual(JSON.parse(judge.content),{status:'answered',reason:'supported',supported:true});
+  assert.equal(f.snapshot().createdJobs,0);
+});
 test('standalone server emits no request/source logs to stdout or stderr', {timeout:10000}, async t=>{
   const child=fork(new URL('./server.mjs',import.meta.url),[],{env:{...process.env,FAKE_UPSTREAM_HOST:'127.0.0.1',FAKE_UPSTREAM_PORT:'0'},silent:true});
   t.after(()=>{if(child.exitCode===null)child.kill();});

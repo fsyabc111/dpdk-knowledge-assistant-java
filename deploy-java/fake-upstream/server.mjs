@@ -83,7 +83,23 @@ export function createFakeUpstream() {
         const inputs = Array.isArray(body.input) ? body.input : [body.input];
         res.end(JSON.stringify({object:'list',model:'synthetic-1024',data:inputs.map((_,index)=>({object:'embedding',index,embedding:Array.from({length:1024},(_,i)=>i===0?1:0)})),usage:{prompt_tokens:1,total_tokens:1}}));
       } else if (req.url === '/v1/chat/completions') {
-        res.end(JSON.stringify({id:'synthetic',object:'chat.completion',model:'synthetic-chat',choices:[{index:0,message:{role:'assistant',content:'合成隔离演练回答'},finish_reason:'stop'}],usage:{prompt_tokens:1,completion_tokens:1,total_tokens:2}}));
+        const messages = Array.isArray(body.messages) ? body.messages : [];
+        const lastUser = messages.findLastIndex(message => message.role === 'user');
+        const afterUser = messages.slice(lastUser + 1);
+        const system = String(messages.find(message => message.role === 'system')?.content ?? '');
+        let message = {role:'assistant',content:'合成隔离演练回答'};
+        if (Array.isArray(body.tools) && body.tools.length && !afterUser.some(item => item.role === 'tool')) {
+          // 只编排知识检索；真正检索、引用、验证和持久化仍由Java产品链完成。
+          message = {role:'assistant',content:'',tool_calls:[{id:'synthetic-kb-1',type:'function',
+            function:{name:'kb_search',arguments:JSON.stringify({query:'DNS'})}}]};
+        } else if (system.includes('supported') && system.includes('不得重写答案')) {
+          message.content = '{"status":"answered","reason":"supported","supported":true}';
+        } else if (afterUser.some(item => item.role === 'tool') || system.includes('事实依据')) {
+          message.content = '合成知识说明：DNS 报文解析需要核对字段边界 [1]。';
+        }
+        res.end(JSON.stringify({id:'synthetic',object:'chat.completion',model:'synthetic-chat',
+          choices:[{index:0,message,finish_reason:message.tool_calls?'tool_calls':'stop'}],
+          usage:{prompt_tokens:1,completion_tokens:1,total_tokens:2}}));
       } else { res.writeHead(404).end('{"error":"synthetic route unavailable"}'); }
     } catch { if (!res.headersSent) res.writeHead(500); res.end(); }
   });
