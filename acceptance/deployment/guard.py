@@ -21,6 +21,7 @@ class GuardError(RuntimeError): pass
 def env_values(repo, filename):
     repo = Path(repo).resolve(); path = Path(filename)
     boundary = repo/'.migration-artifacts'/'j5-03'
+    if not boundary.resolve().is_relative_to(repo):raise GuardError('专属目录祖先不能指向仓库外')
     if not path.is_absolute() or path.is_symlink(): raise GuardError('env必须为显式绝对路径且不能为symlink')
     path = path.resolve(strict=True)
     if not path.is_relative_to(boundary.resolve()) or path.name != 'runtime.env': raise GuardError('拒绝旧.env或非J5-03专属runtime.env')
@@ -55,18 +56,27 @@ def env_values(repo, filename):
             raise GuardError('合成源文件边界/摘要/标记不符')
     key = Path(values['DPDK_JAVA_CERT_DIR'])/'server.key'
     if stat.S_IMODE(key.stat().st_mode) != 0o600: raise GuardError('TLS私钥必须mode600')
+    for key,value in values.items():
+        if os.environ.get(key) and os.environ[key] != value:raise GuardError('拒绝shell覆盖专属env：'+key)
     return values
 
 
-def docker_identity(environ=None, run=None):
+def docker_configuration(environ=None):
     environ = os.environ if environ is None else environ
-    run = subprocess.run if run is None else run
     if environ.get('DPDK_JAVA_DOCKER_CONTEXT') != CONTEXT: raise GuardError('只允许显式DPDK_JAVA_DOCKER_CONTEXT=colima-java-u12')
     if any(environ.get(key) for key in ('DOCKER_HOST','DOCKER_TLS_VERIFY','DOCKER_CERT_PATH')) or environ.get('DOCKER_CONTEXT',CONTEXT) != CONTEXT:
         raise GuardError('拒绝ambient Docker host/TLS/旧context环境')
     expected_endpoint = 'unix://'+str(Path.home()/'.colima/java-u12/docker.sock')
     if environ.get('DPDK_JAVA_DOCKER_ENDPOINT') != expected_endpoint or not environ.get('DPDK_JAVA_DOCKER_DAEMON_ID'):
         raise GuardError('必须显式提供新profile endpoint及daemon ID')
+    return {'context':CONTEXT,'endpoint':expected_endpoint,'daemon_id':environ['DPDK_JAVA_DOCKER_DAEMON_ID'],'daemon_name':CONTEXT}
+
+
+def docker_identity(environ=None, run=None):
+    environ = os.environ if environ is None else environ
+    run = subprocess.run if run is None else run
+    configured=docker_configuration(environ)
+    expected_endpoint=configured['endpoint']
     def read(args):
         result = run(['docker','--context',CONTEXT,*args],capture_output=True,text=True,check=True)
         return json.loads(result.stdout)
@@ -79,10 +89,25 @@ def docker_identity(environ=None, run=None):
     return {'context':CONTEXT,'endpoint':expected_endpoint,'daemon_id':daemon['ID'],'daemon_name':daemon['Name']}
 
 
+def deployment_manifest(repo):
+    import re
+    path=Path(repo).resolve()/'.migration-artifacts/j5-03/deployment-manifest.json'
+    if path.is_symlink() or stat.S_IMODE(path.stat().st_mode)!=0o600:raise GuardError('deployment manifest必须owned mode600')
+    manifest=json.loads(path.read_text())
+    if not re.fullmatch('[a-f0-9]{12}',manifest.get('round_id','')) or manifest.get('project')!='dpdk-java-isolated-'+manifest['round_id']:
+        raise GuardError('project不是本轮manifest独占前缀')
+    return manifest
+
+
 if __name__ == '__main__':
     try:
         values = env_values(sys.argv[1],os.environ.get('DPDK_JAVA_ENV_FILE',''))
-        identity = docker_identity()
+        manifest=deployment_manifest(sys.argv[1])
+        identity = docker_configuration() if '--static' in sys.argv else docker_identity()
+        identity['project']=manifest['project']
+        if os.environ.get('DPDK_JAVA_COMPOSE_OVERRIDE'):
+            from override import validate
+            validate(sys.argv[1],os.environ['DPDK_JAVA_COMPOSE_OVERRIDE'])
         # stdout只给shell确认成功，绝不输出env/口令。
         print(json.dumps(identity))
     except Exception as error:

@@ -1,0 +1,33 @@
+{
+  "source_revision": "f020efa951b816cc3315f169c483af0998875800",
+  "images": {
+    "p4-frontend": {
+      "image_id": "sha256:a862bcc150314cc85655e4675035cecef12cb464d56122912cb2800df56cfe52",
+      "reference": "dpdk-java-isolated-frontend@sha256:a862bcc150314cc85655e4675035cecef12cb464d56122912cb2800df56cfe52",
+      "tag": "dpdk-java-isolated-frontend:p4-f020efa",
+      "source_revision": "f020efa951b816cc3315f169c483af0998875800",
+      "archive_name": "p4-frontend.image.tar",
+      "archive_sha256": "2d068e606c205105d5e872e1dd02206c17d964f047ccd943ad95aced085864d0",
+      "artifact_sha256": {
+        "usr/share/nginx/html/50x.html": "876766b4e80133fd490603e073d3567425b88794828a9292104244c9e40875ed",
+        "usr/share/nginx/html/index.html": "9686a8e75652fd19fa567bc29b9c43789c65efa6a70ce2ed2e1af19c4ed3dd2b",
+        "usr/share/nginx/html/assets/index-C6cmTcJx.js": "dff1cc030b4fd078c0731c16a061b1235b2163754983becff990163e9ed0954e",
+        "usr/share/nginx/html/assets/index-UVigOmSz.css": "79d1b203407f27608ba839f84f07056a6ebc124dbd1521e2fce74df4a12e7ac4"
+      },
+      "size": 21944979
+    },
+    "p4-backend": {
+      "image_id": "sha256:c6f4799e40d5e5d201de66a04bf2ba62a7a4a9e1fd65ba57af92926fb8d28f11",
+      "reference": "dpdk-java-isolated-backend@sha256:c6f4799e40d5e5d201de66a04bf2ba62a7a4a9e1fd65ba57af92926fb8d28f11",
+      "tag": "dpdk-java-isolated-backend:p4-f020efa",
+      "source_revision": "f020efa951b816cc3315f169c483af0998875800",
+      "archive_name": "p4-backend.image.tar",
+      "archive_sha256": "164d811676bed30df2a88ad6ff2cad042d7ae8aaefc237eb5324a461686bfadc",
+      "artifact_sha256": {
+        "app/backend.jar": "54b125854754577f861d018bd68d3b745455d046d09a162c0d554bc78eda39db"
+      },
+      "size": 140780610
+    }
+  },
+  "runtime_validation": "not_started_build_only"
+}

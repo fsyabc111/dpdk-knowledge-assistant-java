@@ -59,7 +59,7 @@ class PreparationTest(unittest.TestCase):
                 manifest=root/'sources/source-snapshot.json';snapshot=json.loads(manifest.read_text());snapshot['coverage'].pop();manifest.write_text(json.dumps(snapshot))
                 with self.assertRaises(GuardError):env_values(repo,env)
     def test_backup_keeps_schema_and_excludes_only_task_input_data(self):
-        text=(REPO/'scripts-java/backup.sh').read_text()
+        text=(REPO/'acceptance/deployment/docker_pg.py').read_text()
         self.assertIn('--exclude-table-data=public.rag_task_inputs',text)
         self.assertNotIn('--exclude-table=',text);self.assertNotIn('--schema-only',text)
 

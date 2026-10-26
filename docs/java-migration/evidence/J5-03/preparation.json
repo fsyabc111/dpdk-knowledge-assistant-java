@@ -1,7 +1,11 @@
 {
   "source_revision": "f020efa",
   "status": "preparation_only_not_rehearsed",
-  "guard_tests": {"run": 7, "failed": 0, "skipped": 0},
+  "guard_tests": {
+    "run": 14,
+    "failed": 0,
+    "skipped": 0
+  },
   "docker": {
     "context": "colima-java-u12",
     "daemon_name": "colima-java-u12",
@@ -9,10 +13,23 @@
     "runtime_containers_started_by_worker": 0,
     "database_operations": 0
   },
-  "sources": {"synthetic": true, "source_count": 10, "include_count": 27, "file_count": 27},
-  "secrets": {"runtime_env_mode": "0600", "private_key_mode": "0600", "tracked": false},
+  "sources": {
+    "synthetic": true,
+    "source_count": 10,
+    "include_count": 27,
+    "file_count": 27
+  },
+  "secrets": {
+    "runtime_env_mode": "0600",
+    "private_key_mode": "0600",
+    "tracked": false
+  },
   "compose_expansion": "passed_explicit_new_context",
-  "application_images": {"backend_p4": "building", "frontend_p4": "built_pending_record"},
+  "application_images": {
+    "backend_p4": "built_archived_jar_hashed",
+    "frontend_p4": "built_archived_assets_hashed"
+  },
   "cold_start": "pending_J5_01_J5_02_and_main_window",
-  "upgrade_restore_rollback": "pending_J5_01_J5_02_and_main_window"
+  "upgrade_restore_rollback": "pending_J5_01_J5_02_and_main_window",
+  "second_slice": "owned_project_overlay_pg_recovery_executor_prepared_not_run"
 }
