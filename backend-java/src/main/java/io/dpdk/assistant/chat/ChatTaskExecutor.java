@@ -235,7 +235,7 @@ public final class ChatTaskExecutor implements TaskExecutor {
                                 retrieval.searchPinned(
                                         retrieval.pin(release),
                                         new SearchInput(query, null, conversation),
-                                        limit);
+                                        limit, recorder);
                         if (result.trace() instanceof RetrievalTrace trace) {
                             retrievalFailure[0] = trace.blockedReason();
                             return trace.nodes().stream()
