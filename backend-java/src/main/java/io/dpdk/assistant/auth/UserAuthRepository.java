@@ -535,8 +535,9 @@ public class UserAuthRepository implements CredentialInvalidationPort, PasswordR
         }
     }
 
-    /** 测试/诊断钩子：清空 resolve 缓存（等价 Python clear_token_cache）。 */
-    void clearTokenCache() {
+    /** 已提交管理写入的纯缓存失效端口（等价 Python clear_token_cache），不访问数据库或时钟。 */
+    @Override
+    public void clearTokenCache() {
         cache.clear();
     }
 }

@@ -4,7 +4,8 @@ package io.dpdk.assistant.auth;
  * J2-02 协作端口：管理员改密/停号触发的凭据立即失效（任务卡实现步骤 4）。
  *
  * admin/**（J2-02）通过本端口触发凭据失效；J3-01/J2-04 的停号写入裁决走
- * contracts.identity.AccountWriteGuard（账号行锁），token 撤销走本端口。
+ * contracts.identity.AccountWriteGuard（账号行锁）；独立凭据撤销用revokeUserTokens，
+ * 管理事务已撤销/删除token时提交后只用clearTokenCache。
  */
 public interface CredentialInvalidationPort {
 
@@ -17,6 +18,9 @@ public interface CredentialInvalidationPort {
      * 账号不存在返回 false（J2-02 转 404）。
      */
     boolean setPasswordByAdmin(String userId, String newPassword);
+
+    /** 纯进程内全量缓存失效：不读取时钟、不启动事务、不写数据库。供已在事务内撤销凭据的调用方提交后使用。 */
+    void clearTokenCache();
 
     /** 停号等场景撤销该账号全部 token（清空 resolve 缓存，立即生效）。 */
     void revokeUserTokens(String userId);

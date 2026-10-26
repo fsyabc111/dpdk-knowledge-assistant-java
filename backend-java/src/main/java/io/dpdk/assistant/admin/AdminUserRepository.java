@@ -33,7 +33,7 @@ import org.springframework.stereotype.Repository;
  * 与 auth 包协作：操作者密码校验复用 UserAuthRepository.verifyCredentials
  * （含 dummy 等价工作）；token 撤销经 CredentialInvalidationPort（停号路径先在
  * 本事务内执行同形 UPDATE，再调端口清 resolve 缓存——Python clear_token_cache
- * 同为提交后清缓存）。
+ * 同为提交后清缓存，不再开启第二次撤销事务）。
  */
 @Repository
 public class AdminUserRepository {
@@ -273,7 +273,7 @@ public class AdminUserRepository {
         if (dailyQuota != null && dailyQuota < 0) {
             throw new AdminRuleException("daily_quota must be a non-negative integer or None");
         }
-        return inTx(conn -> {
+        Optional<UserRow> result = inTx(conn -> {
             boolean exists;
             try (PreparedStatement ps = conn.prepareStatement("SELECT 1 FROM users WHERE id = ?")) {
                 ps.setString(1, userId);
@@ -329,6 +329,9 @@ public class AdminUserRepository {
                 }
             }
         });
+        // 事务成功提交后全局失效；失败/不存在不清缓存，权限和配额无需等60秒TTL。
+        if (result.isPresent()) invalidation.clearTokenCache();
+        return result;
     }
 
     /* ------------------------------------------------------------------ */
@@ -400,9 +403,8 @@ public class AdminUserRepository {
             return true;
         });
         if (changed && !enabled) {
-            // 提交后清 resolve 缓存（等价 Python clear_token_cache；UPDATE 已在事务内完成，
-            // 此调用幂等，仅借端口清缓存使吊销立即生效）。
-            invalidation.revokeUserTokens(userId);
+            // token撤销已随管理事务提交；此处只清进程缓存，不重复读时钟/启动撤销事务。
+            invalidation.clearTokenCache();
         }
         return changed;
     }
@@ -468,10 +470,8 @@ public class AdminUserRepository {
             return new IdsResult(List.copyOf(deleted), List.copyOf(skipped));
         });
         if (!result.affected().isEmpty()) {
-            // api_tokens 行已在事务内删除；此调用幂等，仅借端口清 resolve 缓存。
-            for (String userId : result.affected()) {
-                invalidation.revokeUserTokens(userId);
-            }
+            // api_tokens已在删除事务内处理；提交后一次全局缓存失效，不再逐账号重复撤销。
+            invalidation.clearTokenCache();
         }
         return result;
     }
