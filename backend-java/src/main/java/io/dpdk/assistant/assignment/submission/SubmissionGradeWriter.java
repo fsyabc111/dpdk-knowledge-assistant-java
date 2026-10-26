@@ -30,12 +30,20 @@ public class SubmissionGradeWriter {
     private final TransactionRunner runner;
     private final AccountWriteGuard writeGuard;
     private final ClockPort clock;
+    private final io.dpdk.assistant.contracts.platform.UuidPort ids;
 
     public SubmissionGradeWriter(TransactionRunner runner, AccountWriteGuard writeGuard,
             ClockPort clock) {
+        this(runner, writeGuard, clock, UUID::randomUUID);
+    }
+
+    @org.springframework.beans.factory.annotation.Autowired
+    public SubmissionGradeWriter(TransactionRunner runner, AccountWriteGuard writeGuard,
+            ClockPort clock, io.dpdk.assistant.contracts.platform.UuidPort ids) {
         this.runner = runner;
         this.writeGuard = writeGuard;
         this.clock = clock;
+        this.ids = java.util.Objects.requireNonNull(ids);
     }
 
     /** 落库并返回 grade_* 成绩行 id；账号停用抛 403（PermissionError 同义）。 */
@@ -47,7 +55,7 @@ public class SubmissionGradeWriter {
         if (!writeGuard.lockEnabled(tx, input.userId())) {
             throw new ApiDetailException(HttpStatus.FORBIDDEN, "账号已停用，本次评测不记成绩");
         }
-        String submissionId = "grade_" + UUID.randomUUID().toString().replace("-", "")
+        String submissionId = "grade_" + ids.next().toString().replace("-", "")
                 .substring(0, 16);
         try (PreparedStatement ps = tx.connection().prepareStatement(
                 "INSERT INTO grading_submissions"
