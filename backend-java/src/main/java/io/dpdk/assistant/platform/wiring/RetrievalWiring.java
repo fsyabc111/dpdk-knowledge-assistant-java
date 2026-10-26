@@ -5,6 +5,9 @@ import io.dpdk.assistant.model.ChatMessage;
 import io.dpdk.assistant.model.OpenAiCompatibleChatClient;
 import io.dpdk.assistant.model.OpenAiCompatibleEmbeddingClient;
 import io.dpdk.assistant.platform.config.ModelEmbeddingProperties;
+import io.dpdk.assistant.platform.config.ModelChatProperties;
+import io.dpdk.assistant.contracts.model.Vector1024;
+import io.dpdk.assistant.model.ModelUsageLedger;
 import io.dpdk.assistant.retrieval.HeuristicQueryRewriter;
 import io.dpdk.assistant.retrieval.IndexConfigurationFingerprint;
 import io.dpdk.assistant.retrieval.PgReleaseReader;
@@ -79,18 +82,34 @@ public class RetrievalWiring {
     }
 
     @Bean
-    QueryRewritePort queryRewritePort(ObjectProvider<OpenAiCompatibleChatClient> client) {
+    QueryRewritePort queryRewritePort(ObjectProvider<OpenAiCompatibleChatClient> client,
+            ObjectProvider<ModelChatProperties> properties) {
         OpenAiCompatibleChatClient model = client.getIfAvailable();
-        return new HeuristicQueryRewriter(model == null ? null : (system, user) ->
-                model.chat(List.of(new ChatMessage("system", system), new ChatMessage("user", user)),
-                        null, null, "query_rewrite").content());
+        ModelChatProperties config = properties.getIfAvailable();
+        QueryRewritePort.LlmClient llm = model == null ? null : new QueryRewritePort.LlmClient() {
+            public String generate(String system, String user) {
+                return generate(system, user, null, "");
+            }
+            public String generate(String system, String user, ModelUsageLedger ledger, String stage) {
+                return model.chat(List.of(new ChatMessage("system", system), new ChatMessage("user", user)),
+                        null, ledger, stage).content();
+            }
+        };
+        return new HeuristicQueryRewriter(llm, config == null ? "" : config.baseUrl(),
+                config == null ? "qwen3.8-flash" : config.modelName());
     }
 
     @Bean
     @ConditionalOnProperty("dpdk.model.embedding.base-url")
     PgReleaseReader pgReleaseReader(DataSource dataSource, RetrievalSettings settings,
-            EmbeddingConfig config, QueryRewritePort rewriter, OpenAiCompatibleEmbeddingClient embeddings) {
+            EmbeddingConfig config, QueryRewritePort rewriter, OpenAiCompatibleEmbeddingClient embeddings,
+            ObjectProvider<PgReleaseReader.QueryEmbeddingClient> explicitBoundary) {
+        PgReleaseReader.QueryEmbeddingClient boundary = explicitBoundary.getIfAvailable();
+        if (boundary == null) {
+            boundary = (text, ledger, stage) -> embeddings.embedTexts(List.of(text), ledger, stage).stream()
+                    .map(Vector1024::new).toList();
+        }
         return new PgReleaseReader(dataSource, settings, config,
-                new IndexConfigurationFingerprint(), rewriter, embeddings);
+                new IndexConfigurationFingerprint(), rewriter, embeddings, boundary);
     }
 }

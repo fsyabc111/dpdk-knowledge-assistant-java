@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Pattern;
+import io.dpdk.assistant.model.SingleFlightTtlCache;
+import io.dpdk.assistant.usage.UsageCore;
 
 /**
  * 启发式查询改写（逐项移植 retrieval_service.py 的 HeuristicLLMQueryRewriter）。
@@ -17,7 +19,8 @@ import java.util.regex.Pattern;
  * - 其余尝试注入的 LlmClient；不可用/失败/输出为空或超长时按源 except 分支
  *   回退启发式（无 LLM 时即原文）；
  * - 追问消解同样仅在有 LlmClient 时生效，失败回退原文；
- * - 类级 TTL 改写缓存与用量记账归 J1-02 装配（结果确定性不受影响，见 handoff）。
+ * - 富装配按endpoint/model/prompt/query使用600秒/512项进程共享缓存；
+ *   本地规则与真实缓存命中记零调用，跟随实际模型客户端账本，不猜token。
  */
 public final class HeuristicQueryRewriter implements QueryRewritePort {
 
@@ -29,6 +32,12 @@ public final class HeuristicQueryRewriter implements QueryRewritePort {
     private static final String CONCEPTUAL_PACKED = "packet flow architecture capture parsed_packet session engine plugin stats main";
 
     private final QueryRewritePort.LlmClient llm;
+    private final String endpoint;
+    private final String modelName;
+    private final SingleFlightTtlCache<RewriteKey, String> cache;
+    private static final SingleFlightTtlCache<RewriteKey, String> SHARED_CACHE =
+            new SingleFlightTtlCache<>(java.time.Duration.ofSeconds(600).toNanos(), 512);
+    private record RewriteKey(String endpoint, String model, String prompt, String original) { }
     private volatile String rewritePrompt;
 
     public HeuristicQueryRewriter() {
@@ -37,6 +46,17 @@ public final class HeuristicQueryRewriter implements QueryRewritePort {
 
     public HeuristicQueryRewriter(QueryRewritePort.LlmClient llm) {
         this.llm = llm;
+        this.endpoint = "";
+        this.modelName = "";
+        // 旧纯API没有endpoint/model配置；保持隔离，不能让两个不同lambda误共享结果。
+        this.cache = new SingleFlightTtlCache<>(java.time.Duration.ofSeconds(600).toNanos(), 512);
+    }
+
+    public HeuristicQueryRewriter(QueryRewritePort.LlmClient llm, String endpoint, String modelName) {
+        this.llm = llm;
+        this.endpoint = endpoint == null ? "" : endpoint;
+        this.modelName = modelName;
+        this.cache = SHARED_CACHE;
     }
 
     /** rewrite_prompt（与源逐字节一致；供 LLM 腿与测试）。 */
@@ -55,13 +75,18 @@ public final class HeuristicQueryRewriter implements QueryRewritePort {
     /** 带追问上下文（Python rewrite(original, conversation_context)）。 */
     @Override
     public String rewrite(String original, String conversationContext) {
+        return rewrite(original, conversationContext, null);
+    }
+
+    @Override
+    public String rewrite(String original, String conversationContext, UsageCore.UsageRecorder usage) {
         String resolved = original;
         boolean isFollowUp = conversationContext != null && !conversationContext.isEmpty()
                 && FOLLOW_UP_RE.matcher(original).find();
         if (isFollowUp) {
             try {
-                String out = llm().generate(RewritePrompt.FOLLOW_UP_RESOLUTION_PROMPT,
-                        "历史对话：\n" + conversationContext + "\n\n当前问题：" + original);
+                String out = generate(RewritePrompt.FOLLOW_UP_RESOLUTION_PROMPT,
+                        "历史对话：\n" + conversationContext + "\n\n当前问题：" + original, usage, "followup");
                 out = out == null ? "" : out.strip();
                 if (!out.isEmpty() && out.length() <= 400) {
                     resolved = out;
@@ -70,21 +95,26 @@ public final class HeuristicQueryRewriter implements QueryRewritePort {
                 // 与源 except 相同：回退原文。
             }
         }
-        return rewriteQueryUncached(resolved);
+        String query = resolved;
+        RewriteKey key = new RewriteKey(endpoint, modelName, rewritePrompt(), query);
+        return RetrievalUsage.cached(cache, key, () -> rewriteQueryUncached(query, usage),
+                usage, "rewrite", modelName, UsageCore.KIND_LLM);
     }
 
-    private String rewriteQueryUncached(String original) {
+    private String rewriteQueryUncached(String original, UsageCore.UsageRecorder usage) {
         // 短且无 CJK/高位字符的查询不改写（记录零调用的直通分支）。
         boolean hasHigh = original.chars().anyMatch(c -> c > 0x2000);
         if (!hasHigh && original.length() < 60) {
+            RetrievalUsage.skipped(usage, "rewrite", UsageCore.SOURCE_LOCAL, modelName, UsageCore.KIND_LLM);
             return original;
         }
         String heuristic = heuristicRewrite(original);
         if (!heuristic.equals(original)) {
+            RetrievalUsage.skipped(usage, "rewrite", UsageCore.SOURCE_LOCAL, modelName, UsageCore.KIND_LLM);
             return heuristic;
         }
         try {
-            String rewritten = llm().generate(rewritePrompt(), original);
+            String rewritten = generate(rewritePrompt(), original, usage, "rewrite");
             String result = rewritten == null ? "" : rewritten.strip();
             if (result.isEmpty() || result.length() > 300) {
                 return heuristicRewrite(original);
@@ -93,6 +123,14 @@ public final class HeuristicQueryRewriter implements QueryRewritePort {
         } catch (Exception e) {
             return heuristicRewrite(original);
         }
+    }
+
+    private String generate(String system, String user, UsageCore.UsageRecorder recorder, String stage) {
+        return RetrievalUsage.tracked(recorder, ledger -> {
+            try { return llm().generate(system, user, ledger, stage); }
+            catch (RuntimeException failure) { throw failure; }
+            catch (Exception failure) { throw new IllegalStateException("改写上游调用失败", failure); }
+        });
     }
 
     private QueryRewritePort.LlmClient llm() {

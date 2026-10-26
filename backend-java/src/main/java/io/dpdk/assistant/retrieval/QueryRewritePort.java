@@ -20,6 +20,12 @@ public interface QueryRewritePort {
         return rewrite(original);
     }
 
+    /** 请求级计量显式增量入口；旧纯改写器不被迫实现计量。 */
+    default String rewrite(String original, String conversationContext,
+            io.dpdk.assistant.usage.UsageCore.UsageRecorder usage) {
+        return rewrite(original, conversationContext);
+    }
+
     /**
      * LLM 腿客户端（可选注入）：对应 Python chat_model.generate 的两处调用
      * （追问消解与关键词改写）。抛异常/返回 null 等价于上游失败 → 启发式回退。
@@ -29,5 +35,11 @@ public interface QueryRewritePort {
 
         /** 返回模型输出文本；任何异常都按 Python except 分支处理。 */
         String generate(String systemPrompt, String userPrompt) throws Exception;
+
+        /** 富客户端按实际请求/重试记录；旧纯文本lambda不伪造上游用量。 */
+        default String generate(String systemPrompt, String userPrompt,
+                io.dpdk.assistant.model.ModelUsageLedger usage, String stage) throws Exception {
+            return generate(systemPrompt, userPrompt);
+        }
     }
 }

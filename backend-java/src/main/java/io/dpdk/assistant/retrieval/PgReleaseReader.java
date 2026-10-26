@@ -11,6 +11,9 @@ import io.dpdk.assistant.contracts.retrieval.RetrievedChunk;
 import io.dpdk.assistant.contracts.retrieval.SearchInput;
 import io.dpdk.assistant.contracts.retrieval.SearchResult;
 import io.dpdk.assistant.contracts.retrieval.SourceChunk;
+import io.dpdk.assistant.model.ModelUsageLedger;
+import io.dpdk.assistant.model.SingleFlightTtlCache;
+import io.dpdk.assistant.usage.UsageCore;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -53,6 +56,17 @@ public final class PgReleaseReader implements ReleaseReader {
     private final ConfigurationFingerprint fingerprint;
     private final QueryRewritePort rewriter;
     private final EmbeddingPort embeddingPort;
+    private final QueryEmbeddingClient queryEmbeddingClient;
+    private final SingleFlightTtlCache<EmbeddingKey, double[]> embeddingCache;
+    private static final SingleFlightTtlCache<EmbeddingKey, double[]> SHARED_EMBEDDING_CACHE =
+            new SingleFlightTtlCache<>(java.time.Duration.ofSeconds(600).toNanos(), 512);
+    private record EmbeddingKey(String endpoint, String model, String query) { }
+
+    /** 有真实用量能力的模型边界；调用次数/token由其底层客户端提供，不由检索层猜测。 */
+    @FunctionalInterface
+    public interface QueryEmbeddingClient {
+        List<Vector1024> embed(String input, ModelUsageLedger usage, String stage);
+    }
 
     public PgReleaseReader(DataSource dataSource,
                            RetrievalSettings settings,
@@ -60,12 +74,27 @@ public final class PgReleaseReader implements ReleaseReader {
                            ConfigurationFingerprint fingerprint,
                            QueryRewritePort rewriter,
                            EmbeddingPort embeddingPort) {
+        this(dataSource, settings, embeddingConfig, fingerprint, rewriter, embeddingPort, null);
+    }
+
+    public PgReleaseReader(DataSource dataSource,
+                           RetrievalSettings settings,
+                           EmbeddingConfig embeddingConfig,
+                           ConfigurationFingerprint fingerprint,
+                           QueryRewritePort rewriter,
+                           EmbeddingPort embeddingPort,
+                           QueryEmbeddingClient queryEmbeddingClient) {
         this.dataSource = dataSource;
         this.settings = settings;
         this.embeddingConfig = embeddingConfig;
         this.fingerprint = fingerprint;
         this.rewriter = rewriter;
         this.embeddingPort = embeddingPort;
+        this.queryEmbeddingClient = queryEmbeddingClient;
+        // 旧纯向量API无endpoint客户端身份，保持实例隔离；富生产装配按源配置共享缓存。
+        this.embeddingCache = queryEmbeddingClient == null
+                ? new SingleFlightTtlCache<>(java.time.Duration.ofSeconds(600).toNanos(), 512)
+                : SHARED_EMBEDDING_CACHE;
     }
 
     /* ------------------------------------------------------------------ */
@@ -106,6 +135,12 @@ public final class PgReleaseReader implements ReleaseReader {
      * limit 字段，补全请求见 handoff）。Python search 默认 limit=6。
      */
     public SearchResult searchPinned(ReleaseSnapshot snapshot, SearchInput input, int limit) {
+        return searchPinned(snapshot, input, limit, null);
+    }
+
+    /** 业务请求显式携带自己的recorder；旧纯检索调用仍可传null保持透明。 */
+    public SearchResult searchPinned(ReleaseSnapshot snapshot, SearchInput input, int limit,
+                                    UsageCore.UsageRecorder usage) {
         String releaseId = snapshot == null ? "" : orEmpty(snapshot.releaseId());
         if (input == null || input.question() == null) {
             throw new IllegalArgumentException("SearchInput.question 不能为空");
@@ -127,16 +162,13 @@ public final class PgReleaseReader implements ReleaseReader {
         }
 
         String query = input.question();
-        String rewritten = rewriter.rewrite(query, input.conversationContext());
+        String rewritten = rewriter.rewrite(query, input.conversationContext(), usage);
 
         double[] queryEmbedding;
         if (input.queryVector() != null) {
             queryEmbedding = VectorMath.toDoubles(input.queryVector().values());
-        } else if (embeddingPort != null) {
-            String embeddingQuery = embeddingQueryFor(query, rewritten);
-            List<Vector1024> vectors = embeddingPort.embed(new EmbeddingInput(embeddingQuery));
-            queryEmbedding = vectors.isEmpty() ? new double[0]
-                    : VectorMath.toDoubles(vectors.get(0).values());
+        } else if (embeddingPort != null || queryEmbeddingClient != null) {
+            queryEmbedding = queryEmbedding(query, rewritten, usage);
         } else {
             queryEmbedding = new double[0];
         }
@@ -164,6 +196,19 @@ public final class PgReleaseReader implements ReleaseReader {
     /** embedding_query 规则：改写不同则 original + " " + rewritten。 */
     static String embeddingQueryFor(String query, String rewritten) {
         return rewritten.equals(query) ? query : query + " " + rewritten;
+    }
+
+    /** 同searchPinned的外部向量/缓存调用面；包内测试无需伪造PG召回。 */
+    double[] queryEmbedding(String query, String rewritten, UsageCore.UsageRecorder usage) {
+        String text = embeddingQueryFor(query, rewritten);
+        EmbeddingKey key = new EmbeddingKey(embeddingConfig.apiBase(), embeddingConfig.model(), text);
+        double[] result = RetrievalUsage.cached(embeddingCache, key, () -> RetrievalUsage.tracked(usage, ledger -> {
+            List<Vector1024> vectors = queryEmbeddingClient != null
+                    ? queryEmbeddingClient.embed(text, ledger, "query_embed")
+                    : embeddingPort.embed(new EmbeddingInput(text));
+            return vectors.isEmpty() ? new double[0] : VectorMath.toDoubles(vectors.get(0).values());
+        }), usage, "query_embed", embeddingConfig.model(), UsageCore.KIND_EMBEDDING);
+        return result.clone();
     }
 
     /* ------------------------------------------------------------------ */
