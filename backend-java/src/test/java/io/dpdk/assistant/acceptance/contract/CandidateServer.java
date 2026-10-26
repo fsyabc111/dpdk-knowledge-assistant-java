@@ -41,6 +41,11 @@ public final class CandidateServer {
             return value;
         }
         public void freeze(Instant value) { set(value);frozen=true; }
+        @Override public synchronized io.dpdk.assistant.contracts.model.Deadline deadlineAfter(java.time.Duration budget) {
+            // Python固定MCP边界只消耗真实单调预算，不生成持久化事件tick；不改业务nowUtc返回规则。
+            Instant current=frozen?base:base.plusNanos(ticks.get()*1000);
+            return new io.dpdk.assistant.contracts.model.Deadline(current.plus(budget),monotonicNanos()+budget.toNanos());
+        }
         public long monotonicNanos() { return System.nanoTime(); }
         public synchronized String nextSessionIso() {
             Instant current=nowUtc(); if(frozen)return SystemClockAdapter.pythonIso(current); if (!current.isAfter(last)) current=last.plusNanos(1000);
