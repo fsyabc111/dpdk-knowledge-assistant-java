@@ -39,6 +39,9 @@ def main():
             return 0 if Extensions(h,db,state,upstream,out).run() else 1
         golden=json.loads((ROOT/'migration/fixtures/p0-v2/python-golden.json').read_text())
         collector=Collector(h,db,state,upstream,out);trace,verdict=collector.collect(golden,a.limit)
+        command=[sys.executable,'-m','migration.oracle.verify','--fixture','p0-v2','--candidate',str(out/'java-candidate-trace-p0-v2.json')]
+        original_cli=subprocess.run(command,cwd=ROOT,capture_output=True,text=True,timeout=30)
+        write(out/'original-verify-cli.json',{'exit_code':original_cli.returncode,'stdout':original_cli.stdout,'stderr':original_cli.stderr})
         status,_,raw=collector.http('GET','/verify-diagnostic',base=state['control_url'])
         write(out/'verify-diagnostic.json',{'http_status':status,'result':json.loads(raw)})
         from acceptance.contract.collect import snapshot
@@ -47,7 +50,7 @@ def main():
         after=snapshot(h,db)
         write(out/'fingerprint-negative.json',{'http_status':status,'result':json.loads(raw),'business_unchanged':before==after})
         if status!=200 or before!=after:raise RuntimeError('fingerprint negative or restoration failed')
-        return 0 if verdict['status']=='pass' and not collector.blocked else 1
+        return 0 if verdict['status']=='pass' and not collector.blocked and original_cli.returncode==0 else 1
     finally:
         if not a.keep:
             for proc in reversed(procs):

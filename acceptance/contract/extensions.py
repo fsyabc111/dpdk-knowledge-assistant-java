@@ -4,6 +4,8 @@
 """
 from __future__ import annotations
 import hashlib
+import csv
+import io
 import json
 from pathlib import Path
 import secrets
@@ -124,7 +126,7 @@ class Extensions:
             self.check('formal-byte-'+suffix,'POST','/api/assignments/'+aid+'/submit',status,actor='student_a',raw=raw,headers=headers,no_change=status!=200,zero_upstream=status!=200)
         raw,headers=multipart({'message':'DNS','context':'[]'},'合成.c',b'synthetic')
         self.check('chat-context-array-rejected','POST','/api/chat',400,actor='student_a',raw=raw,headers=headers,no_change=True,zero_upstream=True)
-        marker=secrets.token_hex(16);source=('/* '+marker+' */\nint plugin_main(void){return 0;}').encode();request=str(uuid4())
+        marker=secrets.token_hex(16);self.privacy_marker=marker;self.assignment_id=aid;source=('/* '+marker+' */\nint plugin_main(void){return 0;}').encode();request=str(uuid4())
         raw,headers=multipart({'message':'DNS cafe\u0301','request_id':request},'cafe\u0301.c',source)
         first,_,_=self.check('chat-nfc-first','POST','/api/chat',200,actor='student_a',raw=raw,headers=headers)
         raw,headers=multipart({'message':'DNS café','request_id':request},'café.c',source)
@@ -158,8 +160,24 @@ class Extensions:
         for citation in citations:
             self.check('historical-six-source-'+citation['chunk_id'],'GET','/api/sources/'+citation['chunk_id'],200,actor='student_a',no_change=True,predicate=lambda b,w,h,old,new,expected=citation:{'source_path':b['source_path']==expected['source_path'],'section':b['section']==expected['section']})
         self.fake()
+    def privacy(self):
+        def facts(body,wire,headers,before,after):
+            checks={'csv_bom':wire.startswith(b'\xef\xbb\xbf'),'export_no_source':self.privacy_marker.encode() not in wire}
+            parsed=list(csv.reader(io.StringIO(wire.decode('utf-8-sig'))))
+            checks['csv_actually_parseable']=bool(parsed) and any(IDS['student_a'] in row for row in parsed)
+            checks['csv_class_B_hidden']=IDS['student_b'].encode() not in wire
+            fields=[('assistant_messages','content'),('rag_requests','question'),('rag_requests','context_text'),('rag_task_jobs','result_json'),('grading_submissions','results_json'),('rag_issues','note'),('rag_issues','feedback'),('rag_knowledge','body')]
+            with self.h._connect(self.db.name) as conn:
+                for table,column in fields:
+                    hits=conn.execute('SELECT count(*) FROM '+table+' WHERE '+column+'::text LIKE %s',('%'+self.privacy_marker+'%',)).fetchone()[0]
+                    checks['no_source_'+table+'_'+column]=hits==0
+            log=self.out/'candidate.log'
+            checks['app_log_no_source']=log.exists() and self.privacy_marker not in log.read_text(errors='replace')
+            checks['terminal_inputs_cleared']=not after['tables']['rag_task_inputs']
+            return checks
+        self.check('runtime-source-sentinel-db-log-export','GET','/api/assignments/'+self.assignment_id+'/export',200,actor='teacher_a',no_change=True,predicate=facts)
     def run(self):
-        try:self.mode_roles();self.uploads_identity();self.six_sources()
+        try:self.mode_roles();self.uploads_identity();self.six_sources();self.privacy()
         except Exception as e:self.failures.append({'case_id':'extension-runner-abort','error_type':type(e).__name__,'detail':str(e)})
         write(self.out/'extension-trace.json',self.rows);write(self.out/'extension-summary.json',{'cases':len(self.rows),'failures':self.failures,'scope':'冻结186之外独立HTTP角色/模式/输入/来源场景；不替代全量oracle/UI验收'})
         return not self.failures

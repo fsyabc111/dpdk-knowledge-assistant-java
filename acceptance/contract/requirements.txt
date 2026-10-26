@@ -1,0 +1,3 @@
+# Java候选采集/隔离/固定上游所需轻量Python依赖，与冻结backend版本一致。
+psycopg[binary]==3.3.4
+bcrypt==4.3.0
