@@ -1,0 +1,72 @@
+{
+  "manifest_version": "java-delivery-v1",
+  "delivery_id": null,
+  "status": "preparation_only_not_user_accepted",
+  "source": {
+    "candidate_revision": null,
+    "candidate_branch": null,
+    "remote_revision_verified_equal": null,
+    "p4_baseline": "f020efa951b816cc3315f169c483af0998875800",
+    "python_behavior_oracle": "80b29135faddd16d5e39fdbf0633291ea6a20489",
+    "contracts_revision": null,
+    "approved_differences_evidence": "docs/java-migration/DECISIONS.md"
+  },
+  "build": {
+    "candidate_backend_image_id": null,
+    "candidate_backend_digest_reference": null,
+    "candidate_frontend_image_id": null,
+    "candidate_frontend_digest_reference": null,
+    "backend_jar_sha256": null,
+    "frontend_assets_manifest_sha256": null,
+    "build_recipe_sha256": null,
+    "p4_rollback_asset_evidence": "docs/java-migration/evidence/J5-03/p4-images.json"
+  },
+  "dependencies": {
+    "application_inventory": "docs/java-migration/evidence/J5-04/dependencies.json",
+    "application_inventory_sha256": null,
+    "pom_sha256": null,
+    "frontend_lock_sha256": null,
+    "resolved_maven_versions": "docs/java-migration/evidence/J5-04/maven-resolved.txt",
+    "container_os_sbom": "pending_not_generated",
+    "complete_third_party_license_notice_bundle": "pending_not_fully_verified"
+  },
+  "data_and_knowledge": {
+    "schema": "0015_equivalent_after_controlled_java_migration",
+    "schema_fixture_sha256": null,
+    "knowledge_snapshot_manifest_sha256": null,
+    "knowledge_source_evidence": "docs/java-migration/evidence/J5-03/source-snapshot.json",
+    "active_release_id": null,
+    "configuration_fingerprint": null,
+    "model_embedding_harness_domain": "fixed_local_external_substitutes_only",
+    "temporary_execution_inputs_in_backup": false
+  },
+  "environment": {
+    "isolated_project_owned_manifest": ".migration-artifacts/j5-03/deployment-manifest.json",
+    "database_owned_manifest": ".migration-artifacts/j5-03/owned-databases.json",
+    "configuration_digest_without_secrets": null,
+    "postgres_version_actual": null,
+    "docker_context_endpoint_daemon_evidence": null,
+    "runtime_credentials_location": "local_ignored_0600_only_never_commit",
+    "tls_private_key_in_delivery": false
+  },
+  "verification": {
+    "p4_engineering": "passed_per_main_gate",
+    "p5_strict_matrix": "pending_current_gate_not_passed",
+    "p5_capacity_and_resilience": "pending_not_yet_executed",
+    "j5_03_cold_upgrade_restore_rollback": "pending_main_execution_window",
+    "j5_04_preparation": "prepared",
+    "user_acceptance": "not_executed",
+    "live_model_embedding_harness": "not_authorized_not_executed",
+    "production_cutover": "not_authorized_not_executed",
+    "python_retirement": "not_authorized_not_executed",
+    "recovery_asset_deletion": "not_authorized_not_executed"
+  },
+  "handover": {
+    "runbook": "docs/java-migration/cutover-runbook.md",
+    "operations_index": "docs/java-migration/delivery/OPERATIONS.md",
+    "acceptance_steps": "docs/java-migration/delivery/HANDOVER_CHECKLIST.md",
+    "responsible_owner": null,
+    "known_limitations_evidence": null,
+    "rto_rpo_measured_domain_and_values": null
+  }
+}

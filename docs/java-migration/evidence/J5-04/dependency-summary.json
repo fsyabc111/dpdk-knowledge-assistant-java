@@ -1,0 +1,21 @@
+{
+  "maven_total": 100,
+  "maven_scopes": {
+    "compile": 67,
+    "test": 29,
+    "runtime": 4
+  },
+  "maven_missing_license_declarations": [],
+  "maven_missing_artifacts": [],
+  "frontend_total": 213,
+  "frontend_declared_licenses": {
+    "Apache-2.0": 3,
+    "MIT": 181,
+    "ISC": 17,
+    "CC-BY-4.0": 1,
+    "(MPL-2.0 OR Apache-2.0)": 1,
+    "BSD-3-Clause": 5,
+    "BlueOak-1.0.0": 5
+  },
+  "frontend_missing_license_declarations": []
+}

@@ -1,0 +1,46 @@
+{
+  "status": "delivery_preparation_only",
+  "snapshot_date": "2026-10-26",
+  "dependency_inputs_equal_to_main": "5c8623c",
+  "commands": [
+    {
+      "command": "JAVA_HOME=<explicit JDK21> backend-java/mvnw -o -B -f backend-java/pom.xml dependency:list -DincludeScope=test -Dsort=true -DoutputFile=<evidence/J5-04/maven-resolved.txt>",
+      "exit_code": 0,
+      "network": "offline",
+      "runtime_java": "21.0.12.1",
+      "maven_wrapper_distribution": "3.9.12",
+      "dependency_plugin_actual": "3.9.0"
+    },
+    {
+      "command": "python3 docs/java-migration/delivery/generate_inventory.py --repo <worktree> --maven-repository <local .m2/repository>",
+      "exit_code": 0,
+      "maven_resolved_count": 100,
+      "maven_compile": 67,
+      "maven_runtime": 4,
+      "maven_test": 29,
+      "pom_license_direct": 87,
+      "pom_license_inherited": 13,
+      "maven_artifacts_with_license_notice_entries": 82,
+      "maven_missing_license_declarations": 0,
+      "maven_missing_local_artifacts": 0,
+      "npm_lock_entries": 213,
+      "npm_dev_entries": 95,
+      "npm_optional_entries": 54,
+      "npm_missing_lock_license_declarations": 0
+    },
+    {
+      "command": "JSON/template/inventory consistency assertions",
+      "exit_code": 0,
+      "assertions": ["candidate_revision remains null", "live/user/cutover/retirement/deletion not authorized or not executed", "100/213 entries match source lists", "Maven artifact hashes all present"]
+    }
+  ],
+  "unverified": [
+    "container OS complete SBOM and notices",
+    "complete third-party license/notice text redistribution bundle",
+    "final P5 frozen candidate dependency/build inventory",
+    "J5-03 actual cold start/upgrade/backup-restore/rollback",
+    "user acceptance and live model/embedding/real harness",
+    "production cutover, Python retirement, recovery asset deletion"
+  ],
+  "runtime_changes": "none_no_stack_no_database_no_real_upstream"
+}
