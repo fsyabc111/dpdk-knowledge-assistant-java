@@ -67,7 +67,13 @@ class P3ReviewRegressionTest {
                     .isEqualTo("1");
             assertThat(h.task.countRows("rag_task_inputs", "task_id=?", answer.taskId())).isZero();
             assertThat(h.task.countRows("upstream_usage_records", "request_id=? AND kind='llm'", input.requestId()))
-                    .isEqualTo(cumulative ? 2 : 1);
+                    .isEqualTo(cumulative ? 3 : 1);
+            // P5恢复源rewrite零调用账本：不能把它误当第三次模型调用，也不能漏记。
+            assertThat(h.task.countRows("upstream_usage_records",
+                    "request_id=? AND kind='llm' AND stage='rewrite' AND call_count=0"
+                            + " AND usage_source IN ('local','cache_hit')"
+                            + " AND prompt_tokens IS NULL AND completion_tokens IS NULL AND total_tokens IS NULL",
+                    input.requestId())).isEqualTo(cumulative ? 1 : 0);
             try (var connection = h.task.ds.getConnection(); var ps = connection.prepareStatement(
                     "SELECT SUM(total_tokens), SUM(call_count) FROM upstream_usage_records WHERE request_id=? AND kind='llm'")) {
                 ps.setString(1, input.requestId());
