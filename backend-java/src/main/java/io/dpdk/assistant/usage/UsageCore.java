@@ -211,6 +211,14 @@ public final class UsageCore {
         private final List<UsageEntry> entries = new ArrayList<>();
         private String subject;
         private String sessionId;
+        private int producers;
+        private int deliveries;
+        private boolean checkpointed;
+        private boolean checkpointAcknowledged;
+        private boolean sealed;
+        private Throwable deliveryFailure;
+        private java.util.function.Consumer<UsageEntry> lateReceiver;
+        private final java.util.concurrent.CompletableFuture<Void> receiptsDone = new java.util.concurrent.CompletableFuture<>();
 
         public UsageRecorder() {
         }
@@ -220,7 +228,7 @@ public final class UsageCore {
             this.sessionId = sessionId;
         }
 
-        public void bind(String subject, String sessionId) {
+        public synchronized void bind(String subject, String sessionId) {
             if (subject != null && !subject.isEmpty() && this.subject == null) {
                 this.subject = subject;
             }
@@ -229,15 +237,15 @@ public final class UsageCore {
             }
         }
 
-        public String subject() {
+        public synchronized String subject() {
             return subject;
         }
 
-        public String sessionId() {
+        public synchronized String sessionId() {
             return sessionId;
         }
 
-        public List<UsageEntry> entries() {
+        public synchronized List<UsageEntry> entries() {
             return List.copyOf(entries);
         }
 
@@ -268,13 +276,93 @@ public final class UsageCore {
                     Math.max(calls, 0), durationMs));
         }
 
+        /**
+         * 在异步生产者交给线程池之前取lease，避免候选尚未启动就被取消时丢收尾归属。
+         * lease只持有计量对象，不持有问题、源码或任务上下文；关闭恰好一次。
+         */
+        public synchronized ProducerLease retainProducer() {
+            if (sealed) throw new IllegalStateException("用量收据已收尾，禁止新生产者");
+            producers++;
+            return new ProducerLease();
+        }
+
+        public final class ProducerLease implements AutoCloseable {
+            private final java.util.concurrent.atomic.AtomicBoolean closed = new java.util.concurrent.atomic.AtomicBoolean();
+            private ProducerLease() {}
+            @Override public void close() {
+                if (!closed.compareAndSet(false, true)) return;
+                synchronized (UsageRecorder.this) {
+                    producers--;
+                }
+                completeIfDrained();
+            }
+        }
+
+        /**
+         * 原子切开历史快照和迟到增量；sink永远在recorder锁外运行。
+         * 调用方写完快照后ack，completion再等全部生产者及迟到sink退出。
+         */
+        public synchronized Checkpoint checkpointAndSubscribe(java.util.function.Consumer<UsageEntry> receiver) {
+            if (checkpointed) throw new IllegalStateException("用量收尾只能登记一次");
+            lateReceiver = java.util.Objects.requireNonNull(receiver);
+            checkpointed = true;
+            return new Checkpoint(List.copyOf(entries));
+        }
+
+        public final class Checkpoint {
+            private final List<UsageEntry> snapshot;
+            private final java.util.concurrent.atomic.AtomicBoolean acknowledged = new java.util.concurrent.atomic.AtomicBoolean();
+            private Checkpoint(List<UsageEntry> snapshot) { this.snapshot = snapshot; }
+            public List<UsageEntry> entries() { return snapshot; }
+            public java.util.concurrent.CompletionStage<Void> completion() { return receiptsDone.minimalCompletionStage(); }
+            public void acknowledge() { finish(null); }
+            public void fail(Throwable failure) { finish(java.util.Objects.requireNonNull(failure)); }
+            private void finish(Throwable failure) {
+                if (!acknowledged.compareAndSet(false, true)) return;
+                synchronized (UsageRecorder.this) {
+                    checkpointAcknowledged = true;
+                    if (failure != null && deliveryFailure == null) deliveryFailure = failure;
+                }
+                completeIfDrained();
+            }
+        }
+
         private UsageEntry append(UsageEntry entry) {
-            entries.add(entry);
+            java.util.function.Consumer<UsageEntry> receiver;
+            synchronized (this) {
+                if (sealed) throw new IllegalStateException("用量收据已封存，生产者lease缺失");
+                entries.add(entry);
+                receiver = lateReceiver;
+                if (receiver != null) deliveries++;
+            }
+            if (receiver != null) {
+                try { receiver.accept(entry); }
+                catch (RuntimeException failure) {
+                    // 计量失败不覆盖答案/取消；但可等ack必须显式失败，不能谎称已持久化。
+                    synchronized (this) { if (deliveryFailure == null) deliveryFailure = failure; }
+                } finally {
+                    synchronized (this) { deliveries--; }
+                    completeIfDrained();
+                }
+            }
             return entry;
         }
 
+        /** drain后释放归账闭包；completion依赖回调也在monitor外执行。 */
+        private void completeIfDrained() {
+            Throwable failure;
+            synchronized (this) {
+                if (sealed || !checkpointed || !checkpointAcknowledged || producers != 0 || deliveries != 0) return;
+                sealed = true;
+                lateReceiver = null;
+                failure = deliveryFailure;
+            }
+            if (failure == null) receiptsDone.complete(null);
+            else receiptsDone.completeExceptionally(failure);
+        }
+
         /** 紧凑汇总（chat_trace 日志口径；明细不进日志）。 */
-        public Map<String, Object> totals() {
+        public synchronized Map<String, Object> totals() {
             List<UsageEntry> priced = entries.stream().filter(UsageEntry::priced).toList();
             Map<String, Object> out = new LinkedHashMap<>();
             out.put("entries", entries.size());

@@ -19,7 +19,16 @@ final class RetrievalUsage {
         AtomicBoolean ran = new AtomicBoolean();
         var future = cache.getOrCreate(key, ignored -> {
             ran.set(true); // 仅创建真实loader的请求拥有其调用账；同key等待者记零调用。
-            return CompletableFuture.supplyAsync(loader, LOADERS);
+            var lease = recorder == null ? null : recorder.retainProducer();
+            try {
+                return CompletableFuture.supplyAsync(() -> {
+                    try { return loader.get(); }
+                    finally { if (lease != null) lease.close(); }
+                }, LOADERS);
+            } catch (RuntimeException rejected) {
+                if (lease != null) lease.close();
+                throw rejected;
+            }
         });
         V value;
         try { value = future.get(); }
@@ -32,8 +41,10 @@ final class RetrievalUsage {
             if (cause instanceof RuntimeException runtime) throw runtime;
             if (cause instanceof Error error) throw error;
             throw new IllegalStateException("检索外部调用失败", cause);
+        } finally {
+            // 包含取消/共享失败：没有创建loader的等待者始终只有零调用账。
+            if (!ran.get()) skipped(recorder, stage, UsageCore.SOURCE_CACHE_HIT, model, kind);
         }
-        if (!ran.get()) skipped(recorder, stage, UsageCore.SOURCE_CACHE_HIT, model, kind);
         return value;
     }
 
@@ -42,20 +53,18 @@ final class RetrievalUsage {
         try { return call.apply(ledger); }
         finally {
             if (recorder != null) {
-                synchronized (recorder) {
-                    for (var entry : ledger.entries()) {
-                        if (ModelUsageLedger.ZERO_CALL_SOURCES.contains(entry.usageSource())) {
-                            recorder.recordSkipped(entry.stage(), entry.usageSource(), entry.model(), entry.kind());
-                        } else if (ModelUsageLedger.SOURCE_OPERATION.equals(entry.usageSource())) {
-                            recorder.recordOperation(entry.kind(), entry.stage(), millis(entry.durationMs()), entry.callCount());
-                        } else {
-                            var tokens = new LinkedHashMap<String, Object>();
-                            tokens.put("prompt_tokens", entry.promptTokens());
-                            tokens.put("completion_tokens", entry.completionTokens());
-                            tokens.put("total_tokens", entry.totalTokens());
-                            recorder.recordLlm(entry.stage(), entry.model(), tokens,
-                                    millis(entry.durationMs()), entry.kind(), entry.callCount());
-                        }
+                for (var entry : ledger.entries()) {
+                    if (ModelUsageLedger.ZERO_CALL_SOURCES.contains(entry.usageSource())) {
+                        recorder.recordSkipped(entry.stage(), entry.usageSource(), entry.model(), entry.kind());
+                    } else if (ModelUsageLedger.SOURCE_OPERATION.equals(entry.usageSource())) {
+                        recorder.recordOperation(entry.kind(), entry.stage(), millis(entry.durationMs()), entry.callCount());
+                    } else {
+                        var tokens = new LinkedHashMap<String, Object>();
+                        tokens.put("prompt_tokens", entry.promptTokens());
+                        tokens.put("completion_tokens", entry.completionTokens());
+                        tokens.put("total_tokens", entry.totalTokens());
+                        recorder.recordLlm(entry.stage(), entry.model(), tokens,
+                                millis(entry.durationMs()), entry.kind(), entry.callCount());
                     }
                 }
             }
@@ -64,7 +73,7 @@ final class RetrievalUsage {
 
     static void skipped(UsageCore.UsageRecorder recorder, String stage, String source, String model, String kind) {
         if (recorder != null) {
-            synchronized (recorder) { recorder.recordSkipped(stage, source, model, kind); }
+            recorder.recordSkipped(stage, source, model, kind);
         }
     }
 
