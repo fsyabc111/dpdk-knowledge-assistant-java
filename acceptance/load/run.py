@@ -418,6 +418,10 @@ async def main_async(args):
     if output.exists():
         raise RuntimeError("拒绝覆盖已有轮次证据")
     output.mkdir(parents=True)
+    write_json(output / "run-manifest.json", {"source_evidence": args.source_evidence,
+        "physical_environment": args.physical_environment, "runtime": args.runtime, "qualification": args.qualification,
+        "rounds": args.rounds, "warmup_seconds": args.warmup, "measurement_seconds": args.measurement,
+        "created_utc": datetime.now(timezone.utc).isoformat(), "candidate_capacity_pass": None})
     isolation = PgIsolation.from_env(output / "ownership.json", allowed_prefixes=("p5_capacity_", "p5_resilience_"))
     isolation.verify_instance()
     source = "/* P0合成 " + uuid.uuid4().hex + " */\nint plugin_main(void){return 0;}\n"

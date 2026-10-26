@@ -92,6 +92,20 @@ def schema(isolation, db):
     with patch("sqlalchemy.engine_from_config", engine):
         command.upgrade(config, "head")
     init_db()
+    prepare_node_table()
+
+
+def prepare_node_table():
+    """与P0 oracle同源：动态LI物理表由冻结真实PGVectorStore工厂创建，不复制业务DDL。"""
+    from app.config import get_settings
+    from app.services.llama_index_service import _new_pgvector_store
+    store = _new_pgvector_store(get_settings(), perform_setup=True)
+    try:
+        store._initialize()
+    finally:
+        engine = getattr(store, "_engine", None)
+        if engine is not None:
+            engine.dispose()
 
 
 class Boundaries:

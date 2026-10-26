@@ -1,8 +1,10 @@
 # J5-02 TCP容量入口
 
-当前是实现入口，尚未运行PG/资格短测/正式容量，不代表通过。运行需主Agent显式分配独占窗口；不与构建、浏览器、故障、其他PG负载并跑。
+当前资格入口调试中，正式容量未运行，不代表通过。运行需主Agent显式分配独占窗口；不与构建、浏览器、故障、其他PG负载并跑。
 
 本次准备已在工作树合并集成`2735147`（merge提交`fc41616`）；3个共享冲突经主Agent授权全取integration原样，最终树与该集成源一致。冻结80b29135与当前backend tree同为`38efd2a4d4ad284726989974bbb521ec4d4801dd`。独立采集/组合改动仅做18项纯测试及CLI/本机只读物理元数据探测，未连接PG或启动服务/测量；实际运行必须绑定本次driver提交和新输出目录，等待主Agent窗口。
+
+资格01实况：主Agent释放独占资格窗口后，`dbe4e84 --runtime python --qualification --rounds1 --warmup2 --measurement15`在全新`j5-python-qualification-20261026-01`目录执行，启动阶段因`data_li_knowledge_v1`不存在退出1，未开始预热/测量，无延迟/资源样本。失败日志、ownership和新合成库全保留。修复仅在Python测试bootstrap调用冻结`_new_pgvector_store(...,perform_setup=True)._initialize()`创建真实动态LI表（同P0 oracle prepare_node_table），不改backend/不复制第二份DDL；启动前run-manifest绑定source/物理元数据。纯测试20/20通过；随后资格02必须用新目录，不能覆盖01或当作正式容量证据。
 
 共同驱动与统计：`acceptance/load/run.py`；Python副本：`python_server.py`；Java应用：测试classpath的 `io.dpdk.assistant.acceptance.load.CapacityServer`。只绑定127.0.0.1，控制接口有随机key；进程内固定模型、向量和MCP。检索走真实PG活动发布、四腿召回、RRF/MMR/引用，不用假chunk。50ms仅属于实际外部向量调用，叠加真实检索成本；缓存命中不调用向量、不额外加50ms。新TCP基线与P0整段50ms检索替身有明确差异，须重测双端新基线；保留旧证据与全部冻结阈值。
 
