@@ -11,6 +11,7 @@ import json
 import os
 from pathlib import Path
 import platform
+import re
 import secrets
 import subprocess
 import sys
@@ -20,7 +21,8 @@ import uuid
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 from acceptance.contract.isolation import PgIsolation
-from acceptance.load.statistics import GROUPS, clock_validity, combine_resources, evaluate, percentiles
+from acceptance.load.statistics import (GROUPS, FROZEN_PYTHON_COMMIT, FROZEN_BACKEND_TREE, clock_validity,
+                                       collection_status, combine_resources, compare_pair, evaluate, percentiles)
 
 
 def write_json(path, data):
@@ -36,6 +38,50 @@ def write_json(path, data):
 def cpu_seconds(text):
     days, _, rest = text.rpartition("-") if "-" in text else ("0", "", text)
     return int(days) * 86400 + sum(float(v) * 60**i for i, v in enumerate(reversed(rest.split(":"))))
+
+
+def source_evidence(runtime="both"):
+    def git(*args):
+        return subprocess.run(["git", *args], cwd=ROOT, capture_output=True, text=True, check=True).stdout.strip()
+    protocol = ["acceptance/load/run.py", "acceptance/load/python_server.py", "acceptance/load/statistics.py",
+                "backend-java/src/test/java/io/dpdk/assistant/acceptance/load/CapacityServer.java", "migration/contracts/thresholds.json"]
+    digest = hashlib.sha256()
+    for name in protocol:
+        digest.update(name.encode()+b"\0"+(ROOT/name).read_bytes()+b"\0")
+    scoped_sources = ["backend", *protocol]
+    if runtime in ("java", "both"):
+        scoped_sources += ["backend-java/src/main", "backend-java/pom.xml"]
+    return {"frozen_python_commit": FROZEN_PYTHON_COMMIT, "python_backend_tree": git("rev-parse", "HEAD:backend"),
+            "java_source_tree": git("rev-parse", "HEAD:backend-java/src/main"),
+            "source_commit": git("rev-parse", "HEAD"), "dirty": bool(git("status", "--porcelain", "--", *scoped_sources)),
+            "protocol_sha256": digest.hexdigest()}
+
+
+def physical_environment():
+    def command(*args):
+        return subprocess.run(args, capture_output=True, text=True, check=True).stdout.strip()
+    if sys.platform == "darwin":
+        registry = command("ioreg", "-rd1", "-c", "IOPlatformExpertDevice")
+        match = re.search(r'"IOPlatformUUID"\s*=\s*"([^"]+)"', registry)
+        identity = match.group(1) if match else ""
+        cpu, memory = command("sysctl", "-n", "machdep.cpu.brand_string"), int(command("sysctl", "-n", "hw.memsize"))
+    else:
+        path = Path("/etc/machine-id")
+        identity = path.read_text().strip() if path.exists() else ""
+        cpu = platform.processor() or platform.machine()
+        memory = os.sysconf("SC_PAGE_SIZE")*os.sysconf("SC_PHYS_PAGES")
+    return {"host_id_sha256": hashlib.sha256(identity.encode()).hexdigest() if identity else None,
+            "platform": platform.platform(), "machine": platform.machine(), "cpu_model": cpu,
+            "memory_bytes": memory, "cpu_count": os.cpu_count(), "python": sys.version}
+
+
+def postgres_environment(isolation, db):
+    isolation.verify_owned(db)
+    with isolation._connect(db.name) as conn:
+        row = conn.execute("SELECT version(),current_setting('data_directory'),current_user,inet_server_port(),"
+            "current_setting('max_connections'),current_setting('shared_buffers'),current_setting('work_mem'),"
+            "(SELECT extversion FROM pg_extension WHERE extname='vector')").fetchone()
+    return dict(zip(("version", "data_directory", "user", "port", "max_connections", "shared_buffers", "work_mem", "vector_version"), row), host=isolation.host)
 
 
 class Resources:
@@ -303,9 +349,13 @@ async def run_runtime(runtime, isolation, output, source, args):
               "layout": "loopback TCP; trusted XFF proxy=driver; real PG retrieval; per-call fixed external boundaries; app+driver synchronous resources",
               "server_settings": manifest["settings"], "environment": {"platform": platform.platform(), "python": sys.version,
                   "cpu_count": os.cpu_count(), "runner_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
-                  "sleep_prevention": args.sleep_guard},
-              "qualification_only": args.qualification}
+                  "sleep_prevention": args.sleep_guard, "physical": args.physical_environment,
+                  "postgres": None},
+              "source_evidence": args.source_evidence, "qualification_only": args.qualification,
+              "app_runtime": manifest.get("java", {"python": sys.version}),
+              "baseline_complete": False, "baseline_valid": None, "candidate_capacity_pass": None}
     try:
+        report["environment"]["postgres"] = postgres_environment(isolation, db)
         report["same_ip_rate_limit_counterexample"] = await ip_counterexample(manifest)
         for number in range(1, args.rounds+1):
             report["warmups"].append(await phase(manifest, isolation, db, args.warmup, number, "warmup", output, source))
@@ -354,7 +404,14 @@ def sleep_prevention():
 
 
 async def main_async(args):
+    if not args.qualification and (args.rounds, args.warmup, args.measurement) != (3, 120, 600):
+        raise RuntimeError("正式容量必须3轮120s预热+600s测量")
+    if args.runtime in ("java", "both") and not args.classpath:
+        raise RuntimeError("Java候选需要显式--classpath；Python单端不依赖Java构建")
     args.sleep_guard = sleep_prevention() if sys.platform == "darwin" and not args.qualification else {"tool": "not_required_for_qualification_or_non_macos"}
+    args.source_evidence, args.physical_environment = source_evidence(args.runtime), physical_environment()
+    if not args.qualification and (args.source_evidence["dirty"] or args.source_evidence["python_backend_tree"] != FROZEN_BACKEND_TREE):
+        raise RuntimeError("正式基线需要干净负载源码和冻结Python backend tree")
     output = Path(args.output).resolve()
     if not any(parent.name == ".migration-artifacts" for parent in output.parents):
         raise RuntimeError("原始统计/manifest只能写入gitignored .migration-artifacts目录")
@@ -368,11 +425,13 @@ async def main_async(args):
     for runtime in (("python", "java") if args.runtime == "both" else (args.runtime,)):
         reports[runtime] = await run_runtime(runtime, isolation, output / runtime, source, args)
     threshold = json.loads((ROOT / "migration/contracts/thresholds.json").read_text())
-    # 单端结果永远不自动满足layout。必须双端设置/负载协议相同且非qualification。
-    aligned = len(reports) == 2 and reports["python"]["server_settings"] == reports["java"]["server_settings"] and not args.qualification
+    paired = compare_pair(reports.get("python"), reports.get("java"), threshold) if len(reports) == 2 and not args.qualification else None
     for report in reports.values():
-        report["layout_gate"] = aligned
-        report["evaluation"] = evaluate(report, threshold) if not args.qualification else {"pass": False, "qualification_only": True}
+        report.update(collection_status(report))
+        report["layout_gate"] = paired is not None and paired["pass"]
+        report["frozen_threshold_observation"] = evaluate(report, threshold, require_layout=False) if not args.qualification else None
+        report["evaluation"] = paired if paired is not None else {"pass": None, "status": "qualification_only" if args.qualification else "awaiting_matched_counterpart"}
+        report["candidate_capacity_pass"] = paired["candidate_capacity_pass"] if paired is not None else None
         if args.qualification:
             phases = report["warmups"]+report["rounds"]
             report["qualification_pass"] = bool(phases) and all(report.get("correctness", {}).values()) and all(
@@ -381,16 +440,23 @@ async def main_async(args):
         write_json(output / report["runtime"] / "summary.json", report)
     write_json(output / "pair-summary.json", {r: {"layout_gate": v["layout_gate"], "evaluation": v["evaluation"],
         "qualification_pass": v.get("qualification_pass")} for r, v in reports.items()})
+    if len(reports) == 1:
+        report = next(iter(reports.values()))
+        write_json(output / "baseline-summary.json", {"runtime": report["runtime"], "report": report["runtime"]+"/summary.json",
+            "baseline_complete": report["baseline_complete"], "baseline_valid": report["baseline_valid"],
+            "candidate_capacity_pass": None, "frozen_threshold_observation": report["frozen_threshold_observation"]})
     if args.qualification:
         return 0 if reports and all(r["qualification_pass"] for r in reports.values()) else 1
-    return 0 if all(r["evaluation"]["pass"] for r in reports.values()) else 1
+    if paired is None:
+        return 0 if all(r["baseline_complete"] and r["baseline_valid"] for r in reports.values()) else 1
+    return 0 if paired["pass"] else 1
 
 
 def parser():
     result = argparse.ArgumentParser(description=__doc__)
     result.add_argument("--runtime", choices=("python", "java", "both"), default="both")
     result.add_argument("--output", required=True, help="新的gitignored绝对运行目录；拒绝覆盖")
-    result.add_argument("--classpath", required=True, help="Maven dependency:build-classpath输出文件")
+    result.add_argument("--classpath", help="Java端需要Maven dependency:build-classpath文件；Python单端无需")
     result.add_argument("--java-home", default=os.environ.get("JAVA_HOME", "/opt/homebrew/opt/openjdk@21"))
     result.add_argument("--rounds", type=int, default=3)
     result.add_argument("--warmup", type=float, default=120)

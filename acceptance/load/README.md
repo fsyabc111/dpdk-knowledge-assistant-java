@@ -2,6 +2,8 @@
 
 当前是实现入口，尚未运行PG/资格短测/正式容量，不代表通过。运行需主Agent显式分配独占窗口；不与构建、浏览器、故障、其他PG负载并跑。
 
+本次准备已在工作树合并集成`2735147`（merge提交`fc41616`）；3个共享冲突经主Agent授权全取integration原样，最终树与该集成源一致。冻结80b29135与当前backend tree同为`38efd2a4d4ad284726989974bbb521ec4d4801dd`。独立采集/组合改动仅做18项纯测试及CLI/本机只读物理元数据探测，未连接PG或启动服务/测量；实际运行必须绑定本次driver提交和新输出目录，等待主Agent窗口。
+
 共同驱动与统计：`acceptance/load/run.py`；Python副本：`python_server.py`；Java应用：测试classpath的 `io.dpdk.assistant.acceptance.load.CapacityServer`。只绑定127.0.0.1，控制接口有随机key；进程内固定模型、向量和MCP。检索走真实PG活动发布、四腿召回、RRF/MMR/引用，不用假chunk。50ms仅属于实际外部向量调用，叠加真实检索成本；缓存命中不调用向量、不额外加50ms。新TCP基线与P0整段50ms检索替身有明确差异，须重测双端新基线；保留旧证据与全部冻结阈值。
 
 60真实合成账号、bcrypt12、稳定真实token、1作业、同一份每轮运行时随机合成源码、quota100000/正式quota20、10个共享问答槽。分组/端点/节拍/计时见预检与原 `migration/oracle/performance/README.md`；新TCP两端均10ms GET轮询观测讲解终态。两端都保留真实rewrite/query embedding共享缓存（TTL600s/max512）与单飞。Java只提供 `PgReleaseReader.QueryEmbeddingClient` 固定向量外部callback，reader由生产 `RetrievalWiring` 创建；不能以自定义检索服务替换生产缓存/排序。两端固定provider首次实际调用不虚填usage，后续真实cache_hit零调用仍由生产路径记录。
@@ -20,10 +22,25 @@ PYTHONDONTWRITEBYTECODE=1 /Volumes/study/code/new_project/dpdk-knowledge-assista
 
 PG窗口放行后，四个 `DPDK_TEST_PG_URL/USER/PASSWORD/DATA_DIR` 必填；URL指向显式隔离实例的postgres维护库。不要读取旧.env，不把凭据放命令行/证据。共享 `PgIsolation` 生成动态 `p5_capacity_` / `p5_resilience_` 库和精确 `p5-owned:` comment；每次写前核验manifest归属与现场身份。每次新输出目录，拒绝覆盖；默认不删数据库/恢复资产。
 
-资格短测只验证入口，六组请求/账本/时钟完整均满足时返回退出0并写 `qualification_pass=true`；正式 `evaluation.pass` 保持false，永不判容量通过：
+资格短测只验证入口，六组请求/账本/时钟完整均满足时返回退出0并写 `qualification_pass=true`；正式 `evaluation.pass` 保持null，永不判容量通过：
 
 ```sh
 PYTHONDONTWRITEBYTECODE=1 /Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/p0/venv/bin/python -B acceptance/load/run.py --runtime both --qualification --rounds 1 --warmup 2 --measurement 15 --classpath "$PWD/.migration-artifacts/j5-classpath.txt" --output "$PWD/.migration-artifacts/j5-capacity-qualification-001"
+```
+
+Python可单独资格/正式采集，不依赖Java构建或`--classpath`，均须先取得对应独占窗口：
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 /Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/p0/venv/bin/python -B acceptance/load/run.py --runtime python --qualification --rounds 1 --warmup 2 --measurement 15 --output "$PWD/.migration-artifacts/j5-python-qualification-001"
+caffeinate -i env PYTHONDONTWRITEBYTECODE=1 /Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/p0/venv/bin/python -B acceptance/load/run.py --runtime python --rounds 3 --warmup 120 --measurement 600 --output "$PWD/.migration-artifacts/j5-python-baseline-001"
+```
+
+单端完整结果保存于`python/summary.json`和独立`baseline-summary.json`，所有预热/测量逐轮原始文件照常保留。`baseline_complete`表示三轮均有120s预热/600s测量且实际时长完整；`baseline_valid`还要求完整时钟/同步采样覆盖与业务正确性。有效采集退出0；真实超限仍在`frozen_threshold_observation.pass=false`和失败清单中原样保留，不能拿退出0解释为门槛通过。没有另一端时`candidate_capacity_pass=null`、`evaluation.pass=null`，布局门禁不通过；不更改任何冻结门槛或把新Python结果重定为新阈值。
+
+正式采集还保存干净source commit、冻结80b29135的backend tree、负载/边界文件与thresholds指纹、去标识物理机ID、CPU/内存/OS/Python、PG实例/版本/vector/配置等证据。Java日后单独以同样三轮采集（仍需`--classpath`）；离线组合命令不启动服务或PG，必须两端完整且source/负载、布局、物理环境/PG、逐轮六组/错误分母/同步资源/正确性及冻结数值全部满足才返回候选通过，缺任何一方/证据均拒过：
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 /Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/p0/venv/bin/python -B acceptance/load/compare.py --python-report "$PWD/.migration-artifacts/j5-python-baseline-001/python/summary.json" --java-report "$PWD/.migration-artifacts/j5-java-candidate-001/java/summary.json" --output "$PWD/.migration-artifacts/j5-capacity-pair-001.json"
 ```
 
 完整正式测量（至少72分钟+启动/排空/建库；必须等独占窗口）：
