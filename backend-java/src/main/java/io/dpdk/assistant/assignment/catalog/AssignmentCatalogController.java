@@ -83,8 +83,7 @@ public class AssignmentCatalogController {
         requireManager(principal);
         // harness_grading.list_protocols：包装 MCP 调用，失败结构化降级（不 500、
         // 不把故障当作有效空清单——error 字段必须带回错误码）。
-        Deadline deadline = new Deadline(clock.nowUtc().plus(HARNESS_CALL_TIMEOUT),
-                clock.monotonicNanos() + HARNESS_CALL_TIMEOUT.toNanos());
+        Deadline deadline = clock.deadlineAfter(HARNESS_CALL_TIMEOUT);
         HarnessReply reply = harness.call("list_protocols", Map.of(), deadline);
         JsonNode payload = MAPPER.readTree(reply.payloadJson());
         boolean ok = payload.isObject() && payload.path("ok").asBoolean(false);

@@ -74,8 +74,7 @@ public final class GradingInvoker {
             }
         }
         Duration timeout = Duration.ofSeconds(settings.gradingTimeoutSec());
-        Deadline deadline = new Deadline(clock.nowUtc().plus(timeout),
-                clock.monotonicNanos() + timeout.toNanos());
+        Deadline deadline = clock.deadlineAfter(timeout);
         Map<String, Object> args = new LinkedHashMap<>();
         args.put("protocol", protocol);
         args.put("plugin_source", pluginSource);

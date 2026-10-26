@@ -17,4 +17,10 @@ public interface ClockPort {
     long monotonicNanos();
 
     String nextSessionIso();
+
+    /** 外部传输预算，区别于持久化事件；默认使用同一时钟并保留真实单调期限。 */
+    default io.dpdk.assistant.contracts.model.Deadline deadlineAfter(java.time.Duration budget) {
+        return new io.dpdk.assistant.contracts.model.Deadline(nowUtc().plus(budget),
+                monotonicNanos() + budget.toNanos());
+    }
 }
