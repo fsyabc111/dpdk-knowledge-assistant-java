@@ -18,7 +18,7 @@ def wait_state(path,process):
     raise RuntimeError('进程启动超时')
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--out',required=True,type=Path);p.add_argument('--limit',type=int);p.add_argument('--keep',action='store_true');a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--out',required=True,type=Path);p.add_argument('--limit',type=int);p.add_argument('--keep',action='store_true');p.add_argument('--extended',action='store_true');a=p.parse_args()
     out=a.out.resolve();out.mkdir(parents=True,exist_ok=True)
     if (out/'isolation.json').exists():raise RuntimeError('产物轮次目录已存在；请新建输出目录，不覆盖既有证据')
     from migration.oracle.verify import load_manifest
@@ -33,7 +33,10 @@ def main():
         log=(out/'candidate.log').open('w');logs.append(log)
         server=subprocess.Popen([str(ROOT/'acceptance/contract/start_server.sh')],env=env,cwd=ROOT,stdout=log,stderr=subprocess.STDOUT);procs.append(server)
         state=wait_state(out/'server-state.json',server)
-        write(out/'seed.json',seed(h,db,state['control_url']))
+        write(out/'seed.json',seed(h,db,state['control_url'],'ui' if a.extended else 'p0'))
+        if a.extended:
+            from acceptance.contract.extensions import Extensions
+            return 0 if Extensions(h,db,state,upstream,out).run() else 1
         golden=json.loads((ROOT/'migration/fixtures/p0-v2/python-golden.json').read_text())
         collector=Collector(h,db,state,upstream,out);trace,verdict=collector.collect(golden,a.limit)
         status,_,raw=collector.http('GET','/verify-diagnostic',base=state['control_url'])

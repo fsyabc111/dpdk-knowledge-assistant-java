@@ -1,0 +1,256 @@
+{
+  "scope": "本恢复轮实际51请求双端clock无参调用栈；不改变比较时间/容差",
+  "python_observations": 51,
+  "java_observations": 51,
+  "base_source": "Python冻结80b29135，Java原f020efa+root docs/framework/UUID/reference四修复",
+  "findings": [
+    "protocols: Java额外Deadline.wall nowUtc，Python固定MCP边界无墙钟读取",
+    "updateUser: Python提交后清全局token缓存；Java未清，下一assign少一次resolveToken expiry墙钟读取，且角色/配额可能最多60s陈旧",
+    "setEnabled: 事务内撤token后，提交后又调用revokeUserTokens重复DB写和时钟读取；应分离清缓存参与端口",
+    "deleteUsers: token行已事务删除，提交后又调用revokeUserTokens重复墙钟读；应仅清缓存"
+  ],
+  "cases": [
+    {
+      "case_id": "GET /api/assignments/protocols::success",
+      "python_calls": [],
+      "java_calls": [
+        {
+          "case_id": "GET /api/assignments/protocols::success",
+          "thread": "http-nio-127.0.0.1-auto-1-exec-3",
+          "callers": [
+            "io.dpdk.assistant.assignment.catalog.AssignmentCatalogController.listProtocols:86",
+            "io.dpdk.assistant.operations.OperationsMetrics.doFilterInternal:33",
+            "io.dpdk.assistant.platform.web.SecurityHeaders.doFilterInternal:24"
+          ],
+          "value": "2026-10-24T04:00:00.000029+00:00"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "case_id": "GET /api/usage/cost::success",
+      "python_calls": [
+        {
+          "case_id": "GET /api/usage/cost::success",
+          "value": "2026-10-24T04:00:00.000031+00:00",
+          "thread": "MainThread",
+          "callers": [
+            "app/api/usage.py:cost_usage:201"
+          ]
+        }
+      ],
+      "java_calls": [
+        {
+          "case_id": "GET /api/usage/cost::success",
+          "thread": "http-nio-127.0.0.1-auto-1-exec-10",
+          "callers": [
+            "io.dpdk.assistant.usage.UsageQueryController.costUsage:222",
+            "io.dpdk.assistant.operations.OperationsMetrics.doFilterInternal:33",
+            "io.dpdk.assistant.platform.web.SecurityHeaders.doFilterInternal:24"
+          ],
+          "value": "2026-10-24T04:00:00.000032+00:00"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "case_id": "POST /api/internal/purge-sessions::success",
+      "python_calls": [
+        {
+          "case_id": "POST /api/internal/purge-sessions::success",
+          "value": "2026-10-24T04:00:00.000032+00:00",
+          "thread": "asyncio_0",
+          "callers": [
+            "app/services/session_service.py:_purge_expired_sessions_sync:367"
+          ]
+        }
+      ],
+      "java_calls": [
+        {
+          "case_id": "POST /api/internal/purge-sessions::success",
+          "thread": "http-nio-127.0.0.1-auto-1-exec-3",
+          "callers": [
+            "io.dpdk.assistant.session.SessionService.purgeExpired:441",
+            "io.dpdk.assistant.session.SessionController.purgeSessions:205",
+            "io.dpdk.assistant.operations.OperationsMetrics.doFilterInternal:33",
+            "io.dpdk.assistant.platform.web.SecurityHeaders.doFilterInternal:24"
+          ],
+          "value": "2026-10-24T04:00:00.000033+00:00"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "case_id": "PATCH /api/admin/users/{user_id}::success",
+      "python_calls": [],
+      "java_calls": [],
+      "note": ""
+    },
+    {
+      "case_id": "POST /api/admin/users/assign::success",
+      "python_calls": [
+        {
+          "case_id": "POST /api/admin/users/assign::success",
+          "value": "2026-10-24T04:00:00.000035+00:00",
+          "thread": "asyncio_0",
+          "callers": [
+            "app/services/user_service.py:_resolve_token_db:878",
+            "app/services/user_service.py:_resolve_token_sync:860"
+          ]
+        }
+      ],
+      "java_calls": [],
+      "note": ""
+    },
+    {
+      "case_id": "POST /api/admin/users/{user_id}/status::success",
+      "python_calls": [
+        {
+          "case_id": "POST /api/admin/users/{user_id}/status::success",
+          "value": "2026-10-24T04:00:00.000036+00:00",
+          "thread": "asyncio_0",
+          "callers": [
+            "app/services/session_service.py:now_iso:26",
+            "app/services/user_service.py:_revoke_user_tokens_sync:919",
+            "app/services/user_service.py:_set_enabled_sync:287"
+          ]
+        }
+      ],
+      "java_calls": [
+        {
+          "case_id": "POST /api/admin/users/{user_id}/status::success",
+          "thread": "http-nio-127.0.0.1-auto-1-exec-9",
+          "callers": [
+            "io.dpdk.assistant.admin.AdminUserRepository.revokeUserTokensInTx:665",
+            "io.dpdk.assistant.admin.AdminUserRepository.lambda$setEnabled$8:356",
+            "io.dpdk.assistant.admin.AdminUserRepository.lambda$inTx$2:85",
+            "io.dpdk.assistant.platform.tx.SpringTransactionRunner.lambda$required$1:28",
+            "io.dpdk.assistant.platform.tx.SpringTransactionRunner.required:28",
+            "io.dpdk.assistant.admin.AdminUserRepository.inTx:83",
+            "io.dpdk.assistant.admin.AdminUserRepository.setEnabled:346",
+            "io.dpdk.assistant.admin.AdminUserRepository$$SpringCGLIB$$0.setEnabled:-1"
+          ],
+          "value": "2026-10-24T04:00:00.000036+00:00"
+        },
+        {
+          "case_id": "POST /api/admin/users/{user_id}/status::success",
+          "thread": "http-nio-127.0.0.1-auto-1-exec-9",
+          "callers": [
+            "io.dpdk.assistant.auth.UserAuthRepository.revokeUserTokensInTx:518",
+            "io.dpdk.assistant.auth.UserAuthRepository.lambda$revokeUserTokens$7:217",
+            "io.dpdk.assistant.auth.UserAuthRepository.lambda$inTx$0:67",
+            "io.dpdk.assistant.platform.tx.SpringTransactionRunner.lambda$required$1:28",
+            "io.dpdk.assistant.platform.tx.SpringTransactionRunner.required:28",
+            "io.dpdk.assistant.auth.UserAuthRepository.inTx:65",
+            "io.dpdk.assistant.auth.UserAuthRepository.revokeUserTokens:216",
+            "io.dpdk.assistant.auth.UserAuthRepository$$SpringCGLIB$$0.revokeUserTokens:-1"
+          ],
+          "value": "2026-10-24T04:00:00.000037+00:00"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "case_id": "POST /api/admin/users/delete::success",
+      "python_calls": [
+        {
+          "case_id": "POST /api/admin/users/delete::success",
+          "value": "2026-10-24T04:00:00.000052+00:00",
+          "thread": "asyncio_0",
+          "callers": [
+            "app/services/session_service.py:now_iso:26",
+            "app/services/user_service.py:_delete_users_sync:418"
+          ]
+        }
+      ],
+      "java_calls": [
+        {
+          "case_id": "POST /api/admin/users/delete::success",
+          "thread": "http-nio-127.0.0.1-auto-1-exec-10",
+          "callers": [
+            "io.dpdk.assistant.admin.AdminUserRepository.lambda$deleteUsers$9:464",
+            "io.dpdk.assistant.admin.AdminUserRepository.lambda$inTx$2:85",
+            "io.dpdk.assistant.platform.tx.SpringTransactionRunner.lambda$required$1:28",
+            "io.dpdk.assistant.platform.tx.SpringTransactionRunner.required:28",
+            "io.dpdk.assistant.admin.AdminUserRepository.inTx:83",
+            "io.dpdk.assistant.admin.AdminUserRepository.deleteUsers:424",
+            "io.dpdk.assistant.admin.AdminUserRepository$$SpringCGLIB$$0.deleteUsers:-1",
+            "io.dpdk.assistant.admin.AdminController.deleteUsers:341"
+          ],
+          "value": "2026-10-24T04:00:00.000053+00:00"
+        },
+        {
+          "case_id": "POST /api/admin/users/delete::success",
+          "thread": "http-nio-127.0.0.1-auto-1-exec-10",
+          "callers": [
+            "io.dpdk.assistant.auth.UserAuthRepository.revokeUserTokensInTx:518",
+            "io.dpdk.assistant.auth.UserAuthRepository.lambda$revokeUserTokens$7:217",
+            "io.dpdk.assistant.auth.UserAuthRepository.lambda$inTx$0:67",
+            "io.dpdk.assistant.platform.tx.SpringTransactionRunner.lambda$required$1:28",
+            "io.dpdk.assistant.platform.tx.SpringTransactionRunner.required:28",
+            "io.dpdk.assistant.auth.UserAuthRepository.inTx:65",
+            "io.dpdk.assistant.auth.UserAuthRepository.revokeUserTokens:216",
+            "io.dpdk.assistant.auth.UserAuthRepository$$SpringCGLIB$$0.revokeUserTokens:-1"
+          ],
+          "value": "2026-10-24T04:00:00.000054+00:00"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "case_id": "POST /api/assignments::success",
+      "python_calls": [
+        {
+          "case_id": "POST /api/assignments::success",
+          "value": "2026-10-24T04:00:00.000053+00:00",
+          "thread": "asyncio_0",
+          "callers": [
+            "app/services/user_service.py:_resolve_token_db:878",
+            "app/services/user_service.py:_resolve_token_sync:860"
+          ]
+        },
+        {
+          "case_id": "POST /api/assignments::success",
+          "value": "2026-10-24T04:00:00.000054+00:00",
+          "thread": "asyncio_0",
+          "callers": [
+            "app/services/session_service.py:now_iso:26",
+            "app/services/assignment_service.py:_create_assignment_sync:133"
+          ]
+        }
+      ],
+      "java_calls": [
+        {
+          "case_id": "POST /api/assignments::success",
+          "thread": "http-nio-127.0.0.1-auto-1-exec-1",
+          "callers": [
+            "io.dpdk.assistant.auth.UserAuthRepository.lambda$resolveToken$4:186",
+            "io.dpdk.assistant.auth.UserAuthRepository.lambda$inTx$0:67",
+            "io.dpdk.assistant.platform.tx.SpringTransactionRunner.lambda$required$1:28",
+            "io.dpdk.assistant.platform.tx.SpringTransactionRunner.required:28",
+            "io.dpdk.assistant.auth.UserAuthRepository.inTx:65",
+            "io.dpdk.assistant.auth.UserAuthRepository.resolveToken:175",
+            "io.dpdk.assistant.auth.UserAuthRepository$$SpringCGLIB$$0.resolveToken:-1",
+            "io.dpdk.assistant.auth.AuthPrincipalResolver.resolve:52"
+          ],
+          "value": "2026-10-24T04:00:00.000055+00:00"
+        },
+        {
+          "case_id": "POST /api/assignments::success",
+          "thread": "http-nio-127.0.0.1-auto-1-exec-1",
+          "callers": [
+            "io.dpdk.assistant.assignment.catalog.AssignmentCatalogRepository.createAssignment:84",
+            "io.dpdk.assistant.assignment.catalog.AssignmentCatalogRepository$$SpringCGLIB$$0.createAssignment:-1",
+            "io.dpdk.assistant.assignment.catalog.AssignmentCatalogService.createAssignment:23",
+            "io.dpdk.assistant.assignment.catalog.AssignmentCatalogController.createAssignment:129",
+            "io.dpdk.assistant.operations.OperationsMetrics.doFilterInternal:33",
+            "io.dpdk.assistant.platform.web.SecurityHeaders.doFilterInternal:24"
+          ],
+          "value": "2026-10-24T04:00:00.000056+00:00"
+        }
+      ],
+      "note": "旧label在最后HTTP后未重置，raw后续auth/事务被误标同case；此处仅取已确认的前两条该HTTP生产调用，已修复未来标记。"
+    }
+  ],
+  "normalization": "无新增时间归一化/容差；probe只记录，不调整生产时钟返回值。"
+}

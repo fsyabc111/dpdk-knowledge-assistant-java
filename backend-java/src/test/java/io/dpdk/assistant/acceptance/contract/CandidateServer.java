@@ -29,14 +29,29 @@ public final class CandidateServer {
         private final AtomicLong ticks = new AtomicLong();
         private Instant last = Instant.EPOCH;
         private volatile boolean frozen=false;
+        private volatile String caseId="setup";
+        private final java.util.List<Map<String,Object>> calls=new java.util.concurrent.CopyOnWriteArrayList<>();
+        public void caseId(String value){caseId=value;}
+        public java.util.List<Map<String,Object>> calls(){return java.util.List.copyOf(calls);}
         public synchronized void set(Instant value) { base=value; ticks.set(0); last=Instant.EPOCH; }
-        public Instant nowUtc() { return frozen?base:base.plusNanos(ticks.getAndIncrement()*1000); }
+        public Instant nowUtc() {
+            Instant value=frozen?base:base.plusNanos(ticks.getAndIncrement()*1000);
+            var stack=StackWalker.getInstance().walk(frames->frames.filter(f->f.getClassName().startsWith("io.dpdk.assistant.")&&!f.getClassName().startsWith("io.dpdk.assistant.acceptance.contract.")).limit(8).map(f->f.getClassName()+"."+f.getMethodName()+":"+f.getLineNumber()).toList());
+            calls.add(Map.of("case_id",caseId,"value",SystemClockAdapter.pythonIso(value),"thread",Thread.currentThread().getName(),"callers",stack));
+            return value;
+        }
         public void freeze(Instant value) { set(value);frozen=true; }
         public long monotonicNanos() { return System.nanoTime(); }
         public synchronized String nextSessionIso() {
             Instant current=nowUtc(); if(frozen)return SystemClockAdapter.pythonIso(current); if (!current.isAfter(last)) current=last.plusNanos(1000);
             last=current;return SystemClockAdapter.pythonIso(current);
         }
+    }
+    /** 对应P0 approved deterministic_id_port：只注入熵源，仍由真实writer派生grade身份。 */
+    private static java.util.UUID gradeUuid(long value) {
+        char[] letters=new char[8];for(int i=7;i>=0;i--){letters[i]="abcdef".charAt((int)(value%6));value/=6;}
+        char[] hex=("abcdefab"+new String(letters)+"abcdefabcdefabcd").toCharArray();hex[12]='4';hex[16]=Character.forDigit((Character.digit(hex[16],16)&3)|8,16);
+        String v=new String(hex);return java.util.UUID.fromString(v.substring(0,8)+"-"+v.substring(8,12)+"-"+v.substring(12,16)+"-"+v.substring(16,20)+"-"+v.substring(20));
     }
     private static String required(String key) {
         String value=System.getenv(key);
@@ -69,12 +84,14 @@ public final class CandidateServer {
         settings.put("dpdk.harness.url",upstream+"/mcp");
         settings.put("dpdk.maintenance.api-key","p0-synthetic-maintenance");
         FixedClock clock=new FixedClock();
+        java.util.concurrent.atomic.AtomicLong gradeIds=new java.util.concurrent.atomic.AtomicLong();
         var boundaryGate=new io.dpdk.assistant.model.UpstreamGate(20);
         var chatBoundary=new io.dpdk.assistant.model.OpenAiCompatibleChatClient(new io.dpdk.assistant.model.ChatClientSettings(upstream+"/v1","synthetic","qwen3.8-flash",2048,3,.5,90,true),boundaryGate);
         var embeddingBoundary=new io.dpdk.assistant.model.OpenAiCompatibleEmbeddingClient(new io.dpdk.assistant.model.EmbeddingClientSettings(upstream+"/v1","synthetic","text-embedding-v4",10,5,1,60,()->0d),boundaryGate);
         var ctx=new SpringApplicationBuilder(Application.class).initializers(context->{
             context.getEnvironment().getPropertySources().addFirst(new org.springframework.core.env.MapPropertySource("j5-explicit",settings));
             ((GenericApplicationContext)context).registerBean("j5Clock",ClockPort.class,()->clock,d->d.setPrimary(true));
+            ((GenericApplicationContext)context).registerBean("j5GradeUuid",io.dpdk.assistant.contracts.platform.UuidPort.class,()->()->gradeUuid(gradeIds.incrementAndGet()),d->d.setPrimary(true));
             // 仅替换外部客户端传输，Model*Properties/EmbeddingConfig和真正fingerprint仍为冻结逻辑配置。
             ((GenericApplicationContext)context).registerBean("j5ChatBoundary",io.dpdk.assistant.model.OpenAiCompatibleChatClient.class,()->chatBoundary,d->{d.setPrimary(true);d.setDestroyMethodName("close");});
             ((GenericApplicationContext)context).registerBean("j5EmbeddingBoundary",io.dpdk.assistant.model.OpenAiCompatibleEmbeddingClient.class,()->embeddingBoundary,d->{d.setPrimary(true);d.setDestroyMethodName("close");});
@@ -165,6 +182,15 @@ public final class CandidateServer {
             }catch(Exception failure){byte[] bytes=JSON.writeValueAsBytes(Map.of("status","失败","error_type",failure.getClass().getSimpleName()));exchange.sendResponseHeaders(500,bytes.length);exchange.getResponseBody().write(bytes);}
             finally{if(original!=null)try(var c=ds.getConnection();var q=c.prepareStatement("UPDATE rag_releases SET configuration=? WHERE id='p0-synthetic-release-1'")){q.setString(1,original);q.executeUpdate();}catch(Exception failedRestore){System.err.println("J5_FINGERPRINT_RESTORE_FAILED");}exchange.close();}
         });
+        control.createContext("/clock-case",exchange->{try{clock.caseId(new String(exchange.getRequestBody().readAllBytes(),StandardCharsets.UTF_8));exchange.sendResponseHeaders(204,-1);}finally{exchange.close();}});
+        control.createContext("/clock-log",exchange->{try{byte[] bytes=JSON.writeValueAsBytes(clock.calls());exchange.sendResponseHeaders(200,bytes.length);exchange.getResponseBody().write(bytes);}finally{exchange.close();}});
+        control.createContext("/auth-profile",exchange->{try{
+            var payload=JSON.readTree(exchange.getRequestBody());String mode=payload.path("mode").asText();
+            if(!java.util.Set.of("local","token","account").contains(mode))throw new IllegalArgumentException("unknown mode");
+            String spec=payload.has("tokens")?JSON.writeValueAsString(payload.get("tokens")):"{}";
+            ctx.getBean(io.dpdk.assistant.auth.AuthSettingsProvider.class).replace(io.dpdk.assistant.auth.AuthServerSettings.of(mode,spec,7,8,4,10000));
+            byte[] bytes=JSON.writeValueAsBytes(Map.of("mode",mode,"status","configured"));exchange.sendResponseHeaders(200,bytes.length);exchange.getResponseBody().write(bytes);
+        }catch(Exception failed){exchange.sendResponseHeaders(400,-1);}finally{exchange.close();}});
         control.start();
         Runtime.getRuntime().addShutdownHook(new Thread(()->{control.stop(0);ctx.close();}));
         Map<String,Object> ready=Map.of("base_url","http://127.0.0.1:"+((WebServerApplicationContext)ctx).getWebServer().getPort(),

@@ -9,7 +9,7 @@ import threading
 import time
 
 class ScriptState:
-    def __init__(self): self.lock=threading.Lock();self.calls=[];self.jobs={};self.delay=0
+    def __init__(self): self.lock=threading.Lock();self.calls=[];self.jobs={};self.delay=0;self.tool_rounds=1;self.plan="kb"
     def record(self, **row):
         with self.lock:self.calls.append(row)
     def snapshot(self):
@@ -47,7 +47,7 @@ class Handler(BaseHTTPRequestHandler):
         try: data=json.loads(self.request_body() or b'{}')
         except Exception:return self.respond({'detail':'invalid JSON'},400)
         if self.path=='/control':
-            STATE.delay=float(data.get('delay',0));return self.respond({'ok':True})
+            STATE.delay=float(data.get('delay',0));STATE.tool_rounds=int(data.get('tool_rounds',1));STATE.plan=str(data.get('plan','kb'));return self.respond({'ok':True})
         if self.path.endswith('/embeddings'):
             texts=data.get('input',[]);texts=[texts] if isinstance(texts,str) else texts
             STATE.record(kind='embedding',items=len(texts));return self.respond({'data':[{'index':i,'embedding':[1.0]+[0.0]*1023} for i,_ in enumerate(texts)],'usage':{'prompt_tokens':len(texts),'total_tokens':len(texts)}})
@@ -55,12 +55,18 @@ class Handler(BaseHTTPRequestHandler):
             STATE.record(kind='llm',tool_definitions=len(data.get('tools',[])))
             if STATE.delay:time.sleep(STATE.delay)
             messages=data.get('messages',[]);last_user=max((i for i,x in enumerate(messages) if x.get('role')=='user'),default=-1)
-            has_tool=any(x.get('role')=='tool' for x in messages[last_user+1:])
+            tools=[x for x in messages[last_user+1:] if x.get('role')=='tool'];has_tool=len(tools)>=STATE.tool_rounds
+            if tools:
+                for item in tools:
+                    try:
+                        value=json.loads(item.get('content','{}'));chunks=value.get('data',{}).get('chunks',[])
+                        if chunks:STATE.record(kind='tool_refs',refs=[c.get('ref') for c in chunks],sections=[c.get('section') for c in chunks])
+                    except (ValueError,AttributeError):pass
             text=str(messages)
             if data.get('tools') and not has_tool:
-                msg={'role':'assistant','content':'','tool_calls':[{'id':'p0-call-1','type':'function','function':{'name':'kb_search','arguments':'{"query":"DNS"}'}}]};tokens=(20,4)
+                msg={'role':'assistant','content':'','tool_calls':[{'id':'p0-call-1' if STATE.tool_rounds==1 else 'p5-call-'+str(len(tools)+1),'type':'function','function':{'name':'grade_plugin' if STATE.plan=='grade' else 'kb_search','arguments':'{"protocol":"dns","plugin_source":"/* model echo is not the execution source */"}' if STATE.plan=='grade' else '{"query":"DNS"}'}}]};tokens=(20,4)
             elif not data.get('tools') and messages and 'supported' in str(messages[0].get('content','')):msg={'role':'assistant','content':'{"status":"answered","supported":true}'};tokens=(20,4)
-            else:msg={'role':'assistant','content':'DNS 解析报文中的域名 [1]。'};tokens=(30,8)
+            else:msg={'role':'assistant','content':'评测结果为80分。' if STATE.plan=='grade' else 'DNS 解析报文中的域名 [1]。'};tokens=(30,8)
             return self.respond({'id':'j5-fixed','object':'chat.completion','model':'synthetic-model','choices':[{'index':0,'message':msg,'finish_reason':'tool_calls' if 'tool_calls' in msg else 'stop'}], 'usage':{'prompt_tokens':tokens[0],'completion_tokens':tokens[1],'total_tokens':sum(tokens)}})
         if self.path.startswith('/mcp'):
             method=data.get('method');rid=data.get('id')

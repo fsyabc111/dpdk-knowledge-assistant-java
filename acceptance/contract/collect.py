@@ -92,6 +92,7 @@ class Collector:
         if isinstance(value,list):return [self.resolve(v) for v in value]
         return value
     def request(self,g):
+        self.http('POST','/clock-case',raw=g['case_id'].encode(),base=self.server['control_url'])
         req=g['request'];actor=req.get('actor','');inp=self.resolve(copy.deepcopy(req.get('input')));params=self.resolve(req.get('params'));pathp=self.resolve(req.get('path_parameters',{}));path=req['path_template']
         for k,v in pathp.items():path=path.replace('{'+k+'}',str(v))
         if isinstance(inp,dict):
@@ -148,6 +149,7 @@ class Collector:
         for i,g in enumerate(golden['observations']):
             if limit is not None and i>=limit:break
             self.request(g)
+        self.http('POST','/clock-case',raw=b'auth-vector-group',base=self.server['control_url'])
         auth_before=snapshot(self.h,self.db)
         st,_,raw=self.http('POST','/auth-vector',payload={'student_token':self.tokens.get('student_a',''),'disabled_token':self.tokens.get('disabled','')},base=self.server['control_url'])
         auth_result=json.loads(raw);write(self.out/'auth-vector.json',auth_result)
@@ -156,6 +158,7 @@ class Collector:
         auth_step={'case_id':'auth-vector-group',**step(auth_before,auth_after)}
         tx_cases=[]
         for gcase in golden['transaction_cases']:
+            self.http('POST','/clock-case',raw=gcase['case_id'].encode(),base=self.server['control_url'])
             before=snapshot(self.h,self.db)
             st,_,raw=self.http('POST','/transaction',raw=gcase['case_id'].encode(),base=self.server['control_url'])
             result=json.loads(raw);after=snapshot(self.h,self.db)
@@ -178,6 +181,7 @@ class Collector:
         trace={'version':'p0-v2','baseline_id':BASELINE,'fixture_version':'p0-v2','business_initial':initial,'observations':self.observations,
             'auth_state_step':auth_step,'transaction_cases':tx_cases,'upstream_vectors':upstream,'semantic_vectors':semantic,
             'state':{'counts':counts,'associations':associations,'source_marker_hits':marker_hits,'business':final}}
+        write(self.out/'java-clock-calls.json',json.load(urlopen(self.server['control_url']+'/clock-log')))
         write(self.out/'java-candidate-trace-p0-v2.json',trace);write(self.out/'collection-blockers.json',self.blocked)
         try:compare(golden,trace);verdict={'status':'pass'}
         except (Difference,InvalidTrace) as e:verdict={'status':'difference','detail':str(e)}
