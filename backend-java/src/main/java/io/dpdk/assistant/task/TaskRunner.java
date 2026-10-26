@@ -194,7 +194,7 @@ public final class TaskRunner {
             boolean interruptedOnExit = Thread.interrupted();
             try {
                 try {
-                    executor.afterCompletion(managed.context);
+                    executor.afterCompletion(managed.context, managed.messageId() == null ? null : result);
                 } catch (RuntimeException completionFailure) {
                     LOG.warning("[task_completion_failed] task_id=" + managed.taskId
                             + " error_type=" + completionFailure.getClass().getSimpleName());

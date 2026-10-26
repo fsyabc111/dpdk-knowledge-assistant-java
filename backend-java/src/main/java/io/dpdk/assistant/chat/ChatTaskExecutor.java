@@ -35,7 +35,10 @@ public final class ChatTaskExecutor implements TaskExecutor {
     private final ConcurrentMap<String, Map<String, Object>> explainContexts =
             new ConcurrentHashMap<>();
     private record PendingUsage(UsageCore.UsageRecorder recorder, String requestId, String subject,
-                                String sessionId) {}
+                                String sessionId, long startedNanos, RequestMetrics metrics) {}
+    private volatile io.dpdk.assistant.contracts.observability.ProcessMetrics metrics = io.dpdk.assistant.contracts.observability.ProcessMetrics.NONE;
+    public void setMetrics(io.dpdk.assistant.contracts.observability.ProcessMetrics metrics) { this.metrics = java.util.Objects.requireNonNull(metrics); }
+    private final ConcurrentMap<String, Long> preparedStarts = new ConcurrentHashMap<>();
     private final ConcurrentMap<String, PendingUsage> completionUsage = new ConcurrentHashMap<>();
     private volatile Function<TaskExecutionContext, Map<String, Object>> explainResolver =
             c -> null;
@@ -101,10 +104,11 @@ public final class ChatTaskExecutor implements TaskExecutor {
 
     public Prepared prepare(String sessionId, String requestId, String subject) {
         ensureAvailable();
+        long preparedStarted = System.nanoTime();
         UsageCore.UsageRecorder recorder = new UsageCore.UsageRecorder(subject, sessionId);
         try {
             return new Prepared(
-                    ChatMemory.build(sessionId, sessions, tx, summaryModel(recorder), settings));
+                    ChatMemory.build(sessionId, sessions, tx, summaryModel(recorder), settings), preparedStarted);
         } finally {
             if (requestId != null) flushUsage(recorder, requestId, subject, sessionId);
         }
@@ -158,7 +162,8 @@ public final class ChatTaskExecutor implements TaskExecutor {
         }
     }
 
-    public record Prepared(ChatMemory.View memory) {
+    public record Prepared(ChatMemory.View memory, long startedNanos) {
+        public Prepared(ChatMemory.View memory) { this(memory, System.nanoTime()); }
         public String retrievalContext() {
             return memory.retrievalContext();
         }
@@ -166,6 +171,7 @@ public final class ChatTaskExecutor implements TaskExecutor {
 
     public void bindPrepared(String taskId, Prepared prepared, Map<String, Object> explain) {
         preparedMemory.put(taskId, prepared.memory());
+        preparedStarts.put(taskId, prepared.startedNanos());
         if (explain != null) explainContexts.put(taskId, new LinkedHashMap<>(explain));
     }
 
@@ -175,10 +181,12 @@ public final class ChatTaskExecutor implements TaskExecutor {
         ensureAvailable();
         UsageCore.UsageRecorder recorder =
                 new UsageCore.UsageRecorder(context.subject(), context.sessionId());
+        Long started = preparedStarts.remove(context.taskId());
+        RequestMetrics requestMetrics = new RequestMetrics(metrics);
         completionUsage.put(context.taskId(), new PendingUsage(recorder, context.requestId(),
-                context.subject(), context.sessionId()));
+                context.subject(), context.sessionId(), started == null ? System.nanoTime() : started, requestMetrics));
         ExecutorService wall = Executors.newVirtualThreadPerTaskExecutor();
-        Future<TaskExecutionResult> future = wall.submit(() -> candidate(context, emit, recorder));
+        Future<TaskExecutionResult> future = wall.submit(() -> candidate(context, emit, recorder, requestMetrics));
         try {
             return future.get(settings.requestTimeout().toMillis(), TimeUnit.MILLISECONDS);
         } catch (TimeoutException timeout) {
@@ -217,13 +225,20 @@ public final class ChatTaskExecutor implements TaskExecutor {
         }
     }
 
-    @Override public void afterCompletion(TaskExecutionContext context) {
+    @Override public void afterCompletion(TaskExecutionContext context) { afterCompletion(context,null); }
+
+    @Override public void afterCompletion(TaskExecutionContext context, TaskExecutionResult persisted) {
         PendingUsage pending = completionUsage.remove(context.taskId());
-        if (pending != null) flushUsage(pending.recorder(), pending.requestId(), pending.subject(), pending.sessionId());
+        if (pending != null) {
+            if (persisted != null) metrics.rag(persisted.status(), persisted.reason(), (System.nanoTime()-pending.startedNanos())/1e9);
+            flushUsage(pending.recorder(), pending.requestId(), pending.subject(), pending.sessionId());
+            pending.metrics().publish();
+        }
     }
 
     private TaskExecutionResult candidate(
-            TaskExecutionContext c, Consumer<TaskEvent> emit, UsageCore.UsageRecorder recorder)
+            TaskExecutionContext c, Consumer<TaskEvent> emit, UsageCore.UsageRecorder recorder,
+            io.dpdk.assistant.contracts.observability.ProcessMetrics metrics)
             throws Exception {
         long candidateStarted = System.nanoTime();
         ChatMemory.View memory = preparedMemory.get(c.taskId());
@@ -245,7 +260,7 @@ public final class ChatTaskExecutor implements TaskExecutor {
                                 retrieval.searchPinned(
                                         retrieval.pin(release),
                                         new SearchInput(query, null, conversation),
-                                        limit, recorder);
+                                        limit, recorder, metrics);
                         if (result.trace() instanceof RetrievalTrace trace) {
                             retrievalFailure[0] = trace.blockedReason();
                             return trace.nodes().stream()
@@ -321,6 +336,7 @@ public final class ChatTaskExecutor implements TaskExecutor {
                         deps,
                         c.taskId(),
                         c.sourceText());
+        tools.metrics = metrics;
         Map<String, Object> explain = null;
         if ("explain".equals(c.purpose())) {
             explain = explainContexts.get(c.taskId());
@@ -366,8 +382,10 @@ public final class ChatTaskExecutor implements TaskExecutor {
                                 reply == null ? null : reply.usage());
                     }
                 };
-        var result =
-                new AgentOrchestrator(recordingModel, agentSettings)
+        AgentOrchestrator.AgentRunResult result = null;
+        long generationStarted = System.nanoTime();
+        try {
+            result = new AgentOrchestrator(recordingModel, agentSettings)
                         .runProduct(
                                 c.subject(),
                                 c.roles(),
@@ -392,6 +410,11 @@ public final class ChatTaskExecutor implements TaskExecutor {
                                     // Agent token/delta 禁止直接下发，保存后由 TaskEventStreams 发送正文。
                                 },
                                 tools);
+        } finally {
+            boolean fallback = (result != null && result.fallback) || retrievalFailure[0] != null;
+            metrics.llm("llama_index", fallback ? "fallback" : "success", (System.nanoTime()-generationStarted)/1e9);
+            if (fallback) metrics.fallback();
+        }
         if (Thread.currentThread().isInterrupted()) throw new InterruptedException();
         if (result.fallback || result.tokensUsed > settings.requestTokenBudget())
             return new TaskExecutionResult(
@@ -465,7 +488,7 @@ public final class ChatTaskExecutor implements TaskExecutor {
                         result.answer,
                         evidence,
                         timedJudge,
-                        judgeBudget(candidateStarted));
+                        judgeBudget(candidateStarted), metrics);
         List<CitationData> citations =
                 result.collectedChunks.stream()
                         .map(

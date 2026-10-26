@@ -29,6 +29,11 @@ public interface TaskExecutor {
      */
     default void afterCompletion(TaskExecutionContext context) {}
 
+    /** 持久化成功时传结论；失败或取消传null，兼容只需收尾的执行体。 */
+    default void afterCompletion(TaskExecutionContext context, TaskExecutionResult persisted) {
+        afterCompletion(context);
+    }
+
     /** 执行上下文：受理/恢复装配后的完整输入（原始问题与寄存执行源在此）。 */
     record TaskExecutionContext(
             String taskId,

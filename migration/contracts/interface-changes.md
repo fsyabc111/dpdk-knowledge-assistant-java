@@ -187,3 +187,9 @@ TaskExecutor新增default afterCompletion(context)，由TaskRunner在finish尝�
 ## P5过程指标补全（用户直接裁决2026-10-26）
 
 用户在异步决定中选择“补齐源过程指标（保持冻结兼容默认）”；不接受将12类过程指标unavailable与counter→持久gauge直接当作P5豁免。新增contracts.observability.ProcessMetrics类型化观测端口，业务传系统枚举/耗时/字节数/token/cost，不传用户、问题或源码；正式实现提供源counter/histogram，旧纯构造可用NONE，不作为正式应用装配。用量过程计数消费实际成功写入的条目，而非可下降的留存快照。Python专属运行时项按JVM真实能力明确映射，不伪造Python runtime。根集成者写端口和业务hook/装配，operations独占过程collector/HTTP exporter/测试。
+
+### P5过程观测接线与收尾
+
+请求RequestMetrics仅保存系统枚举/数值，累计多轮检索和rewrite/embedding阶段，在finish之后、usage刷账之后发布一次；工具和validation按源即时记录，重放不新发事件。RAG完成指标在实际持久化结论可用后记录，失败/取消不伪称完成。TaskExecutor保留旧afterCompletion(context)，增加带persisted结论的兼容重载，由Runner在终态闩锁前调用；无源码放入观测对象。UsageLedgerStore在实际事务commit后才向过程counter发UsageSample，rollback不发、后续留存删除不倒减。静态/纯构造用NONE，正式ObservabilityWiring唯一registry与所有consumer接线，默认/metrics导出进程counter/histogram。
+
+本片在Python正式容量CPU窗口内仅编写/提交，尚未执行新源码编译/测试；新增请求累计、真产品PG/重放、实际usage提交/回滚/留存回归待窗口结束运行，不能继承旧gauge诊断PASS。新JVM运行时映射及默认HTTP响应的真实验收同样pending。

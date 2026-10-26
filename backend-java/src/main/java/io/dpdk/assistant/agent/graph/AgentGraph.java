@@ -170,20 +170,25 @@ public final class AgentGraph {
         while (true) {
             String route = routeAfterPlanner(state);
             if (route.equals("END")) {
-                return new GraphResult(state);
+                return finish(state);
             }
             if (route.equals("finalize")) {
                 finalizeNode(state, listener);
-                return new GraphResult(state);
+                return finish(state);
             }
             runTools(state, listener);
             // tools 回填后若预算已爆，跳过下一次 planner 调用直接 finalize。
             if (tokenBudget > 0 && state.tokensUsed >= tokenBudget) {
                 finalizeNode(state, listener);
-                return new GraphResult(state);
+                return finish(state);
             }
             planner(state, listener);
         }
+    }
+
+    private GraphResult finish(GraphState state) {
+        if (toolContext != null) toolContext.metrics.agentTokens(state.tokensUsed);
+        return new GraphResult(state);
     }
 
     private static AgentRunListener noop() {
@@ -228,6 +233,7 @@ public final class AgentGraph {
         List<AgentMessage> outputs = new ArrayList<>();
         boolean sawKbSearch = false;
         for (ToolCallSpec call : last.toolCalls()) {
+            long toolStarted = System.nanoTime();
             Map<String, Object> result;
             AgentTool tool = toolsByName.get(call.name());
             if (tool == null) {
@@ -258,6 +264,12 @@ public final class AgentGraph {
                 }
             }
             String content = PythonJson.dumps(result, false);
+            if (toolContext != null) {
+                // 源metric虽名为bytes，实际口径为Python Unicode字符串len。
+                toolContext.metrics.tool(tool == null ? "unknown" : call.name(),
+                        Boolean.TRUE.equals(result.get("ok")), tool == null ? 0 : (System.nanoTime()-toolStarted)/1e9,
+                        tool == null ? 0 : content.codePointCount(0, content.length()));
+            }
             outputs.add(AgentMessage.tool(call.name(), call.id(), content));
             listener.onToolEnd(ToolSummaries.toolEventSummary(call.name(), content));
             if ("kb_search".equals(call.name())) {

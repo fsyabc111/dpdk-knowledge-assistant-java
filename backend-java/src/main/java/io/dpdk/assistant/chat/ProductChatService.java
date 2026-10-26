@@ -22,6 +22,9 @@ public final class ProductChatService {
     private final ChatTaskExecutor executor;
     private final ChatSettings settings;
     private final SlidingWindowRateLimiter limiter;
+    private volatile io.dpdk.assistant.contracts.observability.ProcessMetrics metrics =
+            io.dpdk.assistant.contracts.observability.ProcessMetrics.NONE;
+    public void setMetrics(io.dpdk.assistant.contracts.observability.ProcessMetrics metrics) { this.metrics=Objects.requireNonNull(metrics); }
 
     public ProductChatService(
             RagTaskService tasks,
@@ -46,7 +49,11 @@ public final class ProductChatService {
             TaskRecordRow row) {}
 
     public void checkRateLimit(String subject) {
-        limiter.check(subject);
+        try { limiter.check(subject); }
+        catch (io.dpdk.assistant.platform.errors.ApiDetailException limited) {
+            if(limited.status().value()==429) metrics.rateLimit("per_minute");
+            throw limited;
+        }
     }
 
     public StartResult start(Principal principal, ChatInput input) {
@@ -162,6 +169,7 @@ public final class ProductChatService {
         } catch (io.dpdk.assistant.platform.errors.ApiDetailException
                 | TaskExceptions.TaskConflictException
                 | io.dpdk.assistant.usage.QuotaExceededException failure) {
+            if(failure instanceof io.dpdk.assistant.usage.QuotaExceededException) metrics.rateLimit("daily_quota");
             throw failure;
         } catch (RuntimeException failed) {
             throw ChatRequestParser.error(503, "服务暂时不可用，请保留问题后重试");

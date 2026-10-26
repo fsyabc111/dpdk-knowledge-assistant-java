@@ -26,6 +26,13 @@ public class UsageLedgerStore {
     public static final int MAX_QUERY_ROWS = 20000;
 
     private final TransactionRunner runner;
+    private volatile io.dpdk.assistant.contracts.observability.ProcessMetrics metrics =
+            io.dpdk.assistant.contracts.observability.ProcessMetrics.NONE;
+
+    @org.springframework.beans.factory.annotation.Autowired
+    public void setMetrics(io.dpdk.assistant.contracts.observability.ProcessMetrics metrics) {
+        this.metrics=java.util.Objects.requireNonNull(metrics);
+    }
 
     public UsageLedgerStore(TransactionRunner runner) {
         this.runner = runner;
@@ -40,11 +47,12 @@ public class UsageLedgerStore {
         String placeholders = "?" + ", ?".repeat(UsageLedgerRow.COLUMNS.size() - 1);
         String sql = "INSERT INTO upstream_usage_records(" + columns + ") VALUES ("
                 + placeholders + ")";
-        return runner.required((DbTx tx) -> {
+        List<UsageLedgerRow> accepted=List.copyOf(rows);
+        int written=runner.required((DbTx tx) -> {
             try {
                 Connection conn = tx.connection();
                 try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                    for (UsageLedgerRow row : rows) {
+                    for (UsageLedgerRow row : accepted) {
                         List<Object> values = row.values();
                         for (int i = 0; i < values.size(); i++) {
                             ps.setObject(i + 1, values.get(i));
@@ -53,11 +61,23 @@ public class UsageLedgerStore {
                     }
                     ps.executeBatch();
                 }
-                return rows.size();
+                return accepted.size();
             } catch (SQLException e) {
                 throw new IllegalStateException("usage ledger write failure", e);
             }
         });
+        Runnable observed=() -> accepted.forEach(row -> metrics.usage(
+                new io.dpdk.assistant.contracts.observability.ProcessMetrics.UsageSample(
+                        row.stage(),row.kind(),row.usageSource(),row.model(),row.currency(),row.totalTokens(),
+                        row.costMicros()==null?null:row.costMicros().longValue())));
+        if(org.springframework.transaction.support.TransactionSynchronizationManager.isActualTransactionActive()
+                && org.springframework.transaction.support.TransactionSynchronizationManager.isSynchronizationActive()) {
+            org.springframework.transaction.support.TransactionSynchronizationManager.registerSynchronization(
+                    new org.springframework.transaction.support.TransactionSynchronization() {
+                        @Override public void afterCommit() { observed.run(); }
+                    });
+        } else observed.run();
+        return written;
     }
 
     /**

@@ -141,6 +141,20 @@ public final class PgReleaseReader implements ReleaseReader {
     /** 业务请求显式携带自己的recorder；旧纯检索调用仍可传null保持透明。 */
     public SearchResult searchPinned(ReleaseSnapshot snapshot, SearchInput input, int limit,
                                     UsageCore.UsageRecorder usage) {
+        return searchPinned(snapshot,input,limit,usage,
+                io.dpdk.assistant.contracts.observability.ProcessMetrics.NONE);
+    }
+
+    /** 观测也由请求显式携带；原题verify/CLI无RequestTrace时不伪造检索阶段事件。 */
+    public SearchResult searchPinned(ReleaseSnapshot snapshot, SearchInput input, int limit,
+            UsageCore.UsageRecorder usage, io.dpdk.assistant.contracts.observability.ProcessMetrics metrics) {
+        long started=System.nanoTime();
+        try { return searchObserved(snapshot,input,limit,usage,metrics); }
+        finally { metrics.retrieval((System.nanoTime()-started)/1e9); }
+    }
+
+    private SearchResult searchObserved(ReleaseSnapshot snapshot, SearchInput input, int limit,
+            UsageCore.UsageRecorder usage, io.dpdk.assistant.contracts.observability.ProcessMetrics metrics) {
         String releaseId = snapshot == null ? "" : orEmpty(snapshot.releaseId());
         if (input == null || input.question() == null) {
             throw new IllegalArgumentException("SearchInput.question 不能为空");
@@ -162,13 +176,18 @@ public final class PgReleaseReader implements ReleaseReader {
         }
 
         String query = input.question();
-        String rewritten = rewriter.rewrite(query, input.conversationContext(), usage);
+        long rewriteStarted=System.nanoTime();
+        String rewritten;
+        try { rewritten = rewriter.rewrite(query, input.conversationContext(), usage); }
+        finally { metrics.retrievalStage("rewrite",(System.nanoTime()-rewriteStarted)/1e9); }
 
         double[] queryEmbedding;
         if (input.queryVector() != null) {
             queryEmbedding = VectorMath.toDoubles(input.queryVector().values());
         } else if (embeddingPort != null || queryEmbeddingClient != null) {
-            queryEmbedding = queryEmbedding(query, rewritten, usage);
+            long embeddingStarted=System.nanoTime();
+            try { queryEmbedding = queryEmbedding(query, rewritten, usage); }
+            finally { metrics.retrievalStage("embedding",(System.nanoTime()-embeddingStarted)/1e9); }
         } else {
             queryEmbedding = new double[0];
         }

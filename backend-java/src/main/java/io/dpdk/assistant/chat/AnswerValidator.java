@@ -38,6 +38,16 @@ public final class AnswerValidator {
 
     private AnswerValidator() {}
 
+    public static Verdict validate(String question, String answer, Map<String,Object> evidence,
+            Judge judge, java.time.Duration timeout,
+            io.dpdk.assistant.contracts.observability.ProcessMetrics metrics) {
+        long started = System.nanoTime();
+        Verdict verdict = validate(question, answer, evidence, judge, timeout);
+        metrics.validation(Thread.currentThread().isInterrupted() ? "cancelled" : verdict.status(),
+                (System.nanoTime()-started)/1e9);
+        return verdict;
+    }
+
     public static Verdict validate(
             String question,
             String answer,

@@ -64,25 +64,32 @@ public class ChatWiring {
             ObjectProvider<PgReleaseReader> retrieval, ObjectProvider<HarnessPort> harness,
             TaskStore tasks, TaskGradeLedger grades, UsageCounterStore quotas,
             UsageLedgerStore usage, ChatSettings settings, ExplainDataService explain,
-            UsageRecordingPolicy policy) {
+            UsageRecordingPolicy policy, io.dpdk.assistant.contracts.observability.ProcessMetrics metrics) {
         ChatTaskExecutor executor = new ChatTaskExecutor(sessions, tx, clock, model.getIfAvailable(),
                 agentSettings, retrieval.getIfAvailable(), harness.getIfAvailable(), tasks, grades,
                 quotas, usage, settings);
         executor.setExplainResolver(explain::resolve);
         executor.setUsagePolicy(policy.enabled(), policy.prices(), policy.version());
+        executor.setMetrics(metrics);
         return executor;
     }
 
     @Bean
     ProductChatService productChatService(RagTaskService tasks, AdmissionGate gate,
-            SessionService sessions, ChatTaskExecutor executor, ChatSettings settings, ClockPort clock) {
-        return new ProductChatService(tasks, gate, sessions, executor, settings, clock);
+            SessionService sessions, ChatTaskExecutor executor, ChatSettings settings, ClockPort clock,
+            io.dpdk.assistant.contracts.observability.ProcessMetrics metrics) {
+        ProductChatService service=new ProductChatService(tasks, gate, sessions, executor, settings, clock);
+        service.setMetrics(metrics);
+        return service;
     }
 
     @Bean
     OriginalQuestionVerifier originalQuestionVerifier(ProductChatService product, UsageCounterStore quotas,
             AdmissionGate gate, ObjectProvider<PgReleaseReader> retrieval,
-            ObjectProvider<AgentChatModel> model, ChatSettings settings) {
-        return new GroundedQuestionVerifier(product, quotas, gate, retrieval.getIfAvailable(), model.getIfAvailable(), settings);
+            ObjectProvider<AgentChatModel> model, ChatSettings settings,
+            io.dpdk.assistant.contracts.observability.ProcessMetrics metrics) {
+        GroundedQuestionVerifier verifier=new GroundedQuestionVerifier(product, quotas, gate, retrieval.getIfAvailable(), model.getIfAvailable(), settings);
+        verifier.setMetrics(metrics);
+        return verifier;
     }
 }

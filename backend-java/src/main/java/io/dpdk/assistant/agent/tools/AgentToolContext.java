@@ -27,6 +27,8 @@ import java.util.Map;
  * grade_plugin 的账本接线整体跳过、行为与旧版一致。
  */
 public final class AgentToolContext {
+    public io.dpdk.assistant.contracts.observability.ProcessMetrics metrics =
+            io.dpdk.assistant.contracts.observability.ProcessMetrics.NONE;
 
     /** 评测配额豁免角色（D13：教师/管理员/组长不计学生配额）。 */
     public static final List<String> GRADING_QUOTA_EXEMPT_ROLES =

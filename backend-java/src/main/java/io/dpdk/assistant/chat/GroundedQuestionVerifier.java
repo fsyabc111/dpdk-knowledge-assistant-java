@@ -48,6 +48,9 @@ public final class GroundedQuestionVerifier implements OriginalQuestionVerifier 
     private final PgReleaseReader retrieval;
     private final AgentChatModel model;
     private final ChatSettings settings;
+    private volatile io.dpdk.assistant.contracts.observability.ProcessMetrics metrics =
+            io.dpdk.assistant.contracts.observability.ProcessMetrics.NONE;
+    public void setMetrics(io.dpdk.assistant.contracts.observability.ProcessMetrics metrics) { this.metrics=java.util.Objects.requireNonNull(metrics); }
 
     public GroundedQuestionVerifier(ProductChatService product, UsageCounterStore quotas,
             AdmissionGate gate, PgReleaseReader retrieval, AgentChatModel model, ChatSettings settings) {
@@ -63,6 +66,7 @@ public final class GroundedQuestionVerifier implements OriginalQuestionVerifier 
         product.checkRateLimit(principal.subject());
         try { quotas.checkAndCountDaily(principal.subject(), "chat", principal.dailyQuota()); }
         catch (io.dpdk.assistant.usage.QuotaExceededException exceeded) {
+            metrics.rateLimit("daily_quota");
             throw new ApiDetailException(HttpStatus.TOO_MANY_REQUESTS, exceeded.getMessage(),
                     Map.of("Retry-After", Long.toString(exceeded.retryAfterSeconds())));
         }
@@ -122,7 +126,7 @@ public final class GroundedQuestionVerifier implements OriginalQuestionVerifier 
             try { return future.get(timeout.toMillis(), TimeUnit.MILLISECONDS); }
             finally { future.cancel(true); workers.shutdownNow(); }
         };
-        var verdict = AnswerValidator.validate(question, answer, Map.of("chunks", evidence), timed, budget);
+        var verdict = AnswerValidator.validate(question, answer, Map.of("chunks", evidence), timed, budget, metrics);
         return new Result(verdict.status(), verdict.answer(), snapshot.releaseId());
     }
 }
