@@ -29,8 +29,23 @@ JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./backend-java/mvnw -f backend-java/pom.x
 - 同一输入恢复200后真实语义腿恢复且得到实际token2；之后真实cache_hit零调用，端点累计仅3次。
 - 无真实候选时chunks/nodes保持空，未伪造资料；取消/中断不转成功，普通SocketTimeout正确降级。
 
-## caller待集成，暂不关闭完整发现
+## caller红灯与后续fresh整链复验
 
-新增chat整链测试仍暂存等待caller owner的marker映射。当前已另执行2项真实产品PG红测，明确定位为：有真实引用可答但fallback计数0（应1）；无候选返回unanswered（源应system_error/retrieval_failed）。日志 `.migration-artifacts/j5-02-sp-p5-01-chat-red.log`。这些是caller缺少fallback marker归因，不通过改blockedReason或伪造chunk规避。
+新增chat整链测试先另执行2项真实产品PG红测，明确定位为：有真实引用可答但fallback计数0（应1）；无候选返回unanswered（源应system_error/retrieval_failed）。日志 `.migration-artifacts/j5-02-sp-p5-01-chat-red.log`。这些是caller缺少fallback marker归因，不通过改blockedReason或伪造chunk规避。
 
-主Agent已将ChatTaskExecutor唯一写锁交 `model_adapter`，该owner需在trace处把marker映射至retrievalFailure/既有fallback指标路径。待其小片进入后再运行chat测试，验证回答/真实引用、持久化unknown token/cost NULL、fallback一次、无候选retrieval_failed、重放不重复调用/计量。Reader切片绿不冒充整链或P5放行。未执行Java正式容量或故障矩阵。
+主Agent将ChatTaskExecutor唯一写锁交 `model_adapter`；其核心`60a73e5`和caller`8c04f09`已原样cherry-pick到本工作树（本地`3b414e2`/`1e7135f`）。后者把marker映射为query_embedding_failed并复用现有fallback指标/空候选错误路径。接入时仅接受作者完整版本；本owner未手改任何caller/usage/model代码。缺失前置回归类时取8c完整作者版本，未删其中测试。
+
+fresh复验命令：
+
+```sh
+JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./backend-java/mvnw -f backend-java/pom.xml -B -Dtest=EmbeddingFailurePgTest,EmbeddingFallbackProductPgTest,PgRetrievalIntegrationTest,RetrievalPipelineGoldenTest,RetrievalFeaturesGoldenTest test
+```
+
+退出0，**17项实际执行、0失败/0错误/0跳过**：真实产品PG2、新Reader PG3、既有固定向量PG10、两组黄金2。日志 `.migration-artifacts/j5-02-sp-p5-01-product-green.log`。新增整链证明：
+
+- 有真实词法节点时产品answered，引用精确指向真实PG的`li_embedding_failure_dns`/`src/dns.c`，fallback过程指标恰好一次。
+- 无真实候选时产品system_error/retrieval_failed，引用为空，不把无证据错误降成普通unanswered或伪造chunk。
+- 两条产品链各真实调用loopback embedding一次并收到503，最终PG账本kind=embedding/stage=query_embed/source=unknown/call_count=1，prompt/completion/total_tokens及cost_micros均NULL，未知不是0。
+- task终态且输入清理；同身份重放不再次调用外部、不新增用量、不增加fallback指标或扣次（chat=1）。
+
+SP-P5-01已具备本切片修复与fresh因果证据，独立规格复核与P5阶段放行由主Agent执行；未执行Java正式容量或故障矩阵，也不覆盖仍由其他owner处理的过程标签/迟到账本发现。
