@@ -1,0 +1,135 @@
+{
+  "version": "container-filesystem-inventory-v1",
+  "capture_domain": "actual_P4_and_locked_bases_not_final_P5",
+  "source": "f020efa951b816cc3315f169c483af0998875800",
+  "inventory_sha256": "bf15e996afbb673c20c7848010042c8345c66ce48ef961ac416093e8dfb67169",
+  "collector_source_sha256": "94253a804947e77f6aaeb5865e2789820ddc2540023fc4f322556757e02028f2",
+  "query_sha256": "62767f01f3da0097d66e3c3dfbc4c470a00008afad11c69b9b7ac9e07c393289",
+  "identity": {
+    "context": "colima-java-u12",
+    "endpoint": "unix:///Users/fsy/.colima/java-u12/docker.sock",
+    "daemon_id": "8f66e5ea-9c07-4379-b27d-7a5759cc2cd3",
+    "daemon_name": "colima-java-u12"
+  },
+  "images": [
+    {
+      "name": "p4-backend",
+      "image_id": "sha256:c6f4799e40d5e5d201de66a04bf2ba62a7a4a9e1fd65ba57af92926fb8d28f11",
+      "os_release": "Ubuntu 26.04.1 LTS",
+      "installed_packages": 140,
+      "noninstalled_entries_excluded": 0,
+      "metadata_without_structured_license": 15,
+      "license_files": 322,
+      "node_distribution_packages": 0,
+      "installed_packages_sha256": "9500a97e940c47fb97bc5cb3238be6b381bbf549f0cc2d761f8ba221e1c062fd",
+      "license_file_mapping_sha256": "092c10c4d758551481b71621770991a33c5089174bf0309df922577a09b09b97"
+    },
+    {
+      "name": "p4-frontend",
+      "image_id": "sha256:a862bcc150314cc85655e4675035cecef12cb464d56122912cb2800df56cfe52",
+      "os_release": "Alpine Linux v3.21",
+      "installed_packages": 68,
+      "noninstalled_entries_excluded": 0,
+      "metadata_without_structured_license": 0,
+      "license_files": 5,
+      "node_distribution_packages": 0,
+      "installed_packages_sha256": "39eeb1a5bcdeb8b5e3841c0ba7817da148872b3ef35e41bdca3eb133cb413249",
+      "license_file_mapping_sha256": "6e108a6921f2af6d1ce2ae6b061a4415516c3d031dc0a0b3fe9c0e0e7cc36405"
+    },
+    {
+      "name": "jdk-base",
+      "image_id": "sha256:23cc5734ff46e776f51ce66eb9ee08444fd47caabec0a95b7eb6e94be2d3696d",
+      "os_release": "Ubuntu 26.04.1 LTS",
+      "installed_packages": 149,
+      "noninstalled_entries_excluded": 0,
+      "metadata_without_structured_license": 23,
+      "license_files": 395,
+      "node_distribution_packages": 0,
+      "installed_packages_sha256": "bfec4fd7262b14523281b059fc352d4bd85c25d25dfa37c1810b2d6f09e233d9",
+      "license_file_mapping_sha256": "8e7167561551803a8e44110d725dd1b943d6c23b1ffc31e314e7dfb651fec9be"
+    },
+    {
+      "name": "jre-base",
+      "image_id": "sha256:227118764cccd3c3294617061aaa93a08309c63a395eefa83e6b35032992ea99",
+      "os_release": "Ubuntu 26.04.1 LTS",
+      "installed_packages": 140,
+      "noninstalled_entries_excluded": 0,
+      "metadata_without_structured_license": 15,
+      "license_files": 322,
+      "node_distribution_packages": 0,
+      "installed_packages_sha256": "9500a97e940c47fb97bc5cb3238be6b381bbf549f0cc2d761f8ba221e1c062fd",
+      "license_file_mapping_sha256": "092c10c4d758551481b71621770991a33c5089174bf0309df922577a09b09b97"
+    },
+    {
+      "name": "node-base",
+      "image_id": "sha256:fe4f6d74e20370acb04ad889077d14d0f64a9c8ea6a42bc60cddf1e844699914",
+      "os_release": "Alpine Linux v3.24",
+      "installed_packages": 19,
+      "noninstalled_entries_excluded": 0,
+      "metadata_without_structured_license": 0,
+      "license_files": 196,
+      "node_distribution_packages": 198,
+      "installed_packages_sha256": "b879ea525e8e0065083474bff1578c8da189a8e79215c8d0fb4fd368430e82af",
+      "license_file_mapping_sha256": "e984941f013e8b5e584f221c73b7011f8e5810943909eeacd7f1198a2834cd03"
+    },
+    {
+      "name": "nginx-base",
+      "image_id": "sha256:65e3e85dbaed8ba248841d9d58a899b6197106c23cb0ff1a132b7bfe0547e4c0",
+      "os_release": "Alpine Linux v3.21",
+      "installed_packages": 68,
+      "noninstalled_entries_excluded": 0,
+      "metadata_without_structured_license": 0,
+      "license_files": 5,
+      "node_distribution_packages": 0,
+      "installed_packages_sha256": "39eeb1a5bcdeb8b5e3841c0ba7817da148872b3ef35e41bdca3eb133cb413249",
+      "license_file_mapping_sha256": "6e108a6921f2af6d1ce2ae6b061a4415516c3d031dc0a0b3fe9c0e0e7cc36405"
+    },
+    {
+      "name": "pgvector-base",
+      "image_id": "sha256:dd467f03ca5c5581222490e5217e48a262864ccb659be559f8491bbafdc97da0",
+      "os_release": "Debian GNU/Linux 12 (bookworm)",
+      "installed_packages": 144,
+      "noninstalled_entries_excluded": 8,
+      "metadata_without_structured_license": 20,
+      "license_files": 145,
+      "node_distribution_packages": 0,
+      "installed_packages_sha256": "6c749f28ce809912a03e210ea63bc02605c885ed7a5547410d21afb398591d96",
+      "license_file_mapping_sha256": "816784823c8fbe3f4fa9c219c002616ece15bddf590ac31d9025dbe75373a122"
+    }
+  ],
+  "inheritance_equality": [
+    {
+      "P4_image": "p4-backend",
+      "base": "jre-base",
+      "equal_domains": {
+        "packages": true,
+        "license_files_sha256": true,
+        "os_release": true,
+        "java_release": true
+      },
+      "excludes_application_jar_and_static_bundles": true
+    },
+    {
+      "P4_image": "p4-frontend",
+      "base": "nginx-base",
+      "equal_domains": {
+        "packages": true,
+        "license_files_sha256": true,
+        "os_release": true,
+        "java_release": true
+      },
+      "excludes_application_jar_and_static_bundles": true
+    }
+  ],
+  "final_candidate": "pending",
+  "offline_consistency_assertions": "passed",
+  "limitations": [
+    "not_standardized_complete_candidate_SBOM",
+    "nonstructured_copyright_requires_manual_license_interpretation",
+    "apk_metadata_declarations_not_all_license_texts",
+    "Node_main_and_compiled_builtin_full_license_texts_not_found_in_scanned_paths",
+    "pgvector_specific_license_text_not_found_in_scanned_paths",
+    "complete_redistribution_NOTICE_bundle_not_generated",
+    "no_legal_compatibility_or_live_user_acceptance_signoff"
+  ]
+}

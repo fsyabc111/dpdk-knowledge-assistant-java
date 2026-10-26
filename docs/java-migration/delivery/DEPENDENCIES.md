@@ -327,4 +327,4 @@ Maven 100项；npm lock 213项（含开发/可选/平台变体，不等于浏览
 | strip-ansi@6.0.1 | dev | MIT |
 | yallist@3.1.1 | 非dev | ISC |
 
-本项目根LICENSE文本为Apache License 2.0；根许可证保留，不推断它替代第三方各自条款。双许可证保留原声明，未自动替使用者选择授权路径。JDK/JRE、nginx、Node、PG/pgvector镜像的OS层完整SBOM/NOTICE未在本次本地应用清单核实，单列待补。
+本项目根LICENSE文本为Apache License 2.0；根许可证保留，不推断它替代第三方各自条款。双许可证保留原声明，未自动替使用者选择授权路径。JDK/JRE、nginx、Node、PG/pgvector的P4/锁定base实际OS包、版本与license文件声明/hash已另列CONTAINER_DEPENDENCIES.md；不与本应用清单混计。最终P5 candidate、完整第三方文本/NOTICE及Node主LICENSE/pgvector专属文本仍待补。

@@ -27,8 +27,12 @@
     "pom_sha256": null,
     "frontend_lock_sha256": null,
     "resolved_maven_versions": "docs/java-migration/evidence/J5-04/maven-resolved.txt",
-    "container_os_sbom": "pending_not_generated",
-    "complete_third_party_license_notice_bundle": "pending_not_fully_verified"
+    "container_os_sbom": "pending_standardized_complete_candidate_sbom_not_generated",
+    "complete_third_party_license_notice_bundle": "pending_not_fully_verified",
+    "container_inventory_domain": "P4_immutable_rollback_and_locked_bases_only_final_P5_pending",
+    "candidate_container_inventory": null,
+    "container_inventory_summary": "docs/java-migration/evidence/J5-04/container-inventory-summary.json",
+    "container_filesystem_inventory": "docs/java-migration/evidence/J5-04/container-inventory-p4.json"
   },
   "data_and_knowledge": {
     "schema": "0015_equivalent_after_controlled_java_migration",

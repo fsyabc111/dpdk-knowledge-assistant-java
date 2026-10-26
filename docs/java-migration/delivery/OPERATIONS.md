@@ -54,4 +54,4 @@ retrieve/judge所需固定向量或离线fixture必须显式配置；未知/未�
 | 实际场景断言/失败日志 | scenario-results.json、command-failure.log | 当前pending；提交前只抽取脱敏断言，日志留ignore |
 | 原Python仓库、旧镜像、备份/部署 | 原项目恢复资产 | 本轮只读，禁止停旧/删除/退役 |
 
-健康、ready和指标的含义：health为存活；ready还核对数据库/active release/声明成员/物理节点/配置指纹。metrics只供内网，nginx对外拒绝/metrics及/actuator；领域持久账本导出是gauge，unknown不折0，缺失动态领域hook明确列出，不能把HTTP次数当作模型或评测次数。
+健康、ready和指标的含义：health为存活；ready还核对数据库/active release/声明成员/物理节点/配置指纹。metrics只供内网，nginx对外拒绝/metrics及/actuator；正式领域指标为进程counter/histogram，HTTP按源Content-Length与完整异步生命周期观测；旧持久gauge仅诊断。unknown单独计数，不能把HTTP次数当作模型或评测次数；实际业务hook/fresh矩阵验收以当前证据为准。
