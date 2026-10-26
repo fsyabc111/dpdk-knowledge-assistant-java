@@ -100,3 +100,7 @@ P0 已获授权，Java 业务实现、P1 和生产切换仍未获授权。下表
 - 验收对象：P0最终交付提交7c76c31f5d80da2b4e76c469d22131d7532e6f25；既有自动/合成/独立审查结果不改写，后续只更新验收与发布记录。
 - 发布范围：origin `https://github.com/fsyabc111/dpdk-knowledge-assistant-java.git` 的同名 `codex/p0-baseline-oracle` 开发分支；本次直接授权取代原P0不推送限制。推送后以git ls-remote核对本地HEAD与远程分支SHA，工作区须干净。
 - 仍未授权：P1及后续实施、合并main、部署、真实上游和旧环境写入。
+
+### P5关闭P2-D1（2026-10-26）
+
+P2登记的Spring CORS拒绝403不是已批准产品差异。P5全矩阵暴露成功预检头/正文也不一致，现采用显式Starlette协议filter：成功200/OK、拒绝400/Disallowed CORS及白名单头，普通OPTIONS仍405，安全头覆盖。3项平台纯MVC测试通过；真实全矩阵待下一次新trace复验。未改Python黄金。

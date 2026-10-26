@@ -171,3 +171,7 @@ J3-01 已交付（worker/j3-01@40cb46c，自有测试 8类50/50；真双JVM+合�
 ## P5确定性成绩ID端口（集成者裁决）
 
 冻结p0-v2 manifest已声明grading_service.uuid使用合法确定UUID熵源，讲解question含grade ID并参与input_hash，单纯ID双射不足以比较原始hash。新增UuidPort.next()与正式RandomUuid适配，SubmissionGradeWriter仍派生grade_16hex；默认正式随机，无环境开关。候选只在测试装配注入同一合法UUID序列，不替换业务hash/身份推导、不从Java结果生成黄金。现有三参纯构造保留随机熵源；Spring显式四参注入。
+
+## P5平台逐项兼容修复
+
+普通业务GET不再隐式接受HEAD，普通OPTIONS拒405/Allow显式方法；文档HEAD与CORS预检保留。预检完整实现冻结Starlette响应字节/白名单头/400拒绝，关闭待确认P2-D1，不以宽泛豁免吞差异。DELETE session204保留源application/json媒体类型。reference带外读取不计模型工具operation，普通工具成功/失败仍计。平台3项与Agent82项局部通过，真实矩阵待复验。冻结HTML尾空白为黄金字节一部分，diff whitespace检查仅对这3个生成HTML作精确范围例外，其他路径仍检查。

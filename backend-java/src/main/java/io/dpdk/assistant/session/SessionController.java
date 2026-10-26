@@ -173,7 +173,7 @@ public class SessionController {
         if (!sessions.deleteSession(sessionId, subject)) {
             throw sessionNotFound();
         }
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.noContent().header("Content-Type", "application/json").build();
     }
 
     /* ------------------------------------------------------------------ */
