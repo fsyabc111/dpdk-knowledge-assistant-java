@@ -1,0 +1,207 @@
+{
+  "domain": "actual_Application_owned_PG_loopback_fake_public_product_and_Agent_facade_causal_events_ff59cda",
+  "required_observed_families": [
+    "assistant_llm_requests_total",
+    "assistant_llm_request_duration_seconds",
+    "assistant_chat_retrieval_duration_seconds",
+    "assistant_chat_stage_duration_seconds",
+    "assistant_chat_fallbacks_total",
+    "assistant_rate_limit_hits_total",
+    "assistant_rag_outcomes_total",
+    "assistant_rag_duration_seconds",
+    "assistant_rag_validation_duration_seconds",
+    "assistant_agent_tool_calls_total",
+    "assistant_agent_tool_duration_seconds",
+    "assistant_agent_tool_result_bytes",
+    "assistant_agent_request_tokens",
+    "assistant_upstream_usage_tokens_total",
+    "assistant_upstream_usage_cost_micros_total",
+    "assistant_upstream_usage_unknown_total"
+  ],
+  "samples": [
+    {
+      "name": "assistant_llm_requests_total",
+      "labels": {
+        "engine": "unknown",
+        "result": "success"
+      },
+      "value": 1
+    },
+    {
+      "name": "assistant_llm_requests_total",
+      "labels": {
+        "engine": "unknown",
+        "result": "fallback"
+      },
+      "value": 1
+    },
+    {
+      "name": "assistant_llm_requests_total",
+      "labels": {
+        "engine": "unknown",
+        "result": "error"
+      },
+      "value": 1
+    },
+    {
+      "name": "assistant_llm_requests_total",
+      "labels": {
+        "engine": "unknown",
+        "result": "cancelled"
+      },
+      "value": 1
+    },
+    {
+      "name": "assistant_llm_request_duration_seconds_count",
+      "labels": {
+        "engine": "unknown"
+      },
+      "value": 4
+    },
+    {
+      "name": "assistant_chat_retrieval_duration_seconds_count",
+      "labels": {},
+      "value": 2
+    },
+    {
+      "name": "assistant_chat_stage_duration_seconds_count",
+      "labels": {
+        "stage": "rewrite"
+      },
+      "value": 1
+    },
+    {
+      "name": "assistant_chat_stage_duration_seconds_count",
+      "labels": {
+        "stage": "embedding"
+      },
+      "value": 1
+    },
+    {
+      "name": "assistant_chat_fallbacks_total",
+      "labels": {},
+      "value": 1
+    },
+    {
+      "name": "assistant_rate_limit_hits_total",
+      "labels": {
+        "kind": "per_minute"
+      },
+      "value": 1
+    },
+    {
+      "name": "assistant_rag_outcomes_total",
+      "labels": {
+        "status": "answered",
+        "reason": "supported"
+      },
+      "value": 1
+    },
+    {
+      "name": "assistant_rag_duration_seconds_count",
+      "labels": {},
+      "value": 3
+    },
+    {
+      "name": "assistant_rag_validation_duration_seconds_count",
+      "labels": {
+        "result": "answered"
+      },
+      "value": 1
+    },
+    {
+      "name": "assistant_agent_tool_calls_total",
+      "labels": {
+        "tool": "kb_search",
+        "ok": "true"
+      },
+      "value": 3
+    },
+    {
+      "name": "assistant_agent_tool_duration_seconds_count",
+      "labels": {
+        "tool": "kb_search"
+      },
+      "value": 3
+    },
+    {
+      "name": "assistant_agent_tool_result_bytes_count",
+      "labels": {
+        "tool": "kb_search"
+      },
+      "value": 3
+    },
+    {
+      "name": "assistant_agent_request_tokens_count",
+      "labels": {},
+      "value": 1
+    },
+    {
+      "name": "assistant_agent_request_tokens_sum",
+      "labels": {},
+      "value": 4
+    },
+    {
+      "name": "assistant_upstream_usage_tokens_total",
+      "labels": {
+        "stage": "planner",
+        "kind": "llm",
+        "source": "upstream"
+      },
+      "value": 4
+    },
+    {
+      "name": "assistant_upstream_usage_tokens_total",
+      "labels": {
+        "stage": "query_embed",
+        "kind": "embedding",
+        "source": "upstream"
+      },
+      "value": 1
+    },
+    {
+      "name": "assistant_upstream_usage_cost_micros_total",
+      "labels": {
+        "stage": "planner",
+        "kind": "llm",
+        "model": "synthetic-metrics",
+        "currency": "USD"
+      },
+      "value": 6000
+    },
+    {
+      "name": "assistant_upstream_usage_unknown_total",
+      "labels": {
+        "stage": "planner",
+        "kind": "llm"
+      },
+      "value": 4
+    },
+    {
+      "name": "http_requests_total",
+      "labels": {
+        "method": "POST",
+        "status": "4xx",
+        "handler": "/api/chat"
+      },
+      "value": 1
+    }
+  ],
+  "absent_samples": [
+    {
+      "name": "assistant_upstream_usage_tokens_total",
+      "labels": {
+        "stage": "planner",
+        "kind": "llm",
+        "source": "unknown"
+      }
+    },
+    {
+      "name": "assistant_llm_requests_total",
+      "labels": {
+        "engine": "llama_index",
+        "result": "success"
+      }
+    }
+  ]
+}

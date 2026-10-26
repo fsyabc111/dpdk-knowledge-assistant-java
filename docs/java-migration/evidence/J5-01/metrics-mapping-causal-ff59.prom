@@ -1,0 +1,328 @@
+# HELP jvm_gc_collections_total Actual JVM GC collection events, not collected Python objects.
+# TYPE jvm_gc_collections_total counter
+jvm_gc_collections_total{collector="G1 Young Generation"} 10
+jvm_gc_collections_total{collector="G1 Concurrent GC"} 6
+jvm_gc_collections_total{collector="G1 Old Generation"} 0
+# HELP jvm_gc_collection_seconds_total Actual JVM GC collection elapsed time in seconds.
+# TYPE jvm_gc_collection_seconds_total counter
+jvm_gc_collection_seconds_total{collector="G1 Young Generation"} 0.019
+jvm_gc_collection_seconds_total{collector="G1 Concurrent GC"} 0.003
+jvm_gc_collection_seconds_total{collector="G1 Old Generation"} 0.0
+# HELP jvm_memory_used_bytes Actual heap/nonheap used bytes; not an uncollectable object count.
+# TYPE jvm_memory_used_bytes gauge
+jvm_memory_used_bytes{area="heap"} 65280488
+jvm_memory_used_bytes{area="nonheap"} 97698128
+# HELP jvm_info Actual Java version, vendor and VM.
+# TYPE jvm_info gauge
+jvm_info{version="21.0.12.1",vendor="Homebrew",runtime="OpenJDK 64-Bit Server VM"} 1
+# HELP assistant_llm_requests_total LLM answer-generation calls by engine and final result.
+# TYPE assistant_llm_requests_total counter
+assistant_llm_requests_total{engine="unknown",result="success"} 1.0
+assistant_llm_requests_total{engine="unknown",result="fallback"} 1.0
+assistant_llm_requests_total{engine="unknown",result="error"} 1.0
+assistant_llm_requests_total{engine="unknown",result="cancelled"} 1.0
+# HELP assistant_llm_requests_created LLM answer-generation calls by engine and final result.
+# TYPE assistant_llm_requests_created gauge
+assistant_llm_requests_created{engine="unknown",result="success"} 1.793015845455E9
+assistant_llm_requests_created{engine="unknown",result="fallback"} 1.793015845482E9
+assistant_llm_requests_created{engine="unknown",result="error"} 1.793015845498E9
+assistant_llm_requests_created{engine="unknown",result="cancelled"} 1.793015845511E9
+# HELP assistant_llm_request_duration_seconds End-to-end LLM answer-generation latency including retries.
+# TYPE assistant_llm_request_duration_seconds histogram
+assistant_llm_request_duration_seconds_bucket{engine="unknown",le="0.005"} 2.0
+assistant_llm_request_duration_seconds_bucket{engine="unknown",le="0.01"} 3.0
+assistant_llm_request_duration_seconds_bucket{engine="unknown",le="0.025"} 3.0
+assistant_llm_request_duration_seconds_bucket{engine="unknown",le="0.05"} 3.0
+assistant_llm_request_duration_seconds_bucket{engine="unknown",le="0.075"} 4.0
+assistant_llm_request_duration_seconds_bucket{engine="unknown",le="0.1"} 4.0
+assistant_llm_request_duration_seconds_bucket{engine="unknown",le="0.25"} 4.0
+assistant_llm_request_duration_seconds_bucket{engine="unknown",le="0.5"} 4.0
+assistant_llm_request_duration_seconds_bucket{engine="unknown",le="0.75"} 4.0
+assistant_llm_request_duration_seconds_bucket{engine="unknown",le="1.0"} 4.0
+assistant_llm_request_duration_seconds_bucket{engine="unknown",le="2.5"} 4.0
+assistant_llm_request_duration_seconds_bucket{engine="unknown",le="5.0"} 4.0
+assistant_llm_request_duration_seconds_bucket{engine="unknown",le="7.5"} 4.0
+assistant_llm_request_duration_seconds_bucket{engine="unknown",le="10.0"} 4.0
+assistant_llm_request_duration_seconds_bucket{engine="unknown",le="+Inf"} 4.0
+assistant_llm_request_duration_seconds_count{engine="unknown"} 4.0
+assistant_llm_request_duration_seconds_sum{engine="unknown"} 0.07186000000000001
+# HELP assistant_llm_request_duration_seconds_created End-to-end LLM answer-generation latency including retries.
+# TYPE assistant_llm_request_duration_seconds_created gauge
+assistant_llm_request_duration_seconds_created{engine="unknown"} 1.793015845455E9
+# HELP assistant_chat_retrieval_duration_seconds Chat retrieval latency reported by the request trace.
+# TYPE assistant_chat_retrieval_duration_seconds histogram
+assistant_chat_retrieval_duration_seconds_bucket{le="0.005"} 1.0
+assistant_chat_retrieval_duration_seconds_bucket{le="0.01"} 1.0
+assistant_chat_retrieval_duration_seconds_bucket{le="0.025"} 2.0
+assistant_chat_retrieval_duration_seconds_bucket{le="0.05"} 2.0
+assistant_chat_retrieval_duration_seconds_bucket{le="0.075"} 2.0
+assistant_chat_retrieval_duration_seconds_bucket{le="0.1"} 2.0
+assistant_chat_retrieval_duration_seconds_bucket{le="0.25"} 2.0
+assistant_chat_retrieval_duration_seconds_bucket{le="0.5"} 2.0
+assistant_chat_retrieval_duration_seconds_bucket{le="0.75"} 2.0
+assistant_chat_retrieval_duration_seconds_bucket{le="1.0"} 2.0
+assistant_chat_retrieval_duration_seconds_bucket{le="2.5"} 2.0
+assistant_chat_retrieval_duration_seconds_bucket{le="5.0"} 2.0
+assistant_chat_retrieval_duration_seconds_bucket{le="7.5"} 2.0
+assistant_chat_retrieval_duration_seconds_bucket{le="10.0"} 2.0
+assistant_chat_retrieval_duration_seconds_bucket{le="+Inf"} 2.0
+assistant_chat_retrieval_duration_seconds_count 2.0
+assistant_chat_retrieval_duration_seconds_sum 0.018595833
+# HELP assistant_chat_retrieval_duration_seconds_created Chat retrieval latency reported by the request trace.
+# TYPE assistant_chat_retrieval_duration_seconds_created gauge
+assistant_chat_retrieval_duration_seconds_created 1.793015844941E9
+# HELP assistant_chat_stage_duration_seconds Per-stage retrieval latency (rewrite/embedding) reported by the request trace.
+# TYPE assistant_chat_stage_duration_seconds histogram
+assistant_chat_stage_duration_seconds_bucket{stage="rewrite",le="0.005"} 1.0
+assistant_chat_stage_duration_seconds_bucket{stage="rewrite",le="0.01"} 1.0
+assistant_chat_stage_duration_seconds_bucket{stage="rewrite",le="0.025"} 1.0
+assistant_chat_stage_duration_seconds_bucket{stage="rewrite",le="0.05"} 1.0
+assistant_chat_stage_duration_seconds_bucket{stage="rewrite",le="0.075"} 1.0
+assistant_chat_stage_duration_seconds_bucket{stage="rewrite",le="0.1"} 1.0
+assistant_chat_stage_duration_seconds_bucket{stage="rewrite",le="0.25"} 1.0
+assistant_chat_stage_duration_seconds_bucket{stage="rewrite",le="0.5"} 1.0
+assistant_chat_stage_duration_seconds_bucket{stage="rewrite",le="0.75"} 1.0
+assistant_chat_stage_duration_seconds_bucket{stage="rewrite",le="1.0"} 1.0
+assistant_chat_stage_duration_seconds_bucket{stage="rewrite",le="2.5"} 1.0
+assistant_chat_stage_duration_seconds_bucket{stage="rewrite",le="5.0"} 1.0
+assistant_chat_stage_duration_seconds_bucket{stage="rewrite",le="7.5"} 1.0
+assistant_chat_stage_duration_seconds_bucket{stage="rewrite",le="10.0"} 1.0
+assistant_chat_stage_duration_seconds_bucket{stage="rewrite",le="+Inf"} 1.0
+assistant_chat_stage_duration_seconds_count{stage="rewrite"} 1.0
+assistant_chat_stage_duration_seconds_sum{stage="rewrite"} 0.001758833
+assistant_chat_stage_duration_seconds_bucket{stage="embedding",le="0.005"} 0.0
+assistant_chat_stage_duration_seconds_bucket{stage="embedding",le="0.01"} 1.0
+assistant_chat_stage_duration_seconds_bucket{stage="embedding",le="0.025"} 1.0
+assistant_chat_stage_duration_seconds_bucket{stage="embedding",le="0.05"} 1.0
+assistant_chat_stage_duration_seconds_bucket{stage="embedding",le="0.075"} 1.0
+assistant_chat_stage_duration_seconds_bucket{stage="embedding",le="0.1"} 1.0
+assistant_chat_stage_duration_seconds_bucket{stage="embedding",le="0.25"} 1.0
+assistant_chat_stage_duration_seconds_bucket{stage="embedding",le="0.5"} 1.0
+assistant_chat_stage_duration_seconds_bucket{stage="embedding",le="0.75"} 1.0
+assistant_chat_stage_duration_seconds_bucket{stage="embedding",le="1.0"} 1.0
+assistant_chat_stage_duration_seconds_bucket{stage="embedding",le="2.5"} 1.0
+assistant_chat_stage_duration_seconds_bucket{stage="embedding",le="5.0"} 1.0
+assistant_chat_stage_duration_seconds_bucket{stage="embedding",le="7.5"} 1.0
+assistant_chat_stage_duration_seconds_bucket{stage="embedding",le="10.0"} 1.0
+assistant_chat_stage_duration_seconds_bucket{stage="embedding",le="+Inf"} 1.0
+assistant_chat_stage_duration_seconds_count{stage="embedding"} 1.0
+assistant_chat_stage_duration_seconds_sum{stage="embedding"} 0.005939833
+# HELP assistant_chat_stage_duration_seconds_created Per-stage retrieval latency (rewrite/embedding) reported by the request trace.
+# TYPE assistant_chat_stage_duration_seconds_created gauge
+assistant_chat_stage_duration_seconds_created{stage="rewrite"} 1.793015845455E9
+assistant_chat_stage_duration_seconds_created{stage="embedding"} 1.793015845455E9
+# HELP assistant_chat_fallbacks_total Chat requests that ended in a degraded fallback answer.
+# TYPE assistant_chat_fallbacks_total counter
+assistant_chat_fallbacks_total 1.0
+# HELP assistant_chat_fallbacks_created Chat requests that ended in a degraded fallback answer.
+# TYPE assistant_chat_fallbacks_created gauge
+assistant_chat_fallbacks_created 1.793015844941E9
+# HELP assistant_rate_limit_hits_total Rejected chat requests by limiter kind (per_minute / daily_quota).
+# TYPE assistant_rate_limit_hits_total counter
+assistant_rate_limit_hits_total{kind="per_minute"} 1.0
+# HELP assistant_rate_limit_hits_created Rejected chat requests by limiter kind (per_minute / daily_quota).
+# TYPE assistant_rate_limit_hits_created gauge
+assistant_rate_limit_hits_created{kind="per_minute"} 1.793015845532E9
+# HELP assistant_rag_outcomes_total RAG 校验后结果
+# TYPE assistant_rag_outcomes_total counter
+assistant_rag_outcomes_total{status="answered",reason="supported"} 1.0
+assistant_rag_outcomes_total{status="system_error",reason="retrieval_failed"} 1.0
+assistant_rag_outcomes_total{status="system_error",reason="generation_failed"} 1.0
+# HELP assistant_rag_outcomes_created RAG 校验后结果
+# TYPE assistant_rag_outcomes_created gauge
+assistant_rag_outcomes_created{status="answered",reason="supported"} 1.793015845451E9
+assistant_rag_outcomes_created{status="system_error",reason="retrieval_failed"} 1.793015845482E9
+assistant_rag_outcomes_created{status="system_error",reason="generation_failed"} 1.793015845498E9
+# HELP assistant_rag_duration_seconds RAG 完整答案耗时
+# TYPE assistant_rag_duration_seconds histogram
+assistant_rag_duration_seconds_bucket{le="1.0"} 3.0
+assistant_rag_duration_seconds_bucket{le="5.0"} 3.0
+assistant_rag_duration_seconds_bucket{le="10.0"} 3.0
+assistant_rag_duration_seconds_bucket{le="20.0"} 3.0
+assistant_rag_duration_seconds_bucket{le="30.0"} 3.0
+assistant_rag_duration_seconds_bucket{le="60.0"} 3.0
+assistant_rag_duration_seconds_bucket{le="120.0"} 3.0
+assistant_rag_duration_seconds_bucket{le="240.0"} 3.0
+assistant_rag_duration_seconds_bucket{le="+Inf"} 3.0
+assistant_rag_duration_seconds_count 3.0
+assistant_rag_duration_seconds_sum 0.084188208
+# HELP assistant_rag_duration_seconds_created RAG 完整答案耗时
+# TYPE assistant_rag_duration_seconds_created gauge
+assistant_rag_duration_seconds_created 1.793015844941E9
+# HELP assistant_rag_validation_duration_seconds RAG 证据校验耗时（按结论分类）
+# TYPE assistant_rag_validation_duration_seconds histogram
+assistant_rag_validation_duration_seconds_bucket{result="answered",le="1.0"} 1.0
+assistant_rag_validation_duration_seconds_bucket{result="answered",le="5.0"} 1.0
+assistant_rag_validation_duration_seconds_bucket{result="answered",le="10.0"} 1.0
+assistant_rag_validation_duration_seconds_bucket{result="answered",le="20.0"} 1.0
+assistant_rag_validation_duration_seconds_bucket{result="answered",le="30.0"} 1.0
+assistant_rag_validation_duration_seconds_bucket{result="answered",le="+Inf"} 1.0
+assistant_rag_validation_duration_seconds_count{result="answered"} 1.0
+assistant_rag_validation_duration_seconds_sum{result="answered"} 2.26375E-4
+# HELP assistant_rag_validation_duration_seconds_created RAG 证据校验耗时（按结论分类）
+# TYPE assistant_rag_validation_duration_seconds_created gauge
+assistant_rag_validation_duration_seconds_created{result="answered"} 1.793015845448E9
+# HELP assistant_agent_tool_calls_total Agent 工具调用次数（按工具与成败）
+# TYPE assistant_agent_tool_calls_total counter
+assistant_agent_tool_calls_total{tool="kb_search",ok="true"} 3.0
+# HELP assistant_agent_tool_calls_created Agent 工具调用次数（按工具与成败）
+# TYPE assistant_agent_tool_calls_created gauge
+assistant_agent_tool_calls_created{tool="kb_search",ok="true"} 1.793015845444E9
+# HELP assistant_agent_tool_duration_seconds Agent 工具调用耗时
+# TYPE assistant_agent_tool_duration_seconds histogram
+assistant_agent_tool_duration_seconds_bucket{tool="kb_search",le="0.05"} 3.0
+assistant_agent_tool_duration_seconds_bucket{tool="kb_search",le="0.25"} 3.0
+assistant_agent_tool_duration_seconds_bucket{tool="kb_search",le="1.0"} 3.0
+assistant_agent_tool_duration_seconds_bucket{tool="kb_search",le="5.0"} 3.0
+assistant_agent_tool_duration_seconds_bucket{tool="kb_search",le="15.0"} 3.0
+assistant_agent_tool_duration_seconds_bucket{tool="kb_search",le="30.0"} 3.0
+assistant_agent_tool_duration_seconds_bucket{tool="kb_search",le="60.0"} 3.0
+assistant_agent_tool_duration_seconds_bucket{tool="kb_search",le="120.0"} 3.0
+assistant_agent_tool_duration_seconds_bucket{tool="kb_search",le="240.0"} 3.0
+assistant_agent_tool_duration_seconds_bucket{tool="kb_search",le="+Inf"} 3.0
+assistant_agent_tool_duration_seconds_count{tool="kb_search"} 3.0
+assistant_agent_tool_duration_seconds_sum{tool="kb_search"} 0.024427001
+# HELP assistant_agent_tool_duration_seconds_created Agent 工具调用耗时
+# TYPE assistant_agent_tool_duration_seconds_created gauge
+assistant_agent_tool_duration_seconds_created{tool="kb_search"} 1.793015845444E9
+# HELP assistant_agent_tool_result_bytes Agent 工具结果 JSON 体积（源len(json.dumps ensure_asciiFalse)，单位Unicode码点，非UTF-8字节）
+# TYPE assistant_agent_tool_result_bytes histogram
+assistant_agent_tool_result_bytes_bucket{tool="kb_search",le="256.0"} 3.0
+assistant_agent_tool_result_bytes_bucket{tool="kb_search",le="1024.0"} 3.0
+assistant_agent_tool_result_bytes_bucket{tool="kb_search",le="4096.0"} 3.0
+assistant_agent_tool_result_bytes_bucket{tool="kb_search",le="16384.0"} 3.0
+assistant_agent_tool_result_bytes_bucket{tool="kb_search",le="65536.0"} 3.0
+assistant_agent_tool_result_bytes_bucket{tool="kb_search",le="262144.0"} 3.0
+assistant_agent_tool_result_bytes_bucket{tool="kb_search",le="+Inf"} 3.0
+assistant_agent_tool_result_bytes_count{tool="kb_search"} 3.0
+assistant_agent_tool_result_bytes_sum{tool="kb_search"} 410.0
+# HELP assistant_agent_tool_result_bytes_created Agent 工具结果 JSON 体积（源len(json.dumps ensure_asciiFalse)，单位Unicode码点，非UTF-8字节）
+# TYPE assistant_agent_tool_result_bytes_created gauge
+assistant_agent_tool_result_bytes_created{tool="kb_search"} 1.793015845444E9
+# HELP assistant_agent_request_tokens Agent 单请求累计 tokens（planner+finalize 的 usage_metadata 合计）
+# TYPE assistant_agent_request_tokens histogram
+assistant_agent_request_tokens_bucket{le="1000.0"} 1.0
+assistant_agent_request_tokens_bucket{le="4000.0"} 1.0
+assistant_agent_request_tokens_bucket{le="16000.0"} 1.0
+assistant_agent_request_tokens_bucket{le="32000.0"} 1.0
+assistant_agent_request_tokens_bucket{le="48000.0"} 1.0
+assistant_agent_request_tokens_bucket{le="64000.0"} 1.0
+assistant_agent_request_tokens_bucket{le="96000.0"} 1.0
+assistant_agent_request_tokens_bucket{le="+Inf"} 1.0
+assistant_agent_request_tokens_count 1.0
+assistant_agent_request_tokens_sum 4.0
+# HELP assistant_agent_request_tokens_created Agent 单请求累计 tokens（planner+finalize 的 usage_metadata 合计）
+# TYPE assistant_agent_request_tokens_created gauge
+assistant_agent_request_tokens_created 1.793015844941E9
+# HELP assistant_upstream_usage_tokens_total 上游 token 用量（按阶段/种类/来源；只统计上游确实返回值的那部分）
+# TYPE assistant_upstream_usage_tokens_total counter
+assistant_upstream_usage_tokens_total{stage="planner",kind="llm",source="upstream"} 4.0
+assistant_upstream_usage_tokens_total{stage="query_embed",kind="embedding",source="upstream"} 1.0
+# HELP assistant_upstream_usage_tokens_created 上游 token 用量（按阶段/种类/来源；只统计上游确实返回值的那部分）
+# TYPE assistant_upstream_usage_tokens_created gauge
+assistant_upstream_usage_tokens_created{stage="planner",kind="llm",source="upstream"} 1.793015845455E9
+assistant_upstream_usage_tokens_created{stage="query_embed",kind="embedding",source="upstream"} 1.793015845455E9
+# HELP assistant_upstream_usage_cost_micros_total 上游成本（整数微单位，按币种分列；未定价的模型不计入）
+# TYPE assistant_upstream_usage_cost_micros_total counter
+assistant_upstream_usage_cost_micros_total{stage="planner",kind="llm",model="synthetic-metrics",currency="USD"} 6000.0
+# HELP assistant_upstream_usage_cost_micros_created 上游成本（整数微单位，按币种分列；未定价的模型不计入）
+# TYPE assistant_upstream_usage_cost_micros_created gauge
+assistant_upstream_usage_cost_micros_created{stage="planner",kind="llm",model="synthetic-metrics",currency="USD"} 1.793015845455E9
+# HELP assistant_upstream_usage_unknown_total 调了上游但没拿到用量的条目数——这个计数器不为 0 就说明账面不完整
+# TYPE assistant_upstream_usage_unknown_total counter
+assistant_upstream_usage_unknown_total{stage="planner",kind="llm"} 4.0
+# HELP assistant_upstream_usage_unknown_created 调了上游但没拿到用量的条目数——这个计数器不为 0 就说明账面不完整
+# TYPE assistant_upstream_usage_unknown_created gauge
+assistant_upstream_usage_unknown_created{stage="planner",kind="llm"} 1.793015845482E9
+# HELP http_requests_total Total number of requests by method, status and handler.
+# TYPE http_requests_total counter
+http_requests_total{method="GET",status="2xx",handler="/metrics"} 6.0
+http_requests_total{method="POST",status="2xx",handler="/api/chat"} 8.0
+http_requests_total{method="POST",status="2xx",handler="/api/tasks/{task_id}/cancel"} 1.0
+http_requests_total{method="POST",status="4xx",handler="/api/chat"} 1.0
+# HELP http_requests_created Total number of requests by method, status and handler.
+# TYPE http_requests_created gauge
+http_requests_created{method="GET",status="2xx",handler="/metrics"} 1.793015845367E9
+http_requests_created{method="POST",status="2xx",handler="/api/chat"} 1.793015845459E9
+http_requests_created{method="POST",status="2xx",handler="/api/tasks/{task_id}/cancel"} 1.793015845512E9
+http_requests_created{method="POST",status="4xx",handler="/api/chat"} 1.793015845534E9
+# HELP http_request_size_bytes Content length of incoming requests by handler. Only value of header is respected. Otherwise ignored. No percentile calculated.
+# TYPE http_request_size_bytes summary
+http_request_size_bytes_count{handler="/metrics"} 6.0
+http_request_size_bytes_sum{handler="/metrics"} 0.0
+http_request_size_bytes_count{handler="/api/chat"} 9.0
+http_request_size_bytes_sum{handler="/api/chat"} 706.0
+http_request_size_bytes_count{handler="/api/tasks/{task_id}/cancel"} 1.0
+http_request_size_bytes_sum{handler="/api/tasks/{task_id}/cancel"} 2.0
+# HELP http_request_size_bytes_created Content length of incoming requests by handler. Only value of header is respected. Otherwise ignored. No percentile calculated.
+# TYPE http_request_size_bytes_created gauge
+http_request_size_bytes_created{handler="/metrics"} 1.793015845367E9
+http_request_size_bytes_created{handler="/api/chat"} 1.793015845459E9
+http_request_size_bytes_created{handler="/api/tasks/{task_id}/cancel"} 1.793015845512E9
+# HELP http_response_size_bytes Content length of outgoing responses by handler. Only value of header is respected. Otherwise ignored. No percentile calculated.
+# TYPE http_response_size_bytes summary
+http_response_size_bytes_count{handler="/metrics"} 6.0
+http_response_size_bytes_sum{handler="/metrics"} 121938.0
+http_response_size_bytes_count{handler="/api/chat"} 9.0
+http_response_size_bytes_sum{handler="/api/chat"} 48.0
+http_response_size_bytes_count{handler="/api/tasks/{task_id}/cancel"} 1.0
+http_response_size_bytes_sum{handler="/api/tasks/{task_id}/cancel"} 0.0
+# HELP http_response_size_bytes_created Content length of outgoing responses by handler. Only value of header is respected. Otherwise ignored. No percentile calculated.
+# TYPE http_response_size_bytes_created gauge
+http_response_size_bytes_created{handler="/metrics"} 1.793015845367E9
+http_response_size_bytes_created{handler="/api/chat"} 1.793015845459E9
+http_response_size_bytes_created{handler="/api/tasks/{task_id}/cancel"} 1.793015845512E9
+# HELP http_request_duration_highr_seconds Latency with many buckets but no API specific labels.
+# TYPE http_request_duration_highr_seconds histogram
+http_request_duration_highr_seconds_bucket{le="0.01"} 13.0
+http_request_duration_highr_seconds_bucket{le="0.025"} 15.0
+http_request_duration_highr_seconds_bucket{le="0.05"} 15.0
+http_request_duration_highr_seconds_bucket{le="0.075"} 15.0
+http_request_duration_highr_seconds_bucket{le="0.1"} 16.0
+http_request_duration_highr_seconds_bucket{le="0.25"} 16.0
+http_request_duration_highr_seconds_bucket{le="0.5"} 16.0
+http_request_duration_highr_seconds_bucket{le="0.75"} 16.0
+http_request_duration_highr_seconds_bucket{le="1.0"} 16.0
+http_request_duration_highr_seconds_bucket{le="1.5"} 16.0
+http_request_duration_highr_seconds_bucket{le="2.0"} 16.0
+http_request_duration_highr_seconds_bucket{le="2.5"} 16.0
+http_request_duration_highr_seconds_bucket{le="3.0"} 16.0
+http_request_duration_highr_seconds_bucket{le="3.5"} 16.0
+http_request_duration_highr_seconds_bucket{le="4.0"} 16.0
+http_request_duration_highr_seconds_bucket{le="4.5"} 16.0
+http_request_duration_highr_seconds_bucket{le="5.0"} 16.0
+http_request_duration_highr_seconds_bucket{le="7.5"} 16.0
+http_request_duration_highr_seconds_bucket{le="10.0"} 16.0
+http_request_duration_highr_seconds_bucket{le="30.0"} 16.0
+http_request_duration_highr_seconds_bucket{le="60.0"} 16.0
+http_request_duration_highr_seconds_bucket{le="+Inf"} 16.0
+http_request_duration_highr_seconds_count 16.0
+http_request_duration_highr_seconds_sum 0.137941918
+# HELP http_request_duration_highr_seconds_created Latency with many buckets but no API specific labels.
+# TYPE http_request_duration_highr_seconds_created gauge
+http_request_duration_highr_seconds_created 1.793015844941E9
+# HELP http_request_duration_seconds Latency with only few buckets by handler.
+# TYPE http_request_duration_seconds histogram
+http_request_duration_seconds_bucket{method="GET",handler="/metrics",le="0.1"} 6.0
+http_request_duration_seconds_bucket{method="GET",handler="/metrics",le="0.5"} 6.0
+http_request_duration_seconds_bucket{method="GET",handler="/metrics",le="1.0"} 6.0
+http_request_duration_seconds_bucket{method="GET",handler="/metrics",le="+Inf"} 6.0
+http_request_duration_seconds_count{method="GET",handler="/metrics"} 6.0
+http_request_duration_seconds_sum{method="GET",handler="/metrics"} 0.020260292
+http_request_duration_seconds_bucket{method="POST",handler="/api/chat",le="0.1"} 9.0
+http_request_duration_seconds_bucket{method="POST",handler="/api/chat",le="0.5"} 9.0
+http_request_duration_seconds_bucket{method="POST",handler="/api/chat",le="1.0"} 9.0
+http_request_duration_seconds_bucket{method="POST",handler="/api/chat",le="+Inf"} 9.0
+http_request_duration_seconds_count{method="POST",handler="/api/chat"} 9.0
+http_request_duration_seconds_sum{method="POST",handler="/api/chat"} 0.11211887599999999
+http_request_duration_seconds_bucket{method="POST",handler="/api/tasks/{task_id}/cancel",le="0.1"} 1.0
+http_request_duration_seconds_bucket{method="POST",handler="/api/tasks/{task_id}/cancel",le="0.5"} 1.0
+http_request_duration_seconds_bucket{method="POST",handler="/api/tasks/{task_id}/cancel",le="1.0"} 1.0
+http_request_duration_seconds_bucket{method="POST",handler="/api/tasks/{task_id}/cancel",le="+Inf"} 1.0
+http_request_duration_seconds_count{method="POST",handler="/api/tasks/{task_id}/cancel"} 1.0
+http_request_duration_seconds_sum{method="POST",handler="/api/tasks/{task_id}/cancel"} 0.00556275
+# HELP http_request_duration_seconds_created Latency with only few buckets by handler.
+# TYPE http_request_duration_seconds_created gauge
+http_request_duration_seconds_created{method="GET",handler="/metrics"} 1.793015845367E9
+http_request_duration_seconds_created{method="POST",handler="/api/chat"} 1.793015845459E9
+http_request_duration_seconds_created{method="POST",handler="/api/tasks/{task_id}/cancel"} 1.793015845512E9
