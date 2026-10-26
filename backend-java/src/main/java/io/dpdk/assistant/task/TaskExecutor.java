@@ -23,6 +23,12 @@ public interface TaskExecutor {
      */
     TaskExecutionResult run(TaskExecutionContext context, Consumer<TaskEvent> emit) throws Exception;
 
+    /**
+     * 运行层在答案持久化尝试之后、对外终态之前调用一次；失败/取消同样调用。
+     * 请求用量等收尾不得因此移入模型或受理事务。
+     */
+    default void afterCompletion(TaskExecutionContext context) {}
+
     /** 执行上下文：受理/恢复装配后的完整输入（原始问题与寄存执行源在此）。 */
     record TaskExecutionContext(
             String taskId,

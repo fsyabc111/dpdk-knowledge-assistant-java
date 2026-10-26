@@ -179,3 +179,7 @@ J3-01 已交付（worker/j3-01@40cb46c，自有测试 8类50/50；真双JVM+合�
 ## P5原子受理时间共享（集成裁决）
 
 双端真实调用栈定位：任务created、用户消息created和session.touch在Python同一受理事件共用created，Java曾新增3次时间读。SessionPort新增显式createdIso富重载，正式两个适配器委托SessionService.appendMessageAt仅插入、不隐式touch；RagTaskService读取本事务已赢得的任务行复用created再显式touch。旧generic appendMessage两次时间语义保留，旧stub端口可经默认兼容委托；生产适配器必须覆盖富重载。无事务/唯一键/配额边界改变。真实AdmissionSharedTimestampTest与原受理/会话回归15项通过。空usage recorder不再读取落账时间，无虚构条目。临时输入created/expires由一次普通UTC派生，capacity窄PG3项红绿通过。
+
+## P5执行体收尾钩子（集成裁决）
+
+TaskExecutor新增default afterCompletion(context)，由TaskRunner在finish尝试之后、对外terminal/释放占槽之前finally恰好调用一次；失败/取消也调用。ChatTaskExecutor仅把请求recorder与三个身份字符串暂存至任务级map（不另存源码），钩子remove后best-effort落账，保留异常/取消已发调用计量，不让ledger先于答案持久事件消费时间。中断标记在JDBC收尾前暂清、finally恢复，不改变事务/COMP003或迟到结果守卫。真实PG成功/异常/取消三条边界+原Agent/并发回归23/23通过，终态闩锁证明钩子未结束时不可对外terminal。

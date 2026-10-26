@@ -34,6 +34,9 @@ public final class ChatTaskExecutor implements TaskExecutor {
     private final ConcurrentMap<String, ChatMemory.View> preparedMemory = new ConcurrentHashMap<>();
     private final ConcurrentMap<String, Map<String, Object>> explainContexts =
             new ConcurrentHashMap<>();
+    private record PendingUsage(UsageCore.UsageRecorder recorder, String requestId, String subject,
+                                String sessionId) {}
+    private final ConcurrentMap<String, PendingUsage> completionUsage = new ConcurrentHashMap<>();
     private volatile Function<TaskExecutionContext, Map<String, Object>> explainResolver =
             c -> null;
 
@@ -172,6 +175,8 @@ public final class ChatTaskExecutor implements TaskExecutor {
         ensureAvailable();
         UsageCore.UsageRecorder recorder =
                 new UsageCore.UsageRecorder(context.subject(), context.sessionId());
+        completionUsage.put(context.taskId(), new PendingUsage(recorder, context.requestId(),
+                context.subject(), context.sessionId()));
         ExecutorService wall = Executors.newVirtualThreadPerTaskExecutor();
         Future<TaskExecutionResult> future = wall.submit(() -> candidate(context, emit, recorder));
         try {
@@ -209,8 +214,12 @@ public final class ChatTaskExecutor implements TaskExecutor {
             wall.shutdownNow();
             preparedMemory.remove(context.taskId());
             explainContexts.remove(context.taskId());
-            flushUsage(recorder, context.requestId(), context.subject(), context.sessionId());
         }
+    }
+
+    @Override public void afterCompletion(TaskExecutionContext context) {
+        PendingUsage pending = completionUsage.remove(context.taskId());
+        if (pending != null) flushUsage(pending.recorder(), pending.requestId(), pending.subject(), pending.sessionId());
     }
 
     private TaskExecutionResult candidate(

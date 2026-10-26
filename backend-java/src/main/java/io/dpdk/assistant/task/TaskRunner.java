@@ -190,23 +190,35 @@ public final class TaskRunner {
                         + " error_type=" + exc.getClass().getSimpleName());
             }
         } finally {
-            boolean pending = true;
+            // 取消catch已恢复interrupt；JDBC收尾前临时清标记，随后原样恢复。
+            boolean interruptedOnExit = Thread.interrupted();
             try {
-                var row = store.findOwned(managed.taskId, managed.subject);
-                pending = row.isEmpty() || "pending".equals(row.get().status());
-                if (!pending) {
-                    store.dropInputs(managed.taskId);
+                try {
+                    executor.afterCompletion(managed.context);
+                } catch (RuntimeException completionFailure) {
+                    LOG.warning("[task_completion_failed] task_id=" + managed.taskId
+                            + " error_type=" + completionFailure.getClass().getSimpleName());
                 }
-            } catch (RuntimeException checkFailure) {
-                LOG.warning("[task_terminal_check_failed] task_id=" + managed.taskId);
-            }
-            if (managed.releaseSlotOnce()) {
-                gate.release();
-            }
-            managed.terminalize(result, error, clock.monotonicNanos());
-            if (pending) {
-                // finish 的 DB 故障可能留下 pending：保留输入使孤儿扫描可重驱动。
-                registry.remove(managed.taskId);
+                boolean pending = true;
+                try {
+                    var row = store.findOwned(managed.taskId, managed.subject);
+                    pending = row.isEmpty() || "pending".equals(row.get().status());
+                    if (!pending) {
+                        store.dropInputs(managed.taskId);
+                    }
+                } catch (RuntimeException checkFailure) {
+                    LOG.warning("[task_terminal_check_failed] task_id=" + managed.taskId);
+                }
+                if (managed.releaseSlotOnce()) {
+                    gate.release();
+                }
+                managed.terminalize(result, error, clock.monotonicNanos());
+                if (pending) {
+                    // finish 的 DB 故障可能留下 pending：保留输入使孤儿扫描可重驱动。
+                    registry.remove(managed.taskId);
+                }
+            } finally {
+                if (interruptedOnExit) Thread.currentThread().interrupt();
             }
         }
     }
