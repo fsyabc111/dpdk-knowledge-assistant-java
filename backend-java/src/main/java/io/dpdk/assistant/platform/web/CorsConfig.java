@@ -15,13 +15,7 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/**
- * CORS 装配（U11：React 与 Java 联调最小接线，集成者单写）。
- *
- * 对齐 Python main.py 的 CORSMiddleware：仅显式来源、方法 GET/POST/PATCH/DELETE、
- * 头 Content-Type/Authorization/X-Maintenance-Key、credentials=true；框架默认行为
- * 不自动构成兼容实现（如需差异以契约与 oracle 为准，J3-03 收口）。
- */
+/** 冻结Starlette CORS协议；预检由中间件处理，不进入业务映射。 */
 @Configuration
 public class CorsConfig {
 

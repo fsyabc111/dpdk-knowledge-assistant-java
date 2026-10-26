@@ -1,4 +1,7 @@
-package io.dpdk.assistant.platform.web;
+package acceptance.platform;
+
+import io.dpdk.assistant.platform.web.ExplicitHttpMethods;
+import io.dpdk.assistant.platform.web.FrozenDocumentationController;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
