@@ -30,9 +30,9 @@ import java.util.UUID;
  * - finish/cancelTask/markInterrupted/cancelPendingForUser/reserveGradingJob 是
  *   多语句原子段，方法内自带一笔事务。
  *
- * 时间写入统一走 ClockPort.nextSessionIso()（进程内严格递增微秒，格式与 Python
- * datetime.now(timezone.utc).isoformat() 一致）；updated_at 条件比较沿用 ISO 文本
- * 字典序（B0015 保持 text 列）。
+ * 任务事件时间走 ClockPort.nextSessionIso()（进程内严格递增微秒）；临时输入按源
+ * 使用一次普通UTC同时派生created/expires，不消费会话单调守卫。格式均与Python
+ * datetime.now(timezone.utc).isoformat()一致；updated_at条件仍沿用ISO文本字典序。
  */
 public class TaskStore {
 
@@ -87,8 +87,11 @@ public class TaskStore {
     public void storeInputs(DbTx tx, String taskId, String question, String attachmentName,
                             String attachmentSuffix, String sourceText, String sourceOrigin)
             throws SQLException {
-        String created = clock.nextSessionIso();
-        String expires = pythonIso(clock.nowUtc().plus(inputTtl));
+        // 源_store_task_inputs_in_conn使用一次普通UTC，TTL从同一时刻派生；
+        // 临时输入不是会话消息，不消费nextSessionIso的进程内单调守卫。
+        Instant inputCreated = clock.nowUtc();
+        String created = pythonIso(inputCreated);
+        String expires = pythonIso(inputCreated.plus(inputTtl));
         Connection conn = tx.connection();
         String[] columns = {question, attachmentName, attachmentSuffix, sourceText, sourceOrigin,
                 created, expires};
