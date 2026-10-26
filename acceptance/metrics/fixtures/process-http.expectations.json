@@ -1,0 +1,89 @@
+{
+  "domain": "actual_Application_UsageLedger_afterCommit_and_health_HTTP_only_no_LLM_RAG_tools",
+  "required_observed_families": [
+    "assistant_upstream_usage_tokens_total",
+    "assistant_upstream_usage_cost_micros_total",
+    "assistant_upstream_usage_unknown_total"
+  ],
+  "samples": [
+    {
+      "name": "assistant_upstream_usage_tokens_total",
+      "labels": {
+        "stage": "answer",
+        "kind": "llm",
+        "source": "upstream"
+      },
+      "value": 21
+    },
+    {
+      "name": "assistant_upstream_usage_cost_micros_total",
+      "labels": {
+        "stage": "answer",
+        "kind": "llm",
+        "model": "synthetic",
+        "currency": "USD"
+      },
+      "value": 7
+    },
+    {
+      "name": "assistant_upstream_usage_unknown_total",
+      "labels": {
+        "stage": "answer",
+        "kind": "llm"
+      },
+      "value": 1
+    },
+    {
+      "name": "http_requests_total",
+      "labels": {
+        "method": "GET",
+        "status": "2xx",
+        "handler": "/api/health"
+      },
+      "value": 1
+    },
+    {
+      "name": "http_request_size_bytes_sum",
+      "labels": {
+        "handler": "/api/health"
+      },
+      "value": 0
+    },
+    {
+      "name": "http_request_size_bytes_count",
+      "labels": {
+        "handler": "/api/health"
+      },
+      "value": 1
+    },
+    {
+      "name": "http_response_size_bytes_count",
+      "labels": {
+        "handler": "/api/health"
+      },
+      "value": 1
+    }
+  ],
+  "absent_samples": [
+    {
+      "name": "assistant_upstream_usage_tokens_total",
+      "labels": {
+        "stage": "answer",
+        "kind": "llm",
+        "source": "unknown"
+      }
+    },
+    {
+      "name": "assistant_upstream_usage_tokens_total",
+      "labels": {
+        "stage": "answer",
+        "kind": "llm",
+        "source": "cache_hit"
+      }
+    }
+  ],
+  "exact_series_families": [
+    "assistant_upstream_usage_tokens_total",
+    "assistant_upstream_usage_cost_micros_total"
+  ]
+}

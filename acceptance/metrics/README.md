@@ -27,3 +27,5 @@ python3 acceptance/metrics/validate.py --wire "$task_metrics_output_dir/process-
 ```
 
 `process-spec.json`是正式family/type/labels/buckets/created规则；`mapping.json`反映用户新要求。历史source34与raw strict差异不覆盖或删除；新输出需要在主业务hooks接入后fresh采样，真实PG/HTTP另由主Agent开窗，不能借用UI种子。当前collector已编译，Java纯测14/14、Python纯测22/22、真实Java registry合成port导出通过16领域/19已知断言；未完成业务hook真实HTTP正例，不宣称新全矩阵或live通过。
+
+正式Application局部正例入口为ProcessMetricsHttpSmoke.java（需主授权独立TestPg窗口）。它只调用真实UsageLedger事务hook和health HTTP，不直接喂metrics：核验唯一Bean、事务提交前/回滚无事件、提交后known21/cost7/unknown1/cache0；新process-http.expectations.json核验16领域注册、3usage已观测和HTTP字段。已实际运行并清理服务/动态库；证据metrics-mapping-process-http.json。LLM/RAG/tools及source16全部真实业务事件仍需root当前hook/fresh矩阵，不能用port导出替代。

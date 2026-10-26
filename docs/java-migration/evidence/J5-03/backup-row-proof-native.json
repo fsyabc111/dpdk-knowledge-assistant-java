@@ -1,0 +1,75 @@
+{
+  "status": "passed",
+  "domain": "native_owned_PG_generated_proof_SQL_only_not_dump_restore",
+  "identity_verified_before_writes": true,
+  "source": {
+    "tables": {
+      "rag_task_inputs": {
+        "rows": 1,
+        "row_sha256": null,
+        "data_excluded": true,
+        "column_schema_sha256": "57f2ecfa8998c40e87188daf45ce421f7a30972870bda3bad60d6046e286b610"
+      },
+      "grading_submissions": {
+        "rows": 2,
+        "row_sha256": "ac27fb432e6d86d3f67e38cfe64aeff7cc2d0dbb04845b6768e5d97213bab529",
+        "data_excluded": false,
+        "column_schema_sha256": "ea35971cf13b8ff6d90e7345166043d1a0377f4a82c724e565d421f6d33dd442"
+      },
+      "synthetic_new_table": {
+        "rows": 1,
+        "row_sha256": "ee500ae2b0d100e56b2a409019b829705b1b076b5645798eaa634c3ec10718de",
+        "data_excluded": false,
+        "column_schema_sha256": "93e6bdf947b4bc46876581c8f88911ebe27a1be8f4537020fcc6ebf412b91a55"
+      }
+    },
+    "version": "public-full-row-multiset-sha256-v1",
+    "inventory": [
+      "grading_submissions",
+      "rag_task_inputs",
+      "synthetic_new_table"
+    ]
+  },
+  "synthetic_excluded_input_target": {
+    "tables": {
+      "rag_task_inputs": {
+        "rows": 0,
+        "row_sha256": null,
+        "data_excluded": true,
+        "column_schema_sha256": "57f2ecfa8998c40e87188daf45ce421f7a30972870bda3bad60d6046e286b610"
+      },
+      "grading_submissions": {
+        "rows": 2,
+        "row_sha256": "ac27fb432e6d86d3f67e38cfe64aeff7cc2d0dbb04845b6768e5d97213bab529",
+        "data_excluded": false,
+        "column_schema_sha256": "ea35971cf13b8ff6d90e7345166043d1a0377f4a82c724e565d421f6d33dd442"
+      },
+      "synthetic_new_table": {
+        "rows": 1,
+        "row_sha256": "ee500ae2b0d100e56b2a409019b829705b1b076b5645798eaa634c3ec10718de",
+        "data_excluded": false,
+        "column_schema_sha256": "93e6bdf947b4bc46876581c8f88911ebe27a1be8f4537020fcc6ebf412b91a55"
+      }
+    },
+    "version": "public-full-row-multiset-sha256-v1",
+    "inventory": [
+      "grading_submissions",
+      "rag_task_inputs",
+      "synthetic_new_table"
+    ]
+  },
+  "proof": {
+    "domain": "public-full-row-multiset-sha256-v1",
+    "retained_public_tables": 2,
+    "retained_full_row_multisets_equal": true,
+    "temporary_input_schema_equal": true,
+    "temporary_input_rows_restored": 0,
+    "raw_rows_exported": false,
+    "sequence_values_constraints_indexes_not_proven_by_this_digest": true
+  },
+  "same_count_wrong_grade_rejected": true,
+  "docker_or_stack_started": false,
+  "owned_dynamic_database_cleaned": true,
+  "actual_restore": "pending",
+  "source_before_smoke_file": "368368c"
+}

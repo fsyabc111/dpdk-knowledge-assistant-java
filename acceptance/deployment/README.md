@@ -21,4 +21,4 @@ python3 -m py_compile acceptance/deployment/*.py
 
 标准库Python只是隔离验收工具，不导入旧Python主后端。原项目、旧profile、生产库和真实上游保持只读/未调用。所有恢复资产保留，不提供清卷或DROP入口。
 
-恢复数据证明由business_proof.py动态枚举全部public表，以单一REPEATABLE READ READ ONLY快照生成每表完整行多重集SHA256和列结构SHA256，比较同count错grade等反例；临时输入表只比较列结构且恢复0行。只输出摘要/计数，不输出原始行；不把该证明扩大为sequence/约束/索引完整catalog等价。实际SQL/恢复仍待主窗口。
+恢复数据证明由business_proof.py动态枚举全部public表，以单一REPEATABLE READ READ ONLY快照生成每表完整行多重集SHA256和列结构SHA256，比较同count错grade等反例；临时输入表只比较列结构且恢复0行。只输出摘要/计数，不输出原始行；不把该证明扩大为sequence/约束/索引完整catalog等价。摘要SQL已在主授权的native独立3表窗口验证正反例；实际Docker/dump/恢复仍待主窗口。

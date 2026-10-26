@@ -17,3 +17,7 @@
 ## CPU窗口释放后当前验证
 
 已merge固定integration f1c5bb5，无冲突。当前collector源码编译成功，Java纯测14/14（0 skip）；新旧分类Python纯测22/22。实际Java ExportProcessFixture向真实registry提交显式合成port事件，导出46families/174series，validator验证16领域均已观测、19已知断言，body SHA见metrics-mapping-process-v2-validation.json。该导出不是业务hook/真实HTTP验收；新PG/HTTP正例窗口已向root申请，strict matrix及live仍pending。旧CPU窗口中的未验描述是历史恢复记录，不能覆盖本节当前结果。
+
+## 独立PG与正式HTTP局部正例
+
+主授权20秒窗口后已实际运行ProcessMetricsHttpSmoke：TestPg先身份再新库，正式Application迁移默认关闭/任务后台关闭、唯一ProcessMetricsRegistry Bean、真实UsageLedger外事务提交前无事件、回滚无事件，提交后token21/cost7/unknown1/cache0；health真实HTTP filter与/metrics200 text/plain。正式validator通过16领域注册/3usage观测、11已知断言，37families/98series，SHA在metrics-mapping-process-http.json。应用和动态库已清理；无Docker/真实上游。此局部验证不覆盖LLM/RAG/tool业务hook，不宣称16领域均经HTTP正例触发，也不宣称strict矩阵或实际部署恢复通过。
