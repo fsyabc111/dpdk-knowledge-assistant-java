@@ -38,6 +38,16 @@ public final class HarnessCaller {
     }
 
     public Map<String, Object> call(String tool, Map<String, Object> args, int timeoutSeconds) {
+        return invoke(tool, args, timeoutSeconds, true);
+    }
+
+    /** 源reference.py直接走原mcp_caller，不属于模型工具闭包的operation账本。 */
+    public Map<String, Object> referenceAnswer(String protocol) {
+        return invoke("get_reference_answer", Map.of("protocol", protocol), 120, false);
+    }
+
+    private Map<String, Object> invoke(String tool, Map<String, Object> args, int timeoutSeconds,
+            boolean recordToolOperation) {
         long started = System.nanoTime();
         try {
             Deadline deadline = new Deadline(Instant.now().plusSeconds(timeoutSeconds),
@@ -61,7 +71,7 @@ public final class HarnessCaller {
             }
             return payload;
         } finally {
-            if (usage != null) {
+            if (usage != null && recordToolOperation) {
                 usage.recordOperation(AgentUsageSink.KIND_MCP, tool,
                         (System.nanoTime() - started) / 1_000_000L);
             }

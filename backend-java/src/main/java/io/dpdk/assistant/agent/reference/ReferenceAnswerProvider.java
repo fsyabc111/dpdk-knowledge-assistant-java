@@ -44,7 +44,7 @@ public final class ReferenceAnswerProvider {
     private String fetch(String protocol) {
         Map<String, Object> payload;
         try {
-            payload = harness.call("get_reference_answer", Map.of("protocol", protocol), 120);
+            payload = harness.referenceAnswer(protocol);
         } catch (Exception exc) {
             log.warn(PythonJson.dumps(Map.of(
                     "event", "reference_answer_failed", "protocol", protocol,
