@@ -75,7 +75,7 @@ python3 acceptance/deployment/rehearse.py --repo "$PWD" rollback --execute
 
 - cold：先拒绝既有本round数据卷→固定image启动全新栈→TLS/API存活→空索引ready503→完整全源CLI预览/ingest→ready通过→账号创建/改密→真实HTTP聊天持久化、引用回读、SSE增量与done→外部metrics/actuator404。
 - upgrade：先停止唯一backend→核对新PG容器project/service/卷及维护库role/data_dir、base库comment→创建manifest-owned `p5_deployment_<round>_upgrade`→在该空库构造合成0013及历史成绩→切候选到此库，由Java唯一入口升级→索引与业务读写→历史成绩保留。该合成构造沿用MigrationThreePathsIntegrationTest，不对原库执行downgrade。
-- backup_restore：停止backend冻结合成写入→仅临时输入表放置源码哨兵→长期表哨兵为零→custom pg_dump仅排 `rag_task_inputs` **数据**→pg_restore --list确认表结构存在且无TABLE DATA→创建另一个owned空库restore→实际pg_restore（单事务、exit-on-error、无clean/create覆盖）→保留业务表计数/active release逐项相等，临时输入表存在但为空，长期哨兵为零→候选启动并回读原消息/旧引用，再写入新业务。
+- backup_restore：停止backend冻结合成写入→仅临时输入表放置源码哨兵→长期表哨兵为零→custom pg_dump仅排 `rag_task_inputs` **数据**→pg_restore --list确认表结构存在且无TABLE DATA→创建另一个owned空库restore→实际pg_restore（单事务、exit-on-error、无clean/create覆盖）→动态枚举全部public表，完整行canonical JSON→SHA256，按行摘要C序聚合为每表多重集摘要（保留重复行），对比行数/完整行摘要/列结构摘要；临时输入表保留列结构但恢复数据为空，长期哨兵为零→候选启动并回读原消息/旧引用，再写入新业务。
 - rollback：停止新backend→切回已归档P4旧应用image，数据库维持恢复后的新数据和schema→旧应用读取升级前后消息、引用和新写入业务，再实际新写入→不还原旧备份、不降低schema、不损失增量。PG始终只有一处单写/迁移owner。
 
 每个CREATE/DDL/restore前都重新核对新daemon和PG数据库/role/comment/data_dir；unknown或已有库不会自动收养，非空恢复目标拒绝。没有DROP/down -v/清卷入口。阶段失败会记录failed与异常类型，原始命令失败输出仅留ignore本地日志；保存现场后定位，不能盲目重跑或覆盖manifest/备份。需要新round时先完整保留失败round目录，再由主Agent建立新的专属准备目录和project；不删除旧恢复资产。
@@ -85,7 +85,7 @@ python3 acceptance/deployment/rehearse.py --repo "$PWD" rollback --execute
 `scenario-state.json`含合成账号密码等恢复状态，0600且不得提交；`scenario-results.json`只记录断言、计数、hash、固定身份与时长，提交前再做白名单审查。最终报告必须绑定源码、image ID、jar、source manifest、配置摘要、schema路径、实际PG major及fake脚本版本。build、自动验证、场景验收和用户验收分别写。
 
 - 本卡恢复时长包含停止backend、pg_dump/创建新库/恢复、应用启动、健康/ready和业务读写检查；各阶段另有execution_seconds。冷启包含镜像已存在时的容器/数据库初始化与ingest，不含拉镜像/build。报告注明测量边界，不能套用thresholds.json的1秒局部ensure_managed恢复阈值。
-- 备份恢复RPO只验证受控停止写入后的备份快照：应保留业务表、消息、身份、成绩、用量、release及旧引用；临时执行输入按既定规则有意排除。该结果不能证明主机/PG故障、备份间隔增量或真实MCP在途作业RPO=0。
+- 备份恢复RPO只验证受控停止写入后的备份快照：应保留业务表、消息、身份、成绩、用量、release及旧引用；临时执行输入按既定规则有意排除。行摘要覆盖所有public普通/分区表的完整行，含新增业务表；不把11表count相同当数据相等。只输出表名、count与SHA256，不导出密码哈希/token/业务正文/源码。rag_task_inputs仅列结构摘要，数据有意排除。该行摘要不证明sequence值、约束或索引定义等完整catalog等价；这些仍依赖迁移/恢复及业务验收。该结果不能证明主机/PG故障、备份间隔增量或真实MCP在途作业RPO=0。
 - 生产停机窗口、真实RPO、真实模型/harness质量和不可逆数据处理均未在本批次批准或测量。固定替身内存丢失不等于真实harness恢复，需独立场景说明。
 
 ## 回退触发与生产边界

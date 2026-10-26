@@ -12,6 +12,7 @@ from guard import GuardError,env_values,deployment_manifest,docker_identity
 from docker_pg import DockerPg,BASE
 from override import generate,validate
 from probes import Probes
+from business_proof import assert_retained_equal
 
 class Rehearsal:
     def __init__(self,repo):
@@ -80,13 +81,13 @@ class Rehearsal:
         if 'upgrade' not in self.state or 'restore_database' in self.state:raise GuardError('先upgrade且恢复不能重复')
         self.compose('stop','backend-java',overlay=self.state['overlay'])
         source=self.state['upgrade_database'];self.pg.seed_temporary_sentinel(source)
-        before=self.pg.read_assertions(source);self.pg.assert_no_longterm_sentinel(source)
+        before=self.pg.read_assertions(source);before_proof=self.pg.business_proof(source);self.pg.assert_no_longterm_sentinel(source)
         if before['rag_task_inputs']!=1:raise GuardError('临时源码兜底备份样例未成立')
         started=time.monotonic();backup=self.root/'business-backup.dump';summary=self.pg.backup(source,backup)
         name=self.pg.create('restore');self.pg.restore(name,backup);after=self.pg.read_assertions(name)
         if not after['task_input_table_present'] or after['rag_task_inputs']!=0:raise GuardError('恢复临时表结构缺失或源码数据泄漏')
-        for key,value in before.items():
-            if key!='rag_task_inputs' and after[key]!=value:raise GuardError('恢复业务计数/索引身份变化：'+key)
+        after_proof=self.pg.business_proof(name)
+        proof=assert_retained_equal(before_proof,after_proof)
         self.pg.assert_no_longterm_sentinel(name)
         self.state['restore_database']=name;self.state['backup']=summary;self.persist()
         overlay=self.overlay('restore',name);self.activate(overlay);self.probes.health()
@@ -94,7 +95,8 @@ class Rehearsal:
         self.new_business('restore','U20260000063')
         self.state['restored_counts']=self.pg.read_assertions(name);self.persist()
         return {'phase':'backup_restore','backup':summary,'before':before,'restored_before_new_write':after,'source_sentinel_longterm_matches':0,'existing_business':read,
-            'elapsed_seconds':time.monotonic()-started,'rpo_domain':'controlled write-free backup snapshot; all retained business rows equal; temporary execution inputs intentionally excluded'}
+            'retained_rows_proof':proof,'source_row_digests':before_proof,'restored_row_digests':after_proof,
+            'elapsed_seconds':time.monotonic()-started,'rpo_domain':'controlled write-free backup snapshot; all public retained table full-row multisets and column schemas equal; temporary execution input data intentionally excluded; sequence state/constraints/indexes outside row digest'}
     def rollback(self):
         if 'restore_database' not in self.state or 'rollback' in self.state:raise GuardError('先恢复，应用回退不能重复')
         old=self.manifest['images'].get('p4-backend');new=self.manifest['images'].get('candidate-backend')

@@ -8,6 +8,7 @@ import re
 import secrets
 import subprocess
 from guard import GuardError, docker_identity, env_values, deployment_manifest
+from business_proof import proof_sql,parse_proof
 
 ROLE='dpdk_java_isolated'
 BASE='dpdk_java_isolated'
@@ -118,6 +119,11 @@ class DockerPg:
         counts['active_release']=self._sql(name,"SELECT coalesce(release_id,'') FROM rag_index_state WHERE name='active';").strip()
         counts['task_input_table_present']=self._sql(name,"SELECT to_regclass('public.rag_task_inputs') IS NOT NULL;").strip()=='t'
         return counts
+
+    def business_proof(self,name):
+        self.verify_owned(name)
+        tables=self._sql(name,"SELECT tablename FROM pg_tables WHERE schemaname='public' ORDER BY tablename COLLATE \"C\";").splitlines()
+        return parse_proof(self._sql(name,proof_sql(tables)),tables)
 
     def seed_temporary_sentinel(self,name):
         self.verify_owned(name)
