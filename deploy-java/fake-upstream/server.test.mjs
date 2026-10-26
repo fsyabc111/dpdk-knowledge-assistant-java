@@ -61,6 +61,9 @@ test('model script waits for a real tool response and returns explicit judge JSO
   assert.match(final.content,/\[1\]/); assert.equal(final.tool_calls,undefined);
   const judge=await ask({messages:[{role:'system',content:'supported; 不得重写答案。'},user]});
   assert.deepEqual(JSON.parse(judge.content),{status:'answered',reason:'supported',supported:true});
+  const draft=await ask({messages:[{role:'system',content:'基于项目资料作答'},
+    {role:'user',content:'用户当前问题：DNS\n检索上下文（本轮唯一事实依据）：\n[1] fixed evidence'}]});
+  assert.match(draft.content,/\[1\]/);
   assert.equal(f.snapshot().createdJobs,0);
 });
 test('standalone server emits no request/source logs to stdout or stderr', {timeout:10000}, async t=>{

@@ -94,7 +94,8 @@ export function createFakeUpstream() {
             function:{name:'kb_search',arguments:JSON.stringify({query:'DNS'})}}]};
         } else if (system.includes('supported') && system.includes('不得重写答案')) {
           message.content = '{"status":"answered","reason":"supported","supported":true}';
-        } else if (afterUser.some(item => item.role === 'tool') || system.includes('事实依据')) {
+        } else if (afterUser.some(item => item.role === 'tool') || system.includes('事实依据')
+            || messages.some(item => item.role === 'user' && String(item.content).includes('检索上下文（本轮唯一事实依据）'))) {
           message.content = '合成知识说明：DNS 报文解析需要核对字段边界 [1]。';
         }
         res.end(JSON.stringify({id:'synthetic',object:'chat.completion',model:'synthetic-chat',
