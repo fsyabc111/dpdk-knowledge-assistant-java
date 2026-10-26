@@ -1,0 +1,40 @@
+# TYPE assistant_java_http_requests_total counter
+# TYPE assistant_java_http_dispatch_duration_seconds summary
+assistant_java_http_requests_total{method="GET",status="200"} 3
+assistant_java_http_dispatch_duration_seconds_count{method="GET",status="200"} 3
+assistant_java_http_dispatch_duration_seconds_sum{method="GET",status="200"} 0.25
+# TYPE assistant_java_persisted_task_records gauge
+assistant_java_persisted_task_records{reason="no_evidence",status="unanswered"} 1
+# TYPE assistant_rag_outcomes_total gauge
+assistant_rag_outcomes_total{reason="no_evidence",status="unanswered"} 1
+# TYPE assistant_java_persisted_task_elapsed_seconds_sum gauge
+assistant_java_persisted_task_elapsed_seconds_sum{reason="no_evidence",status="unanswered"} 0.001
+# TYPE assistant_java_persisted_usage_records gauge
+assistant_java_persisted_usage_records{stage="answer",kind="llm",source="upstream"} 1
+assistant_java_persisted_usage_records{stage="answer",kind="llm",source="unknown"} 1
+# TYPE assistant_java_persisted_usage_calls gauge
+assistant_java_persisted_usage_calls{stage="answer",kind="llm",source="upstream"} 1
+assistant_java_persisted_usage_calls{stage="answer",kind="llm",source="unknown"} 1
+# TYPE assistant_upstream_usage_tokens_total gauge
+assistant_upstream_usage_tokens_total{stage="answer",kind="llm",source="upstream"} 21
+# TYPE assistant_upstream_usage_cost_micros_total gauge
+assistant_upstream_usage_cost_micros_total{stage="answer",kind="llm",model="synthetic",currency="USD"} 7
+# TYPE assistant_upstream_usage_unknown_total gauge
+assistant_upstream_usage_unknown_total{stage="answer",kind="llm"} 1
+# TYPE assistant_java_usage_token_unknown_records gauge
+assistant_java_usage_token_unknown_records{stage="answer",kind="llm",source="unknown"} 1
+# TYPE assistant_java_usage_cost_unknown_records gauge
+assistant_java_usage_cost_unknown_records{stage="answer",kind="llm",source="unknown"} 1
+# TYPE assistant_java_domain_metric_available gauge
+assistant_java_domain_metric_available{metric="assistant_llm_requests_total"} 0
+assistant_java_domain_metric_available{metric="assistant_llm_request_duration_seconds"} 0
+assistant_java_domain_metric_available{metric="assistant_chat_retrieval_duration_seconds"} 0
+assistant_java_domain_metric_available{metric="assistant_chat_stage_duration_seconds"} 0
+assistant_java_domain_metric_available{metric="assistant_chat_fallbacks_total"} 0
+assistant_java_domain_metric_available{metric="assistant_rate_limit_hits_total"} 0
+assistant_java_domain_metric_available{metric="assistant_rag_duration_seconds"} 0
+assistant_java_domain_metric_available{metric="assistant_rag_validation_duration_seconds"} 0
+assistant_java_domain_metric_available{metric="assistant_agent_tool_calls_total"} 0
+assistant_java_domain_metric_available{metric="assistant_agent_tool_duration_seconds"} 0
+assistant_java_domain_metric_available{metric="assistant_agent_tool_result_bytes"} 0
+assistant_java_domain_metric_available{metric="assistant_agent_request_tokens"} 0

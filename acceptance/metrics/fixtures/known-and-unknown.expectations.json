@@ -1,0 +1,81 @@
+{
+  "domain": "hand_calculated_synthetic_text_not_live_HTTP_or_PG",
+  "seed_description": "一个终态无证据任务；已知用量21 token/7 microUSD；另一个真实调用无token/cost，usage_source=unknown",
+  "samples": [
+    {
+      "name": "assistant_java_http_requests_total",
+      "labels": {
+        "method": "GET",
+        "status": "200"
+      },
+      "value": 3
+    },
+    {
+      "name": "assistant_rag_outcomes_total",
+      "labels": {
+        "status": "unanswered",
+        "reason": "no_evidence"
+      },
+      "value": 1
+    },
+    {
+      "name": "assistant_upstream_usage_tokens_total",
+      "labels": {
+        "stage": "answer",
+        "kind": "llm",
+        "source": "upstream"
+      },
+      "value": 21
+    },
+    {
+      "name": "assistant_upstream_usage_cost_micros_total",
+      "labels": {
+        "stage": "answer",
+        "kind": "llm",
+        "model": "synthetic",
+        "currency": "USD"
+      },
+      "value": 7
+    },
+    {
+      "name": "assistant_upstream_usage_unknown_total",
+      "labels": {
+        "stage": "answer",
+        "kind": "llm"
+      },
+      "value": 1
+    },
+    {
+      "name": "assistant_java_usage_token_unknown_records",
+      "labels": {
+        "stage": "answer",
+        "kind": "llm",
+        "source": "unknown"
+      },
+      "value": 1
+    },
+    {
+      "name": "assistant_java_usage_cost_unknown_records",
+      "labels": {
+        "stage": "answer",
+        "kind": "llm",
+        "source": "unknown"
+      },
+      "value": 1
+    }
+  ],
+  "absent_samples": [
+    {
+      "name": "assistant_upstream_usage_tokens_total",
+      "labels": {
+        "stage": "answer",
+        "kind": "llm",
+        "source": "unknown"
+      }
+    }
+  ],
+  "exact_series_families": [
+    "assistant_upstream_usage_tokens_total",
+    "assistant_upstream_usage_cost_micros_total"
+  ]
+}

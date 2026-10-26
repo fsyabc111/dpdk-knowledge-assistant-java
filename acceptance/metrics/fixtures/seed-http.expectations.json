@@ -1,0 +1,100 @@
+{
+  "domain": "independent_owned_TestPg_known21_cost7_unknown1_cache_hit0_actual_Application_HTTP",
+  "seed_description": "一个终态无证据任务；已知用量21 token/7 microUSD；另一个真实调用无token/cost，usage_source=unknown",
+  "samples": [
+    {
+      "name": "assistant_rag_outcomes_total",
+      "labels": {
+        "status": "unanswered",
+        "reason": "no_evidence"
+      },
+      "value": 1
+    },
+    {
+      "name": "assistant_upstream_usage_tokens_total",
+      "labels": {
+        "stage": "answer",
+        "kind": "llm",
+        "source": "upstream"
+      },
+      "value": 21
+    },
+    {
+      "name": "assistant_upstream_usage_cost_micros_total",
+      "labels": {
+        "stage": "answer",
+        "kind": "llm",
+        "model": "synthetic",
+        "currency": "USD"
+      },
+      "value": 7
+    },
+    {
+      "name": "assistant_upstream_usage_unknown_total",
+      "labels": {
+        "stage": "answer",
+        "kind": "llm"
+      },
+      "value": 1
+    },
+    {
+      "name": "assistant_java_usage_token_unknown_records",
+      "labels": {
+        "stage": "answer",
+        "kind": "llm",
+        "source": "unknown"
+      },
+      "value": 1
+    },
+    {
+      "name": "assistant_java_usage_cost_unknown_records",
+      "labels": {
+        "stage": "answer",
+        "kind": "llm",
+        "source": "unknown"
+      },
+      "value": 1
+    },
+    {
+      "name": "assistant_upstream_usage_tokens_total",
+      "labels": {
+        "stage": "answer",
+        "kind": "llm",
+        "source": "cache_hit"
+      },
+      "value": 0
+    },
+    {
+      "name": "assistant_java_persisted_usage_calls",
+      "labels": {
+        "stage": "answer",
+        "kind": "llm",
+        "source": "cache_hit"
+      },
+      "value": 0
+    },
+    {
+      "name": "assistant_java_persisted_usage_records",
+      "labels": {
+        "stage": "answer",
+        "kind": "llm",
+        "source": "unknown"
+      },
+      "value": 1
+    }
+  ],
+  "absent_samples": [
+    {
+      "name": "assistant_upstream_usage_tokens_total",
+      "labels": {
+        "stage": "answer",
+        "kind": "llm",
+        "source": "unknown"
+      }
+    }
+  ],
+  "exact_series_families": [
+    "assistant_upstream_usage_tokens_total",
+    "assistant_upstream_usage_cost_micros_total"
+  ]
+}

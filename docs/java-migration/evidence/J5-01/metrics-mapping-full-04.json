@@ -1,0 +1,86 @@
+{
+  "case_id": "GET /metrics::success",
+  "run_id": "full-04",
+  "trace_observation_index": 30,
+  "production_source_commits_reported_by_matrix": [
+    "862eaf5",
+    "55adb04",
+    "e836a55",
+    "16d1e68",
+    "9237fe5",
+    "531bc06",
+    "01df30c",
+    "9445b52"
+  ],
+  "worker_head_reported_by_matrix": "c8de702",
+  "helper_commit": "pending_matrix_handoff",
+  "raw_wire_location": "/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/worktrees/j5-01/.migration-artifacts/j5-01/full-04/wire/30.prom",
+  "raw_wire_sha256": "7aa165ab732ca3ebedca7da56af0b2e7214e44a027766945de97c3003334f825",
+  "trace_sha256": "0c0330178c26ecb4f5dbcf337905438e869a95b1cf6e65480f8b19ce5d8acf3d",
+  "http_status": 200,
+  "media_type": "text/plain",
+  "expectations": {
+    "domain": "frozen_initial_task_rows_and_independent_prior_HTTP_request_trace",
+    "samples": [
+      {
+        "name": "assistant_java_http_requests_total",
+        "labels": {
+          "method": "GET",
+          "status": "200"
+        },
+        "value": 18
+      },
+      {
+        "name": "assistant_java_http_requests_total",
+        "labels": {
+          "method": "HEAD",
+          "status": "200"
+        },
+        "value": 4
+      },
+      {
+        "name": "assistant_java_http_requests_total",
+        "labels": {
+          "method": "POST",
+          "status": "200"
+        },
+        "value": 8
+      },
+      {
+        "name": "assistant_java_persisted_task_records",
+        "labels": {
+          "status": "unanswered",
+          "reason": "no_evidence"
+        },
+        "value": 1
+      },
+      {
+        "name": "assistant_rag_outcomes_total",
+        "labels": {
+          "status": "unanswered",
+          "reason": "no_evidence"
+        },
+        "value": 1
+      }
+    ],
+    "absent_samples": []
+  },
+  "validator": {
+    "status": "passed_with_declared_coverage",
+    "family_count": 6,
+    "series_count": 24,
+    "unavailable0_count": 12,
+    "known_value_checks": 5,
+    "known_values_domain": "frozen_initial_task_rows_and_independent_prior_HTTP_request_trace",
+    "validation_scope": "structure_plus_explicit_known_values",
+    "positive_unknown_groups": 0,
+    "unknown_positive_http_validation": "not_exercised_no_positive_unknown_rows_in_wire",
+    "source_families": 34,
+    "raw_wire_equivalence": false,
+    "strict_verdict_unchanged": true,
+    "body_sha256": "7aa165ab732ca3ebedca7da56af0b2e7214e44a027766945de97c3003334f825"
+  },
+  "original_strict_metrics_family_mismatch": "source34_vs_java6_retained",
+  "unknown_positive_seed_http_case": "pending_local_window_not_exercised_in_this_case",
+  "fresh_final_candidate_capture": "pending"
+}

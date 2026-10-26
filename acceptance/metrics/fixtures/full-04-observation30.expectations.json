@@ -1,0 +1,46 @@
+{
+  "domain": "frozen_initial_task_rows_and_independent_prior_HTTP_request_trace",
+  "samples": [
+    {
+      "name": "assistant_java_http_requests_total",
+      "labels": {
+        "method": "GET",
+        "status": "200"
+      },
+      "value": 18
+    },
+    {
+      "name": "assistant_java_http_requests_total",
+      "labels": {
+        "method": "HEAD",
+        "status": "200"
+      },
+      "value": 4
+    },
+    {
+      "name": "assistant_java_http_requests_total",
+      "labels": {
+        "method": "POST",
+        "status": "200"
+      },
+      "value": 8
+    },
+    {
+      "name": "assistant_java_persisted_task_records",
+      "labels": {
+        "status": "unanswered",
+        "reason": "no_evidence"
+      },
+      "value": 1
+    },
+    {
+      "name": "assistant_rag_outcomes_total",
+      "labels": {
+        "status": "unanswered",
+        "reason": "no_evidence"
+      },
+      "value": 1
+    }
+  ],
+  "absent_samples": []
+}
