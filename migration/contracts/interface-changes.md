@@ -183,3 +183,7 @@ J3-01 已交付（worker/j3-01@40cb46c，自有测试 8类50/50；真双JVM+合�
 ## P5执行体收尾钩子（集成裁决）
 
 TaskExecutor新增default afterCompletion(context)，由TaskRunner在finish尝试之后、对外terminal/释放占槽之前finally恰好调用一次；失败/取消也调用。ChatTaskExecutor仅把请求recorder与三个身份字符串暂存至任务级map（不另存源码），钩子remove后best-effort落账，保留异常/取消已发调用计量，不让ledger先于答案持久事件消费时间。中断标记在JDBC收尾前暂清、finally恢复，不改变事务/COMP003或迟到结果守卫。真实PG成功/异常/取消三条边界+原Agent/并发回归23/23通过，终态闩锁证明钩子未结束时不可对外terminal。
+
+## P5过程指标补全（用户直接裁决2026-10-26）
+
+用户在异步决定中选择“补齐源过程指标（保持冻结兼容默认）”；不接受将12类过程指标unavailable与counter→持久gauge直接当作P5豁免。新增contracts.observability.ProcessMetrics类型化观测端口，业务传系统枚举/耗时/字节数/token/cost，不传用户、问题或源码；正式实现提供源counter/histogram，旧纯构造可用NONE，不作为正式应用装配。用量过程计数消费实际成功写入的条目，而非可下降的留存快照。Python专属运行时项按JVM真实能力明确映射，不伪造Python runtime。根集成者写端口和业务hook/装配，operations独占过程collector/HTTP exporter/测试。
