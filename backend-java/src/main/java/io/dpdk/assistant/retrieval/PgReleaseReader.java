@@ -12,6 +12,7 @@ import io.dpdk.assistant.contracts.retrieval.SearchInput;
 import io.dpdk.assistant.contracts.retrieval.SearchResult;
 import io.dpdk.assistant.contracts.retrieval.SourceChunk;
 import io.dpdk.assistant.model.ModelUsageLedger;
+import io.dpdk.assistant.model.ModelCallCancelledException;
 import io.dpdk.assistant.model.SingleFlightTtlCache;
 import io.dpdk.assistant.usage.UsageCore;
 import java.sql.Connection;
@@ -47,6 +48,10 @@ import org.slf4j.LoggerFactory;
  * section/title/metadata（富字段经 RetrievalTrace.nodes 交付）。
  */
 public final class PgReleaseReader implements ReleaseReader {
+
+    /** 与冻结Python trace.mark_fallback原文一致；业务调用者据此记录降级而非fail-closed。 */
+    public static final String QUERY_EMBEDDING_FAILED_FALLBACK =
+            "query embedding failed; retrieval used lexical/path candidates";
 
     private static final Logger log = LoggerFactory.getLogger(PgReleaseReader.class);
 
@@ -182,11 +187,20 @@ public final class PgReleaseReader implements ReleaseReader {
         finally { metrics.retrievalStage("rewrite",(System.nanoTime()-rewriteStarted)/1e9); }
 
         double[] queryEmbedding;
+        List<String> fallbacks = new ArrayList<>();
         if (input.queryVector() != null) {
             queryEmbedding = VectorMath.toDoubles(input.queryVector().values());
         } else if (embeddingPort != null || queryEmbeddingClient != null) {
             long embeddingStarted=System.nanoTime();
             try { queryEmbedding = queryEmbedding(query, rewritten, usage); }
+            catch (RuntimeException failure) {
+                if (isCancellation(failure)) throw failure;
+                // 失败usage已由真实客户端/显式桥保留；关闭语义腿，仍查询真实词法/路径候选。
+                queryEmbedding = new double[0];
+                fallbacks.add(QUERY_EMBEDDING_FAILED_FALLBACK);
+                log.warn(PythonJson.dumps(Map.of("event", "query_embedding_failed",
+                        "error_type", failure.getClass().getSimpleName())));
+            }
             finally { metrics.retrievalStage("embedding",(System.nanoTime()-embeddingStarted)/1e9); }
         } else {
             queryEmbedding = new double[0];
@@ -201,15 +215,27 @@ public final class PgReleaseReader implements ReleaseReader {
                 .map(n -> new RetrievedChunk(n.id(), n.content(), n.score()))
                 .toList();
         RetrievalTrace partial = result.trace();
+        fallbacks.addAll(partial.fallbacks());
         RetrievalTrace trace = new RetrievalTrace(
                 releaseId, null, query, rewritten, embeddingQuery,
-                partial.embeddingDim(), partial.fallbacks(),
+                partial.embeddingDim(), fallbacks,
                 partial.ftsRewrittenCandidates(), partial.ftsOriginalCandidates(),
                 partial.pathCandidates(), partial.semanticCandidates(),
                 partial.fusedCandidates(), partial.candidateLimit(),
                 partial.rerankedChunks(), partial.selectedChunks(),
                 partial.nodes(), partial.legRanks());
         return new SearchResult(chunks, trace);
+    }
+
+    private static boolean isCancellation(Throwable failure) {
+        if (Thread.currentThread().isInterrupted()) return true;
+        for (Throwable cause = failure; cause != null; cause = cause.getCause()) {
+            if (cause instanceof InterruptedException || cause instanceof java.nio.channels.ClosedByInterruptException
+                    || (cause instanceof java.io.InterruptedIOException && !(cause instanceof java.net.SocketTimeoutException))
+                    || cause instanceof java.util.concurrent.CancellationException
+                    || cause instanceof ModelCallCancelledException) return true;
+        }
+        return false;
     }
 
     /** embedding_query 规则：改写不同则 original + " " + rewritten。 */
