@@ -1,0 +1,66 @@
+{
+  "validated_production_source_commit": "f020efa951b816cc3315f169c483af0998875800",
+  "phase_base": "708128c",
+  "date": "2026-10-26",
+  "result": {
+    "tests": 707,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "exit_code": 0
+  },
+  "jar_sha256": "ef1b4f8e0eabf3151ccff94886d135c9f8822a94bbc1c015b17d8598756929e8",
+  "boot_cli": {
+    "test_count": 2,
+    "child_jvm_commands": 16,
+    "result": "passed",
+    "same_jar_sha256": true,
+    "detail": "../J4-03/boot-cli.md"
+  },
+  "node_fake_mcp": {
+    "tests": 5,
+    "failures": 0,
+    "live": false
+  },
+  "postgres": {
+    "native_version": "17.10",
+    "native_vector": "0.8.4",
+    "isolated_image": "pgvector/pgvector:0.8.4-pg17@sha256:dd467f03ca5c5581222490e5217e48a262864ccb659be559f8491bbafdc97da0",
+    "isolated_postgres_binary_version": "17.10",
+    "actual_app_stack_started": false
+  },
+  "logs_gitignored": [
+    ".migration-artifacts/p4-full-verify.log",
+    ".migration-artifacts/p4-recovery-latch.log",
+    ".migration-artifacts/p4-final-full-verify.log",
+    ".migration-artifacts/p4-fake-upstream-test.log",
+    ".migration-artifacts/p4-ci-reviewed-full.log",
+    ".migration-artifacts/p4-ci-reviewed-native-cli.log",
+    ".migration-artifacts/p4-linux-reviewed-full.log",
+    ".migration-artifacts/p4-linux-reviewed-native-cli.log"
+  ],
+  "limits": [
+    "live providers not authorized",
+    "browser and complete route/oracle trace not executed",
+    "new Docker profile/image preparation only; cold start/upgrade/restore deferred to P5",
+    "process-domain metrics listed unavailable; persisted ledger samples explicitly gauge"
+  ],
+  "reviewed_additions": {
+    "json_tail": "3/3 pure and real controller/PG; Python Extra data codepoint positions",
+    "knowledge_reader": "62/62 targeted owner and combination regression",
+    "stream_usage": "old deterministic 2/2 red, new related 37/37 green; terminal sees ledger before flush",
+    "linux_nanos": "test helper only truncates MICROS; production guard unchanged",
+    "linux_wall_clock": "SystemClockAdapter微秒端口；3项红绿、最终707及Linux CI通过"
+  },
+  "remote_ci": {
+    "run_id": 40198306859,
+    "source": "f020efa951b816cc3315f169c483af0998875800",
+    "conclusion": "success",
+    "jobs": [
+      "unit",
+      "postgres",
+      "frontend",
+      "deployment-materials"
+    ]
+  }
+}
