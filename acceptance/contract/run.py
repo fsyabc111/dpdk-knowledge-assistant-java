@@ -23,7 +23,7 @@ def main():
     if (out/'isolation.json').exists():raise RuntimeError('产物轮次目录已存在；请新建输出目录，不覆盖既有证据')
     from migration.oracle.verify import load_manifest
     load_manifest(ROOT/'migration/fixtures/p0-v2','p0-v2')
-    h=PgIsolation.from_env(out/'isolation.json');h.verify_instance();db=h.create('candidate');write(out/'database.json',db.__dict__)
+    h=PgIsolation.from_env(out/'isolation.json');write(out/'instance-identity.json',h.verify_instance());db=h.create('candidate');write(out/'database.json',db.__dict__)
     procs=[];logs=[]
     try:
         flog=(out/'upstream.log').open('w');logs.append(flog)

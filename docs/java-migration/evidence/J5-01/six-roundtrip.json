@@ -1,0 +1,116 @@
+{
+  "scope": "six-01局部PG专例，不是186全量差分通过",
+  "build_source": "34c1a73",
+  "candidate_sha256": "897f4e15b5cf8e99270961c99619ae250db936b9e8fcdf663a80cd19b3be7328",
+  "http_observations": 8,
+  "transaction_cases": [
+    {
+      "case_id": "pg-admission-race",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-admission-rollback",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-finish-rollback",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-finish-once",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-cancel-idempotent",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-grade-job-dedup",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-recovery-claim",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-input-ttl",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-vector-rrf-mmr",
+      "status": "通过"
+    },
+    {
+      "case_id": "citation-six-same-file",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-cleanup-terminal",
+      "status": "通过"
+    }
+  ],
+  "six": {
+    "observed_citations": [
+      {
+        "title": "同文件片段",
+        "section": "0",
+        "source_path": "synthetic/same.md",
+        "chunk_id": "li_six_0",
+        "score": 1.0
+      },
+      {
+        "title": "同文件片段",
+        "section": "1",
+        "source_path": "synthetic/same.md",
+        "chunk_id": "li_six_1",
+        "score": 0.9
+      },
+      {
+        "title": "同文件片段",
+        "section": "2",
+        "source_path": "synthetic/same.md",
+        "chunk_id": "li_six_2",
+        "score": 0.8
+      },
+      {
+        "title": "同文件片段",
+        "section": "3",
+        "source_path": "synthetic/same.md",
+        "chunk_id": "li_six_3",
+        "score": 0.7
+      },
+      {
+        "title": "同文件片段",
+        "section": "4",
+        "source_path": "synthetic/same.md",
+        "chunk_id": "li_six_4",
+        "score": 0.6
+      },
+      {
+        "title": "同文件片段",
+        "section": "5",
+        "source_path": "synthetic/same.md",
+        "chunk_id": "li_six_5",
+        "score": 0.5
+      }
+    ],
+    "values_equal_frozen_input_vector": true,
+    "all_25_table_deltas_empty": true,
+    "observed_via": "真实Spring外层事务→TaskStore.finish→PG按rank回读chunk_id/score与实际evidence source_path/section，最后测试异常整体rollback；title为原合成CitationData输入字段"
+  },
+  "fingerprint_negative": {
+    "http_status": 200,
+    "result": {
+      "chunks": 0,
+      "status": "通过",
+      "blocked_reason": "config_mismatch"
+    },
+    "business_unchanged": true
+  },
+  "pending_tasks": 0,
+  "transient_input_rows": 0,
+  "owned_database_states": [
+    "dropped"
+  ],
+  "remaining_gate": "平台与用量修复后需新构建完整186/198重放；当前整体verify仍FAIL。"
+}
