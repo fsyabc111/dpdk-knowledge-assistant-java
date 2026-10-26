@@ -13,7 +13,9 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.server.context.WebServerApplicationContext;
 import org.springframework.core.env.MapPropertySource;
 
-/** 真实正式Application/HTTP指标；仅独立TestPg合成种子，无模型/MCP/任务后台。 */
+/** 历史持久gauge种子采样器：保留旧证据重现，不再作为source-process-v2正式验收。
+ * 当前生产registry必须使用真实过程事件；数据库存量行不等于RAG/LLM/tool事件。
+ * 仅独立TestPg合成种子，无模型/MCP/任务后台。 */
 public class MetricsHttpSeedSmoke {
   public static void main(String[] args) throws Exception {
     Path output=Path.of(args[0]);

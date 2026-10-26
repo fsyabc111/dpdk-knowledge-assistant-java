@@ -11,3 +11,5 @@
 - 尚未提交本WIP，无自起服务/数据库。所有旧image archives、备份/恢复资产和失败证据均保留。
 
 准备提交补充：Python新validator的纯测试使用明确人工事件模型process_fixture.py，不依赖缺失文件/skip，也不伪称实际JVM采样。Java ExportProcessFixture将在窗口释放后产生独立实际registry事件文本，再用人工已知预期核对；完整业务hook仍由root接入后的fresh实际请求验证。当前ctor无参、renderPrometheus API未变，root可先只读审查并集成此意义清晰WIP，禁止据未运行的新测试写当前全绿。
+
+旧MetricsHttpSeedSmoke及其三个期望文件已明确标historical_diagnostic_only/not_current_candidate_gate；旧种子数据库行不能被当成新RAG/tool过程事件。旧证据与构建资产没有删除，默认新validator会拒绝gauge/unavailable替代，不会从历史PASS继承当前门禁。
