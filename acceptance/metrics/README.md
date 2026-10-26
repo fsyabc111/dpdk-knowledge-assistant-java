@@ -10,7 +10,7 @@
 - HTTP同名size Summary严格量Content-Length header，缺失0；不读、缓存或重读正文。状态分组Nxx，handler来自匹配模板/none，duration包含完整异步SSE直到完成；中途错误保留已提交status，完成去重。不是网络帧/TLS/已消费body字节统计。
 - JVM真实输出GC次数、GC耗时、heap/nonheap已用内存与JVM版本；没有等价Python对象回收/不可回收计数，不输出伪python_*。这是语言运行时能力差异，不是12领域缺项的替代。
 
-CPU窗口结束后才允许运行的验证命令：
+验证命令（已在本轮CPU窗口释放后执行）：
 
 ```bash
 # 先由主Agent释放36分钟基线CPU窗口；未释放时不执行以下命令。
@@ -26,4 +26,4 @@ python3 acceptance/metrics/validate.py --wire "$task_metrics_output_dir/process-
   --expectations acceptance/metrics/fixtures/process-events.expectations.json
 ```
 
-`process-spec.json`是正式family/type/labels/buckets/created规则；`mapping.json`反映用户新要求。历史source34与raw strict差异不覆盖或删除；新输出需要在主业务hooks接入后fresh采样，真实PG/HTTP另由主Agent开窗，不能借用UI种子。当前窗口内轻量源码实现未完成后续验证，不宣称新全矩阵或live通过。
+`process-spec.json`是正式family/type/labels/buckets/created规则；`mapping.json`反映用户新要求。历史source34与raw strict差异不覆盖或删除；新输出需要在主业务hooks接入后fresh采样，真实PG/HTTP另由主Agent开窗，不能借用UI种子。当前collector已编译，Java纯测14/14、Python纯测22/22、真实Java registry合成port导出通过16领域/19已知断言；未完成业务hook真实HTTP正例，不宣称新全矩阵或live通过。

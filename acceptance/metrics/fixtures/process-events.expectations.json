@@ -1,33 +1,155 @@
 {
-  "domain":"handcrafted_synthetic_exposition_expectations_not_business_hook_acceptance",
-  "required_observed_families":[
-    "assistant_llm_requests_total","assistant_llm_request_duration_seconds","assistant_chat_retrieval_duration_seconds",
-    "assistant_chat_stage_duration_seconds","assistant_chat_fallbacks_total","assistant_rate_limit_hits_total",
-    "assistant_rag_outcomes_total","assistant_rag_duration_seconds","assistant_rag_validation_duration_seconds",
-    "assistant_agent_tool_calls_total","assistant_agent_tool_duration_seconds","assistant_agent_tool_result_bytes",
-    "assistant_agent_request_tokens","assistant_upstream_usage_tokens_total","assistant_upstream_usage_cost_micros_total",
+  "domain": "explicit_synthetic_port_events_not_business_hook_acceptance",
+  "required_observed_families": [
+    "assistant_llm_requests_total",
+    "assistant_llm_request_duration_seconds",
+    "assistant_chat_retrieval_duration_seconds",
+    "assistant_chat_stage_duration_seconds",
+    "assistant_chat_fallbacks_total",
+    "assistant_rate_limit_hits_total",
+    "assistant_rag_outcomes_total",
+    "assistant_rag_duration_seconds",
+    "assistant_rag_validation_duration_seconds",
+    "assistant_agent_tool_calls_total",
+    "assistant_agent_tool_duration_seconds",
+    "assistant_agent_tool_result_bytes",
+    "assistant_agent_request_tokens",
+    "assistant_upstream_usage_tokens_total",
+    "assistant_upstream_usage_cost_micros_total",
     "assistant_upstream_usage_unknown_total"
   ],
-  "samples":[
-    {"name":"assistant_llm_requests_total","labels":{"engine":"llama_index","result":"success"},"value":1},
-    {"name":"assistant_chat_retrieval_duration_seconds_count","labels":{},"value":1},
-    {"name":"assistant_chat_stage_duration_seconds_count","labels":{"stage":"rewrite"},"value":1},
-    {"name":"assistant_chat_fallbacks_total","labels":{},"value":1},
-    {"name":"assistant_rate_limit_hits_total","labels":{"kind":"per_minute"},"value":1},
-    {"name":"assistant_rag_outcomes_total","labels":{"status":"answered","reason":"supported"},"value":1},
-    {"name":"assistant_rag_validation_duration_seconds_count","labels":{"result":"answered"},"value":1},
-    {"name":"assistant_agent_tool_calls_total","labels":{"tool":"grade_plugin","ok":"true"},"value":1},
-    {"name":"assistant_agent_tool_result_bytes_sum","labels":{"tool":"grade_plugin"},"value":1024},
-    {"name":"assistant_agent_request_tokens_sum","labels":{},"value":5000},
-    {"name":"assistant_upstream_usage_tokens_total","labels":{"stage":"answer","kind":"llm","source":"upstream"},"value":21},
-    {"name":"assistant_upstream_usage_cost_micros_total","labels":{"stage":"answer","kind":"llm","model":"synthetic","currency":"USD"},"value":7},
-    {"name":"assistant_upstream_usage_unknown_total","labels":{"stage":"answer","kind":"llm"},"value":1},
-    {"name":"http_requests_total","labels":{"method":"GET","status":"2xx","handler":"/api/health"},"value":1},
-    {"name":"http_response_size_bytes_sum","labels":{"handler":"/api/health"},"value":11}
+  "samples": [
+    {
+      "name": "assistant_llm_requests_total",
+      "labels": {
+        "engine": "llama_index",
+        "result": "success"
+      },
+      "value": 1
+    },
+    {
+      "name": "assistant_chat_retrieval_duration_seconds_count",
+      "labels": {},
+      "value": 1
+    },
+    {
+      "name": "assistant_chat_stage_duration_seconds_count",
+      "labels": {
+        "stage": "rewrite"
+      },
+      "value": 1
+    },
+    {
+      "name": "assistant_chat_fallbacks_total",
+      "labels": {},
+      "value": 1
+    },
+    {
+      "name": "assistant_rate_limit_hits_total",
+      "labels": {
+        "kind": "per_minute"
+      },
+      "value": 1
+    },
+    {
+      "name": "assistant_rag_outcomes_total",
+      "labels": {
+        "status": "answered",
+        "reason": "supported"
+      },
+      "value": 1
+    },
+    {
+      "name": "assistant_rag_validation_duration_seconds_count",
+      "labels": {
+        "result": "answered"
+      },
+      "value": 1
+    },
+    {
+      "name": "assistant_agent_tool_calls_total",
+      "labels": {
+        "tool": "grade_plugin",
+        "ok": "true"
+      },
+      "value": 1
+    },
+    {
+      "name": "assistant_agent_tool_result_bytes_sum",
+      "labels": {
+        "tool": "grade_plugin"
+      },
+      "value": 1024
+    },
+    {
+      "name": "assistant_agent_request_tokens_sum",
+      "labels": {},
+      "value": 5000
+    },
+    {
+      "name": "assistant_upstream_usage_tokens_total",
+      "labels": {
+        "stage": "answer",
+        "kind": "llm",
+        "source": "upstream"
+      },
+      "value": 21
+    },
+    {
+      "name": "assistant_upstream_usage_cost_micros_total",
+      "labels": {
+        "stage": "answer",
+        "kind": "llm",
+        "model": "synthetic",
+        "currency": "USD"
+      },
+      "value": 7
+    },
+    {
+      "name": "assistant_upstream_usage_unknown_total",
+      "labels": {
+        "stage": "answer",
+        "kind": "llm"
+      },
+      "value": 1
+    },
+    {
+      "name": "http_requests_total",
+      "labels": {
+        "method": "GET",
+        "status": "2xx",
+        "handler": "/api/health"
+      },
+      "value": 1
+    },
+    {
+      "name": "http_response_size_bytes_sum",
+      "labels": {
+        "handler": "/api/health"
+      },
+      "value": 11
+    }
   ],
-  "absent_samples":[
-    {"name":"assistant_upstream_usage_tokens_total","labels":{"stage":"answer","kind":"llm","source":"unknown"}},
-    {"name":"assistant_upstream_usage_tokens_total","labels":{"stage":"answer","kind":"llm","source":"cache_hit"}}
+  "absent_samples": [
+    {
+      "name": "assistant_upstream_usage_tokens_total",
+      "labels": {
+        "stage": "answer",
+        "kind": "llm",
+        "source": "unknown"
+      }
+    },
+    {
+      "name": "assistant_upstream_usage_tokens_total",
+      "labels": {
+        "stage": "answer",
+        "kind": "llm",
+        "source": "cache_hit"
+      }
+    }
   ],
-  "exact_series_families":["assistant_upstream_usage_tokens_total","assistant_upstream_usage_cost_micros_total"]
+  "exact_series_families": [
+    "assistant_upstream_usage_tokens_total",
+    "assistant_upstream_usage_cost_micros_total"
+  ]
 }

@@ -78,7 +78,7 @@ public class OperationsMetrics extends OncePerRequestFilter {
     }
     /** 正式端点只导出真实进程观测，不查询持久snapshot或输出unavailable替代。 */
     public String renderProcess() { return process.renderPrometheus(); }
-    /** 可独立验证的记录入口；SSE 统计 servlet dispatch 返回耗时，非完整流寿命。 */
+    /** 旧诊断记录入口；正式filter在完整异步流完成后调用；手动调用方自行界定duration。 */
     public void record(String method, int status, double seconds) {
         String safeMethod = Set.of("GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS").contains(method) ? method : "OTHER";
         int safeStatus = status >= 100 && status <= 599 ? status : 500;

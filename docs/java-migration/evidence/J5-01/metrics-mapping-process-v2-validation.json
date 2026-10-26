@@ -1,0 +1,29 @@
+{
+  "source_integration": "f1c5bb5",
+  "worker_implementation": [
+    "d897fa4",
+    "60ae984"
+  ],
+  "validation_domain": "compiled_collector_and_explicit_synthetic_port_events_only",
+  "java_pure_tests": {
+    "run": 14,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "python_pure_tests": {
+    "run": 22,
+    "failures": 0
+  },
+  "actual_java_export": {
+    "sha256": "98c0865526877f70222552fc4d3ed5036b34e13ac49378eca56d8484df40aa11",
+    "family_count": 46,
+    "series_count": 174,
+    "domain_registered": 16,
+    "domain_observed": 16,
+    "known_checks": 19
+  },
+  "business_hook_http_positive": "pending_authorized_window",
+  "strict_matrix": "not_run_not_waived",
+  "live": "not_authorized"
+}

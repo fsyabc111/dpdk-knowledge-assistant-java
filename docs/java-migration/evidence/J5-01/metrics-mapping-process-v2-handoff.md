@@ -13,3 +13,7 @@
 准备提交补充：Python新validator的纯测试使用明确人工事件模型process_fixture.py，不依赖缺失文件/skip，也不伪称实际JVM采样。Java ExportProcessFixture将在窗口释放后产生独立实际registry事件文本，再用人工已知预期核对；完整业务hook仍由root接入后的fresh实际请求验证。当前ctor无参、renderPrometheus API未变，root可先只读审查并集成此意义清晰WIP，禁止据未运行的新测试写当前全绿。
 
 旧MetricsHttpSeedSmoke及其三个期望文件已明确标historical_diagnostic_only/not_current_candidate_gate；旧种子数据库行不能被当成新RAG/tool过程事件。旧证据与构建资产没有删除，默认新validator会拒绝gauge/unavailable替代，不会从历史PASS继承当前门禁。
+
+## CPU窗口释放后当前验证
+
+已merge固定integration f1c5bb5，无冲突。当前collector源码编译成功，Java纯测14/14（0 skip）；新旧分类Python纯测22/22。实际Java ExportProcessFixture向真实registry提交显式合成port事件，导出46families/174series，validator验证16领域均已观测、19已知断言，body SHA见metrics-mapping-process-v2-validation.json。该导出不是业务hook/真实HTTP验收；新PG/HTTP正例窗口已向root申请，strict matrix及live仍pending。旧CPU窗口中的未验描述是历史恢复记录，不能覆盖本节当前结果。
