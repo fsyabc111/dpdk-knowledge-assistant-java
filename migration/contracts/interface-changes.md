@@ -162,3 +162,8 @@ J3-01 已交付（worker/j3-01@40cb46c，自有测试 8类50/50；真双JVM+合�
 - ST-P4-01：CI真实jar验收显式传dpdk.acceptance.jar绝对路径；保持与本机成功命令相同，不用脚本exit0替代测试。
 - SP-P4-01：工作流请求先严格验证完整JSON文档，尾随对象/垃圾返回冻结422且零知识/修订写入，补合法空白与Unicode位置反例。
 - 真实CI跨平台补修：SystemClockAdapter.nowUtc在端口边界截断MICROS以匹配Python datetime；Linux纳秒墙钟曾令SessionService.purgeExpired的严格格式化失败。预算monotonicNanos与格式化器拒绝非法纳秒护栏不变；新增固定纳秒时钟纯契约与真实PG dry-run/apply红绿回归。
+
+## P5明确配置与框架兼容（2026-10-25）
+
+- DataSource增加dpdk.datasource.maximum-pool-size/DPDK_JAVA_DB_MAX_POOL_SIZE，默认8保留既有运行；必须为正数。冻结容量两端按baseline-environment.json:60的32显式配置，不修改阈值/配额/负载；不再通过测试私设pool绕过真实装配。
+- P5严格collector发现源框架GET/HEAD文档8路缺失；Java将从只读Python黄金OpenAPI和冻结FastAPI0.115.6文档渲染器生成静态契约资源，实际Java端点返回相同JSON/HTML哈希，不更改黄金，不把文档路由缺失列新豁免。生产运行不依赖Python。

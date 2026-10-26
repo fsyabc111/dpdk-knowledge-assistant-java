@@ -15,13 +15,15 @@ import org.springframework.context.annotation.Configuration;
 public class DataSourceConfig {
 
     @Bean(destroyMethod = "close")
-    public HikariDataSource dataSource(AppProperties props) {
+    public HikariDataSource dataSource(AppProperties props,
+            @org.springframework.beans.factory.annotation.Value("${dpdk.datasource.maximum-pool-size:${DPDK_JAVA_DB_MAX_POOL_SIZE:8}}") int maximumPoolSize) {
         ConfigValidator.validate(props);
+        if (maximumPoolSize < 1) { throw new IllegalArgumentException("数据库连接池上限必须为正数"); }
         HikariDataSource ds = new HikariDataSource();
         ds.setJdbcUrl(props.datasource().url());
         ds.setUsername(props.datasource().username());
         ds.setPassword(props.datasource().password());
-        ds.setMaximumPoolSize(8);
+        ds.setMaximumPoolSize(maximumPoolSize);
         ds.setPoolName("dpdk-java-main");
         try (Connection c = ds.getConnection()) {
             DatabaseIdentityGuard.verify(c, props.databaseIdentity());
