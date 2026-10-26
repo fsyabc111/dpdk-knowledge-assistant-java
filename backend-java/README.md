@@ -1,4 +1,4 @@
-# backend-java 运行与联调（U11 最小测试接线）
+# backend-java 构建、运行与联调
 
 ## 构建与全量测试
 
@@ -45,8 +45,14 @@ CORS：`dpdk.cors-origins` 默认放行 vite **5174** 来源（SP-05：对齐冻
 FRONTEND_ORIGINS 与 frontend/vite.config.js 的 dev 端口 5174；`npm run dev` 原样
 即可联调）；方法/头/credentials 与 Python CORSMiddleware 对齐（platform/web/CorsConfig）。
 覆盖默认：`DPDK_JAVA_CORS_ORIGINS`（与 `dpdk.cors-origins` 同语义）。非允许来源
-预检仍被拒绝（Spring 403，语义差异见 DECISIONS.md P2-D1）。
+预检按冻结Starlette协议返回400及Disallowed CORS正文；成功预检200/OK与白名单头，P2-D1已在P5修复。
 
 ## 差分 oracle（对齐验证）
 
 候选 trace 对齐入口见 `migration/contracts/P1_HANDOFF.md`（只读黄金，不反向改写）。
+
+## P5隔离验收入口
+
+完整候选采集见 `acceptance/contract/`，多角色浏览器资源生命周期见 `acceptance/ui/session.py`；均通过四项测试PG配置创建带本轮owner/comment的独立动态库，不借用旧库。所有输出放全新gitignored目录，禁止用Java结果覆盖冻结黄金。正式容量、故障、部署分别见根README链接。
+
+数据库池可通过 `dpdk.datasource.maximum-pool-size` 或 `DPDK_JAVA_DB_MAX_POOL_SIZE` 显式设置，默认8、必须为正数；冻结容量比较使用32并记录实际配置。默认chat active20/waiting20/queue10s，业务600s墙和24h输入TTL不能用短测替代验收。

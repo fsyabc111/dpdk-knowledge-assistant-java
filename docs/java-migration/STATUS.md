@@ -8,7 +8,7 @@
 - 禁止项：真实模型/embedding/真实harness验收、合并main、生产切换、Python退役、删除恢复资产、原项目/原部署/业务库写入。用户验收不由Agent代签。
 - 当前：P3与P4工程门禁已通过；P4源码f020efa，全量707/707、CLI2/2含16新JVM、远程CI四job、独立双轴复审均通过。P5已自动启动，真实全矩阵已采集但strict FAIL，正在修复；J5-02/03准备并行，正式容量和部署待依赖放行。
 - R段已关闭ST-01～03/SP-01～05并通过独立双轴审查（19a2d47）；历史报告evidence/U12-R-segment-20261025/。P0用户验收通过保留；P1/P2/P3用户验收均未登记。
-- 当前Git：codex/p3-p5-longrun，origin为用户指定新仓库。最近已核验推送5d0d6a3；后续切片见MAIN，待本轮集成提交再次推送核验。
+- 当前Git：codex/p3-p5-longrun，origin为用户指定新仓库。最近已核验推送2735147；后续切片见MAIN，待本轮集成提交再次推送核验。
 - Python行为基线：本仓库初始80b29135faddd16d5e39fdbf0633291ea6a20489冻结副本；Python黄金只读，COMP-003按已批准Java安全差异另验。
 - 本轮实际验证：Spring+PG装配18/18、模型worker84/84、真实Agent账本10/10、讲解23/23并另增1黄金测试；完整嵌入式HTTP/SSE探针通过（前端原client直连项新增后待全量复验）。前端102/102和build通过。
 - 全量r1：581项5失败，失败证据保留；占槽测试容量/释放闩、旧SessionPort占位断言、前端探针过严terminal断言均已修。r2测试编译缺throws已修；r3显式PG全量verify **585/585，0失败/0错误/0跳过**，包含原前端client真实HTTP/SSE/multipart验证。此为工程/合成验证，非用户验收。
@@ -39,7 +39,7 @@
 | J5-01 | in_progress | acceptance_matrix+root | 真实186HTTP/198步，strict FAIL修复中；浏览器待做 | 未验 |
 | J5-02 | in_progress | capacity | 入口/故障脚本纯测试通过；实际PG/容量待窗口 | 未验 |
 | J5-03 | in_progress | operations | 守卫/合成快照/镜像准备；实际演练待做 | 未验 |
-| J5-04 | planned | 只做交付准备 | 未执行 | 切换/退役/删除均未授权 |
+| J5-04 | in_progress | root+operations交付准备 | 实际Maven100/npm213依赖许可、manifest模板、运行/恢复/接手手册已交；最终源/场景待绑定 | 切换/退役/删除均未授权 |
 
 ## 阶段放行
 
@@ -58,3 +58,11 @@
 - J5-02正式72分钟双端TCP三轮容量、J5-03实际冷启/升级/恢复/回退按主Agent窗口；先做独立准备，不能声称通过。
 - 四项PG显式且身份预检；Docker只使用新java-u12 context，旧环境不动。socket当前不可用，先继续本地独立工作。
 - 精确资源与下一步见handoffs/MAIN.md；所有恢复资产保留。
+
+### 2026-10-26当前续接补充
+
+- P5 full06真实186/198已收敛到单一metrics响应family差异；全部持久时间、用量15/15、11真实事务专例/14上游向量/semantic已对齐，原raw verify仍rc1，不称全矩阵通过。扩展224已过，新增privacy/CSV为225待本轮结束证据。
+- 用户已明确选择补齐源过程指标，禁止以原12项unavailable/持久gauge当豁免；ProcessMetrics端口ccf5e97，operations实现collector，root接业务事件与共享装配。
+- 浏览器22个保存断言场景/快照：实际多角色、跨班、上传成绩、讲解grade调用不增、6引用与第6片段、旧release来源、断线刷新、反馈/认领记录/共享发布pending、operator成绩/CSV、Markdown消毒；SSE首帧新发现Spring7默认non-flushing，84e76b4修复，原红/最小真实TCP8项绿+实际浏览器首帧/取消复验通过。不是用户验收。
+- 源前端负责人直属学生树缺陷单列known-source-ui-gap.md，未扩大范围改前端。
+- Python TCP正式基线拟先独立3轮120+600秒（至少36分钟），Java3轮待指标源码冻结后同环境测；两端合并才可判容量。正式期间全机不构建/测试/浏览器/其他PG负载，caffeinate与时钟污染拒绝。当前尚未启动。

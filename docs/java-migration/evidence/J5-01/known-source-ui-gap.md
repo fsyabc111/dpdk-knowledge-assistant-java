@@ -1,0 +1,5 @@
+# 保留的Python源前端缺陷：负责人直属学生不显示
+
+浏览器source5c8623c，负责人创建U20270000081收到“已创建1个学生账号”，用户总数从9变10，但树中未显示直属负责人学生。冻结frontend/src/main.jsx与当前文件逐字相同，SHA见browser-progress.json；584-592将students的created_by属于leader视为有owner，因此不进orphanStudents；727-735仅渲染leader自身、teacher及其students，没有渲染studentsOf(leader.id)。
+
+该问题属于冻结源UI既有行为，不是Java新差异。按AGENTS范围纪律记录后续，未擅自修改frontend或扩大既有缺陷修复范围；不把产品可见性称为通过。其他教师/跨班用户隔离和负责人API创建能力独立已验证，不能互相替代。

@@ -1,0 +1,212 @@
+{
+  "source": "5c8623cea438671c96994803bf1fbab0440241b5",
+  "frontend_sha256": "d4b3e5b4a438da2f673671b2a74bf7dd76af29501a57db9525e6ba225db416e0",
+  "browser": "owned local Chrome headless; browser-harness 0.1.13; 1440x1000",
+  "fixtures": "owned p5_ui database; external model/embedding/MCP fixed; Markdown history fixture only tests rendering",
+  "cases": [
+    {
+      "case": "01-leader-login",
+      "assertions": {
+        "leader_account": true,
+        "all_admin_nav": true
+      },
+      "sha256": "b30dc9a469cc35a93520feb7c3728a0bcd08f2f43f84ce79ed8beb1b771d6556"
+    },
+    {
+      "case": "02-leader-users",
+      "assertions": {
+        "teacher_a": true,
+        "teacher_b": true,
+        "operator": true
+      },
+      "sha256": "a0355cce68d0aeddd6f96fbb8460676da4f3def7876befb0b866ff0f9a056dba"
+    },
+    {
+      "case": "03-leader-create-source-ui-gap",
+      "assertions": {
+        "created_confirmation": true,
+        "total10": true,
+        "known_source_child_hidden": true
+      },
+      "sha256": "3320274d100cbe754662d79478ad68171490d95409b9656ddcd2e22aa0b1e9af"
+    },
+    {
+      "case": "04-teacher-scope",
+      "assertions": {
+        "own_student": true,
+        "other_student_absent": true,
+        "other_teacher_absent": true
+      },
+      "sha256": "ac3182d17d8fee06f9518d6d2be15a9eaf5f34200b74a3a2cb85201a1d136d77"
+    },
+    {
+      "case": "05-teacher-publish",
+      "assertions": {
+        "published": true,
+        "title": true,
+        "active": true
+      },
+      "sha256": "67bed67a3f35255b1f2f8f71260d2a2c17ff507e3348451d146a53ff394998f8"
+    },
+    {
+      "case": "06-other-teacher-isolation",
+      "assertions": {
+        "no_other_class_assignment": true
+      },
+      "sha256": "00c062c8ab96ef5c2657529925df0a93bcddbceaf6d8483d7dfcfea5219a850b"
+    },
+    {
+      "case": "07-other-student-isolation",
+      "assertions": {
+        "no_teacher_a_assignment": true,
+        "student_no_admin_nav": true
+      },
+      "sha256": "4b31a13b8a4f0aed17bee29c5e3c1e067b5c7113bd2d0c8cbcd127ca0d93f07c"
+    },
+    {
+      "case": "08-student-upload-grade",
+      "assertions": {
+        "upload_filename": true,
+        "fixed_score80": true,
+        "score_scaled16": true
+      },
+      "sha256": "55f31f4d450cd7628cc51f034d5b2b8387bfc5f9bf048fb41bac5787dd2d7fe4"
+    },
+    {
+      "case": "09-explain",
+      "assertions": {
+        "answer": true,
+        "three_citations": true,
+        "verified": true
+      },
+      "sha256": "a7ed2c05bc16dcdbb9684807ab0f5547fc1a89f14a6917ebc79e39da46c35b2e"
+    },
+    {
+      "case": "10-old-release-source",
+      "assertions": {
+        "old_path_after_active_change": true,
+        "old_content": true,
+        "duplicate_file_cards": true
+      },
+      "sha256": "19d6a3b70a4816098e72c960d70b2949ff032daab3134fd08bbc18d671ddfe95"
+    },
+    {
+      "case": "11-six-sources",
+      "assertions": {
+        "six_citations": true,
+        "sixth_card": true,
+        "verified": true
+      },
+      "sha256": "80bcc48afc836ef01a4636f9f48e4c400fbe688bf3aa2c1d45e4a62d7fa8e204"
+    },
+    {
+      "case": "12-sixth-fragment-source",
+      "assertions": {
+        "sixth_content": true,
+        "path": true
+      },
+      "sha256": "d8095fa686280418eda8c54c6bb9458f80288d7c7c644725d5ab1674e839fa49"
+    },
+    {
+      "case": "13-refresh-recover-terminal",
+      "assertions": {
+        "same_question": true,
+        "answer_after_disconnect": true,
+        "six_persisted_sources": true
+      },
+      "sha256": "2222b47fc210d5fc807249ed9197e297bfb6a86a26b9695c39306e4667054088"
+    },
+    {
+      "case": "14-student-feedback",
+      "assertions": {
+        "persisted_ack": true
+      },
+      "sha256": "d65881cfc3220373d51166235c9cb7e2b3e03f0041fa5a2f634f2b362789a1ca"
+    },
+    {
+      "case": "15-workbench-save",
+      "assertions": {
+        "saved_confirmation": true
+      },
+      "sha256": "6c4bb563a0ae2657e01eb749c59fea1fd2327bc90516f7256fc30db3c27f6dd3"
+    },
+    {
+      "case": "16-workbench-persisted-event",
+      "assertions": {
+        "saved_note": true,
+        "feedback": true,
+        "six_evidence": true
+      },
+      "sha256": "957b82b5bfad18d0ab7dd73894ecb60c4400af5f4c692b368feddc01dc5a0532"
+    },
+    {
+      "case": "17-knowledge-publish-pending-index",
+      "assertions": {
+        "shared_title": true,
+        "revision1": true,
+        "pending_index_explicit": true
+      },
+      "sha256": "92db6d67e14995df41c8e5c365dcecda57764648b0611fa2a29f80526d4f494b"
+    },
+    {
+      "case": "18-operator-nav",
+      "assertions": {
+        "reports_nav": true,
+        "no_user_admin": true,
+        "no_knowledge_admin": true
+      },
+      "sha256": "63dffd1d5fa346d87157b2cf0e74a1b977d9902736e9bda04aecd43c245b2411"
+    },
+    {
+      "case": "19-operator-grades",
+      "assertions": {
+        "student_row": true,
+        "scaled16of20": true,
+        "one_submission": true,
+        "cannot_publish": true
+      },
+      "sha256": "bdcecb68ed642d09bed9d03aa74057d62c147c38fe69fccfe83ac8abf02c6a8e"
+    },
+    {
+      "case": "20-markdown-sanitization",
+      "assertions": {
+        "no_execution": true,
+        "no_inline_handlers": true,
+        "no_javascript_links": true,
+        "strong_retained": true,
+        "safe_link": true
+      },
+      "sha256": "6ccf2723f7e4c4facd9cc0e7aa038cee94fd3c1fac9833df4f2433079eaf2e9e"
+    },
+    {
+      "case": "21-pending-first-frame",
+      "source": "27351473d0615811b5e38036ff251f786cc95dd3",
+      "assertions": {
+        "headers_before_delayed_model": true,
+        "stop_button_visible": true
+      },
+      "sha256": "e4f4198691b58d242c35a5d81eb26634b0984e7189070d6efa6e9b254b364a6b"
+    },
+    {
+      "case": "22-browser-cancel-postfix",
+      "source": "27351473d0615811b5e38036ff251f786cc95dd3",
+      "assertions": {
+        "cancelled_visible": true,
+        "send_reenabled": true
+      },
+      "sha256": "dc3fafb571445b7c82192c0125880f9af55a23c9ffbb1d34c4e2040e3e0915da"
+    }
+  ],
+  "case_count": 22,
+  "product_acceptance": false,
+  "pending": [
+    "final-source focused regression after process metrics"
+  ],
+  "known_source_issue": "leader-created viewer with created_by leader is counted but tree omits this child; frontend identical to frozen baseline; recorded separately",
+  "sse_postfix_cancel": "actual browser stream headers before 10s delayed model; stop button yields cancelled and send reenabled",
+  "limitations": [
+    "native select options lack CDP box geometry on this headless macOS Chrome; select value/change automation used after AX/option verification",
+    "Markdown XSS fixture supplied through real history API, not model generation acceptance",
+    "all synthetic local scenarios; no user/live acceptance"
+  ]
+}
