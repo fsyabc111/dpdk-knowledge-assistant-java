@@ -1,0 +1,155 @@
+{
+  "scope": "full-06原始严格结果与独立metrics语义结果并列；本文件不改oracle或黄金、不代主Agent放行",
+  "captured_at": "2026-10-26T09:52:29.082370+00:00",
+  "source_revision": "e1d310210c071eaa60d907adb62aa35e3026f4c5",
+  "integration_source": "27351473d0615811b5e38036ff251f786cc95dd3",
+  "required_production_revisions": [
+    "ec5af87",
+    "adc7473",
+    "6c20199",
+    "2735147",
+    "84e76b4"
+  ],
+  "clean_compile": true,
+  "classes_tree_sha256": "47c83d5b44ccc7cc2e60d2bcd3db14d1e68d346b367612b898e2afcf69039d62",
+  "spring_properties_sha256": "9c7e772c63b2c8aac461a6a2f04f06cea15e70021056f3b91b03aa735eb0627e",
+  "fixture_sha256": "8d0658661fedb31c6a0690ea97cb3167534504049c65861b3c67e6691337de14",
+  "candidate_sha256": "cd1d0bd08126d6e1a329211acaab91db4b562109a1b969c2924958e8e9626f9d",
+  "observations": 186,
+  "frozen_routes": 66,
+  "extra_protocol_route_ids": 3,
+  "business_tables": 25,
+  "business_steps": 198,
+  "raw_verify_cli": {
+    "exit_code": 1,
+    "stdout": "{\"status\": \"difference\", \"detail\": \"$.observations[30].body.families: 数组长度不同\"}\n",
+    "stderr": ""
+  },
+  "raw_different_cases": [
+    {
+      "case_id": "GET /metrics::success",
+      "paths": [
+        {
+          "path": "$.body.families",
+          "kind": "length",
+          "expected": 34,
+          "actual": 6
+        },
+        {
+          "path": "$.body.families[0]",
+          "kind": "value",
+          "identity_alias_only": false
+        },
+        {
+          "path": "$.body.families[1]",
+          "kind": "value",
+          "identity_alias_only": false
+        },
+        {
+          "path": "$.body.families[2]",
+          "kind": "value",
+          "identity_alias_only": false
+        },
+        {
+          "path": "$.body.families[3]",
+          "kind": "value",
+          "identity_alias_only": false
+        },
+        {
+          "path": "$.body.families[4]",
+          "kind": "value",
+          "identity_alias_only": false
+        },
+        {
+          "path": "$.body.families[5]",
+          "kind": "value",
+          "identity_alias_only": false
+        }
+      ]
+    }
+  ],
+  "non_observation_differences": [],
+  "strictly_equal_observations": 185,
+  "transaction_cases": [
+    {
+      "case_id": "pg-admission-race",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-admission-rollback",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-finish-rollback",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-finish-once",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-cancel-idempotent",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-grade-job-dedup",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-recovery-claim",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-input-ttl",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-vector-rrf-mmr",
+      "status": "通过"
+    },
+    {
+      "case_id": "citation-six-same-file",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-cleanup-terminal",
+      "status": "通过"
+    }
+  ],
+  "upstream_vectors_exact": true,
+  "semantic_vectors_exact": true,
+  "fingerprint_negative": {
+    "http_status": 200,
+    "result": {
+      "status": "通过",
+      "blocked_reason": "config_mismatch",
+      "chunks": 0
+    },
+    "business_unchanged": true
+  },
+  "metrics_semantic": {
+    "status": "passed_with_declared_coverage",
+    "family_count": 6,
+    "series_count": 24,
+    "unavailable0_count": 12,
+    "known_value_checks": 5,
+    "known_values_domain": "frozen_initial_task_rows_and_independent_prior_HTTP_request_trace",
+    "validation_scope": "structure_plus_explicit_known_values",
+    "positive_unknown_groups": 0,
+    "unknown_positive_http_validation": "not_exercised_no_positive_unknown_rows_in_wire",
+    "source_families": 34,
+    "raw_wire_equivalence": false,
+    "strict_verdict_unchanged": true,
+    "body_sha256": "4f52620f29e44a2ea3d257dc8457d23fd44727b31a27e4e4f3ebf4ff549f7019"
+  },
+  "metrics_mapping_reference": "acceptance/metrics/mapping.json; foundation-slices.md与P4接受语义；原raw34/6不改",
+  "metrics_mapping_sha256": "97914ee3c349baa9ced49a9bf42ea2d70374867496f5682e8f4c550550a2f4c4",
+  "mutations": {
+    "total": 17,
+    "false_pass": 0,
+    "note": "真实候选自比正例，不能替代golden等价"
+  },
+  "owned_database_states": [
+    "dropped"
+  ]
+}
