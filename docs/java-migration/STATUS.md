@@ -66,3 +66,9 @@
 - 浏览器22个保存断言场景/快照：实际多角色、跨班、上传成绩、讲解grade调用不增、6引用与第6片段、旧release来源、断线刷新、反馈/认领记录/共享发布pending、operator成绩/CSV、Markdown消毒；SSE首帧新发现Spring7默认non-flushing，84e76b4修复，原红/最小真实TCP8项绿+实际浏览器首帧/取消复验通过。不是用户验收。
 - 源前端负责人直属学生树缺陷单列known-source-ui-gap.md，未扩大范围改前端。
 - Python TCP正式基线拟先独立3轮120+600秒（至少36分钟），Java3轮待指标源码冻结后同环境测；两端合并才可判容量。正式期间全机不构建/测试/浏览器/其他PG负载，caffeinate与时钟污染拒绝。当前尚未启动。
+
+- 当前追加：Python三轮正式基线已完整通过原阈值观察，候选Java仍未测/容量pass=null；原始全部异常保留。两轴P5首审5代码阻断已各有修复/局部验证，正在ff59复审和fresh矩阵，全量r1旧测试1失败已按真实零调用修正并目标10过，r2待结果。DefaultBoundary3显式场景skip待J5-02执行；实际故障/Java36分钟/部署演练/最终交付仍未通过，不以局部合成结果代用户验收。
+
+- 最新组合r2（ff59cda）：发现777，实际执行774全部通过/0失败/0错误，3个仅显式DefaultBoundaryPgTest未触发（后续clock故障入口必须真跑）。jar SHA14caee2d2ef692e8fd7bbe9ca119aaba6e78a615ea0ce6b2f2200b81f2ca722e，额外同jar CLI2/16JVM进行中。两轴固定ff59复审已关闭原5代码阻断，无新代码阻断；这不等P5总门禁。fresh full07+225与16过程真实因果验收尚在跑，故障/Java正式/实际部署仍待执行。
+
+- 同一ff59 jar（SHA14caee...722e）追加真实Boot CLI2/2、16子JVM均通过、0skip；machine summary evidence/P5/validation-code.json。此只关闭代码/构建验证，不提前放行P5场景。
