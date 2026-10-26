@@ -142,6 +142,14 @@ public class SessionService {
     /** _add_message_sync 的 tx 参与版：插入消息并 touch 会话，均随 caller 事务提交。 */
     public String appendMessage(DbTx tx, String sessionId, String role, String content,
                                 Map<String, Object> metadata) throws SQLException {
+        String msgId = appendMessageAt(tx, sessionId, role, content, metadata, clock.nextSessionIso());
+        touchInTx(tx.connection(), sessionId, clock.nextSessionIso());
+        return msgId;
+    }
+
+    /** 原子受理专用：仅追加消息，caller随后用同created时间显式touch。 */
+    public String appendMessageAt(DbTx tx, String sessionId, String role, String content,
+            Map<String, Object> metadata, String createdIso) throws SQLException {
         String msgId = "msg_" + hex12();
         Connection conn = tx.connection();
         try (PreparedStatement ps = conn.prepareStatement(
@@ -152,10 +160,9 @@ public class SessionService {
             ps.setString(3, role);
             ps.setString(4, content);
             ps.setString(5, toJson(metadata));
-            ps.setObject(6, OffsetDateTime.parse(clock.nextSessionIso()));
+            ps.setObject(6, OffsetDateTime.parse(createdIso));
             ps.executeUpdate();
         }
-        touchInTx(conn, sessionId, clock.nextSessionIso());
         return msgId;
     }
 

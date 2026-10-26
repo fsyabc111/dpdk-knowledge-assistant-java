@@ -140,6 +140,7 @@ public final class ChatTaskExecutor implements TaskExecutor {
             synchronized (recorder) {
                 entries = recorder.entries();
             }
+            if (entries.isEmpty()) return;
             usage.recordRows(
                     UsageCore.entriesToRows(
                             entries,

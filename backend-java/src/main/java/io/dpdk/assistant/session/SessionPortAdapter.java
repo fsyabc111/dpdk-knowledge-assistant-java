@@ -31,6 +31,13 @@ public class SessionPortAdapter implements SessionPort {
     }
 
     @Override
+    public void appendUser(DbTx tx, MessageInput input, String createdIso) {
+        try {
+            service.appendMessageAt(tx, input.sessionId(), input.role(), input.content(), input.metadata(), createdIso);
+        } catch (java.sql.SQLException e) { throw new IllegalStateException("session append failure", e); }
+    }
+
+    @Override
     public void touch(DbTx tx, String sessionId, String iso) {
         try {
             service.touch(tx, sessionId, iso);

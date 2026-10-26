@@ -210,6 +210,8 @@ public final class RagTaskService implements AdmissionPort, LifecyclePort, Answe
                 if (!won) {
                     return null;   // 冲突接续：tx 内无业务写入，提交无害
                 }
+                TaskRecordRow admittedRow = store.requestById(tx.connection(), taskId)
+                        .orElseThrow(() -> new IllegalStateException("受理任务行缺失"));
                 // 3. 临时输入（恢复重驱动的权威字节）。
                 var temporary = input.temporaryInput();
                 store.storeInputs(tx, taskId, input.rawTemporaryInput(), temporary.attachmentName(),
@@ -219,19 +221,14 @@ public final class RagTaskService implements AdmissionPort, LifecyclePort, Answe
                 metadata.put("request_id", identity.requestId());
                 metadata.put("task_id", taskId);
                 sessions.appendUser(tx, new MessageInput(input.redactedQuestion(), session,
-                        "user", metadata));
+                        "user", metadata), admittedRow.createdAt());
                 // 5. 会话更新时间。
-                sessions.touch(tx, session, clock.nextSessionIso());
+                sessions.touch(tx, session, admittedRow.createdAt());
                 // 6. chat 日配额（与唯一键同提交，超额抛出回滚全笔）。
                 counters.countAndCheck(tx, subject,
                         LocalDate.ofInstant(clock.nowUtc(), ZoneOffset.UTC), "chat",
                         input.dailyQuota());
-                Optional<TaskRecordRow> row = store.findByInitialRequest(tx, identity.requestId(),
-                        subject);
-                if (row.isEmpty()) {
-                    row = store.findByRequestAndSession(tx, identity.requestId(), session);
-                }
-                return new TaskAdmitOutcome(TaskAdmitOutcome.CREATED, row, Optional.empty());
+                return new TaskAdmitOutcome(TaskAdmitOutcome.CREATED, Optional.of(admittedRow), Optional.empty());
             } catch (java.sql.SQLException e) {
                 throw new IllegalStateException("task admit failure", e);
             }

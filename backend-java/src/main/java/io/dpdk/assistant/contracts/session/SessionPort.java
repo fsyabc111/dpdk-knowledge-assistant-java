@@ -16,6 +16,11 @@ public interface SessionPort {
 
     void appendUser(DbTx tx, MessageInput input);
 
+    /** 原子受理复用任务created时间；生产适配器显式覆盖，touch由受理者负责。 */
+    default void appendUser(DbTx tx, MessageInput input, String createdIso) {
+        appendUser(tx, input);
+    }
+
     void touch(DbTx tx, String sessionId, String iso);
 
     void discardEmpty(String sessionId, String subject);
