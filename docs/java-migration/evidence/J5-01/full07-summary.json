@@ -1,0 +1,234 @@
+{
+  "scope": "full07原raw严格FAIL与单metrics policy后完整trace结果并列；不改黄金/corecompare、不代两轴复审/主Agent放行",
+  "captured_at": "2026-10-26T11:45:55.458953+00:00",
+  "evidence_checked_at": "2026-10-28T08:02:46.716597+00:00",
+  "source_revision": "0d3971283f28f3038b9b238adcbfa7052100809e",
+  "production_source": "ff59cdab65c2c8977f3f9c45701b773ad9116ccd",
+  "production_git_objects": {
+    "backend-java/src/main": "e8ff677bf44780290c1892d4b27440b0399de7f6",
+    "backend-java/pom.xml": "7c60c8e617203d509c6ac9f89466565811031f1a"
+  },
+  "production_matches_fixed_integration": true,
+  "clean_compile": true,
+  "build_log_local": ".migration-artifacts/j5-01/build-full07-clean.log",
+  "classes_tree_sha256": "ea70be3bef9e105d175c503092b3b937ecdf714b37ff3b7039d1424792a407d1",
+  "test_classes_tree_sha256": "f9dd352d9bf798a0412c77a3d227372175252737ea16e733fb91fcd514754a24",
+  "classes_hash_algorithm": "SHA256 over sorted relative path UTF8 + NUL + file bytes",
+  "spring_properties_sha256": "9c7e772c63b2c8aac461a6a2f04f06cea15e70021056f3b91b03aa735eb0627e",
+  "fixture_sha256": "8d0658661fedb31c6a0690ea97cb3167534504049c65861b3c67e6691337de14",
+  "candidate_sha256": "85cf279ea1aed809e6413a09b8480b3a803cbe8a7a10c4592d2f91df6f1833b0",
+  "observations": 186,
+  "frozen_routes": 66,
+  "extra_protocol_route_ids": 3,
+  "business_tables": 25,
+  "business_steps": 198,
+  "step_shape": "25-table before/after row_counts and removed/added delta; initial/final full rows; exact frozen trace shape",
+  "raw_verify_cli": {
+    "exit_code": 1,
+    "stdout": "{\"status\": \"difference\", \"detail\": \"$.observations[30].body.families[0]: 值不同\"}\n",
+    "stderr": ""
+  },
+  "raw_different_cases": [
+    {
+      "case_id": "GET /metrics::success",
+      "paths": [
+        {
+          "path": "$.body.families[0]",
+          "kind": "value",
+          "identity_alias_only": false
+        },
+        {
+          "path": "$.body.families[1]",
+          "kind": "value",
+          "identity_alias_only": false
+        },
+        {
+          "path": "$.body.families[2]",
+          "kind": "value",
+          "identity_alias_only": false
+        },
+        {
+          "path": "$.body.families[3]",
+          "kind": "value",
+          "identity_alias_only": false
+        }
+      ]
+    }
+  ],
+  "non_observation_differences": [],
+  "strictly_equal_observations": 185,
+  "transaction_cases": [
+    {
+      "case_id": "pg-admission-race",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-admission-rollback",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-finish-rollback",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-finish-once",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-cancel-idempotent",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-grade-job-dedup",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-recovery-claim",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-input-ttl",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-vector-rrf-mmr",
+      "status": "通过"
+    },
+    {
+      "case_id": "citation-six-same-file",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-cleanup-terminal",
+      "status": "通过"
+    }
+  ],
+  "upstream_vectors_exact": true,
+  "upstream_vectors": 14,
+  "semantic_vectors_exact": true,
+  "fingerprint_negative": {
+    "http_status": 200,
+    "result": {
+      "blocked_reason": "config_mismatch",
+      "status": "通过",
+      "chunks": 0
+    },
+    "business_unchanged": true
+  },
+  "single_metrics_policy": {
+    "status": "contract_equal_under_single_explicit_metrics_policy",
+    "policy": "J5-01-single-metrics-schema-map-v1",
+    "case_id": "GET /metrics::success",
+    "only_transformed_path": "observations[case_id=GET /metrics::success].body.families",
+    "source_shared_families": 30,
+    "source_runtime": {
+      "python_gc_objects_collected_total": "counter",
+      "python_gc_objects_uncollectable_total": "counter",
+      "python_gc_collections_total": "counter",
+      "python_info": "gauge"
+    },
+    "actual_jvm_runtime": {
+      "jvm_gc_collections_total": "counter",
+      "jvm_gc_collection_seconds_total": "counter",
+      "jvm_memory_used_bytes": "gauge",
+      "jvm_info": "gauge"
+    },
+    "runtime_note": "不同语言真实能力映射，不声明对象量/代际/collector等价",
+    "raw_original_compare": {
+      "status": "difference",
+      "detail": "$.observations[30].body.families[0]: 值不同"
+    },
+    "raw_wire_sha256": "59dc2eb0056f9da139e78b128f55178408a012374be58ed9f0c8cb17810b2891",
+    "metric_group_order_canonical_sha256": "59dc2eb0056f9da139e78b128f55178408a012374be58ed9f0c8cb17810b2891",
+    "formal_v2_validation": {
+      "status": "source_process_structure_and_declared_events_passed",
+      "version": "source-process-v2",
+      "family_count": 34,
+      "series_count": 398,
+      "domain_families_registered": 16,
+      "domain_families_observed": 0,
+      "known_event_checks": 0,
+      "known_event_domain": "not_supplied_no_hook_claim",
+      "jvm_runtime_mapping": "actual_JVM_capabilities_not_Python_object_counts",
+      "persisted_gauge_or_unavailable_used": false,
+      "strict_verdict_unchanged": true,
+      "raw_wire_equivalence": false,
+      "body_sha256": "59dc2eb0056f9da139e78b128f55178408a012374be58ed9f0c8cb17810b2891"
+    },
+    "business_hook_causality": "independent_evidence_required_not_inferred_from_TYPE",
+    "stage_gate": "independent_two_axis_review_and_main_agent_decision_required",
+    "official_spec": "https://prometheus.io/docs/instrumenting/exposition_formats/#grouping-and-sorting"
+  },
+  "metrics_checkpoint_validation": {
+    "status": "source_process_structure_and_declared_events_passed",
+    "version": "source-process-v2",
+    "family_count": 34,
+    "series_count": 398,
+    "domain_families_registered": 16,
+    "domain_families_observed": 0,
+    "known_event_checks": 0,
+    "known_event_domain": "not_supplied_no_hook_claim",
+    "jvm_runtime_mapping": "actual_JVM_capabilities_not_Python_object_counts",
+    "persisted_gauge_or_unavailable_used": false,
+    "strict_verdict_unchanged": true,
+    "raw_wire_equivalence": false,
+    "body_sha256": "59dc2eb0056f9da139e78b128f55178408a012374be58ed9f0c8cb17810b2891"
+  },
+  "metrics_causality": {
+    "independent_owner_commit": "0847bda",
+    "main_integration_commit": "eb719b6",
+    "evidence": "docs/java-migration/evidence/J5-01/metrics-mapping-causal-ff59.json",
+    "evidence_sha256": "c1b0f5df48c518cb524402a304b83de2640aabacaa330f31c58dafcd74aa47cf",
+    "wire_sha256": "7eef43d7d26e008d0d2828db80b1551827075d032bf7f905ca56b33a6af2063a",
+    "expectations_sha256": "94acbf1cdd643353e3a063571e75a60e63033750fd129b296fc52ac801c6f1d3",
+    "read_only_revalidation": "acceptance/metrics/validate.py --wire <causal-prom> --expectations <process-causal.expectations.json>",
+    "family_count": 46,
+    "series_count": 236,
+    "domain_families_registered": 16,
+    "domain_families_observed": 16,
+    "known_event_checks": 25,
+    "persisted_gauge_or_unavailable_used": false,
+    "same_business_not_rerun": true,
+    "late_receipt_races": "separate P5-O01 root production tests, not inferred from these 25 metric assertions"
+  },
+  "mutations_original": {
+    "total": 17,
+    "positive_self_control": 1,
+    "negative_rejected": 16,
+    "false_pass": 0,
+    "scope": "full07 real candidate versus itself by unchanged original compare; not golden equivalence"
+  },
+  "mutations_policy": {
+    "total": 28,
+    "positive_controls": 2,
+    "negative_rejected": 26,
+    "false_pass": 0,
+    "scope": "frozen golden versus full07 real candidate by single metrics policy; 16 old mutations + role + 9 metric-specific negatives; both original order and independent group reorder controls"
+  },
+  "pure_tests": {
+    "run": 30,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "policy_tests": 19,
+    "existing_helper_tests": 11,
+    "initial_command_error": "nonexistent test_collect module; corrected actual unittest discover completed 30/30"
+  },
+  "owned_database_states": [
+    "dropped",
+    "dropped"
+  ],
+  "resources": "full07/extensions06 own Application/fake/collector stopped; only both exact manifest-owned DBs dropped; no new PG/HTTP run during evidence closeout",
+  "review_gate": "pending independent two-axis review of explicit metrics policy; user/browser/capacity gates remain main-owned",
+  "comparator_source_sha256": {
+    "acceptance/contract/metrics_case.py": "c2fcd11cddaf2a74acd8f0bffc955451789dac396ac47cf85e1045a42347c3a3",
+    "acceptance/contract/metrics_case_mutations.py": "8679fc16f46118d25056825d556a61a19ee63140a1426581aaba742fedb985ba",
+    "acceptance/contract/test_metrics_case.py": "384614525afb8e5af6a74c85bfe2748f35265d23ff03e2056ce1082cfa0239a8",
+    "acceptance/contract/METRICS_CASE_POLICY.md": "40fd3ce088ec959b7e4168599c75d620be1d78088d0046d4a343dfb433d122a6",
+    "acceptance/metrics/validate.py": "adb44981b556aa12ba736ee8ef25e9aa2742e1a82094dbd9c678a18aba992f9d",
+    "acceptance/metrics/mapping.json": "d37dc31315e43ace5ed8d35693dd60290fdb8f16812fd648dc53993962d8623c",
+    "acceptance/metrics/process-spec.json": "e12f6a788f16db03f893e179eb923c4c9eb0bf281d1f1b97a0f3ff37e1e5f025",
+    "migration/oracle/compare.py": "d0d52e52204250547e084dcbd2e5a448c3251e9d7c2cef486292fc3d07fa1800",
+    "migration/oracle/verify.py": "d30e8b6f1ddbea73b21a7f8a7dc0934282e0e0159d256e359f5e644c762db06f"
+  }
+}

@@ -71,3 +71,17 @@ python3 -m unittest acceptance.contract.test_isolation acceptance.contract.test_
 Java `CandidateServer`手动启动配置与seed API见`docs/java-migration/handoffs/J5-01.md`“候选服务/seed接口”。主UI使用独立`p5_ui_`库及manifest；控制端口仅loopback，服务文件不进入生产artifact。Root负责浏览器验证，HTTP扩展不能替代页面点击/下载/Markdown消毒。
 
 只有合成脱敏摘要可以提交；上述trace、模型原始输出、日志、源码输入、身份/令牌、PG数据留gitignored artifacts。黄金始终只读；扩展或批准差异由契约owner登记。
+
+单独的metrics descriptor比较见[METRICS_CASE_POLICY.md](METRICS_CASE_POLICY.md)。只适用于`GET /metrics::success`，保留原verify CLI exit1；源30共同descriptor必须逐名逐TYPE相等，Python4/JVM4真实能力按明确名单分别登记。该政策不接受持久gauge或unavailable替代16过程域，完整trace仍由原compare核验，真实业务因果proof另列。纯检查命令：
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 "$ORACLE_PYTHON" -m unittest discover -s acceptance/contract -p 'test_*.py' -v
+PYTHONDONTWRITEBYTECODE=1 "$ORACLE_PYTHON" -m acceptance.contract.metrics_case \
+  --candidate "$J5_RUN/java-candidate-trace-p0-v2.json" --wire "$J5_RUN/wire/30.prom" \
+  --out "$J5_RUN/single-metrics-policy.json"
+PYTHONDONTWRITEBYTECODE=1 "$ORACLE_PYTHON" -m acceptance.contract.metrics_case_mutations \
+  --candidate "$J5_RUN/java-candidate-trace-p0-v2.json" --wire "$J5_RUN/wire/30.prom" \
+  --out "$J5_RUN/policy-mutants.json"
+```
+
+这里`ORACLE_PYTHON`须显式指向本副本隔离依赖环境，`J5_RUN`是已完成本轮artifact目录；上述只读既有产物，不创建PG库或启动HTTP。不从旧轮摘要继承当前通过，政策与结果均须独立两轴复审后由主Agent裁决。

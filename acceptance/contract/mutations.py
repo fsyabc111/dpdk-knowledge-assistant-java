@@ -7,13 +7,13 @@ from migration.oracle.compare import compare,Difference,InvalidTrace
 from migration.oracle.verify_v2_regressions import mutate_business,replace
 
 
-def run(candidate):
+def run(candidate,comparison=compare):
     rows=[]
-    compare(candidate,copy.deepcopy(candidate))
+    comparison(candidate,copy.deepcopy(candidate))
     rows.append({'case_id':'java-candidate-self-control','expected':'pass','actual':'pass'})
     def mutation(name,change):
         altered=copy.deepcopy(candidate);change(altered)
-        try:compare(candidate,altered)
+        try:comparison(candidate,altered)
         except (Difference,InvalidTrace) as e:rows.append({'case_id':name,'expected':'reject','actual':'reject','detail':str(e)})
         else:rows.append({'case_id':name,'expected':'reject','actual':'FALSE_PASS'})
     def obs(x,cid):return next(o for o in x['observations'] if o['case_id']==cid)
