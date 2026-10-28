@@ -1,0 +1,23 @@
+{
+  "domain": "actual_Maven_and_exact_integrity_npm_cached_original_license_notice_texts_only",
+  "maven_components": 100,
+  "maven_with_original_texts": 82,
+  "maven_original_entries": 156,
+  "npm_components": 213,
+  "npm_with_original_texts": 157,
+  "npm_original_entries": 162,
+  "npm_statuses": {
+    "exact_integrity_npm_archive_texts_archived": 157,
+    "exact_integrity_archive_not_in_local_cache": 49,
+    "deferred_large_archive_over_4MiB_in_light_window": 1,
+    "exact_integrity_archive_has_no_license_notice_file": 6
+  },
+  "unique_text_objects": 135,
+  "stored_bytes": 554912,
+  "all_indexed_original_byte_hashes_verified": true,
+  "index_sha256": "313b44487e39d0ba3c48146fcaa01aa439f1aac5dd806c850d15ae1a499114c3",
+  "collector_sha256": "0f1c1bf2903776f6bacda0ed1218a751be119e2d31fd560e6d7c78344a606701",
+  "official_Node_and_pgvector_bytes": "pending_local_TLS_failure; exact official URLs recorded",
+  "complete_redistribution_NOTICE_or_legal_signoff": false,
+  "Docker_build_PG_application_started": false
+}
