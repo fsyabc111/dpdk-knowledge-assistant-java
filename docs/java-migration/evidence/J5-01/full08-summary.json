@@ -1,0 +1,274 @@
+{
+  "scope": "缓存终态发布/clear身份栅栏修复后stock Java fresh full08；原raw严格FAIL与唯一metrics policy后完整trace结果并列，不继承full07通过",
+  "captured_at": "2026-10-28T09:28:25.318814+00:00",
+  "evidence_checked_at": "2026-10-28T09:30:26.906105+00:00",
+  "source_revision": "60c6eb2bbe40a63764d3c01604109d4907aaa1e0",
+  "production_source": "2a950d7f660dba4b4ac0d70cf6e3485a0cde668b",
+  "production_git_objects": {
+    "backend-java/src/main": "6e1ec8a514e9ea0151fbc9848b8e4c6f1e6be3e3",
+    "backend-java/src/main/java": "e77ed11ba386eb047dbff10eed0e1a3f3f78ec43",
+    "backend-java/pom.xml": "7c60c8e617203d509c6ac9f89466565811031f1a"
+  },
+  "production_matches_fixed_integration": true,
+  "clean_compile": true,
+  "build_log_local": ".migration-artifacts/j5-01/build-full08-clean.log",
+  "classes_tree_sha256": "81d0af3f3e963a155c8d4d81c36a20ab14acd8995af5ab2ec8a8a91c5552f97c",
+  "test_classes_tree_sha256": "dc3c0c6df3aac882912a5e75d09d56b97a8cc6529b4007b8957a15d0a6306702",
+  "classes_hash_algorithm": "SHA256 over sorted relative path UTF8 + NUL + file bytes",
+  "spring_properties_sha256": "9c7e772c63b2c8aac461a6a2f04f06cea15e70021056f3b91b03aa735eb0627e",
+  "fixture_sha256": "8d0658661fedb31c6a0690ea97cb3167534504049c65861b3c67e6691337de14",
+  "candidate_sha256": "703c8b9a7c3f4d72e5ddac93da2b77397c4cb50be74a508a830183ff80f6f47a",
+  "observations": 186,
+  "frozen_routes": 66,
+  "extra_protocol_route_ids": 3,
+  "business_tables": 25,
+  "business_steps": 198,
+  "step_shape": "25-table before/after row_counts and removed/added delta; initial/final full rows; exact frozen trace shape",
+  "raw_verify_cli": {
+    "exit_code": 1,
+    "stdout": "{\"status\": \"difference\", \"detail\": \"$.observations[30].body.families[0]: 值不同\"}\n",
+    "stderr": ""
+  },
+  "raw_different_cases": [
+    {
+      "case_id": "GET /metrics::success",
+      "paths": [
+        {
+          "path": "$.body.families[0]",
+          "kind": "value",
+          "identity_alias_only": false
+        },
+        {
+          "path": "$.body.families[1]",
+          "kind": "value",
+          "identity_alias_only": false
+        },
+        {
+          "path": "$.body.families[2]",
+          "kind": "value",
+          "identity_alias_only": false
+        },
+        {
+          "path": "$.body.families[3]",
+          "kind": "value",
+          "identity_alias_only": false
+        }
+      ]
+    }
+  ],
+  "non_observation_differences": [],
+  "strictly_equal_observations": 185,
+  "transaction_cases": [
+    {
+      "case_id": "pg-admission-race",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-admission-rollback",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-finish-rollback",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-finish-once",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-cancel-idempotent",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-grade-job-dedup",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-recovery-claim",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-input-ttl",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-vector-rrf-mmr",
+      "status": "通过"
+    },
+    {
+      "case_id": "citation-six-same-file",
+      "status": "通过"
+    },
+    {
+      "case_id": "pg-cleanup-terminal",
+      "status": "通过"
+    }
+  ],
+  "upstream_vectors_exact": true,
+  "upstream_vectors": 14,
+  "semantic_vectors_exact": true,
+  "fingerprint_negative": {
+    "http_status": 200,
+    "result": {
+      "chunks": 0,
+      "status": "通过",
+      "blocked_reason": "config_mismatch"
+    },
+    "business_unchanged": true
+  },
+  "single_metrics_policy": {
+    "status": "contract_equal_under_single_explicit_metrics_policy",
+    "policy": "J5-01-single-metrics-schema-map-v1",
+    "case_id": "GET /metrics::success",
+    "only_transformed_path": "observations[case_id=GET /metrics::success].body.families",
+    "source_shared_families": 30,
+    "source_runtime": {
+      "python_gc_objects_collected_total": "counter",
+      "python_gc_objects_uncollectable_total": "counter",
+      "python_gc_collections_total": "counter",
+      "python_info": "gauge"
+    },
+    "actual_jvm_runtime": {
+      "jvm_gc_collections_total": "counter",
+      "jvm_gc_collection_seconds_total": "counter",
+      "jvm_memory_used_bytes": "gauge",
+      "jvm_info": "gauge"
+    },
+    "runtime_note": "不同语言真实能力映射，不声明对象量/代际/collector等价",
+    "raw_original_compare": {
+      "status": "difference",
+      "detail": "$.observations[30].body.families[0]: 值不同"
+    },
+    "raw_wire_sha256": "4688407883f75632f33abd69364bffeb1188f1a6a91de784272265d765da7074",
+    "metric_group_order_canonical_sha256": "4688407883f75632f33abd69364bffeb1188f1a6a91de784272265d765da7074",
+    "formal_v2_validation": {
+      "status": "source_process_structure_and_declared_events_passed",
+      "version": "source-process-v2",
+      "family_count": 34,
+      "series_count": 398,
+      "domain_families_registered": 16,
+      "domain_families_observed": 0,
+      "known_event_checks": 0,
+      "known_event_domain": "not_supplied_no_hook_claim",
+      "jvm_runtime_mapping": "actual_JVM_capabilities_not_Python_object_counts",
+      "persisted_gauge_or_unavailable_used": false,
+      "strict_verdict_unchanged": true,
+      "raw_wire_equivalence": false,
+      "body_sha256": "4688407883f75632f33abd69364bffeb1188f1a6a91de784272265d765da7074"
+    },
+    "business_hook_causality": "independent_evidence_required_not_inferred_from_TYPE",
+    "stage_gate": "independent_two_axis_review_and_main_agent_decision_required",
+    "official_spec": "https://prometheus.io/docs/instrumenting/exposition_formats/#grouping-and-sorting"
+  },
+  "metrics_checkpoint_validation": {
+    "status": "source_process_structure_and_declared_events_passed",
+    "version": "source-process-v2",
+    "family_count": 34,
+    "series_count": 398,
+    "domain_families_registered": 16,
+    "domain_families_observed": 0,
+    "known_event_checks": 0,
+    "known_event_domain": "not_supplied_no_hook_claim",
+    "jvm_runtime_mapping": "actual_JVM_capabilities_not_Python_object_counts",
+    "persisted_gauge_or_unavailable_used": false,
+    "strict_verdict_unchanged": true,
+    "raw_wire_equivalence": false,
+    "body_sha256": "4688407883f75632f33abd69364bffeb1188f1a6a91de784272265d765da7074"
+  },
+  "metrics_causality": {
+    "independent_owner_commit": "0847bda",
+    "main_integration_commit": "eb719b6",
+    "evidence": "docs/java-migration/evidence/J5-01/metrics-mapping-causal-ff59.json",
+    "evidence_sha256": "c1b0f5df48c518cb524402a304b83de2640aabacaa330f31c58dafcd74aa47cf",
+    "wire_sha256": "7eef43d7d26e008d0d2828db80b1551827075d032bf7f905ca56b33a6af2063a",
+    "expectations_sha256": "94acbf1cdd643353e3a063571e75a60e63033750fd129b296fc52ac801c6f1d3",
+    "read_only_revalidation": "previous full07 closeout validated stored proof; full08 does not claim new execution of those16 causal scenarios",
+    "family_count": 46,
+    "series_count": 236,
+    "domain_families_registered": 16,
+    "domain_families_observed": 16,
+    "known_event_checks": 25,
+    "persisted_gauge_or_unavailable_used": false,
+    "same_business_not_rerun": true,
+    "late_receipt_races": "separate P5-O01 root production tests, not inferred from these 25 metric assertions",
+    "source_revision": "ff59cdab65c2c8977f3f9c45701b773ad9116ccd",
+    "separate_from_current_cache_fix_fresh_matrix": true,
+    "production_delta_from_causal_proof": [
+      "backend-java/src/main/java/io/dpdk/assistant/model/SingleFlightTtlCache.java"
+    ],
+    "metrics_hooks_changed_since_proof": false,
+    "proof_not_rerun_current_revision": true
+  },
+  "mutations_original": {
+    "total": 17,
+    "positive_self_control": 1,
+    "negative_rejected": 16,
+    "false_pass": 0,
+    "scope": "full08 actual fresh candidate versus itself by unchanged original compare; not golden equivalence"
+  },
+  "mutations_policy": {
+    "total": 28,
+    "positive_controls": 2,
+    "negative_rejected": 26,
+    "false_pass": 0,
+    "scope": "frozen golden versus full08 actual fresh candidate by single metrics policy;16 original negatives+role+9metrics negatives;2 explicit positive controls"
+  },
+  "pure_tests": {
+    "run": 30,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "policy_tests": 19,
+    "existing_helper_tests": 11,
+    "log_sha256": "7588a67130902c1f9e88fd09f195a7ca4188276788d0312a3cb06b24010488d1"
+  },
+  "owned_database_states": [
+    "dropped",
+    "dropped"
+  ],
+  "resources": "full08/extensions07 own Application/fake/collector stopped; both exact manifest-owned DBs dropped; no subsequent PG/HTTP/Java operations; PG/CPU window returned",
+  "review_gate": "metrics policy retained from988f865 and independently reviewed on main; final source/scenario integration and P5 gates remain root-owned",
+  "comparator_source_sha256": {
+    "acceptance/contract/metrics_case.py": "c2fcd11cddaf2a74acd8f0bffc955451789dac396ac47cf85e1045a42347c3a3",
+    "acceptance/contract/metrics_case_mutations.py": "8679fc16f46118d25056825d556a61a19ee63140a1426581aaba742fedb985ba",
+    "acceptance/contract/test_metrics_case.py": "384614525afb8e5af6a74c85bfe2748f35265d23ff03e2056ce1082cfa0239a8",
+    "acceptance/contract/METRICS_CASE_POLICY.md": "40fd3ce088ec959b7e4168599c75d620be1d78088d0046d4a343dfb433d122a6",
+    "acceptance/metrics/validate.py": "adb44981b556aa12ba736ee8ef25e9aa2742e1a82094dbd9c678a18aba992f9d",
+    "acceptance/metrics/mapping.json": "d37dc31315e43ace5ed8d35693dd60290fdb8f16812fd648dc53993962d8623c",
+    "acceptance/metrics/process-spec.json": "e12f6a788f16db03f893e179eb923c4c9eb0bf281d1f1b97a0f3ff37e1e5f025",
+    "migration/oracle/compare.py": "d0d52e52204250547e084dcbd2e5a448c3251e9d7c2cef486292fc3d07fa1800",
+    "migration/oracle/verify.py": "d30e8b6f1ddbea73b21a7f8a7dc0934282e0e0159d256e359f5e644c762db06f"
+  },
+  "build_log_sha256": "cc9afe297f2710006c42e7935a5fd6497872605cffd97a4819031fee1d2e7249",
+  "runtimes": {
+    "java": "OpenJDK Homebrew 21.0.12.1 build21.0.12.1 mixed mode sharing",
+    "python": "3.11.15",
+    "stock_java": true,
+    "native_bcrypt_or_other_JNI_provider_enabled": false,
+    "source_main_tree": "6e1ec8a514e9ea0151fbc9848b8e4c6f1e6be3e3",
+    "source_java_tree": "e77ed11ba386eb047dbff10eed0e1a3f3f78ec43"
+  },
+  "fresh_execution": {
+    "full": "full-08",
+    "extensions": "extensions-07",
+    "new_manifest_rounds": [
+      "29d8a832a6279741",
+      "f9c7320d3bdb764a"
+    ],
+    "old_full07_results_inherited": false,
+    "execution_order": "clean build -> identity preflight/new owned full08 -> exact cleanup -> identity preflight/new owned extensions07 -> exact cleanup -> pure17/policy28/tests30",
+    "business_scenarios_rerun_current_source": true,
+    "identity_preflight": [
+      {
+        "user": "p1_java",
+        "database": "postgres",
+        "data_dir": "/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/p1/pgdata"
+      },
+      {
+        "user": "p1_java",
+        "database": "postgres",
+        "data_dir": "/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/p1/pgdata"
+      }
+    ]
+  }
+}

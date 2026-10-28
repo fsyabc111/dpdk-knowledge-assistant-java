@@ -1,0 +1,112 @@
+{
+  "scope": {
+    "total": 17,
+    "positive_self_control": 1,
+    "negative_rejected": 16,
+    "false_pass": 0,
+    "scope": "full08 actual fresh candidate versus itself by unchanged original compare; not golden equivalence"
+  },
+  "cases": [
+    {
+      "case_id": "java-candidate-self-control",
+      "expected": "pass",
+      "actual": "pass"
+    },
+    {
+      "case_id": "http-200-to-500-same-body",
+      "expected": "reject",
+      "actual": "reject",
+      "detail": "$.observations[68].status: 值不同"
+    },
+    {
+      "case_id": "grade-80-to-99-business-chain-consistent",
+      "expected": "reject",
+      "actual": "reject",
+      "detail": "$.observations[53].business_delta.tables.grading_submissions.added[0].score: 值不同"
+    },
+    {
+      "case_id": "array-reverse",
+      "expected": "reject",
+      "actual": "reject",
+      "detail": "$.observations[8].body.users[0].created_at: 值不同"
+    },
+    {
+      "case_id": "duplicate-identity-same-array-size",
+      "expected": "reject",
+      "actual": "reject",
+      "detail": "$.observations[8].body.users[1].created_at: 值不同"
+    },
+    {
+      "case_id": "same-kind-task-cross-case-link-drift",
+      "expected": "reject",
+      "actual": "reject",
+      "detail": "$.observations[68].business_delta.tables.assistant_messages.added[0].metadata.task_id: 值不同"
+    },
+    {
+      "case_id": "task-to-session-type-consistent-string",
+      "expected": "reject",
+      "actual": "reject",
+      "detail": "$.observations[68].body.task_id: task身份格式不符"
+    },
+    {
+      "case_id": "unknown-fee-null-to-zero-consistent-chain",
+      "expected": "reject",
+      "actual": "reject",
+      "detail": "$.observations[58].business_delta.tables.upstream_usage_records.added[0].cost_micros: 类型不同 NoneType/int"
+    },
+    {
+      "case_id": "student-tree-consistent-chain-wrong-owner",
+      "expected": "reject",
+      "actual": "reject",
+      "detail": "$.business_initial.tables.users[3].created_by: 值不同"
+    },
+    {
+      "case_id": "missing-response-field",
+      "expected": "reject",
+      "actual": "reject",
+      "detail": "$.observations[68].body: 字段/缺省不同"
+    },
+    {
+      "case_id": "business-delta-broken-final",
+      "expected": "reject",
+      "actual": "reject",
+      "detail": "逐case业务delta无法重建最终业务状态: users"
+    },
+    {
+      "case_id": "sse-start-task-identity-drift",
+      "expected": "reject",
+      "actual": "reject",
+      "detail": "SSE task_id关联漂移"
+    },
+    {
+      "case_id": "source-all-linked-hash-replacement",
+      "expected": "reject",
+      "actual": "reject",
+      "detail": "$.observations[53].business_delta.tables.grading_submissions.added[0].code_hash: 值不同"
+    },
+    {
+      "case_id": "same-file-six-drop-last",
+      "expected": "reject",
+      "actual": "reject",
+      "detail": "$.transaction_cases[9].citations: 数组长度不同"
+    },
+    {
+      "case_id": "same-file-six-reverse",
+      "expected": "reject",
+      "actual": "reject",
+      "detail": "$.transaction_cases[9].citations[0].chunk_id: 值不同"
+    },
+    {
+      "case_id": "same-file-six-duplicate-last-identity",
+      "expected": "reject",
+      "actual": "reject",
+      "detail": "$.transaction_cases[9].citations[5].chunk_id: 值不同"
+    },
+    {
+      "case_id": "sse-source-order-reversed",
+      "expected": "reject",
+      "actual": "reject",
+      "detail": "$.observations[69].body[4].data.citations[0].chunk_id: 值不同"
+    }
+  ]
+}
