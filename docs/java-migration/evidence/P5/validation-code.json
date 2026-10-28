@@ -50,5 +50,27 @@
   ],
   "live_authorized": false,
   "user_acceptance": false,
-  "production_cutover": false
+  "production_cutover": false,
+  "ci": {
+    "queried_date": "2026-10-28",
+    "run_id": 40316421823,
+    "source": "ff59cdab65c2c8977f3f9c45701b773ad9116ccd",
+    "conclusion": "success",
+    "jobs": {
+      "unit": "success",
+      "frontend": "success",
+      "deployment-materials": "success",
+      "postgres": "success"
+    },
+    "url": "https://github.com/fsyabc111/dpdk-knowledge-assistant-java/actions/runs/40316421823",
+    "scope": "Linux code/build/dedicated PG/frontend/static deployment materials; actual Docker scenarios separate"
+  },
+  "boundary_followup": {
+    "report": "../J5-02/clock-20261028/REPORT.md",
+    "tests_executed": 3,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "scope": "actual owned PG with controlled scheduler; default600s/24h/300s configuration unchanged; not real600s wall waiting"
+  }
 }
