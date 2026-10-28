@@ -29,3 +29,9 @@ python3 acceptance/metrics/validate.py --wire "$task_metrics_output_dir/process-
 `process-spec.json`是正式family/type/labels/buckets/created规则；`mapping.json`反映用户新要求。历史source34与raw strict差异不覆盖或删除；新输出需要在主业务hooks接入后fresh采样，真实PG/HTTP另由主Agent开窗，不能借用UI种子。当前collector已编译，Java纯测14/14、Python纯测22/22、真实Java registry合成port导出通过16领域/19已知断言；未完成业务hook真实HTTP正例，不宣称新全矩阵或live通过。
 
 正式Application局部正例入口为ProcessMetricsHttpSmoke.java（需主授权独立TestPg窗口）。它只调用真实UsageLedger事务hook和health HTTP，不直接喂metrics：核验唯一Bean、事务提交前/回滚无事件、提交后known21/cost7/unknown1/cache0；新process-http.expectations.json核验16领域注册、3usage已观测和HTTP字段。已实际运行并清理服务/动态库；证据metrics-mapping-process-http.json。LLM/RAG/tools及source16全部真实业务事件仍需root当前hook/fresh矩阵，不能用port导出替代。
+
+## 16领域真实因果证明索引（固定ff59cda）
+
+此证明已在0847bda保存并提交，恢复会话仅核对文件SHA，未重复启动或测试。独立正式Application/owned PG的真实业务因果入口见[CAUSAL_ACCEPTANCE.md](CAUSAL_ACCEPTANCE.md)，实际probe为ProcessMetricsCausalSmoke.java，固定断言为fixtures/process-causal.expectations.json；结果在docs/java-migration/evidence/J5-01/metrics-mapping-causal-ff59.{json,md,prom}，自己交接为docs/java-migration/handoffs/J5-METRICS-CAUSAL.md。
+
+原执行覆盖normal真PG引用、无active release的fallback、生成error、实际cancelled、终态重放至429及独立Agent.run，全部16领域实际观测，25已知断言、46families/236series。wire/probe/expectations的SHA均保存在结果JSON；恢复时三者重新核对一致。此项不直接emit指标，也不宣称Python34families原样wire兼容。9250d76与固定ff59cda的生产src/main/pom无差异是本次只读Git核对结果，不是一次新运行通过。
