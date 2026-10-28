@@ -124,7 +124,7 @@ python3 acceptance/deployment/rehearse.py --repo "$PWD" rollback --execute
 
 ## 手动维护的当前目标与内部观测
 
-执行器把当前应用overlay保存于本round600权限scenario-state.json，升级/恢复后shell不会自动继承它。手动备份必须选择并核验当前overlay，dry-run输出database应等于实际backend DB_NAME；不一致停止，不能因为BASE库身份也合法就备份旧库。包装器从可信600/currentUID state选择overlay，拒绝显式过期overlay，apply再核对实际backend image及DB URL/name/comment；尚无state只允许显式`backup.sh --base <新绝对路径>`且无override，apply仍核对实际backend。dry-run输出actual_backend_verified=false，不可当作已连接验证。实际base/upgrade/restore验证见J5-03最终报告；使用全新目标文件，不覆盖business-backup.dump。
+执行器把当前应用overlay保存于本round600权限scenario-state.json，升级/恢复后shell不会自动继承它。手动备份必须选择并核验当前overlay，dry-run输出database应等于实际backend DB_NAME；不一致停止，不能因为BASE库身份也合法就备份旧库。包装器从可信600/currentUID state选择overlay，拒绝显式过期overlay，apply再核对实际backend image及DB URL/name/comment；尚无state只允许显式`backup.sh --base <新绝对路径>`且无override；实际备份追加`--apply`（`backup.sh --base --apply <新绝对路径>`），两者均不得用于已有upgrade/restore state。apply仍核对实际backend。dry-run输出actual_backend_verified=false，不可当作已连接验证。实际base/upgrade/restore验证见J5-03最终报告；使用全新目标文件，不覆盖business-backup.dump。
 
 内部指标仅在新project内获取，不向宿主开放后端metrics；日志只保留本地ignore，摘录前去敏：
 
@@ -133,4 +133,4 @@ scripts-java/compose.sh --apply exec -T fake-upstream node -e "fetch('http://bac
 scripts-java/compose.sh --apply logs --tail 100 backend-java
 ```
 
-`retrieve`要求显式固定查询向量或真实embedding配置；`judge --cases`要求已存在且挂载的合成case文件，prepare默认只生成知识源，不生成cases.json。这两个OPERATIONS示例是配置缺失时的预期拒绝/skip检查，不是默认正例；同jar的固定fixture正例由evidence/P5/validation-code.json所绑定CLI验收覆盖。不得为让示例返回成功而默认外发。
+`retrieve`当前CLI只接受显式fixedQueries固定查询向量，专用reader不接embedding端口，单配真实embedding也不会成为CLI正例；`judge --cases`要求已存在且挂载的合成case文件，prepare默认只生成知识源，不生成cases.json。这两个OPERATIONS示例是配置缺失时的预期拒绝/skip检查，不是默认正例；同jar的固定fixture正例由evidence/P5/validation-code.json所绑定CLI验收覆盖。不得为让示例返回成功而默认外发。
