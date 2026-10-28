@@ -1,0 +1,169 @@
+{
+  "schema": "j5-02-accepted-qualification-v1",
+  "execution": {
+    "source_sha": "2434137ab0c7e88e65eeb5792eab2e7ee81af52b",
+    "source_clean": true,
+    "command": [
+      "/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/p0/venv/bin/python",
+      "-B",
+      "acceptance/resilience/run.py",
+      "--case",
+      "accepted",
+      "--classpath",
+      "/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/worktrees/j5-02/.migration-artifacts/j5-02-clock-20261028-01-classpath.txt",
+      "--pg-bin",
+      "/opt/homebrew/opt/postgresql@17/bin",
+      "--output",
+      "/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/worktrees/j5-02/.migration-artifacts/j5-02-accepted-20261028-01"
+    ],
+    "driver_pid": 41160,
+    "started_at": "2026-10-28T07:59:13.874355+00:00",
+    "finished_at": "2026-10-28T07:59:32.072923+00:00",
+    "exit_code": 0,
+    "classpath_sha256": "54dd001fcd883665f5da3d7cd9df44805610c8fd736272cdcd7b17bc840a3a7e"
+  },
+  "result": {
+    "case_id": "accepted",
+    "db": {
+      "name": "p5_resilience_c612594732d8ea0c_accepted",
+      "url": "postgresql://127.0.0.1:55481/p5_resilience_c612594732d8ea0c_accepted",
+      "comment": "p5-owned:c612594732d8ea0c:p5_resilience_c612594732d8ea0c_accepted",
+      "round_id": "c612594732d8ea0c"
+    },
+    "point": "model_first_before",
+    "status_mode": "finished",
+    "producer_pid": 41168,
+    "rto_scope": "恢复JVM已经ready、PG健康/槽位可用；ensureManaged到终态；排除启动/grace/扫描",
+    "before_kill": {
+      "task_count": 1,
+      "source_sha256": "394623e01eb6a9be37c612cc8f9bc7507c0e240b805f2204824989e234db739a",
+      "source_present": true,
+      "jobs": [],
+      "grades": [],
+      "charges": [
+        [
+          "chat",
+          1
+        ]
+      ]
+    },
+    "producer_exit": -9,
+    "after_kill": {
+      "task_count": 1,
+      "source_sha256": "394623e01eb6a9be37c612cc8f9bc7507c0e240b805f2204824989e234db739a",
+      "source_present": true,
+      "jobs": [],
+      "grades": [],
+      "charges": [
+        [
+          "chat",
+          1
+        ]
+      ]
+    },
+    "recovery_pid": 41270,
+    "kill_to_ready_seconds": 1.5897265420062467,
+    "recovery": {
+      "execution_seconds": 0.073833542,
+      "status": "answered"
+    },
+    "checks": {
+      "producer_sigkill": true,
+      "new_jvm": true,
+      "rpo_zero_committed_projection": true,
+      "same_identity": true,
+      "terminal": true,
+      "source_deleted": true,
+      "single_chat_charge": true,
+      "single_grade": true,
+      "no_mcp_resubmit": true,
+      "unknown_safety": true,
+      "rto_1s": true
+    },
+    "external_call_counts": {
+      "before_kill_grade_submits": 0,
+      "after_ready_grade_submits": 0,
+      "after_ready_status_queries": 0
+    },
+    "after_recovery": {
+      "task_count": 1,
+      "source_sha256": null,
+      "source_present": false,
+      "jobs": [],
+      "grades": [],
+      "charges": [
+        [
+          "chat",
+          1
+        ]
+      ]
+    },
+    "source_sentinel": {
+      "long_term_table_hits": {
+        "admin_audit_log": 0,
+        "api_tokens": 0,
+        "assignment_items": 0,
+        "assignments": 0,
+        "assistant_citations": 0,
+        "assistant_messages": 0,
+        "assistant_sessions": 0,
+        "data_li_knowledge_v1": 0,
+        "flyway_schema_history": 0,
+        "grading_submissions": 0,
+        "knowledge_chunks": 0,
+        "knowledge_documents": 0,
+        "knowledge_indexes": 0,
+        "knowledge_source_files": 0,
+        "password_reset_requests": 0,
+        "rag_index_state": 0,
+        "rag_issue_events": 0,
+        "rag_issues": 0,
+        "rag_knowledge": 0,
+        "rag_knowledge_revisions": 0,
+        "rag_release_nodes": 0,
+        "rag_releases": 0,
+        "rag_requests": 0,
+        "rag_task_jobs": 0,
+        "teaching_faqs": 0,
+        "upstream_usage_records": 0,
+        "usage_counters": 0,
+        "users": 0
+      },
+      "log_hits": 0,
+      "backup": {
+        "executed": true,
+        "exit_code": 0,
+        "source_hits": 0,
+        "pass": true
+      },
+      "pass": true
+    },
+    "pass": true
+  },
+  "postflight": {
+    "verified_identity": {
+      "user": "p1_java",
+      "database": "p5_resilience_c612594732d8ea0c_accepted",
+      "data_dir": "/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/p1/pgdata"
+    },
+    "database_retained": true,
+    "connections": 0,
+    "active_java_maven_caffeinate": [],
+    "checked_at": "2026-10-28T08:00:09.834757+00:00"
+  },
+  "raw_sha256": {
+    "summary.json": "54d810e1e4a3eb190097a481fc30821bb6b7e49034c033570ea366217dc3938c",
+    "ownership.json": "e7916f821525849c779265c791bdb3612420f85ea28a9077f4f8ccb280b8f8db",
+    "postflight.json": "f50604ff9787acea5cf0d7ef8fa4ae71221d4ecd0c111b4f8ea18b8d1d635e5d",
+    "execution-manifest.json": "cf378414cd8a6938bf9fd2a29cf5ae018a41a915a346d9af7a89c9b8fe06e0c4",
+    "accepted/result.json": "373ed5dbc4eefa2bf65be131a945dcbc2db711d38a6b8d8387416edd0ddb4ba5",
+    "accepted/producer-marker.json": "3c92973edeb72be7fa527c4b0dfdee93b51a596a3ad790282a90da3164a80fac",
+    "accepted/terminal-backup.sql": "429737334fed44156db7564ee74e633b14bab8bc4e61169d299d814f34d2a165",
+    "accepted/producer/server-manifest.json": "2ddc3e93f8dacbafd67594a38afed2f2a99eef74be42015bcd0a9d0bacb03f4f",
+    "accepted/producer/server.log": "283028e4a0c07c3f9e516babe49e8b2e67fd380d8b510c90caa07f9409cbfc64",
+    "accepted/recoverer/server-manifest.json": "7e9ec34f0d23b31c7706987d03dbb6452edcb240cbe8da9453a0ae1f7e6c07c3",
+    "accepted/recoverer/server.log": "e55e2f25c29b073da5aaa39efdacb69c665d9d413df7f49e5be915fdadeedd61"
+  },
+  "raw_root": ".migration-artifacts/j5-02-accepted-20261028-01",
+  "full_matrix_pass_claim": false
+}
