@@ -6723,34 +6723,44 @@
   ],
   "public_versioned_sources": [
     {
-      "component": "Node.js",
-      "version": "22.23.4",
-      "official_tag": "v22.23.4",
-      "official_license_url": "https://raw.githubusercontent.com/nodejs/node/v22.23.4/LICENSE",
-      "scope": "Node main license and externally maintained bundled library aggregate text",
-      "public_page_verified": true,
-      "raw_original_bytes_archived": false,
-      "sha256": null,
-      "missing_reason": "local urllib TLS EOF and curl LibreSSL SSL_ERROR_SYSCALL; no insecure TLS bypass used",
-      "followup": "fetch exact official tag LICENSE bytes and source tag commit; keep aggregate original text rather than infer MIT for all bundled components"
+      "component": "nodejs/node",
+      "version_tag": "v22.23.4",
+      "official_url": "https://github.com/nodejs/node/blob/v22.23.4/LICENSE",
+      "retrieved_by": "GitHub official repository contents API via gh HTTP1 override",
+      "git_blob_sha1": "a640a1f4708257449c53645022c8762488d7261f",
+      "git_blob_sha1_verified": true,
+      "source_commit": "27f213124280b4db4cd1e3dd42f6f8afd01ceff7",
+      "immutable_blob_api": "https://api.github.com/repos/nodejs/node/git/blobs/a640a1f4708257449c53645022c8762488d7261f",
+      "original_bytes_archived": true,
+      "archive": {
+        "sha256": "c738ae413cf561f174e34f6961f8ca458aae2369a73640dda6234c629b98bcc4",
+        "bytes": 145485,
+        "text_path": "sha256/c738ae413cf561f174e34f6961f8ca458aae2369a73640dda6234c629b98bcc4.txt"
+      },
+      "scope": "official matching-version source license text; actual container binary provenance and installed file mapping remain separate"
     },
     {
-      "component": "pgvector",
-      "version": "0.8.4",
-      "official_tag": "v0.8.4",
-      "official_license_url": "https://raw.githubusercontent.com/pgvector/pgvector/v0.8.4/LICENSE",
-      "public_page_verified": true,
-      "raw_original_bytes_archived": false,
-      "sha256": null,
-      "missing_reason": "local raw GitHub TLS transport failure; original bytes not reconstructed from rendered page",
-      "followup": "fetch exact tag LICENSE bytes and resolve immutable source commit; compare future container physical matching evidence"
+      "component": "pgvector/pgvector",
+      "version_tag": "v0.8.4",
+      "official_url": "https://github.com/pgvector/pgvector/blob/v0.8.4/LICENSE",
+      "retrieved_by": "GitHub official repository contents API via gh HTTP1 override",
+      "git_blob_sha1": "fc5f177fa5d9c0d20a949f4b4faa028999977008",
+      "git_blob_sha1_verified": true,
+      "source_commit": "1d458ad5d73731241e8b912cacc2079beb643d30",
+      "immutable_blob_api": "https://api.github.com/repos/pgvector/pgvector/git/blobs/fc5f177fa5d9c0d20a949f4b4faa028999977008",
+      "original_bytes_archived": true,
+      "archive": {
+        "sha256": "6bba9ebeb73e27477463b05e5ef1bf303bccbddb3db9bbc95905d351604d6a87",
+        "bytes": 1104,
+        "text_path": "sha256/6bba9ebeb73e27477463b05e5ef1bf303bccbddb3db9bbc95905d351604d6a87.txt"
+      },
+      "scope": "official matching-version source license text; actual container binary provenance and installed file mapping remain separate"
     }
   ],
   "limitations": [
     "not_a_complete_redistribution_NOTICE_bundle_or_legal_compatibility_signoff",
     "dependencies_without_embedded_text_require_source_or_publisher_followup",
     "container_OS_and_JRE_original_texts_not_extracted_in_this_no_container_window",
-    "Node_and_pgvector_official_tag_sources_verified_but_original_download_may_remain_pending",
     "final_candidate_artifact_set_and_transitive_bundled_scope_pending"
   ]
 }

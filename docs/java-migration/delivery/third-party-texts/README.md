@@ -16,3 +16,7 @@ python3 docs/java-migration/delivery/license_bundle.py --repo "$PWD" \
 ```
 
 工具重新生成本地artifact部分索引；官方远程下载尚未实现，工具保留已有public_versioned_sources远程元数据，不能把离线重跑当官方文本已取得。本窗口没有Docker、构建、PG、HTTP应用或浏览器进程。所有已有image/save/恢复资产不变。
+
+## 官方版本文本恢复（2026-10-28）
+
+先前raw下载TLS错误记录保留。主Agent改用官方GitHub contents API成功取得Node v22.23.4聚合LICENSE（含内置组件原有条目）与pgvector v0.8.4 LICENSE原字节，校验Git blob SHA1并记录源commit、原始字节SHA256与长度，索引public_versioned_sources。未重建或转写许可正文；本次归档不替代实际镜像文件来源核验或法律兼容签认。其余Maven/npm无内置文本、缓存缺失和容器原文本仍按逐项索引保留，不把两份补齐扩大为完整再分发NOTICE已通过。

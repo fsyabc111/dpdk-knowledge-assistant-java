@@ -19,5 +19,24 @@
   "collector_sha256": "0f1c1bf2903776f6bacda0ed1218a751be119e2d31fd560e6d7c78344a606701",
   "official_Node_and_pgvector_bytes": "pending_local_TLS_failure; exact official URLs recorded",
   "complete_redistribution_NOTICE_or_legal_signoff": false,
-  "Docker_build_PG_application_started": false
+  "Docker_build_PG_application_started": false,
+  "public_source_followup": {
+    "date": "2026-10-28",
+    "method": "official GitHub contents API, per-command HTTP1 override; original bytes verified against Git blob SHA1",
+    "node": {
+      "version": "22.23.4",
+      "commit": "27f213124280b4db4cd1e3dd42f6f8afd01ceff7",
+      "sha256": "c738ae413cf561f174e34f6961f8ca458aae2369a73640dda6234c629b98bcc4",
+      "bytes": 145485
+    },
+    "pgvector": {
+      "version": "0.8.4",
+      "commit": "1d458ad5d73731241e8b912cacc2079beb643d30",
+      "sha256": "6bba9ebeb73e27477463b05e5ef1bf303bccbddb3db9bbc95905d351604d6a87",
+      "bytes": 1104
+    },
+    "container_binary_source_provenance": "source version text archived; separate actual container inventory remains authoritative for installed file hashes"
+  },
+  "total_content_addressed_text_objects": 137,
+  "total_stored_text_bytes": 701501
 }
