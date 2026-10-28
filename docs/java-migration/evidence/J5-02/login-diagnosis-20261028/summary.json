@@ -1,0 +1,684 @@
+{
+  "schema": "j5-login-diagnosis-v1",
+  "production_changed": false,
+  "protocol_changed": false,
+  "source_evidence": {
+    "frozen_python_commit": "80b29135faddd16d5e39fdbf0633291ea6a20489",
+    "python_backend_tree": "38efd2a4d4ad284726989974bbb521ec4d4801dd",
+    "java_source_tree": "e8ff677bf44780290c1892d4b27440b0399de7f6",
+    "source_commit": "0d2836e9c473bba6551069bfb53fc3b02dabd3f7",
+    "dirty": false,
+    "protocol_sha256": "e50af779ff1855c540776ff9d6d9c68bef515b5f19b15f41ae51f4ade481ea0d"
+  },
+  "warm120_probe": {
+    "execution": {
+      "source_sha": "0d2836e9c473bba6551069bfb53fc3b02dabd3f7",
+      "source_clean": true,
+      "command": [
+        "/usr/bin/caffeinate",
+        "-i",
+        "/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/p0/venv/bin/python",
+        "-B",
+        "acceptance/load/run.py",
+        "--runtime",
+        "java",
+        "--qualification",
+        "--rounds",
+        "1",
+        "--warmup",
+        "120",
+        "--measurement",
+        "30",
+        "--classpath",
+        "/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/worktrees/j5-02/.migration-artifacts/j5-02-clock-20261028-01-classpath.txt",
+        "--output",
+        "/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/worktrees/j5-02/.migration-artifacts/j5-02-java-login-warm120-20261028-01"
+      ],
+      "driver_pid": 48024,
+      "started_at": "2026-10-28T08:20:36.114203+00:00",
+      "finished_at": "2026-10-28T08:23:29.604865+00:00",
+      "exit_code": 0,
+      "classpath_sha256": "54dd001fcd883665f5da3d7cd9df44805610c8fd736272cdcd7b17bc840a3a7e",
+      "formal_pass_claim": false,
+      "caffeinate_guard_note": "-i required by diagnostic scope; qualification driver does not include guard PID in resource sum; not formal comparison"
+    },
+    "qualification_pass": true,
+    "phases": [
+      {
+        "phase": "warmup",
+        "target_seconds": 120.0,
+        "elapsed_including_drain_seconds": 120.65724058299384,
+        "groups": {
+          "login": {
+            "n": 60,
+            "p50_ms": 840.304917001049,
+            "p95_ms": 1164.1222500038566,
+            "p99_ms": null,
+            "max_ms": 1231.407457991736,
+            "requests": 60,
+            "unexpected_errors": 0,
+            "statuses": {
+              "requests": 60,
+              "http_200": 60
+            }
+          },
+          "assignment_read": {
+            "n": 1440,
+            "p50_ms": 4.770208994159475,
+            "p95_ms": 11.804542009485886,
+            "p99_ms": 19.59783300117124,
+            "max_ms": 230.34608300076798,
+            "requests": 1440,
+            "unexpected_errors": 0,
+            "statuses": {
+              "requests": 1440,
+              "http_200": 1440
+            }
+          },
+          "chat": {
+            "n": 581,
+            "p50_ms": 2039.8599579930305,
+            "p95_ms": 2062.1945829916513,
+            "p99_ms": null,
+            "max_ms": 2176.8687080038944,
+            "requests": 581,
+            "unexpected_errors": 0,
+            "statuses": {
+              "requests": 581,
+              "http_200": 581
+            }
+          },
+          "formal_submit": {
+            "n": 9,
+            "p50_ms": 210.54825000464916,
+            "p95_ms": 250.32037500932347,
+            "p99_ms": null,
+            "max_ms": 250.32037500932347,
+            "requests": 9,
+            "unexpected_errors": 0,
+            "statuses": {
+              "requests": 9,
+              "http_200": 9
+            }
+          },
+          "explain_admission": {
+            "n": 9,
+            "p50_ms": 9.383666998473927,
+            "p95_ms": 15.596999990520999,
+            "p99_ms": null,
+            "max_ms": 15.596999990520999,
+            "requests": 9,
+            "unexpected_errors": 0,
+            "statuses": {
+              "requests": 9,
+              "http_200": 9
+            }
+          },
+          "explain_terminal": {
+            "n": 9,
+            "p50_ms": 2040.9907910070615,
+            "p95_ms": 2070.362667000154,
+            "p99_ms": null,
+            "max_ms": 2070.362667000154,
+            "requests": 9,
+            "unexpected_errors": 0,
+            "statuses": {
+              "requests": 9,
+              "http_200": 9,
+              "polls": 1349,
+              "unexpected_errors": 0
+            }
+          }
+        },
+        "resource_summary": {
+          "combined_cpu_p95_one_core_percent": 43.20752328041725,
+          "combined_rss_peak_mib": 404.109375,
+          "samples": 116
+        },
+        "validity": {
+          "valid": true,
+          "failures": [],
+          "sampler_gap_limit_seconds": 5,
+          "wall_monotonic_difference_limit_seconds": 2
+        }
+      },
+      {
+        "phase": "measurement",
+        "target_seconds": 30.0,
+        "elapsed_including_drain_seconds": 32.680678249991615,
+        "groups": {
+          "login": {
+            "n": 60,
+            "p50_ms": 767.3246659978759,
+            "p95_ms": 900.2236250089481,
+            "p99_ms": null,
+            "max_ms": 936.2247500102967,
+            "requests": 60,
+            "unexpected_errors": 0,
+            "statuses": {
+              "requests": 60,
+              "http_200": 60
+            }
+          },
+          "assignment_read": {
+            "n": 360,
+            "p50_ms": 3.7406250048661605,
+            "p95_ms": 7.585291998111643,
+            "p99_ms": null,
+            "max_ms": 61.11929200415034,
+            "requests": 360,
+            "unexpected_errors": 0,
+            "statuses": {
+              "requests": 360,
+              "http_200": 360
+            }
+          },
+          "chat": {
+            "n": 148,
+            "p50_ms": 2034.909082998638,
+            "p95_ms": 2074.948833003873,
+            "p99_ms": null,
+            "max_ms": 2078.281750000315,
+            "requests": 148,
+            "unexpected_errors": 0,
+            "statuses": {
+              "requests": 148,
+              "http_200": 148
+            }
+          },
+          "formal_submit": {
+            "n": 3,
+            "p50_ms": 212.12504099821672,
+            "p95_ms": 213.65833299933,
+            "p99_ms": null,
+            "max_ms": 213.65833299933,
+            "requests": 3,
+            "unexpected_errors": 0,
+            "statuses": {
+              "requests": 3,
+              "http_200": 3
+            }
+          },
+          "explain_admission": {
+            "n": 3,
+            "p50_ms": 8.538416994269937,
+            "p95_ms": 12.478707998525351,
+            "p99_ms": null,
+            "max_ms": 12.478707998525351,
+            "requests": 3,
+            "unexpected_errors": 0,
+            "statuses": {
+              "requests": 3,
+              "http_200": 3
+            }
+          },
+          "explain_terminal": {
+            "n": 3,
+            "p50_ms": 2035.1933329948224,
+            "p95_ms": 2036.4898330008145,
+            "p99_ms": null,
+            "max_ms": 2036.4898330008145,
+            "requests": 3,
+            "unexpected_errors": 0,
+            "statuses": {
+              "requests": 3,
+              "http_200": 3,
+              "polls": 445,
+              "unexpected_errors": 0
+            }
+          }
+        },
+        "resource_summary": {
+          "combined_cpu_p95_one_core_percent": 860.9564236909905,
+          "combined_rss_peak_mib": 415.828125,
+          "samples": 32
+        },
+        "validity": {
+          "valid": true,
+          "failures": [],
+          "sampler_gap_limit_seconds": 5,
+          "wall_monotonic_difference_limit_seconds": 2
+        }
+      }
+    ],
+    "correctness": {
+      "no_unauthorized_access": true,
+      "all_accepted_terminal": true,
+      "one_chat_charge_per_task": true,
+      "no_duplicate_grade": true,
+      "terminal_inputs_deleted": true,
+      "formal_successes_equal_grades": true,
+      "mcp_formal_count_matches": true,
+      "no_grade_from_explanation": true,
+      "no_network_denial": true
+    },
+    "final": {
+      "tasks": 741,
+      "pending": 0,
+      "answered": 741,
+      "inputs": 0,
+      "chat_charges": 741,
+      "grading_charges": 12,
+      "grades": 12,
+      "explain_tasks": 12,
+      "duplicate_grades": 0,
+      "usage_unknown_cost": 2963
+    }
+  },
+  "java_narrow": {
+    "hasher_binding": {
+      "java_wrapper": "io.dpdk.assistant.auth.PasswordHasher.check",
+      "target": "org.springframework.security.crypto.bcrypt.BCrypt.checkpw",
+      "wrapper_sha256": "218fc8df5fb00d9d2ec296012a4bf19d0865b518fbfe8be2c7bc993c2d3dcdba",
+      "classpath_jars": [
+        {
+          "name": "spring-security-crypto-7.0.8.jar",
+          "sha256": "346e084a5c4df9f5d6837c7579307b7de10ae7a19d661806b1818f0fcb0353b1"
+        }
+      ],
+      "python_source": "backend/app/services/user_service.py:_verify_credentials_sync -> bcrypt.checkpw",
+      "installed_python_bcrypt_version": "4.3.0"
+    },
+    "hash_cost_prefix_counts": [
+      [
+        "$2a$12$",
+        61
+      ]
+    ],
+    "probes": [
+      {
+        "probe": "serial60",
+        "login": {
+          "n": 60,
+          "p50_ms": 222.21437499683816,
+          "p95_ms": 233.09120800695382,
+          "p99_ms": null,
+          "max_ms": 285.11329100001603
+        },
+        "unexpected_errors": 0,
+        "elapsed_seconds": 13.505270708003081,
+        "combined_cpu_mean_one_core_percent": 105.51436034196338,
+        "sampling": false,
+        "profile_sampling": false,
+        "login_signal_pass": true
+      },
+      {
+        "probe": "stagger60_no_sampler",
+        "login": {
+          "n": 60,
+          "p50_ms": 716.9034169928636,
+          "p95_ms": 997.5961250020191,
+          "p99_ms": null,
+          "max_ms": 1057.0064170024125
+        },
+        "unexpected_errors": 0,
+        "elapsed_seconds": 2.07146904199908,
+        "combined_cpu_mean_one_core_percent": 892.1205012152049,
+        "sampling": false,
+        "profile_sampling": false,
+        "login_signal_pass": false
+      },
+      {
+        "probe": "stagger60_sampler",
+        "login": {
+          "n": 60,
+          "p50_ms": 746.5490419999696,
+          "p95_ms": 850.6712500093272,
+          "p99_ms": null,
+          "max_ms": 864.9802080035442
+        },
+        "unexpected_errors": 0,
+        "elapsed_seconds": 2.099068666007952,
+        "combined_cpu_mean_one_core_percent": 872.7680183441219,
+        "sampling": true,
+        "profile_sampling": false,
+        "login_signal_pass": false
+      },
+      {
+        "probe": "profile_stagger60",
+        "login": {
+          "n": 60,
+          "p50_ms": 1930.1589160022559,
+          "p95_ms": 2802.462124993326,
+          "p99_ms": null,
+          "max_ms": 2846.1214170092717
+        },
+        "unexpected_errors": 0,
+        "elapsed_seconds": 3.3344088750018273,
+        "combined_cpu_mean_one_core_percent": 570.7158513962861,
+        "sampling": false,
+        "profile_sampling": true,
+        "login_signal_pass": false
+      }
+    ]
+  },
+  "python_narrow": {
+    "hasher_binding": {
+      "java_wrapper": "io.dpdk.assistant.auth.PasswordHasher.check",
+      "target": "org.springframework.security.crypto.bcrypt.BCrypt.checkpw",
+      "wrapper_sha256": "218fc8df5fb00d9d2ec296012a4bf19d0865b518fbfe8be2c7bc993c2d3dcdba",
+      "classpath_jars": [
+        {
+          "name": "spring-security-crypto-7.0.8.jar",
+          "sha256": "346e084a5c4df9f5d6837c7579307b7de10ae7a19d661806b1818f0fcb0353b1"
+        }
+      ],
+      "python_source": "backend/app/services/user_service.py:_verify_credentials_sync -> bcrypt.checkpw",
+      "installed_python_bcrypt_version": "4.3.0"
+    },
+    "hash_cost_prefix_counts": [
+      [
+        "$2b$12$",
+        61
+      ]
+    ],
+    "probes": [
+      {
+        "probe": "serial60",
+        "login": {
+          "n": 60,
+          "p50_ms": 173.5364589985693,
+          "p95_ms": 183.12999999034218,
+          "p99_ms": null,
+          "max_ms": 188.66066599730402
+        },
+        "unexpected_errors": 0,
+        "elapsed_seconds": 10.498876833007671,
+        "combined_cpu_mean_one_core_percent": 99.3439599863566,
+        "sampling": false,
+        "profile_sampling": false,
+        "login_signal_pass": true
+      },
+      {
+        "probe": "stagger60_no_sampler",
+        "login": {
+          "n": 60,
+          "p50_ms": 246.5199590078555,
+          "p95_ms": 278.5945420037024,
+          "p99_ms": null,
+          "max_ms": 288.332416996127
+        },
+        "unexpected_errors": 0,
+        "elapsed_seconds": 1.6818484170071315,
+        "combined_cpu_mean_one_core_percent": 765.8240700978337,
+        "sampling": false,
+        "profile_sampling": false,
+        "login_signal_pass": true
+      },
+      {
+        "probe": "stagger60_sampler",
+        "login": {
+          "n": 60,
+          "p50_ms": 220.13320800033398,
+          "p95_ms": 235.14216700277757,
+          "p99_ms": null,
+          "max_ms": 272.9553329991177
+        },
+        "unexpected_errors": 0,
+        "elapsed_seconds": 1.737114332994679,
+        "combined_cpu_mean_one_core_percent": 743.1865453406252,
+        "sampling": true,
+        "profile_sampling": false,
+        "login_signal_pass": true
+      }
+    ]
+  },
+  "jfr_cost": {
+    "event": "jdk.ExecutionSample",
+    "count": 307,
+    "truncated_stacks": 306,
+    "top_leaf_methods": [
+      [
+        "org.springframework.security.crypto.bcrypt.BCrypt.key",
+        299
+      ],
+      [
+        "org.springframework.security.crypto.bcrypt.BCrypt.encipher",
+        6
+      ],
+      [
+        "java.lang.StringBuilder.<init>",
+        1
+      ],
+      [
+        "sun.nio.cs.ISO_8859_1$Encoder.encodeBufferLoop",
+        1
+      ]
+    ],
+    "top_inclusive_methods": [
+      [
+        "org.springframework.security.crypto.bcrypt.BCrypt.hashpw",
+        305
+      ],
+      [
+        "org.springframework.security.crypto.bcrypt.BCrypt.hashpwforcheck",
+        305
+      ],
+      [
+        "org.springframework.security.crypto.bcrypt.BCrypt.crypt_raw",
+        305
+      ],
+      [
+        "org.springframework.security.crypto.bcrypt.BCrypt.key",
+        305
+      ],
+      [
+        "org.springframework.security.crypto.bcrypt.BCrypt.checkpw",
+        299
+      ],
+      [
+        "org.springframework.security.crypto.bcrypt.BCrypt.encipher",
+        6
+      ],
+      [
+        "org.apache.coyote.AbstractProtocol.getName",
+        1
+      ],
+      [
+        "java.lang.StringBuilder.<init>",
+        1
+      ],
+      [
+        "org.apache.coyote.AbstractProtocol$ConnectionHandler.register",
+        1
+      ],
+      [
+        "org.apache.coyote.AbstractProtocol.getNameInternal",
+        1
+      ],
+      [
+        "org.apache.coyote.AbstractProtocol$ConnectionHandler.process",
+        1
+      ],
+      [
+        "java.nio.charset.CharsetEncoder.encode",
+        1
+      ],
+      [
+        "org.apache.tomcat.util.buf.MessageBytes.toBytes",
+        1
+      ],
+      [
+        "sun.nio.cs.ISO_8859_1$Encoder.encodeLoop",
+        1
+      ],
+      [
+        "sun.nio.cs.ISO_8859_1$Encoder.encodeBufferLoop",
+        1
+      ]
+    ],
+    "scope": "独立JFR probe，样本计数不是完整CPU时间；不混延迟门禁"
+  },
+  "cpu_available_probe": {
+    "same_deployment_jdk_flags_probe_available_processors": 10,
+    "target_jfr_hw_threads": 10,
+    "target_actual_runtime_api_exported": false,
+    "scope": "无负载后的独立同JDK/内存参数Runtime API探针；不能冒称直接从已退出服务读取",
+    "command": [
+      "/opt/homebrew/opt/openjdk@21/bin/java",
+      "-Xms64m",
+      "-Xmx256m",
+      "-XX:MaxMetaspaceSize=128m",
+      "-XX:ReservedCodeCacheSize=48m",
+      "-Xss512k",
+      "--source",
+      "21",
+      "/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/worktrees/j5-02/.migration-artifacts/j5-02-login-jfr-20261028-01/AvailableProcessors.java"
+    ]
+  },
+  "jvm": {
+    "arguments": [
+      "-Xms64m",
+      "-Xmx256m",
+      "-XX:MaxMetaspaceSize=128m",
+      "-XX:ReservedCodeCacheSize=48m",
+      "-Xss512k"
+    ],
+    "vm": "OpenJDK 64-Bit Server VM",
+    "version": "21.0.12.1"
+  },
+  "python_first_attempt": {
+    "pass": false,
+    "measurement_samples": 0,
+    "reason": "manifest allowed_prefixes tuple mismatch rejected before app setup; corrected only new diagnostic tuple, fresh02 succeeds"
+  },
+  "postflight": {
+    "owned_databases": [
+      {
+        "run": "j5-02-java-login-warm120-20261028-01",
+        "identity": {
+          "user": "p1_java",
+          "database": "p5_capacity_d15b32b35f212c57_java",
+          "data_dir": "/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/p1/pgdata"
+        },
+        "connections": 0,
+        "retained": true
+      },
+      {
+        "run": "j5-02-narrow-login-20261028-01",
+        "identity": {
+          "user": "p1_java",
+          "database": "p5_resilience_19ffa9446faab03d_login_diagnostic",
+          "data_dir": "/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/p1/pgdata"
+        },
+        "connections": 0,
+        "retained": true
+      },
+      {
+        "run": "j5-02-login-jfr-20261028-01",
+        "identity": {
+          "user": "p1_java",
+          "database": "p5_resilience_8605b0838be822d9_login_diagnostic",
+          "data_dir": "/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/p1/pgdata"
+        },
+        "connections": 0,
+        "retained": true
+      },
+      {
+        "run": "j5-02-python-narrow-login-20261028-01",
+        "identity": {
+          "user": "p1_java",
+          "database": "p5_resilience_b101d153d1ff42d1_login_diagnostic",
+          "data_dir": "/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/p1/pgdata"
+        },
+        "connections": 0,
+        "retained": true
+      },
+      {
+        "run": "j5-02-python-narrow-login-20261028-02",
+        "identity": {
+          "user": "p1_java",
+          "database": "p5_resilience_57caa799efdf8dce_login_diagnostic",
+          "data_dir": "/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/p1/pgdata"
+        },
+        "connections": 0,
+        "retained": true
+      }
+    ],
+    "active_java_maven_caffeinate": [],
+    "checked_at": "2026-10-28T08:34:24.206276+00:00"
+  },
+  "formal_capacity_pass": null,
+  "old_python_baseline_preserved": true,
+  "raw_sha256": {
+    "j5-02-java-login-warm120-20261028-01": {
+      "pair-summary.json": "a2ee4ab83f4a237f0d65dc02c18349033598681cd0f653b2732a14a18b80544d",
+      "ownership.json": "353b743f8e7e8491062a8a73586424afc656586532bbb98b8903db3b83bcbb53",
+      "postflight.json": "0ed4100147871ad9ffefbae2b533b901cb3ef7089f57cd06e9264de2b1857e02",
+      "execution-manifest.json": "f8e4a33e653e1930cfe269bf5247ca4925dd06331f869d94b806af678ed94230",
+      "run-manifest.json": "2af2565ae97426e6e742f42e54b2fcab2058b92e752d7bc95883057173b18d7d",
+      "baseline-summary.json": "bff04e529208baff20909f92f92c21fb7d96591487037a74bcc9f5e920f2b9c3",
+      "java/server-manifest.json": "8470317f0509736ec444488e15ee249ea9e703f6299c35c9bec01e01956760ec",
+      "java/summary.json": "9907b731b3d100809dcdb0f14d7509053b2e65dd434692a39db6893ba343f6d7",
+      "java/round-1-warmup-latencies.json": "3b3238f808f60ba6b8aa69809d485caf5f4b99a11e94ee43e0abb69fd8d47556",
+      "java/round-1-warmup.json": "25eda20ca8c6e8bd0ac58ae4816200467f8e3a41d3c27764a0ec539d1767b6a9",
+      "java/server.log": "bcd69acfe7061777a4d20be8023a5d611f83a5a5363435bd37e46a7557c0bea6",
+      "java/round-1-measurement.json": "e24c05819ec9bfe5f2d3594bb4eb4486d341d8a641dd271cff341c336f2a394e",
+      "java/round-1-measurement-latencies.json": "7818781fa6da7744996e62bc1c416db86b968a71585936cc6363f901ba47a9ae"
+    },
+    "j5-02-narrow-login-20261028-01": {
+      "summary.json": "437dc8ea2c4fcbeb7105287997a6f0509af7569529ef8e219f0f4d70169b5353",
+      "ownership.json": "182e19608cfcb9dbcf861c04cb6bcfcb46415e0acefd3ea8af4d979e54b9b43f",
+      "diagnose_login.original.py": "1c00e694dcd8547a533f597fe6a2aafc599c79e3debc88b436f6a89dd61471fb",
+      "postflight.json": "ef2037beb2b10733315f3da561c44a5ee7d49975a8f9eb9e12b15003f553bfc1",
+      "execution-manifest.json": "b078f9e761d1a3e51a09a2cfea6e03bffa4758ede231a843f67e5d48238c4111",
+      "server/server-manifest.json": "32fd5e04c4e904cf65d85ec024b1ca416c19fea5b981443e93db73a6b6ea9640",
+      "server/server.log": "d683803ec78d9601d1c5892899616fd224b2219c53b6e53a7a624f0b4f7138db",
+      "stagger60_no_sampler/result.json": "e67c17bb98f2892a3518c1718b271fe1337cf38d356168d112853337f600a301",
+      "stagger60_no_sampler/statuses.json": "85c28a4d49105ac086e10619fedac6d897ecdecbcb4ef22f4e852efa73af1115",
+      "stagger60_no_sampler/latencies.json": "8445c8edaaebda36cf42db2bd69e64a1e78fc1ee6cb658257708253c9a5c694a",
+      "stagger60_sampler/result.json": "04f8b5b03b05ae01a92bf0946ebcf1a9a71543385edcbdb654ad97c410fc8fe1",
+      "stagger60_sampler/statuses.json": "285ad8ca8327707db1f19b375aae17c6aa07b054490da19330c99a2b7f01353d",
+      "stagger60_sampler/latencies.json": "8ecd5546a35b2ec7dc2c9aec847f19e60b531c4731659f1bbe36c81c5ee2d16f",
+      "profile_stagger60/result.json": "225c97a881b86714554c7ed3b47efe3ae0bbce29e42645a39bef1432c37541c7",
+      "profile_stagger60/cpu-sample.txt": "a114ebc64e3b25a74f536006e8fdda2735d68856f03a9dd012532f8c0a6db7e2",
+      "profile_stagger60/statuses.json": "85a8596f5922a95acb7013200ba06d53e3866aecc46fbdb839ba1a880b531503",
+      "profile_stagger60/latencies.json": "a978ceeab6d0f5a5b47e5c6c2a2f6664f9f06e1db00f0bcb5a9d658f543fde47",
+      "serial60/result.json": "7c7ad3552313c49f36eb65e3ab15548329ad9bd209246287b11c624fd04444d7",
+      "serial60/statuses.json": "36743d6459074be8fc88d2f738015083797e37cd2785989ad1102cbffe86c04c",
+      "serial60/latencies.json": "9ca33833310f9b337a20d9870940b30f1979e8477c554c8ec8fd3991bf61d30d"
+    },
+    "j5-02-login-jfr-20261028-01": {
+      "summary.json": "84b1cc4e45f3efe18897d26c2f6bc2cf12314b7bc25ed70a6cb5dcc673da7ecd",
+      "ownership.json": "5b73fd707d5d107a04ad4fd79b01c6c59da467437380d7e0f170b54f4b224c4b",
+      "postflight.json": "ab11a0a2ed6d10cf592ae39ad03d32a1f07d620ef44b1ca0bda6c91f8a72bec7",
+      "AvailableProcessors.java": "68b5f46bface9f09ce2feb9559b01307c14480c1cd0673285db9b3f81e5e722d",
+      "execution-manifest.json": "0c79f841529e8d7567ef82d35d660a74a1b3ade4bb1b00e19cdeaeb361f3d4c0",
+      "available-processors-probe.json": "1ae6099f5f4e3459922b69befb83841c9c0ab3f0bb059d294709fddf9b6e7b5d",
+      "server/server-manifest.json": "0f0594bb7dec7327e074210215323bc2a20803835d2fdaa0f1f64d7226ee8851",
+      "server/server.log": "1610886f00160dfe2042f446c89fba821aada9ee5f031ae25a817952211a99cb",
+      "profile_stagger60/result.json": "72acd7c38fbe12db915332badd1a1847cb80a1918cb92134ee74b9a2de01f3ca",
+      "profile_stagger60/jfr-start.txt": "b3103deb4421137ec43643d17a43dbd0db21e0ccd70bb5ab7ba644d9669e6e0c",
+      "profile_stagger60/jfr-stop.txt": "dac5b3a26f07c5999db6238564f972818abbb9415ae0976088efd9ff94a847f1",
+      "profile_stagger60/cpu-profile.jfr": "04a3c87c9b1c7c70e0970612c44ccff0d2e54309f43d14fe94965af4f474f325",
+      "profile_stagger60/statuses.json": "de70a68f87b554032627a7966d1ca13ae0af99de9c1bbb5077cc58e2fe07cae6",
+      "profile_stagger60/latencies.json": "c872460a6532b6c5c67b6b4d45d1d5089adf09ac8eabf62ef3277e1ad7ebc47a",
+      "profile_stagger60/jvm-info.json": "abe1f45538d229b78b748d483250620b0f1c28c4d5f19f1de3b67514f39d7a0b",
+      "profile_stagger60/cost-summary.json": "7a91d005c25de0b7283bebc41ef3e9d2ad81857aa9428fd179e5e695a35e46ab",
+      "profile_stagger60/execution-samples.json": "ae34d3ddd1587e9c06427c238fde5d9f99dd461eaf36bc98178e1945ded53b1b"
+    },
+    "j5-02-python-narrow-login-20261028-01": {
+      "ownership.json": "928050575f205f506f5d5c6a77398d5c0022b2f150761a25a647fd759e061839",
+      "postflight.json": "d41d604350c79d9b2cda34e1b3e3e5a15bbbee0314d6b947724398948750e842",
+      "execution-manifest.json": "50283cf7846572ca8b4d93c1a4b3b3a0367c94e5815a0a8da5e15afa810481b1",
+      "server/server.log": "628a4e0d4a73396946337fb3e82fc15302c25fcb3031329b891dab6c4a6ef55f"
+    },
+    "j5-02-python-narrow-login-20261028-02": {
+      "summary.json": "c1d22493f73c2af606bfa7b459fd4f609c374cb6c92ce9fae59824f6fcdd4084",
+      "ownership.json": "3f22d0b2f1b0b0e6c305c37bcdf188ac3d6c034d7988b1c5f50e612d379420ba",
+      "postflight.json": "fdd48b601bd8439dd47e64f9734d3a3ace6fa3625a86b14be33ca40710cef98b",
+      "execution-manifest.json": "764383f658aabe1fd2820702f93a83063af345ed95d500ac469fa33910bfb342",
+      "server/server-manifest.json": "49c943431c550ccba31ce02903dbe5a97a2a93386b9f23bad031094e3985b097",
+      "server/server.log": "5c094b2e3f73a7acc7bc76f9ae77edb4f6fd102c153164ff277cc8ea93620756",
+      "stagger60_no_sampler/result.json": "c05555c5fe5d511b832e4a181f28b2ccb578c572e1fef0e516a8b1144729ebdd",
+      "stagger60_no_sampler/statuses.json": "a043c4e46d281350e9840b53971740d59c2c8812485240fbed2271f536e2dd78",
+      "stagger60_no_sampler/latencies.json": "6082ac8f2dac53f707bb7aeb6278b5688e52032100de7aa813d83cdea36b62ae",
+      "stagger60_sampler/result.json": "2aea4f4b3858988a4c894a55456b7bc0433d64a60160e99edd3ccac0b9d8e5f9",
+      "stagger60_sampler/statuses.json": "61738fecec4cff84a0115340fb9018a0451c76bdce528af3994222d5544045a6",
+      "stagger60_sampler/latencies.json": "8fdc0151c166fa76a135d60c66312dbd1a0e6179a5ff9003ef0a7d9962b69492",
+      "serial60/result.json": "dcd21f533e3ae0c18bc7e20ac6f374a2b05cfb985359eef9a58b622e66d6b3f4",
+      "serial60/statuses.json": "36743d6459074be8fc88d2f738015083797e37cd2785989ad1102cbffe86c04c",
+      "serial60/latencies.json": "24ab43e33a0396c7c2381e836415ef77004796c39202e80140a4ce181fd9ea70"
+    }
+  }
+}
