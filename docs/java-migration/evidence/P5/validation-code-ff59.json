@@ -1,0 +1,76 @@
+{
+  "source": "ff59cdab65c2c8977f3f9c45701b773ad9116ccd",
+  "date": "2026-10-26",
+  "gate_scope": "reviewed code and native build; P5 scenario gate pending",
+  "verify": {
+    "discovered": 777,
+    "executed_passed": 774,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 3,
+    "skipped_suite": "DefaultBoundaryPgTest requires J5_BOUNDARY_DB_NAME/COMMENT; must execute via owned resilience clock scenario",
+    "exit_code": 0
+  },
+  "jar_sha256": "14caee2d2ef692e8fd7bbe9ca119aaba6e78a615ea0ce6b2f2200b81f2ca722e",
+  "native_cli": {
+    "tests": 2,
+    "child_jvm_commands": 16,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "same_jar": true
+  },
+  "review": {
+    "standards_blockers_closed": 3,
+    "spec_blockers_closed": 2,
+    "new_code_blockers": 0,
+    "reports": [
+      "review-standards-recheck.md",
+      "review-spec-recheck.md"
+    ]
+  },
+  "environment": {
+    "java": "21.0.12.1",
+    "postgres": "17.10",
+    "pgvector": "0.8.4",
+    "pg_identity": "explicit dedicated native test instance, guard before writes"
+  },
+  "logs_gitignored": [
+    ".migration-artifacts/p5-review-fixes-full-verify.log",
+    ".migration-artifacts/p5-review-fixes-full-verify-r2.log",
+    ".migration-artifacts/p5-review-budget-regression-green.log",
+    ".migration-artifacts/p5-reviewed-native-cli.log"
+  ],
+  "remaining": [
+    "fresh process metrics/full trace policy validation",
+    "owned clock/fault/queue/lifecycle",
+    "Java three 120+600s rounds and strict paired capacity",
+    "actual Docker cold/0013/backup_restore/rollback",
+    "final delivery manifest, handover and user acceptance separate"
+  ],
+  "live_authorized": false,
+  "user_acceptance": false,
+  "production_cutover": false,
+  "ci": {
+    "queried_date": "2026-10-28",
+    "run_id": 40316421823,
+    "source": "ff59cdab65c2c8977f3f9c45701b773ad9116ccd",
+    "conclusion": "success",
+    "jobs": {
+      "unit": "success",
+      "frontend": "success",
+      "deployment-materials": "success",
+      "postgres": "success"
+    },
+    "url": "https://github.com/fsyabc111/dpdk-knowledge-assistant-java/actions/runs/40316421823",
+    "scope": "Linux code/build/dedicated PG/frontend/static deployment materials; actual Docker scenarios separate"
+  },
+  "boundary_followup": {
+    "report": "../J5-02/clock-20261028/REPORT.md",
+    "tests_executed": 3,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "scope": "actual owned PG with controlled scheduler; default600s/24h/300s configuration unchanged; not real600s wall waiting"
+  }
+}

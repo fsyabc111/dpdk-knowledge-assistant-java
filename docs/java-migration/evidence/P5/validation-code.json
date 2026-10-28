@@ -1,76 +1,95 @@
 {
-  "source": "ff59cdab65c2c8977f3f9c45701b773ad9116ccd",
-  "date": "2026-10-26",
-  "gate_scope": "reviewed code and native build; P5 scenario gate pending",
+  "source": "2a950d7f660dba4b4ac0d70cf6e3485a0cde668b",
+  "date": "2026-10-28",
+  "src_main_tree": "6e1ec8a514e9ea0151fbc9848b8e4c6f1e6be3e3",
+  "java_source_tree": "e77ed11ba386eb047dbff10eed0e1a3f3f78ec43",
+  "gate_scope": "stock Java reviewed cache repair, build and fresh J5-01; P5 total gate NOT PASSED",
   "verify": {
-    "discovered": 777,
-    "executed_passed": 774,
+    "discovered": 789,
+    "executed_passed": 786,
     "failures": 0,
     "errors": 0,
     "skipped": 3,
-    "skipped_suite": "DefaultBoundaryPgTest requires J5_BOUNDARY_DB_NAME/COMMENT; must execute via owned resilience clock scenario",
-    "exit_code": 0
+    "skipped_suite": "DefaultBoundaryPgTest needs explicit owned DB; not rerun on this source via clock after user closure instruction",
+    "exit_code": 0,
+    "count_source": "this invocation Maven summary; exclude stale standalone BootJar2 XML in report directory"
   },
-  "jar_sha256": "14caee2d2ef692e8fd7bbe9ca119aaba6e78a615ea0ce6b2f2200b81f2ca722e",
+  "jar_sha256": "9393c8dd25101e0f83d814061d2cc38d4a8ea61efed20a7f198df382d7e6f5f3",
   "native_cli": {
     "tests": 2,
     "child_jvm_commands": 16,
     "failures": 0,
     "errors": 0,
     "skipped": 0,
-    "same_jar": true
+    "same_jar": true,
+    "note": "native here means real packaged Java JVM CLI, not Rust/JNI"
+  },
+  "fresh_contract": {
+    "report": "../J5-01/full08-summary.json",
+    "observations": 186,
+    "business_steps": 198,
+    "tables": 25,
+    "original_raw_cli_exit": 1,
+    "raw_difference": "only four runtime metric descriptors",
+    "single_exact_metrics_policy": "full trace equal, 30 common descriptor TYPE exact, 4 actual JVM capabilities mapped separately",
+    "extensions_passed": 225,
+    "original_comparator_mutants": 17,
+    "policy_cases": 28,
+    "false_pass": 0
+  },
+  "process_metrics": {
+    "actual_observed_domain_families": 16,
+    "fixed_assertions": 25,
+    "families": 46,
+    "series": 236,
+    "report": "../J5-01/metrics-mapping-causal-2a950d7.json"
+  },
+  "independent_readme": {
+    "report": "../J5-04/readme-independent-build-20261028.md",
+    "verify_discovered": 789,
+    "verify_executed_passed": 786,
+    "verify_skipped": 3,
+    "frontend_tests_passed": 102,
+    "frontend_build": true,
+    "deployment_pure_tests_passed": 36,
+    "scope": "build/test/help only; no actual Docker business scenarios"
   },
   "review": {
-    "standards_blockers_closed": 3,
-    "spec_blockers_closed": 2,
-    "new_code_blockers": 0,
     "reports": [
-      "review-standards-recheck.md",
-      "review-spec-recheck.md"
-    ]
+      "review-standards-singleflight-final.md",
+      "review-spec-singleflight-final.md"
+    ],
+    "blockers": 0,
+    "scope": "SingleFlight repair only, not P5 total gate"
   },
-  "environment": {
-    "java": "21.0.12.1",
-    "postgres": "17.10",
-    "pgvector": "0.8.4",
-    "pg_identity": "explicit dedicated native test instance, guard before writes"
+  "ci": {
+    "run_id": 40662932995,
+    "head_source": "2a950d7f660dba4b4ac0d70cf6e3485a0cde668b",
+    "conclusion": "success",
+    "per_job_query": "verified 2026-10-28",
+    "url": "https://github.com/fsyabc111/dpdk-knowledge-assistant-java/actions/runs/40662932995",
+    "jobs": {
+      "unit": "success",
+      "postgres": "success",
+      "frontend": "success",
+      "deployment-materials": "success"
+    }
   },
-  "logs_gitignored": [
-    ".migration-artifacts/p5-review-fixes-full-verify.log",
-    ".migration-artifacts/p5-review-fixes-full-verify-r2.log",
-    ".migration-artifacts/p5-review-budget-regression-green.log",
-    ".migration-artifacts/p5-reviewed-native-cli.log"
-  ],
+  "history": {
+    "previous_validation": "validation-code-ff59.json",
+    "failed_ci_run": 40656367531,
+    "failed_test": "RetrievalUsageTest.embeddingFailureRetainsUnknownAttemptsAndDoesNotPopulateCache",
+    "failures_retained": true
+  },
   "remaining": [
-    "fresh process metrics/full trace policy validation",
-    "owned clock/fault/queue/lifecycle",
-    "Java three 120+600s rounds and strict paired capacity",
-    "actual Docker cold/0013/backup_restore/rollback",
-    "final delivery manifest, handover and user acceptance separate"
+    "final-source owned clock/fault recheck",
+    "same-protocol full three-round paired Python/Java capacity, login diagnostic currently exceeds frozen gate",
+    "candidate images and actual cold/0013/backup_restore/rollback",
+    "final delivery manifest and full independent deployment handover"
   ],
+  "closure_instruction": "user requested safe reviewable recoverable handoff in30-60min; no new long formal run or JNI/Rust extension",
   "live_authorized": false,
   "user_acceptance": false,
   "production_cutover": false,
-  "ci": {
-    "queried_date": "2026-10-28",
-    "run_id": 40316421823,
-    "source": "ff59cdab65c2c8977f3f9c45701b773ad9116ccd",
-    "conclusion": "success",
-    "jobs": {
-      "unit": "success",
-      "frontend": "success",
-      "deployment-materials": "success",
-      "postgres": "success"
-    },
-    "url": "https://github.com/fsyabc111/dpdk-knowledge-assistant-java/actions/runs/40316421823",
-    "scope": "Linux code/build/dedicated PG/frontend/static deployment materials; actual Docker scenarios separate"
-  },
-  "boundary_followup": {
-    "report": "../J5-02/clock-20261028/REPORT.md",
-    "tests_executed": 3,
-    "failures": 0,
-    "errors": 0,
-    "skipped": 0,
-    "scope": "actual owned PG with controlled scheduler; default600s/24h/300s configuration unchanged; not real600s wall waiting"
-  }
+  "rust_jni_production_integration": false
 }

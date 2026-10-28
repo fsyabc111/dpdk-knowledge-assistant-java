@@ -1,0 +1,74 @@
+{
+  "version": "u12-closure-v1",
+  "date": "2026-10-28",
+  "status": "incomplete_handoff_P5_not_released",
+  "original_batch": "U12 P3-P5 isolated engineering and J5-04 preparation",
+  "branch": "codex/p3-p5-longrun",
+  "stock_production_source": "2a950d7f660dba4b4ac0d70cf6e3485a0cde668b",
+  "src_main_tree": "6e1ec8a514e9ea0151fbc9848b8e4c6f1e6be3e3",
+  "java_source_tree": "e77ed11ba386eb047dbff10eed0e1a3f3f78ec43",
+  "jar_sha256": "9393c8dd25101e0f83d814061d2cc38d4a8ea61efed20a7f198df382d7e6f5f3",
+  "code_validation": "docs/java-migration/evidence/P5/validation-code.json",
+  "stage_report": "docs/java-migration/evidence/P5/phase-report.md",
+  "handoff": "docs/java-migration/handoffs/MAIN.md",
+  "latest_ci": {
+    "run": 40662932995,
+    "head": "2a950d7f660dba4b4ac0d70cf6e3485a0cde668b",
+    "four_jobs": "success_verified"
+  },
+  "unfinished": [
+    "current-source explicit boundary/fault and UI rebind",
+    "same-protocol full paired capacity; login diagnostic over frozen gate",
+    "candidate images and four real isolated deployment scenarios",
+    "final delivery manifest and full independent deployment handover",
+    "user acceptance"
+  ],
+  "no_waiver": {
+    "thresholds_unchanged": true,
+    "bcrypt_cost": 12,
+    "original_raw_metrics_cli_rc": 1,
+    "single_metrics_policy_separate": true,
+    "old_protocol_pair_exception": false
+  },
+  "stopped_branch": {
+    "rust_jni_source": "ignored prototype only",
+    "compiled": false,
+    "compatibility_or_performance_accepted": false,
+    "production_integrated": false,
+    "toolchain_ready": false,
+    "resume_requires_new_instruction": true,
+    "handoff": "docs/java-migration/handoffs/J5-BCRYPT-JNI-PROOF.md",
+    "toolchain_evidence": "docs/java-migration/evidence/J5-04/rust-isolated-preparation-stopped.json"
+  },
+  "resources": {
+    "dedicated_native_pg55481": "smart_stopped_after_identity_and_zero_other_clients",
+    "java_u12": "Stopped",
+    "old_dpdk": "Stopped_unchanged",
+    "global_docker_context": "colima-dpdk-ext_unchanged",
+    "recovery_assets": "retained_no_deletion",
+    "final_receipt_local_ignored": ".migration-artifacts/u12-closure-20261028/final-git-state.json"
+  },
+  "not_executed": [
+    "live model/embedding/harness acceptance",
+    "main merge",
+    "production cutover",
+    "Python retirement",
+    "recovery asset deletion"
+  ],
+  "user_acceptance": "not_signed_by_agent",
+  "closure_instruction_recorded_local": "2026-10-28T17:38:43+08:00",
+  "eleven_task_handoffs": [
+    "docs/java-migration/handoffs/J3-01.md",
+    "docs/java-migration/handoffs/J3-02.md",
+    "docs/java-migration/handoffs/J3-03.md",
+    "docs/java-migration/handoffs/J3-04.md",
+    "docs/java-migration/handoffs/J4-01.md",
+    "docs/java-migration/handoffs/J4-02.md",
+    "docs/java-migration/handoffs/J4-03.md",
+    "docs/java-migration/handoffs/J5-01.md",
+    "docs/java-migration/handoffs/J5-02.md",
+    "docs/java-migration/handoffs/J5-03.md",
+    "docs/java-migration/handoffs/J5-04.md"
+  ],
+  "resource_snapshot": "docs/java-migration/evidence/P5/closure-resources-20261028.json"
+}

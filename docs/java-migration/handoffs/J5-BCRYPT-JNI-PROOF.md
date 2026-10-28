@@ -103,3 +103,7 @@ Linux AMD64必须在另行确认的Linux构建环境把target/lib后缀换为`x8
 ## 资源与交回
 
 本worker只有已结束的只读source/API与文件写入动作，没有Rust/Cargo/javac/JVM/PG/服务/Docker后台进程；没有占用CPU/PG窗口。当前只提交本交接文档，ignored原型及下载/锁全部保留，不进生产Git。正式迁移的状态、cache复核、fullverify/CLI/matrix/指标结论由root记录，本支线不代替它们。后续是否重启或彻底放弃native路线，由用户另行决定。
+
+## 主Agent最终核对（2026-10-28收束）
+
+工具链实际隔离根为主checkout `.migration-artifacts/rust-isolated-20261028`；CARGO_HOME=其cargo、RUSTUP_HOME=其rustup，PATH若未来新授权才加cargo/bin。当前rustc缺失、工具链未ready；不能运行这里恢复命令或Cargo构建。所有下载/安装已受控退出，无全局shellRC/PATH修改，partial及源码完整保留；详evidence/J5-04/rust-isolated-preparation-stopped.json和MAIN。proof未编译、proof Cargo.lock未生成、未互验未性能测量未集成生产，主Agent已只读检查交付jar不含NativeProbe/NativeBcrypt或proof库。用户明确停止本支线，后续须新指令而非默认续跑。

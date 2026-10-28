@@ -1,0 +1,87 @@
+{
+  "snapshot_utc": "2026-10-28T10:06:19.985082+00:00",
+  "source": "2a950d7f660dba4b4ac0d70cf6e3485a0cde668b",
+  "dedicated_native_pg": {
+    "status": "Stopped",
+    "identity_and_zero_other_clients_verified_before_smart_stop": true,
+    "pg_ctl_status": {
+      "exit_code": 3,
+      "stdout": "pg_ctl: no server running",
+      "stderr": ""
+    },
+    "pg_isready": {
+      "exit_code": 2,
+      "stdout": "127.0.0.1:55481 - no response",
+      "stderr": ""
+    },
+    "data_directory_retained": true
+  },
+  "colima_profiles": {
+    "exit_code": 0,
+    "stdout": "{\"name\":\"dpdk\",\"status\":\"Stopped\",\"arch\":\"aarch64\",\"cpus\":4,\"memory\":4294967296,\"disk\":32212254720,\"runtime\":\"docker\"}\n{\"name\":\"java-u12\",\"status\":\"Stopped\",\"arch\":\"aarch64\",\"cpus\":4,\"memory\":4294967296,\"disk\":21474836480,\"runtime\":\"docker\"}",
+    "stderr": ""
+  },
+  "global_context": "colima-dpdk-ext",
+  "owned_application_test_download_processes": [],
+  "rust_jni": {
+    "proof_path": "/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/bcrypt-jni-proof-20261028",
+    "proof_cargo_lock_exists": false,
+    "proof_target_exists": false,
+    "tool_root_retained": true,
+    "toolchain_rustc_files": [],
+    "state": "stopped_partial_not_ready_uncompiled_not_production",
+    "safe_stop_evidence": "docs/java-migration/evidence/J5-04/rust-isolated-preparation-stopped.json"
+  },
+  "current_worktrees": {
+    ".": {
+      "tracked_and_untracked_status": "closure docs pending at snapshot; final-git-state.json is authoritative after push",
+      "exit_code": 0,
+      "note": "main has pending closure docs before final commit; final Git receipt checked later"
+    },
+    ".migration-artifacts/worktrees/j5-01": {
+      "tracked_and_untracked_status": "",
+      "exit_code": 0,
+      "note": "current task returned; ignored assets intentionally retained"
+    },
+    ".migration-artifacts/worktrees/j5-02": {
+      "tracked_and_untracked_status": "",
+      "exit_code": 0,
+      "note": "current task returned; ignored assets intentionally retained"
+    },
+    ".migration-artifacts/worktrees/j5-03": {
+      "tracked_and_untracked_status": "",
+      "exit_code": 0,
+      "note": "current task returned; ignored assets intentionally retained"
+    },
+    ".migration-artifacts/worktrees/j5-usage-closure": {
+      "tracked_and_untracked_status": "",
+      "exit_code": 0,
+      "note": "current task returned; ignored assets intentionally retained"
+    }
+  },
+  "recovery_assets_deleted": false,
+  "original_environment_modified": false,
+  "sensitive_environment_values_collected": false,
+  "local_receipt": ".migration-artifacts/u12-closure-20261028/resources.json",
+  "profiles_verified": [
+    {
+      "name": "dpdk",
+      "status": "Stopped",
+      "arch": "aarch64",
+      "cpus": 4,
+      "memory": 4294967296,
+      "disk": 32212254720,
+      "runtime": "docker"
+    },
+    {
+      "name": "java-u12",
+      "status": "Stopped",
+      "arch": "aarch64",
+      "cpus": 4,
+      "memory": 4294967296,
+      "disk": 21474836480,
+      "runtime": "docker"
+    }
+  ],
+  "ordinary_owned_temporary_test_db_cleanup": "existing TestPg/UI/matrix lifecycle and exact manifests; separate from retained recovery/fault/capacity assets"
+}

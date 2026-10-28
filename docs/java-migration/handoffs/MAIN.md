@@ -1,65 +1,80 @@
-# 主Agent恢复点
+# U12主交接：2026-10-28收束，批次未完成
 
-## 2026-10-28 U12，P5场景验收中
+**本轮已按用户新收束指令停止推进；P5未放行。** 先读../STATUS.md，再按任务ID读证据/交接。此前长恢复点保留于archive/MAIN-U12-pre-closure-20261028.md，本文件优先。
 
-授权与唯一任务状态见../STATUS.md。上份完整恢复点保存在archive/MAIN-U12-P5-pre-resume-20261028.md；P3/P4已经工程放行，不重做。
+## 1. 用户指令与停止线
 
-- 分支codex/p3-p5-longrun；最近已推并SSH核验7482594b9eef18f352f607c940ff119aad145aea。生产源码ff59cdab65c2c8977f3f9c45701b773ad9116ccd，后续仅验收/证据。
-- P3 5d0d6a3/591项/两轴4阻断关闭；P4 f020efa/707项/CLI2及16 JVM/CI40198306859四job/双轴通过。P5两轴ff59代码阻断规范3/规格2均关，但总门禁未过。
-- ff59全verify777发现/774执行通过/3 boundary skip；新jar14caee2d2ef692e8fd7bbe9ca119aaba6e78a615ea0ce6b2f2200b81f2ca722e；同jar CLI2/16 JVM全过，前端102/build过。当前GitHub CI40316421823四job全部success，已经实际查询，不继承旧CI。
-- 16领域指标真实因果原worker0847bda→main eb719b6，README8585073→7482594，实际正式Application/真PG/外部loopback，16域25断言/46families236series；probe/固定expect/wire SHA绑定ff59。所有进程关闭，owned库已drop。索引evidence/J5-01/metrics-mapping-causal-ff59.{md,json,prom}；用户拒绝原12 unavailable/gauge豁免。
+原U12允许P3→P4→P5隔离工程交付和J5-04准备，最多3 worker、小步提交及时推送。17:38左右用户追加：收到后30–60分钟收束，不再强行完成全部P5；停止JNI/Rust等新技术支线，保留所有原型/partial/失败/恢复资产；不新起72分钟正式容量或长验证/排障/架构改造。当前只做现有修复必要验证、证据、提交推送与资源核验。
 
-## 三worker和窗口
+后续需用户新指令，不默认重启Rust/JNI、工具安装或长容量。真实模型/embedding/harness验收、main合并、生产切换、Python退役、恢复资产删除、旧项目/部署/业务库写入仍禁止；工程/场景/用户验收分开。
 
-1. acceptance_matrix复用worktree j5-01，生产已同步ff59。full07完整186观察/198步/25表，raw CLI rc1只剩metrics runtime4 descriptor；其余185严格同。extensions06为225/225，两轮owned库均drop，无Java/PG资源。现在仅纯比较/metrics单case policy+反例与证据commit，原黄金/oracle/corecompare不改。
-2. capacity复用j5-02，00f265b merge9250，clock fresh目录j5-02-clock-20261028-01已实跑DefaultBoundaryPgTest3/3，受控时间600s/24h/300s边界，无跳过；owned p5_resilience_4da4a807a7b105b0_clock_boundaries保留，终态3/input0/连接0。已获独占accepted资格→all11故障/41队列/lifecycle窗口。Java正式36分钟尚未授权开始，等故障/矩阵放行。
-3. operations复用j5-03@8585073，指标因果已交、无runtime。现只补J5-04匹配版本许可文本/索引，轻量静态/官方源，不启动Docker/构建/PG。候选镜像和四实际部署场景仍未执行。
+## 2. Git、源码、工件
 
-Root当前仅轻量文档/静态/CI读取，不与故障窗口并行构建/测试/UI。正式Java测量前停所有新VM/自有Chrome/其他PG负载，必须caffeinate+时钟与其他DB污染检查。失败与恢复资产不删，不能因单卡绿提前结束。
+- 仓库 /Volumes/study/code/new_project/dpdk-knowledge-assistant-java；分支codex/p3-p5-longrun。origin用户仓库https://github.com/fsyabc111/dpdk-knowledge-assistant-java.git；push经SSH443，同名开发分支。无PR合并/发布。
+- 当前stock Java业务源码固定2a950d7f660dba4b4ac0d70cf6e3485a0cde668b；其后仅证据/交接。src/main tree6e1ec8a514e9ea0151fbc9848b8e4c6f1e6be3e3，Java subtreee77ed11ba386eb047dbff10eed0e1a3f3f78ec43，SingleFlight blob06a302be5495563e6bd96e0fbc72e28239023050。
+- 新jar SHA9393c8dd25101e0f83d814061d2cc38d4a8ea61efed20a7f198df382d7e6f5f3；root target与独立README重跑得到同SHA。保留副本 .migration-artifacts/recovery/jars/<SHA>.jar。旧P4 native jar ef1b4f8e...、ff59 jar14caee...均在同目录，不能删除。
+- 原Python行为基线80b29135faddd16d5e39fdbf0633291ea6a20489，backend tree38efd2a4d4ad284726989974bbb521ec4d4801dd。本轮backend/oracle/p0-v2黄金/thresholds未改。pom SHAa6a04b7167194ba9b1df38d04fb62b08c4e232ae0da7c4e109c92d91e4fb55cc；frontend lock SHA8a15f4eff452e1557df0e7fd932f2efa830d784c9c7a9cb016d95bab2a768a19。
+- 收束文档提交后的最终HEAD/remote相等、clean回执保存在ignored .migration-artifacts/u12-closure-20261028/final-git-state.json；最终回复另列已推送SHA。本文件不把自身commit SHA写进自身形成循环。远程核验只用精确同分支ls-remote，不改网络配置。
 
-## Python容量基线已完成，不能再算Java通过
+## 3. 本轮已完成证据
 
-worker source0f03c1495f638af293547b46fe21345d96461ffa，Python backend tree38efd冻结80b不变。3×120s预热+600s测量全有效；CPU p95 31.15/31.95/31.61%一核、RSS397.53/405.42/412.06MiB，所有冻结阈值观察通过。13实际测量传输错误保留且各轮/组≤0.1%，原因未确定。10485任务answered、无pending/input、177grade/扣次/MCP一致。candidate容量pass=null。
+- P3 5d0d6a3/591项/两轴4阻断关闭；P4 f020efa/707项/CLI2及16 JVM/CI40198306859四job/双轴通过，历史阶段报告不重做。
+- 源过程指标补齐：用户拒绝12 unavailable/gauge豁免，已真实counter/histogram+业务hooks；当前2a950源root重新运行正式Application/真实PG/loopback外部替身，16领域实际观测、25固定断言、46family236series。evidence/J5-01/metrics-mapping-causal-2a950d7.{json,md,prom}。fixture known_event_domain中的ff59只是原标识，不冒称当前源；本次actual source/哈希独立绑定。
+- J5-01当前fresh full08（workerd40189b→main5039e3a）：186观察、198步、25表，原CLI rc1仅4个runtime TYPE descriptor；唯一metrics单case policy后完整trace相等，30共同descriptor精确、4实际JVM能力单列，不伪称Python对象量等价。新225扩展/原17(1正16负)/policy28(2正26负)/纯30全部符合预期，false-pass0。两库dropped、进程全退。原oracle/golden/corecompare未改，业务数组不归一；政策双轴已过，见P5/review-*-metrics-policy.md。
+- 缓存CI修复：CI40656367531/b55fa80的postgres曾780发现/1error/3skip，失败立即retry仍拿旧failed future。code4a6/8d9/36c4→main70f1fbb/7e67098/2c900d4：managed future先收口cache/inflight再发布；clear按冻结Python identity栅栏，旧waiter仍完成、旧loader不能回填/覆盖/删新flight；sync throw/null无dangling、shield不伤共享raw。两组确定性红保留，相关109/109；独立规范/规格窄复审无阻断。evidence/P5/ci-singleflight-publication.md、review-*-singleflight-final.md；interface-changes/J5-CACHE。
+- root当前完整verify本次789发现/786执行全过/3 DefaultBoundary skip（不是791；旧独立BootJar2 XML不能加进本次）。同9393 jar额外CLI2/2含16 JVM、0skip。最新CI40662932995固定2a950四job全部success，已查明细。validation-code.json是当前；validation-code-ff59.json为历史。
+- 独立README读者5039e3a源码同2a950，另实跑789/786/3skip，前端npm ci+102/102+build、部署36纯测、CLI help全过。实际Node24.18.1，不冒充Node22；主checkout缺j5-03/env/manifest所以没跑compose/plan，更没跑四实际部署场景。报告evidence/J5-04/readme-independent-build-20261028.md。
+- 浏览器历史22+最终5保存场景（各源在browser-progress和browser-final-20261028.json）：原前端多角色/跨班/作业/成绩/讲解/6引用/旧release/反馈/发布/CSV/Markdown消毒，真实首帧约62ms早于10秒模型，取消刷新持久通过。该轮源在缓存修复前，未在最新2a950再跑，不把历史UI当最新源全部通过。冻结源leader直属学生树缺陷另列known-source-ui-gap.md，未扩范围改前端。
+- J5-03准备：备份不再误选合法但非活动base库；可信600 state/overlay及apply真实backend image+DB目标核验，36工具纯测试通过。OCI index/manifest/config及legacy ID严格链，P4两真实归档全部blob/diffID/jar/assets/原SHA重验通过，旧ref/tag与manifest字节不变，报告p4-full-archive-revalidation.json；独立OCI复审已关P2。候选image与四业务场景仍没有执行。
+- J5-04依赖：Maven100/npm213声明、JAR/npm原文去重归档；7锁定image728 installed包/1390 license路径库存，实际1390原字节全SHA吻合，container域307去重对象约2.54MB。Node22.23.4与pgvector0.8.4官方对应原LICENSE也已归档并核Git blob/sourcecommit。缺全文/声明局限逐项在索引，不签完整法律NOTICE。容器只禁网readonly/nobody/tar query，无应用或PG启动。
 
-原始目录j5-02/.migration-artifacts/j5-python-baseline-20261026-01完整保留；去敏evidence/J5-02/python-tcp-baseline-20261026/。acceptance/load/compare.py严格双端报告，缺Java不判pass。Java需新资格后完整3×120+600，禁止缩短、删失败、改阈值或同时构建/容器/UI/其他PG。
+## 4. 硬阻塞与未完成
 
-## 精确资源与恢复资产
+冻结login有效p95门槛312.443ms（还须≤绝对500ms），bcrypt12不降。原Java120秒预热+30秒测量仍p95900.224ms；窄真实HTTP串行233.091、60×25ms错峰无采样997.596/有采样850.671ms。Python同driver串行183.130、错峰278.595/235.142ms。JFR307样本305包含BCrypt核心，支持并发CPU成本放大，不把样本率称精确CPU时间比例。其余组/正确性/clock通过不抵扣login；短资格true不等正式容量pass，短窗CPU860–900%不当正式600秒CPU判定。
 
-- PG maintenance URL jdbc:postgresql://127.0.0.1:55481/postgres；user p1_java；DATA_DIR主checkout/.migration-artifacts/p1/pgdata；password只解析主checkout/.migration-artifacts/p1/local-credentials.txt的DPDK_TEST_PG_PASSWORD键，禁止打印。PgIsolation/TestPg核验先于CREATE/DDL/DROP，无FORCE。2026-10-28root已start同一实例，非新建/迁移旧库。
-- PG恢复命令：/opt/homebrew/opt/postgresql@17/bin/pg_ctl -D .migration-artifacts/p1/pgdata -l .migration-artifacts/p1/postgres.log -o '-p 55481 -h 127.0.0.1 -k /tmp/dpdk-java-p1-80b29135' start 。已运行不重复执行。
-- JAVA_HOME=/opt/homebrew/opt/openjdk@21，实际21.0.12.1；Python主checkout/.migration-artifacts/p0/venv/bin/python；Node24.18.1；PG17.10/vector0.8.4。
-- 新java-u12 4CPU/4GiB/20GiB当前Stopped；所有Docker显式--context colima-java-u12，endpoint unix:///Users/fsy/.colima/java-u12/docker.sock，daemonID8f66e5ea-9c07-4379-b27d-7a5759cc2cd3，Name colima-java-u12。原dpdk Stopped，全局context colima-dpdk-ext不变。禁止动旧profile/context/业务库。
-- P4/P5 native jar均保留主checkout/.migration-artifacts/recovery/jars/<SHA>.jar；P4 ef1b4f8e...，P5 14caee...。P4 Docker image证据evidence/J5-03/p4-images.json，归档j5-03/.migration-artifacts/j5-03/build/p4-*.image.tar，不能删。
-- UI22保存场景evidence/J5-01/browser-progress.json；原UI02/03数据库均drop、进程/自有Chrome已停。最终源重点UI需全新owned round，browser-harness/独立Chrome，不复用旧端口状态。冻结源leader直属学生树缺陷另列known-source-ui-gap.md，未扩大范围修复。
-- J5-03 prepared project dpdk-java-isolated-747eddb2a98a仅manifest，实际stack未启动；candidate image槽位空。0013/恢复/应用回退要真做，不能把plan/静态/库存当通过。
-- HTTPS GitHub偶发SSL/EOF，SSH443 push/ls-remote有效；GODEBUG=http2client=0 gh本轮查询成功，不改持久网络配置。
+Spring/Password4j/Favre/Bouncy Castle微基准、定点inline、VT和Tomcatmax10诊断均未取得足够收益，未改生产密码库/参数。source/随机盐/排队/首次下载干扰局限明列于bcrypt-exploration报告；不取较绿值冒充HTTP门禁。当前仍stock Spring BCrypt7.0.8。
 
-## 必须完成的余项
+- 原Python完整3×120+600（source0f03c14）已有效，全部资产保留，candidate pass=null；80c9 helper修正新job必须先unknown再真实submit改变protocol_sha256，因此旧报告不能与新Java严格配对。compare_pair不加事后例外、不改旧hash、不抬阈值。
+- 历史all02（sourcefa066a1，生产ff59）14/14含11真SIGKILL、clock/41queue/lifecycle及12组长期表/log/真实dump哨兵通过；对应源与RTO域在报告中，不继承为2a950最新全故障。当前3 boundary skip未补跑。1秒只accepted/before_terminal已ready执行段，不含启动/30sgrace/300s扫描。
+- 同协议完整双端3轮、最新源默认边界/故障、最新源重点UI未完成。本轮未启动72分钟正式采集，不能宣称正式容量已跑完或最终判pass。
+- J5-03 P5候选不可变build和cold/合成0013升级/实际dump另一空库恢复/旧P4应用回读新数据并新写均未执行。容量未过且用户收束，本轮不越门禁做场景。最终manifest、完整独立部署复现、P5总门禁及用户验收均未完成。
 
-J5-01 metrics bounded policy最终证据→J5-02全部故障/Java资格+完整36分钟/严格配对→最终源重点浏览器回归→候选不可变镜像与J5-03四实际场景→P5报告+独立双轴最终证据审查→J5-04最终manifest/许可/接手复现/11卡交接→小步push及remoteSHA一致/clean。
+## 5. 已停止的JNI/Rust支线（不得默认续跑）
 
-继续独立可做项；只有全部外部硬阻塞才报告未完成。禁止live/合main/生产切换/Python退役/恢复资产删除；用户验收不代签。
+仅候选可行性：官方pyca4.3.0使用Rust bcrypt0.17.0；薄JNI草稿想复用该链，不是成熟可交付实现。root .migration-artifacts/bcrypt-jni-proof-20261028仅7个ignored源码/审计/原pyca锁，proof自己的Cargo.lock尚未生成，未cargo build/javac/互验/bench/HTTP验收，未入pom/生产classpath/jar。详handoffs/J5-BCRYPT-JNI-PROOF.md；编译器/平台/panic/错误语义都未验收，不能据“同源”当兼容已通过。
 
-## 2026-10-28 16时最新执行点（优先）
+隔离Rust工具根 .migration-artifacts/rust-isolated-20261028：官方manifest与rustup-init SHA通过，Rust1.99.1 minimal安装未完成；cargo文件有、rustc缺失，不可用。CARGO_HOME=该根/cargo，RUSTUP_HOME=该根/rustup，未来PATH前缀=该根/cargo/bin；仅子进程注入，全局shellRC/.cargo/.rustup存在状态无改。下载协调器70198、8 curl、installer均受控退出，无SIGKILL/安装原子写入被粗暴截断；约273MB partial/失败/安装记录全部保留。工具恢复说明该根RESUME-NOT-AUTHORIZED.md，仅供新指令后使用，当前不得执行。证据J5-04/rust-isolated-preparation-stopped.json。
 
-- J5-01工程核心已裁定通过bda7d77：full07原raw rc1只runtime4差异保留、唯一metrics政策后全trace相等、225扩展/17原候选反例/28policy反例/16域25实际因果全过，两轴政策固定a32d801零阻断。最终原前端ff59重点5场景ce9830c：62ms真实SSEheaders早于10s模型，取消及刷新持久/3引用通过；UIcontroller42703/Java42715/Chrome42704及其crashpad42707均退出，ownedUI库dropped。
-- all01失败原因是CapacityServer未提交新job误返回finished，生产安全预查询因此没submit；80c9bd1测试替身小修→main92bfc4b，仅helper/纯测试，prod未改。first失败全部保留。fresh mcp_before资格fa066a1→75f1b1e通过；fresh all02 worker897813c完整14/14，含11真SIGKILL跨JVM、clock/41queue/lifecycle全过，12组长期源码/log/实际备份扫描0，14库连接0/输入0/身份一致且保留，进程退出。
-- 重要容量决策：protocol_sha256包括修复后的CapacityServer，旧Python正式报告指纹不再与新Java一致。保持compare_pair严格，不改旧report/hash、不加事后等价例外、不抬阈值。保留旧Python36分钟完整资产，current同协议先--runtime both各2+15s短资格，成功后主Agent再放行Python+Java各3×120+600（合计72分钟）新完整双端重采。当前资格进行中、正式未开始。只读文档/审查可继续，禁止构建/UI/Docker/其他PG负载。
-- 许可片d9ee7eb→08e47df归档Maven156/npm162份原文、135去重对象；root437a886通过官方GitHub contents API成功补Node22.23.4与pgvector0.8.4原字节，Git blob SHA1/源commit/SHA256均校验，原TLS失败保留。其余缺项明确，不签法律兼容；最终candidate容器/许可文本实物核验待正式结束。
-- p3_review_standards正在独立静态README走查，仅文件读取；最终真实独立复现待正式容量结束。J5-03实际候选构建与四场景仍未执行。最新已push并待本片核验437a886，之后只证据/文档。
+## 6. 资源终态与恢复资产
 
-### 容量性能诊断（正式72分钟尚未开始）
+- **专属native PG已smart停止**：root先核current_user=p1_java、port55481、data_directory精确本root/.migration-artifacts/p1/pgdata，确认其他client0再停止。已要求保留的恢复/故障/容量/诊断库及data目录/备份保留；普通fresh TestPg/UI/矩阵临时库按原owner生命周期精确清理（各manifest有记录），未触碰旧业务库。
+- java-u12与旧dpdk均Stopped；只新profile被本轮启停。所有Docker始终显式--context colima-java-u12；endpoint unix:///Users/fsy/.colima/java-u12/docker.sock、daemonID8f66e5ea-9c07-4379-b27d-7a5759cc2cd3、Name colima-java-u12。全局context仍colima-dpdk-ext。无runtime app/PG业务栈启动，无down -v/prune/镜像或卷删除。
+- UI controller42703/Java42715/Chrome42704及本轮crashpad42707已退；matrix/metrics/README/JVM/安装下载本轮全部退出。旧无关应用不操作。worker当前任务交回；旧worktree/untracked资产不清理。
+- P4 Docker归档：root/.migration-artifacts/worktrees/j5-03/.migration-artifacts/j5-03/build/p4-{backend,frontend}.image.tar，SHA在evidence/J5-03/p4-images.json；P4 immutable backend c6f4799e...、frontend a862bcc1...仍保留。
+- J5-03仅prepared project dpdk-java-isolated-747eddb2a98a及合成27文件/env/TLS/manifest，位于j5-03 worktree的.migration-artifacts/j5-03；600文件含秘密不打印/提交。只有P4两image记录，candidate槽位空，scenario-state/results不存在。
+- 旧Python正式基线：j5-02/.migration-artifacts/j5-python-baseline-20261026-01；all01失败、all02/clock/accepted/mcp资格/诊断各目录都保留。原始输入/model输出/log/PG dump不提交；各去敏报告含hash索引。
+- 当前code r3 log root/.migration-artifacts/p5-singleflight-full-verify-r3.log；CLI log p5-singleflight-native-cli.log；metrics原件metrics-causal-singleflight-20261028；独立README原件readme-independent-build-20261028-2wwfc03e（准确目录以报告为准）。最终resources.json与Git回执在root/.migration-artifacts/u12-closure-20261028/。
 
-- 0d2836e双端短资格已集成8132459：同protocol e50af779...，两端各2+15秒六组零错/9正确性/时钟全真，但Java login60样本p951000.737ms；资格true不等容量通过。新Java-only120秒预热+30秒诊断仍login p95900.224/p50767.325/max936.225，CPU860.956%短窗，RSS415.828MiB，其他组正常/零错/clock有效/其他DB活跃0，预热假设不足。所有原始超限保留，不降bcrypt12或放阈值。
-- capacity获窄真实HTTP串行60/25ms错峰无采样/同错峰有采样诊断窗口，未改生产/协议；正式72分钟未授权启动。model_adapter仅只读auth/官方primary来源调查性能选择，不构建/PG。root与reviewer只做轻量docs/静态，J5-03仍不启动VM。
-- README独立静态4组问题：备份活动目标、首次归档/P4登记、现场环境身份、滞后示例。root b55fa80文档修复；operations a4a9aa1→8ed2189窄工具修复（8新回归/全30纯过、无Docker实际），主文档含新--base与boundary补注待本片commit；reviewer静态复核中。真实独立复现仍pending。
+## 7. 以后获得新指令后的准确入口（本轮不执行）
 
-### 2026-10-28 17时优先恢复点
+从本repo根恢复，先核Git branch/HEAD、源码tree、当前STATUS和各owned manifest。不要从partial Rust/toolchain启动程序；不要自动续跑JNI或72分钟。
 
-- 最新main9471757已推，后有接口范围登记0e7cdb6；新source尚未cherry到root。CI40654639984在92bfc4b四job全success；随后40656367531/b55fa80 postgres失败1error（780发现/3skip）确认为RetrievalUsageTest失败立即retry仍拿同failedfuture，非基础设施。完整failed log已下载root .migration-artifacts/p5-ci-40656367531-postgres-failed.log。
-- model_adapter复用j5-usage-closure：4a6d6b2+8d9cc26已105纯绿，managedfuture确保onPopulated先于等待者终态；sync factory throw/null保持原失败传播且无dangling；root暂未cherry，要求另补冻结Python clear identity fence（Python成功值写入也在inflight==current task条件内，旧Javaclear后回填是迁移差异），独占扩修已登记interface-changes J5-CACHE。完后一起集成，root fresh fullverify/nativeCLI，再matrix full08/225，再必要故障/metrics最终绑定，不继承ff59旧绿。
-- 登录性能原Spring/cost12原5JVM参数保持。已拒采用替换：Password4j1.8.4、Favre0.10.2、BC1.86纯Java微基准相近；强制inline encipher/all BCrypt无显著收益。只探索、不同JVM随机salt，不是HTTP/正式pass；首micro没计VT排队且与Maven下载重叠，明确排除性能门禁。全部去敏结果evidence/J5-02/bcrypt-exploration-20261028，原scratch/下载失败保留。
-- capacity c20772c→9471757两调度真实HTTP诊断也无收益：VT错峰p951025/1073ms，Tomcatmax10为749/766ms，均cost12且实际线程布局/JFR确认，480请求0错、所有进程退出、库身份/连接0保留。原load/diagnose/protocol/prod未改。正式72分钟未启动，要先缓存source重新冻结。官方Graal21调查未推荐：当前维护Oracle21.0.13.0.3已OTN且客户补丁获取/SHA未公开核实，CE21仅旧21.0.2，不回退旧补丁；不改JVM/密码算法/阈值。
-- Root新java-u12 17:05恢复，operations完整P4实际archive record重验全过且原manifest bytes不变；7镜像1390许可原文本全部hash吻合、307去重对象约2.54MB，worker收口commit中。未启动应用/PG runtime/candidate构建，无业务场景。root17:09已发stop --profile java-u12(exec89971)，需确认Stopped。旧dpdk保持Stopped、全局colima-dpdk-ext未改。
-- acceptance_matrix已叫回准备full08，只做sync/计划，未授build/PG；等root最终source及fullverify/nativeCLI结束才跑fresh。operations结束后释放slot。当前root除了文件/源码集成不并行性能负载。
-- 仍必须：缓存修复fresh核心与场景验证→原冻结配置完整Python+Java各3×120+600同协议72分钟、原阈值严格配对（不能缩时/删错误/换阈值）→容量通过才J5-03候选不可变build及实际cold/0013/restore/rollback→P5最终报告/双轴/交付manifest/独立README复现/remoteSHA一致。若正式容量失败据真实证据阻止后续放行，不能以短资格/局部恢复代P5工程完成。
+专属PG恢复仅同一既有data目录（不initdb、不降级、不读旧.env）：
+
+```sh
+/opt/homebrew/opt/postgresql@17/bin/pg_ctl -D "$PWD/.migration-artifacts/p1/pgdata" -l "$PWD/.migration-artifacts/p1/postgres.log" -o '-p 55481 -h 127.0.0.1 -k /tmp/dpdk-java-p1-80b29135' start
+```
+
+明确4项DPDK_TEST_PG_URL/USER/PASSWORD/DATA_DIR（URL jdbc:postgresql://127.0.0.1:55481/postgres，USER p1_java，DATA_DIR root/.migration-artifacts/p1/pgdata；密码仅从root/.migration-artifacts/p1/local-credentials.txt指定DPDK_TEST_PG_PASSWORD键安全注入子进程，不打印、不source旧.env）。先只读身份核验，再由TestPg/PgIsolation创建唯一新库/精确comment。JDK21.0.12.1路径/opt/homebrew/opt/openjdk@21；Python root/.migration-artifacts/p0/venv/bin/python（3.11.15），Node实际24.18.1。
+
+新窗口可先fresh编译classpath，再按所放行步骤执行；每次全新输出目录，不能覆盖证据：
+
+```sh
+JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./backend-java/mvnw -f backend-java/pom.xml -B -DskipTests test-compile dependency:build-classpath -Dmdep.includeScope=test -Dmdep.outputFile="$PWD/.migration-artifacts/NEW-classpath.txt"
+# 以下需四项PG显式环境及主Agent独占窗口；只有另行放行后才执行。
+.migration-artifacts/p0/venv/bin/python -B acceptance/resilience/run.py --case all --classpath "$PWD/.migration-artifacts/NEW-classpath.txt" --pg-bin /opt/homebrew/opt/postgresql@17/bin --output "$PWD/.migration-artifacts/NEW-all"
+# 正式双端仍须先解决/裁定原门槛下登录问题，并重新明确72分钟窗口；不缩时/改阈值。
+caffeinate -i env PYTHONDONTWRITEBYTECODE=1 .migration-artifacts/p0/venv/bin/python -B acceptance/load/run.py --runtime both --rounds 3 --warmup 120 --measurement 600 --classpath "$PWD/.migration-artifacts/NEW-classpath.txt" --output "$PWD/.migration-artifacts/NEW-paired-capacity"
+```
+
+此后只有J5-02门禁真实通过才按唯一cutover-runbook做J5-03候选build/四场景，并补最终manifest与完整独立接手。真实上游/合main/生产切换/Python退役/删除恢复资产仍各有独立授权边界。

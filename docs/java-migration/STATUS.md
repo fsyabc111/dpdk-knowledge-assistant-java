@@ -1,41 +1,44 @@
 # Java迁移唯一任务状态
 
-更新时间：2026-10-28。主Agent单写；历史状态保存在handoffs/archive/STATUS-U12-P5-pre-resume-20261028.md。
+更新时间：2026-10-28。主Agent单写。**本轮按用户新指令收束，U12批次未完成，P5未放行。**
 
-## 当前授权与阶段
+## 当前指令与边界
 
-- U12直接授权续接LONGRUN_P3_RESUME：P3→P4→P5隔离工程交付与J5-04准备，工程门禁通过自动推进，最多3 worker，小步提交及时推送，持续交接。
-- P3、P4工程门禁已通过；P5场景验收进行中，总门禁未通过。实现、自动验证、场景验收与用户验收分开，Agent不代签用户验收。
-- 本批次禁止：真实模型/embedding/真实harness验收、合并main、生产切换、Python退役、删除恢复资产，原项目/部署/业务数据库写入。
-- 当前分支codex/p3-p5-longrun，origin为用户指定新仓库；生产源码冻结ff59cdab65c2c8977f3f9c45701b773ad9116ccd，之后仅验收物料/文档。推送与远程核验见MAIN。
-- 用户明确要求补齐源过程指标，不接受12 unavailable或持久gauge替代。16领域counter/histogram与真实业务hooks已补，正式Application实际因果验收16/16、25断言；独立runtime4映射与单case比较已获独立双轴复审并由主Agent按明确边界判定。
+- 原U12允许P3→P4→P5隔离工程交付/J5-04准备，最多3 worker、小步提交及时推送；P3/P4工程门禁已通过。
+- 用户于本轮17:38左右追加收束：30–60分钟内形成可审阅可恢复交接；停止JNI/Rust等新技术支线，保留原型/工具链/失败证据；不启动72分钟或其他长验证，不为凑完成新增排障/架构改造。仅收尾现有修复、必要验证、提交推送与资源核验。
+- 已完成上述安全收尾；后续动作等用户新指令，不默认恢复JNI/Rust或正式容量。原始指令及过程状态保留于handoffs/archive/。
+- 禁止项继续：真实模型/embedding/真实harness验收、合并main、生产切换、Python退役、删除恢复资产、原项目/部署/业务库写入。Agent不代签用户验收。
 
-## 任务状态
+## 当前源码与代码验证
 
-| ID | 实现与工程验证 | 用户验收与证据 |
+- 分支codex/p3-p5-longrun；当前stock Java生产源码固定 **2a950d7f660dba4b4ac0d70cf6e3485a0cde668b**，之后只有证据/交接。src/main tree **6e1ec8a514e9ea0151fbc9848b8e4c6f1e6be3e3**；Java subtree **e77ed11ba386eb047dbff10eed0e1a3f3f78ec43**。密码仍Spring BCrypt7.0.8/cost12，无Rust/JNI生产集成。
+- CI40656367531曾暴露SingleFlight终态发布竞态；managed future先收口cache/inflight再唤醒、clear仅当前identity可填缓存已对齐冻结Python。确定性两组红保留；最终相关纯109/109，独立规范/规格窄复审无阻断。
+- 当前完整verify本次 **789发现、786执行通过、0失败/0错误、3显式DefaultBoundary跳过**；没有累加旧BootJar XML。3项需新owned clock入口，未在当前源码补跑，不当pass。
+- 新jar SHA **9393c8dd25101e0f83d814061d2cc38d4a8ea61efed20a7f198df382d7e6f5f3**，额外同jar真实CLI2/2、16子JVM通过。独立README读者另跑789/786/3skip、前端102/102+build、部署工具36/36及CLI帮助通过；仅build/test/help，不是完整部署复现。
+- 最新代码CI **40662932995**固定2a950d7，unit/postgres/frontend/deployment-materials四job全部success，已实际查询。此前失败证据不覆盖。
+- 权威摘要evidence/P5/validation-code.json；前版ff59摘要独立保留。原Python/backend、oracle、黄金和阈值本轮未改。
+
+## 任务与阶段
+
+| ID/阶段 | 当前实现与工程证据 | 尚未完成/用户状态 |
 |---|---|---|
-| J0-01/02 | P0冻结契约/oracle通过 | U10用户通过；evidence/P0/ |
-| J1-01～04、J2-01～05 | 已实现；R段8阻断关闭，纳入当前组合验证 | 用户未登记；evidence/U12-R-segment-20261025/ |
-| J3-01～04 | 已实现；P3源码5d0d6a3、591/591、两轴4阻断关闭 | 工程通过、用户未验；evidence/P3/与逐卡handoff |
-| J4-01～03 | 已实现；P4 f020efa、707/707、同jar CLI2/16 JVM、CI四job与两轴通过 | 工程通过、用户未验；evidence/P4/ |
-| J5-01 | 工程通过：full07 186观察/198步；原raw CLI rc1保留，唯一metrics政策后全trace相等；225/225；原22+最终5浏览器保存场景；16域25实际因果；政策双轴无阻断 | 用户未验；evidence/J5-01/ |
-| J5-02 | Python正式3×(120+600)s有效；Java正式及双端判定未执行；默认clock3项及完整14场景已实际通过（11 SIGKILL/41queue/lifecycle），同协议双端短资格通过，Java登录充分预热后仍超限，当前窄性能诊断，正式72分钟未启动 | 用户未验；evidence/J5-02/ |
-| J5-03 | 执行器/守卫/备份完整row proof已交；P4不可变镜像与归档保留；候选构建和实际冷启/0013升级/恢复/应用回退未执行 | 用户未验；evidence/J5-03/ |
-| J5-04 | Maven100/npm213实际版本/许可声明，P4/base容器7份库存已交；候选manifest、缺失许可全文、接手复现收口中 | 仅交付准备；不含切换/退役/删除 |
+| P0/J0-01～02 | 冻结契约与oracle | U10用户通过保留 |
+| P1/P2、J1/J2 | 已实现；纳入当前组合回归；R段8阻断已关闭 | 用户验收未登记 |
+| P3/J3-01～04 | 5d0d6a3、591/591、两轴4阻断关闭 | 工程通过；用户未验 |
+| P4/J4-01～03 | f020efa、707/707、CLI2/16JVM、CI四job与双轴通过 | 工程通过；用户未验 |
+| J5-01 | 当前stock源fresh full08：186观察/198步/25表；原raw CLI rc1仅metrics runtime4差异，限定政策后全trace相等；225扩展/原17及policy28反例全合预期；实际16领域过程指标25断言重采通过 | 历史27保存浏览器场景各自绑定旧源，未在最新缓存源再跑；不以policy结果冒称原CLI DIFF=0；用户未验 |
+| J5-02 | 历史ff59生产树对应all02完整14场景（11SIGKILL+clock/41queue/lifecycle）通过；旧Python正式3轮有效但协议指纹与修helper后的候选不同，不能配对；当前Java登录充分预热仍超冻结门槛 | 最新源码clock/故障重绑未做；同协议完整双端正式未跑；容量未通过；用户未验 |
+| J5-03 | 备份活动库守卫/OCI身份链修复已测，工具36纯绿；P4真实两归档完整blob/diffID/jar/assets与原SHA重验通过且manifest不变 | P5候选image未构建；cold/0013升级/真实dump恢复/应用回退均未执行，不能过门禁 |
+| J5-04 | Maven100/npm213声明与原文索引，7锁定容器库存及1390许可文件原字节归档；README独立build/test/help已验证；恢复/限制/停止支线交接已交 | 最终交付manifest、完整独立部署复现、最终P5阶段签认未完成；用户验收/切换/退役另行授权 |
+| P5总门禁 | **未通过** | 不以局部绿、登记差异或未验原型代签 |
 
-## 当前代码门禁
+## 当前阻塞与未执行
 
-- 固定ff59完整verify：777发现，774执行通过，0失败/0错误，3项DefaultBoundaryPgTest需owned显式入口；后续clock已实际3/3过，待整合证据，不把skip本身算pass。
-- 同jar SHA14caee2d2ef692e8fd7bbe9ca119aaba6e78a615ea0ce6b2f2200b81f2ca722e，CLI2/2含16新JVM全过；前端102/102与build通过。
-- GitHub CI40316421823固定ff59成功：unit/frontend/deployment-materials/postgres四job通过。远程CI不等实际Docker部署。
-- 独立两轴复审固定ff59关闭规范3/规格2代码阻断，无新增代码阻断；总场景门禁仍未过。evidence/P5/validation-code.json及review-*-recheck.md。
-- O01迟到活进程usage收据与O02失败指标分类的独立观测修复见DECISIONS；未回执SIGKILL的durable unknown成本票据不作保证，不扩大业务/权限/计分语义。
+- 冻结login有效p95上限312.443ms（绝对500ms也须同时满足）；Java原配置120s预热+30s诊断p95900.224ms，窄错峰无采样997.596ms；串行233.091ms。Python同窄driver错峰约235–279ms；JFR支持bcrypt并发CPU成本放大。短资格入口/正确性通过不等容量通过，短CPU峰值也不当正式600s资源判定。
+- 四纯Java实现/JIT内联/线程调度探索没有足够收益，均未采用。bcrypt12、冻结阈值、原负载、测量分母均未放宽。正式同协议三轮双端未执行，不能宣称正式容量已判pass或已跑完。
+- JNI/Rust同源适配仅ignored源码草稿，未编译/互验/性能验收/生产集成。隔离Rust1.99.1准备未就绪（cargo文件有、rustc缺失）；所有下载/安装安全退出，partial/日志/来源/恢复命令保留。未经新指令不继续。
+- J5-02不通过及本轮收束阻止继续实际J5-03；其准备/归档验证不能替代业务演练。最终交付与完整用户接手仍缺上述强制证据。
 
-## 下一动作与资源
+## 本轮资源终态
 
-1. J5-01工程核心已过；保留原raw rc1、限定metrics政策和独立实际因果证据，不改黄金/核心比较器/业务数组。
-2. J5-02全部14故障场景已过；helper修复改变协议指纹，保留旧Python基线，双端资格已过但Java登录p95充分预热仍超冻结门槛，先窄诊断/修复，再新Python+Java各三轮合计72分钟，严格配对判定。冻结阈值不变，不缩时/隐藏失败。
-3. 最终源码重点浏览器回归；J5-03候选不可变构建后实际cold/0013/backup_restore/rollback与完整业务proof。
-4. P5阶段报告、最终独立双轴、交付manifest/许可/README接手复现、逐卡handoff、远程SHA相等及干净工作区。
-
-专属native PG127.0.0.1:55481；所有建删/DDL先四项显式配置+身份预检。口令仅在本地ignore环境中；禁止回退旧.env。Docker仅新colima-java-u12显式context，当前Stopped；旧dpdk保持Stopped，全局context不变。故障/容量独占期间不构建/浏览器/容器/其他PG工作。所有失败、DB、镜像、备份、恢复资产保留。精确路径/恢复命令见MAIN。
+主Agent在专属PG55481只读核验role/data_directory/端口、确认其他client0后smart停止该实例；恢复/故障/容量/诊断资产及数据目录/备份未删；普通临时测试库按已有owner生命周期清理并记录。java-u12与旧dpdk均Stopped，全局Docker context保持colima-dpdk-ext；本轮应用/Chrome/测试/下载进程均已退出。所有恢复资产与旧worktree保留，不做清理。精确路径、后续条件与命令见handoffs/MAIN.md；最终本地/远程HEAD核验回执随收束提交生成，最终回复给出已推送SHA。

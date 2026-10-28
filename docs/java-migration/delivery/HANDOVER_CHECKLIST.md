@@ -1,3 +1,5 @@
+> 2026-10-28本轮按用户指令收束，P5未放行/U12未完成。此清单保留未来验收步骤，不代表本轮已执行；当前stock源、已实跑的build/test/help与未执行部署/容量见closing-manifest-20261028.json、STATUS和MAIN。不默认恢复JNI/Rust或72分钟。
+
 # 接手验收步骤
 
 本清单用于接手，当前未替用户验收签字。交付manifest中的null/pending必须以实际证据补齐，不能从“准备完成”自动推导“迁移完成”。部署与回退操作只引用现有cutover-runbook。

@@ -2,7 +2,7 @@
 
 Java 21 + Spring Boot + React + PostgreSQL/pgvector 的独立迁移仓库。Java后端位于 `backend-java/`，保留 `backend/` 为冻结Python行为参考；teaching_harness继续使用独立Python评测容器。文档与新增注释使用中文。
 
-当前P3/P4工程门禁已通过，P5隔离工程验收进行中；当前授权、通过与未执行项以 [STATUS](docs/java-migration/STATUS.md) 和 [主交接](docs/java-migration/handoffs/MAIN.md) 为准。真实模型/embedding/harness验收、用户验收、合并main、生产切换、Python退役和恢复资产删除尚未执行。
+当前P3/P4工程门禁已通过，P5未放行；本轮按用户指令收束，后续等待新指令，当前授权、通过与未执行项以 [STATUS](docs/java-migration/STATUS.md) 和 [主交接](docs/java-migration/handoffs/MAIN.md) 为准。真实模型/embedding/harness验收、用户验收、合并main、生产切换、Python退役和恢复资产删除尚未执行。
 
 ## 构建和测试
 

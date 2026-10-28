@@ -1,0 +1,72 @@
+{
+  "date": "2026-10-28",
+  "production_source": "2a950d7f660dba4b4ac0d70cf6e3485a0cde668b",
+  "src_main_tree": "6e1ec8a514e9ea0151fbc9848b8e4c6f1e6be3e3",
+  "java_source_tree": "e77ed11ba386eb047dbff10eed0e1a3f3f78ec43",
+  "probe_sha256": "fbf8daea6fc722725e6cd07432dc4c68a3332c957aee2ad38ca2a0e101b8b057",
+  "expectations_sha256": "94acbf1cdd643353e3a063571e75a60e63033750fd129b296fc52ac801c6f1d3",
+  "wire_sha256": "1cddd68dda1087eaac329e7d20296ad5c11588c3a495f195237bcc24ecdf5c16",
+  "business_checks": {
+    "normal": {
+      "product_engine": "unknown",
+      "http": 200,
+      "answered": true,
+      "product_agent_token_samples": 0,
+      "synthetic_cost_micros": 6000.0,
+      "actual_PG_citations": 1,
+      "upstream_returned_tokens": 5.0
+    },
+    "fallback": {
+      "citations": 0,
+      "no_active_release": true,
+      "fallback_delta": 1,
+      "actual_missing_usage_positive": true
+    },
+    "generation_error": {
+      "synthetic_upstream_status": 503,
+      "error_delta": 1,
+      "success_delta": 0
+    },
+    "cancellation": {
+      "finish_RAG_delta": 0,
+      "success_delta": 0,
+      "actual_public_start_and_cancel": true,
+      "cancelled_delta": 1
+    },
+    "terminal_replay_rate": {
+      "message_delta": 0,
+      "new_model_calls": 0,
+      "http": 429,
+      "replays": 5,
+      "quota_delta": 0
+    },
+    "standalone_Agent": {
+      "public_facade": "AgentOrchestrator.run",
+      "actual_PG_chunks": 1,
+      "histogram_count": 1,
+      "actual_tokens": 4
+    },
+    "production_source": "2a950d7f660dba4b4ac0d70cf6e3485a0cde668b",
+    "all_metrics_fed_only_by_business_events": true,
+    "real_upstreams": false,
+    "cost_domain": "synthetic configured price, not provider price"
+  },
+  "formal_validator": {
+    "status": "source_process_structure_and_declared_events_passed",
+    "version": "source-process-v2",
+    "family_count": 46,
+    "series_count": 236,
+    "domain_families_registered": 16,
+    "domain_families_observed": 16,
+    "known_event_checks": 25,
+    "known_event_domain": "actual_Application_owned_PG_loopback_fake_public_product_and_Agent_facade_causal_events_ff59cda",
+    "jvm_runtime_mapping": "actual_JVM_capabilities_not_Python_object_counts",
+    "persisted_gauge_or_unavailable_used": false,
+    "strict_verdict_unchanged": true,
+    "raw_wire_equivalence": false,
+    "body_sha256": "1cddd68dda1087eaac329e7d20296ad5c11588c3a495f195237bcc24ecdf5c16"
+  },
+  "fixture_domain_note": "known_event_domain is the unchanged fixture identifier authored at ff59; this actual run source is 2a950d7, explicitly bound above",
+  "cleanup": "Application and loopback fake closed, TestPg owned database dropped in successful finally; postflight snapshot separate",
+  "scope": "actual Application/HTTP/PG; local synthetic external boundaries; not live provider or user acceptance"
+}
