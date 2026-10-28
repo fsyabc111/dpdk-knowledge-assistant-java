@@ -1,0 +1,504 @@
+{
+  "schema": "j5-login-scheduling-scratch-v1",
+  "same_protocol": true,
+  "original_code_unchanged": true,
+  "formal_capacity_pass": null,
+  "runs": {
+    "virtual": {
+      "source_evidence": {
+        "frozen_python_commit": "80b29135faddd16d5e39fdbf0633291ea6a20489",
+        "python_backend_tree": "38efd2a4d4ad284726989974bbb521ec4d4801dd",
+        "java_source_tree": "e8ff677bf44780290c1892d4b27440b0399de7f6",
+        "source_commit": "96efb8a77b7a5afae43ce13fcf0568e3be16f5b4",
+        "dirty": false,
+        "protocol_sha256": "e50af779ff1855c540776ff9d6d9c68bef515b5f19b15f41ae51f4ade481ea0d"
+      },
+      "hasher_binding": {
+        "active_implementation": "Spring BCrypt",
+        "java_wrapper": "io.dpdk.assistant.auth.PasswordHasher.check",
+        "target": "org.springframework.security.crypto.bcrypt.BCrypt.checkpw",
+        "wrapper_sha256": "218fc8df5fb00d9d2ec296012a4bf19d0865b518fbfe8be2c7bc993c2d3dcdba",
+        "classpath_jars": [
+          {
+            "name": "spring-security-crypto-7.0.8.jar",
+            "sha256": "346e084a5c4df9f5d6837c7579307b7de10ae7a19d661806b1818f0fcb0353b1"
+          }
+        ],
+        "python_source": "backend/app/services/user_service.py:_verify_credentials_sync -> bcrypt.checkpw",
+        "installed_python_bcrypt_version": "4.3.0"
+      },
+      "hash_cost_prefix_counts": [
+        [
+          "$2a$12$",
+          61
+        ]
+      ],
+      "wrapper": {
+        "mode": "virtual",
+        "JAVA_TOOL_OPTIONS": "-Dspring.threads.virtual.enabled=true",
+        "wrapper_sha256": "af063cc9950180f154782090ab70ccbfa3ec16486bb9f7efde5d8df7ca0b9881",
+        "diagnostic_sha256": "bcee16b18e75bcaecf5db81d334bb47e58f7faa3fe7326a055b197780a0274af",
+        "started_at": "2026-10-28T08:50:12.354277+00:00",
+        "formal_capacity_pass": null,
+        "app_pid": 53375,
+        "java": {
+          "arguments": [
+            "-Dspring.threads.virtual.enabled=true",
+            "-Xms64m",
+            "-Xmx256m",
+            "-XX:MaxMetaspaceSize=128m",
+            "-XX:ReservedCodeCacheSize=48m",
+            "-Xss512k"
+          ],
+          "version": "21.0.12.1",
+          "vm": "OpenJDK 64-Bit Server VM"
+        },
+        "VM.info_exit": 0,
+        "Thread.print_exit": 0,
+        "exit_code": 1,
+        "finished_at": "2026-10-28T08:50:51.466151+00:00"
+      },
+      "thread_layout_proof": {
+        "event_count": 631,
+        "sampled_virtual_flags": {
+          "True": 630,
+          "False": 1
+        },
+        "sampled_thread_names": {
+          "tomcat-handler-360": 16,
+          "tomcat-handler-361": 15,
+          "tomcat-handler-362": 15,
+          "tomcat-handler-363": 14,
+          "tomcat-handler-364": 12,
+          "tomcat-handler-365": 10,
+          "tomcat-handler-366": 12,
+          "tomcat-handler-367": 9,
+          "tomcat-handler-368": 10,
+          "tomcat-handler-369": 10,
+          "tomcat-handler-370": 11,
+          "tomcat-handler-371": 11,
+          "tomcat-handler-372": 12,
+          "tomcat-handler-373": 10,
+          "tomcat-handler-375": 9,
+          "tomcat-handler-374": 12,
+          "tomcat-handler-376": 12,
+          "tomcat-handler-377": 12,
+          "tomcat-handler-378": 10,
+          "tomcat-handler-379": 11,
+          "tomcat-handler-382": 8,
+          "tomcat-handler-380": 10,
+          "tomcat-handler-384": 9,
+          "tomcat-handler-381": 8,
+          "http-nio-127.0.0.1-auto-1-Poller": 1,
+          "tomcat-handler-383": 7,
+          "tomcat-handler-389": 8,
+          "tomcat-handler-385": 6,
+          "tomcat-handler-386": 8,
+          "tomcat-handler-387": 9,
+          "tomcat-handler-388": 8,
+          "tomcat-handler-390": 8,
+          "tomcat-handler-391": 8,
+          "tomcat-handler-392": 8,
+          "tomcat-handler-394": 8,
+          "tomcat-handler-395": 10,
+          "tomcat-handler-397": 9,
+          "tomcat-handler-408": 10,
+          "tomcat-handler-393": 9,
+          "tomcat-handler-396": 7,
+          "tomcat-handler-407": 8,
+          "tomcat-handler-398": 9,
+          "tomcat-handler-399": 10,
+          "tomcat-handler-401": 7,
+          "tomcat-handler-402": 7,
+          "tomcat-handler-400": 8,
+          "tomcat-handler-403": 11,
+          "tomcat-handler-404": 12,
+          "tomcat-handler-405": 11,
+          "tomcat-handler-406": 11,
+          "tomcat-handler-409": 9,
+          "tomcat-handler-410": 10,
+          "tomcat-handler-412": 10,
+          "tomcat-handler-418": 10,
+          "tomcat-handler-411": 11,
+          "tomcat-handler-413": 12,
+          "tomcat-handler-414": 12,
+          "tomcat-handler-416": 17,
+          "tomcat-handler-415": 18,
+          "tomcat-handler-417": 17,
+          "tomcat-handler-419": 19
+        },
+        "top_leaf": [
+          [
+            "org/springframework/security/crypto/bcrypt/BCrypt.key",
+            623
+          ],
+          [
+            "org/springframework/security/crypto/bcrypt/BCrypt.encipher",
+            6
+          ],
+          [
+            "org/apache/catalina/connector/RequestFacade.getMethod",
+            1
+          ],
+          [
+            "java/lang/Thread.<init>",
+            1
+          ]
+        ],
+        "thread_dump_executor_names": [],
+        "thread_dump_executor_count": 0,
+        "target_vm_cpu_lines": [
+          "CPUs: 10 total, 10 available"
+        ],
+        "java_args": {
+          "arguments": [
+            "-Dspring.threads.virtual.enabled=true",
+            "-Xms64m",
+            "-Xmx256m",
+            "-XX:MaxMetaspaceSize=128m",
+            "-XX:ReservedCodeCacheSize=48m",
+            "-Xss512k"
+          ],
+          "version": "21.0.12.1",
+          "vm": "OpenJDK 64-Bit Server VM"
+        }
+      },
+      "probes": [
+        {
+          "probe": "serial60",
+          "login": {
+            "n": 60,
+            "p50_ms": 233.51237500901334,
+            "p95_ms": 268.56570900417864,
+            "p99_ms": null,
+            "max_ms": 295.87379199801944
+          },
+          "unexpected_errors": 0,
+          "elapsed_seconds": 14.343812000006437,
+          "combined_cpu_mean_one_core_percent": 105.27187612325947,
+          "sampling": false,
+          "profile_sampling": false,
+          "login_signal_pass": true
+        },
+        {
+          "probe": "stagger60_no_sampler",
+          "login": {
+            "n": 60,
+            "p50_ms": 781.6185830015456,
+            "p95_ms": 1025.300666995463,
+            "p99_ms": null,
+            "max_ms": 1127.3356250021607
+          },
+          "unexpected_errors": 0,
+          "elapsed_seconds": 2.282690291001927,
+          "combined_cpu_mean_one_core_percent": 799.0571507619646,
+          "sampling": false,
+          "profile_sampling": false,
+          "login_signal_pass": false
+        },
+        {
+          "probe": "stagger60_sampler",
+          "login": {
+            "n": 60,
+            "p50_ms": 759.3723339959979,
+            "p95_ms": 1073.205415988923,
+            "p99_ms": null,
+            "max_ms": 1181.8631659989478
+          },
+          "unexpected_errors": 0,
+          "elapsed_seconds": 2.311636250000447,
+          "combined_cpu_mean_one_core_percent": 789.916666170833,
+          "sampling": true,
+          "profile_sampling": false,
+          "login_signal_pass": false
+        },
+        {
+          "probe": "profile_stagger60",
+          "login": {
+            "n": 60,
+            "p50_ms": 856.7420000035781,
+            "p95_ms": 1251.0702080035117,
+            "p99_ms": null,
+            "max_ms": 1349.9030410021078
+          },
+          "unexpected_errors": 0,
+          "elapsed_seconds": 2.4784260839951457,
+          "combined_cpu_mean_one_core_percent": 775.4921610983841,
+          "sampling": false,
+          "profile_sampling": true,
+          "login_signal_pass": false
+        }
+      ],
+      "raw_root": ".migration-artifacts/j5-02-login-scheduling-virtual-20261028-01",
+      "raw_sha256": {
+        "summary.json": "2cf2c2230bd3138fd63f2ae6249834e9415e0a6093d23ad0dec504cb6d564020",
+        "ownership.json": "071d69e4c2b7f706d8aa1fb2f9d38ea94de1352498bcd474a3eda5d6529351c9",
+        "target-vm-info.txt": "46f064f89b24cb34be96622157e6cc323a43e333952994c87b9017d732c35cb3",
+        "threads-before.txt": "7e95be5de52f178fef0c240d365e1f89d06c49e8a9c4e3189d63babd9b3698ae",
+        "thread-layout-proof.json": "869fefe6a4cadbc74f0de4ffffe7d5f3e2401d4b18c866f47ec8619dd4fb18e2",
+        "threads-after-profile.txt": "578a78f0c4fa37999392795f396637a3a0a779d91d02974294b4a2a45db8f12f",
+        "scheduling-wrapper-manifest.json": "488edcd6c5191669940b60e43672ea20d596c3b33b55ac9a574d64973326234d",
+        "server/server-manifest.json": "6d3077e5c3e785c66c95e9ab3ad83d4ba9162206fc5a053c9f3a0f4654805ed3",
+        "server/server.log": "2e50075db982940ffab79fbf0d088d89a81412f6f66b4b01761dddf55688a62c",
+        "stagger60_no_sampler/result.json": "66b0bbcf89fc8efd7b8e6ecc170bb8979891eba003c0b43a60f72262c36ecb45",
+        "stagger60_no_sampler/statuses.json": "15ba5ec2744fe6c81542ca650ba56e87564bdf674699620ad4053081b1c2af9e",
+        "stagger60_no_sampler/latencies.json": "6be5b4ed55622b243b682ee80505a46e9f11ae20536392771e90a2458b35a547",
+        "stagger60_sampler/result.json": "613c5183d5ebe4d0128ef97c7720f057089ec71a3b31c86fcfc4e2b5c921e141",
+        "stagger60_sampler/statuses.json": "3454b2cda6d154ccf728bd20ba0d43aaaae840a82e5ef408fcee3908e916592c",
+        "stagger60_sampler/latencies.json": "7059054170a97df9d73ff057be8b26ccdaf909b4cd2be82327ae96e6fa5e645c",
+        "profile_stagger60/result.json": "73d4e7e0f455ee3435b2f81eb74273d7a7a37f8620f3fd368431f5b1113be6e8",
+        "profile_stagger60/jfr-start.txt": "97ccffb48a9ab2e5ca2f8dc7678869040853e8ecbac9f04db47224d591317546",
+        "profile_stagger60/jfr-stop.txt": "0e8724252f2ed20a0d701bf57c7c7aa80fcfe2faf10c26cd3a1c792fab8507e8",
+        "profile_stagger60/cpu-profile.jfr": "bcc037ca513c1f8c5eb7f961603f61c20f99a32b0d5413faeb70ee0c649ba75b",
+        "profile_stagger60/statuses.json": "ee35fac99393e1184e2992b9d1b8bf937e13eeba1ddf1c541bf909d407e86b4c",
+        "profile_stagger60/latencies.json": "4d061b6eacb1f52d6fde30216770c4e73079152f17951ab91b7f41c82839357d",
+        "profile_stagger60/execution-samples.json": "8bc0ceffe438eca8d83da4f3c54ab3a52b593ef63286a553e43cbe14b9850e58",
+        "serial60/result.json": "355e2172f565bbf3e4af74b0e790230a0e20656b9bbd3395ac4919ff58aa6ca7",
+        "serial60/statuses.json": "36743d6459074be8fc88d2f738015083797e37cd2785989ad1102cbffe86c04c",
+        "serial60/latencies.json": "7575e6169f08b4bae48daf3f512efd86f8a384506212a79d6c722bd348f8b1f6"
+      }
+    },
+    "max10": {
+      "source_evidence": {
+        "frozen_python_commit": "80b29135faddd16d5e39fdbf0633291ea6a20489",
+        "python_backend_tree": "38efd2a4d4ad284726989974bbb521ec4d4801dd",
+        "java_source_tree": "e8ff677bf44780290c1892d4b27440b0399de7f6",
+        "source_commit": "96efb8a77b7a5afae43ce13fcf0568e3be16f5b4",
+        "dirty": false,
+        "protocol_sha256": "e50af779ff1855c540776ff9d6d9c68bef515b5f19b15f41ae51f4ade481ea0d"
+      },
+      "hasher_binding": {
+        "active_implementation": "Spring BCrypt",
+        "java_wrapper": "io.dpdk.assistant.auth.PasswordHasher.check",
+        "target": "org.springframework.security.crypto.bcrypt.BCrypt.checkpw",
+        "wrapper_sha256": "218fc8df5fb00d9d2ec296012a4bf19d0865b518fbfe8be2c7bc993c2d3dcdba",
+        "classpath_jars": [
+          {
+            "name": "spring-security-crypto-7.0.8.jar",
+            "sha256": "346e084a5c4df9f5d6837c7579307b7de10ae7a19d661806b1818f0fcb0353b1"
+          }
+        ],
+        "python_source": "backend/app/services/user_service.py:_verify_credentials_sync -> bcrypt.checkpw",
+        "installed_python_bcrypt_version": "4.3.0"
+      },
+      "hash_cost_prefix_counts": [
+        [
+          "$2a$12$",
+          61
+        ]
+      ],
+      "wrapper": {
+        "mode": "max10",
+        "JAVA_TOOL_OPTIONS": "-Dserver.tomcat.threads.max=10",
+        "wrapper_sha256": "af063cc9950180f154782090ab70ccbfa3ec16486bb9f7efde5d8df7ca0b9881",
+        "diagnostic_sha256": "bcee16b18e75bcaecf5db81d334bb47e58f7faa3fe7326a055b197780a0274af",
+        "started_at": "2026-10-28T08:50:51.593190+00:00",
+        "formal_capacity_pass": null,
+        "app_pid": 53505,
+        "java": {
+          "version": "21.0.12.1",
+          "arguments": [
+            "-Dserver.tomcat.threads.max=10",
+            "-Xms64m",
+            "-Xmx256m",
+            "-XX:MaxMetaspaceSize=128m",
+            "-XX:ReservedCodeCacheSize=48m",
+            "-Xss512k"
+          ],
+          "vm": "OpenJDK 64-Bit Server VM"
+        },
+        "VM.info_exit": 0,
+        "Thread.print_exit": 0,
+        "exit_code": 1,
+        "finished_at": "2026-10-28T08:51:30.550863+00:00"
+      },
+      "thread_layout_proof": {
+        "event_count": 658,
+        "sampled_virtual_flags": {
+          "False": 658
+        },
+        "sampled_thread_names": {
+          "http-nio-127.0.0.1-auto-1-exec-7": 67,
+          "http-nio-127.0.0.1-auto-1-exec-6": 69,
+          "http-nio-127.0.0.1-auto-1-exec-9": 64,
+          "http-nio-127.0.0.1-auto-1-exec-5": 66,
+          "http-nio-127.0.0.1-auto-1-exec-10": 63,
+          "http-nio-127.0.0.1-auto-1-exec-8": 67,
+          "http-nio-127.0.0.1-auto-1-exec-1": 66,
+          "http-nio-127.0.0.1-auto-1-exec-3": 64,
+          "http-nio-127.0.0.1-auto-1-exec-4": 63,
+          "http-nio-127.0.0.1-auto-1-exec-2": 69
+        },
+        "top_leaf": [
+          [
+            "org/springframework/security/crypto/bcrypt/BCrypt.key",
+            651
+          ],
+          [
+            "org/springframework/security/crypto/bcrypt/BCrypt.encipher",
+            5
+          ],
+          [
+            "java/util/HashMap$HashIterator.nextNode",
+            1
+          ],
+          [
+            "org/springframework/web/servlet/mvc/condition/ProducesRequestCondition.isEmpty",
+            1
+          ]
+        ],
+        "thread_dump_executor_names": [
+          "http-nio-127.0.0.1-auto-1-exec-1",
+          "http-nio-127.0.0.1-auto-1-exec-2",
+          "http-nio-127.0.0.1-auto-1-exec-3",
+          "http-nio-127.0.0.1-auto-1-exec-4",
+          "http-nio-127.0.0.1-auto-1-exec-5",
+          "http-nio-127.0.0.1-auto-1-exec-6",
+          "http-nio-127.0.0.1-auto-1-exec-7",
+          "http-nio-127.0.0.1-auto-1-exec-8",
+          "http-nio-127.0.0.1-auto-1-exec-9",
+          "http-nio-127.0.0.1-auto-1-exec-10"
+        ],
+        "thread_dump_executor_count": 10,
+        "target_vm_cpu_lines": [
+          "CPUs: 10 total, 10 available"
+        ],
+        "java_args": {
+          "version": "21.0.12.1",
+          "arguments": [
+            "-Dserver.tomcat.threads.max=10",
+            "-Xms64m",
+            "-Xmx256m",
+            "-XX:MaxMetaspaceSize=128m",
+            "-XX:ReservedCodeCacheSize=48m",
+            "-Xss512k"
+          ],
+          "vm": "OpenJDK 64-Bit Server VM"
+        }
+      },
+      "probes": [
+        {
+          "probe": "serial60",
+          "login": {
+            "n": 60,
+            "p50_ms": 233.0083749984624,
+            "p95_ms": 241.44674999115523,
+            "p99_ms": null,
+            "max_ms": 271.4360000099987
+          },
+          "unexpected_errors": 0,
+          "elapsed_seconds": 14.077173707992188,
+          "combined_cpu_mean_one_core_percent": 101.3697798720658,
+          "sampling": false,
+          "profile_sampling": false,
+          "login_signal_pass": true
+        },
+        {
+          "probe": "stagger60_no_sampler",
+          "login": {
+            "n": 60,
+            "p50_ms": 553.1529169966234,
+            "p95_ms": 749.221916004899,
+            "p99_ms": null,
+            "max_ms": 789.3056670000078
+          },
+          "unexpected_errors": 0,
+          "elapsed_seconds": 2.265824000001885,
+          "combined_cpu_mean_one_core_percent": 779.8487437676226,
+          "sampling": false,
+          "profile_sampling": false,
+          "login_signal_pass": false
+        },
+        {
+          "probe": "stagger60_sampler",
+          "login": {
+            "n": 60,
+            "p50_ms": 560.7612909952877,
+            "p95_ms": 765.6843750010012,
+            "p99_ms": null,
+            "max_ms": 785.1193340029567
+          },
+          "unexpected_errors": 0,
+          "elapsed_seconds": 2.2682764579949435,
+          "combined_cpu_mean_one_core_percent": 781.6507523810625,
+          "sampling": true,
+          "profile_sampling": false,
+          "login_signal_pass": false
+        },
+        {
+          "probe": "profile_stagger60",
+          "login": {
+            "n": 60,
+            "p50_ms": 564.16279199766,
+            "p95_ms": 792.248459008988,
+            "p99_ms": null,
+            "max_ms": 798.4393750084564
+          },
+          "unexpected_errors": 0,
+          "elapsed_seconds": 2.4651155000028666,
+          "combined_cpu_mean_one_core_percent": 771.9719420845751,
+          "sampling": false,
+          "profile_sampling": true,
+          "login_signal_pass": false
+        }
+      ],
+      "raw_root": ".migration-artifacts/j5-02-login-scheduling-max10-20261028-01",
+      "raw_sha256": {
+        "summary.json": "fd9c19fc36240cf03aa7c43855a9d61a1c508dd2806bb1a91b29098ac1c698b0",
+        "ownership.json": "0b6a482eba8490eba8513fc8385fbac75610e6d222fcafe90c62ccdbd4ea7028",
+        "target-vm-info.txt": "962c3cdd7bbdb0ac784e197c916187f11b67529ecb636d77a68938902f96a079",
+        "threads-before.txt": "800bd0a90d84949cb83ab474ade4358e620136b942b8dc14b69843616d1b06c8",
+        "thread-layout-proof.json": "3d248103f7c4848c28c3d84315ece0ab6bd0f9cf560049a3ee885eeff7edbd10",
+        "threads-after-profile.txt": "fecdba7a7180090527b5c83f921130f602f091585bb98271c55039058cffd145",
+        "scheduling-wrapper-manifest.json": "59bb747bf0ed36925aac3068b50c066a7aeb6594a3be334c591e13e87eaa97bc",
+        "server/server-manifest.json": "ae3dec5a77b2cf4a173876efbd7b1816a1423846866db395c3c82784352101e6",
+        "server/server.log": "5acb52460bd1fb6cd0a04f707d4793b5a5f4de67846c61541554e6b108e9aaca",
+        "stagger60_no_sampler/result.json": "5c67afa122989762a1c75beca796ff1b8ceb06f076f118e23220249c17b26a85",
+        "stagger60_no_sampler/statuses.json": "f2523001d0ace5039007785c0e6a46d659cf62436f639491b17dac22a872d768",
+        "stagger60_no_sampler/latencies.json": "7a7db946d35f378101408c679bd6fbd7de3a2844f443f7945a2d89569c35cdcb",
+        "stagger60_sampler/result.json": "20ff9bd49b8343a7137d8d4fcc7773572b287172f421889a5508b4566706ab45",
+        "stagger60_sampler/statuses.json": "91cfee320b4669bde6d7b3645060aa79f60ff2894aa162faba360aed29146968",
+        "stagger60_sampler/latencies.json": "7daaa0b947786a15a28d049ece0dcade5664b5eb372d4c2e2109ce197242df9a",
+        "profile_stagger60/result.json": "d225d0ac8b8fc029fe4849cfd0bc012d8f8034f3456710d73f632a023443f80b",
+        "profile_stagger60/jfr-start.txt": "daad9c2d7bbaeb1060c1d93ff27bddf68e86a1f92d70c7a12295e56e8818715d",
+        "profile_stagger60/jfr-stop.txt": "dd1c792b009bdd95fdc57a82b86808f6aa8a2f6c85822ad69b0c023ae2c410ac",
+        "profile_stagger60/cpu-profile.jfr": "c01aaef16c82f4c004608fcf5c3ac30c17b4e496ebed23bf93f38b2ae048c752",
+        "profile_stagger60/statuses.json": "d5e39d93194f3324fff542dab50b0bf91046d7e1ab31cda77e3bd1e2b5382c1b",
+        "profile_stagger60/latencies.json": "d918e1a74205b62bc241ff51d44e5cbe900b748bb929b66a43caa564f1bc39ce",
+        "profile_stagger60/execution-samples.json": "84350f8adf5f9d79ceba0ee6d6340ec3910835716402eb710fc9351bbd3829e1",
+        "serial60/result.json": "047660f09c111a964fbef907d1d74c9db94d88c7a4a4c2afbd8a38509c6d4c14",
+        "serial60/statuses.json": "36743d6459074be8fc88d2f738015083797e37cd2785989ad1102cbffe86c04c",
+        "serial60/latencies.json": "72e43518377a6ce6061c82c9bae69d2b05bbf4a73d55f173697b6d8e031b03fa"
+      }
+    }
+  },
+  "scope": "scratch wrapper only, deployment variable exploration; no setting selected for deployment",
+  "postflight": {
+    "checked_at": "2026-10-28T08:53:11.343819+00:00",
+    "databases": [
+      {
+        "mode": "virtual",
+        "identity": {
+          "user": "p1_java",
+          "database": "p5_resilience_3588f486b09e4825_login_diagnostic",
+          "data_dir": "/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/p1/pgdata"
+        },
+        "connections": 0,
+        "retained": true
+      },
+      {
+        "mode": "max10",
+        "identity": {
+          "user": "p1_java",
+          "database": "p5_resilience_58df17529a805428_login_diagnostic",
+          "data_dir": "/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/p1/pgdata"
+        },
+        "connections": 0,
+        "retained": true
+      }
+    ],
+    "active_java_maven_caffeinate": []
+  },
+  "scratch_wrapper_path": ".migration-artifacts/j5-login-scheduling-wrapper.py",
+  "scratch_wrapper_sha256": "af063cc9950180f154782090ab70ccbfa3ec16486bb9f7efde5d8df7ca0b9881"
+}
