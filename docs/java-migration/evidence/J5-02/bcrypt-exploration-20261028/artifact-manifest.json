@@ -1,0 +1,29 @@
+{
+  "jars": [
+    {
+      "name": "spring-security-crypto-7.0.8.jar",
+      "sha256": "346e084a5c4df9f5d6837c7579307b7de10ae7a19d661806b1818f0fcb0353b1"
+    },
+    {
+      "name": "bcrypt-0.10.2.jar",
+      "sha256": "0b1fb99db605955de904d8e61782a53dddbadd12619a0cf37dd88b5d14a61957"
+    },
+    {
+      "name": "bytes-1.5.0.jar",
+      "sha256": "b933631573148647943040d8d7496a64458b432610e6da2eb87ec3458814dee5"
+    },
+    {
+      "name": "password4j-1.8.4.jar",
+      "sha256": "d1406a158533b65bda7c20cebf7bf2a9a0626f8931fd1dc3d39243af5849edf5"
+    },
+    {
+      "name": "slf4j-api-2.0.17.jar",
+      "sha256": "7b751d952061954d5abfed7181c1f645d336091b679891591d63329c622eb832"
+    }
+  ],
+  "notes": [
+    "scratch only, no production/pom edit",
+    "first exploratory probe excluded queue time and overlapped Maven download; retained but not performance gate",
+    "r2 sequential isolated JVMs include virtual scheduler delay from ideal25ms arrivals; not HTTP capacity acceptance"
+  ]
+}

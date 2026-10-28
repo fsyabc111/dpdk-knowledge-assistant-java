@@ -1,0 +1,3 @@
+{"java":"21.0.12.1","processors":10,"cost":12}
+{"provider":"Spring7.0.8","layout":"serial","n":20,"p50_ms":222.052,"p95_ms":248.714,"max_ms":250.850,"wall_s":4.519}
+{"provider":"Spring7.0.8","layout":"virtual","n":60,"p50_ms":509.678,"p95_ms":705.644,"max_ms":732.800,"wall_s":2.160}

@@ -1,0 +1,18 @@
+[
+  [
+    "default",
+    []
+  ],
+  [
+    "inline_encipher",
+    [
+      "-XX:CompileCommand=inline,org/springframework/security/crypto/bcrypt/BCrypt.encipher"
+    ]
+  ],
+  [
+    "inline_all_bcrypt",
+    [
+      "-XX:CompileCommand=inline,org/springframework/security/crypto/bcrypt/BCrypt.*"
+    ]
+  ]
+]

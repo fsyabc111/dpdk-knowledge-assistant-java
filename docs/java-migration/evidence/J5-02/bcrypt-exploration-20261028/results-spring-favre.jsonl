@@ -1,0 +1,5 @@
+{"java":"21.0.12.1","processors":10,"cost":12}
+{"provider":"Spring7.0.8","layout":"serial","n":20,"p50_ms":235.370,"p95_ms":284.126,"max_ms":287.513,"wall_s":4.862}
+{"provider":"Spring7.0.8","layout":"virtual","n":60,"p50_ms":319.942,"p95_ms":337.387,"max_ms":341.170,"wall_s":2.131}
+{"provider":"Favre0.10.2","layout":"serial","n":20,"p50_ms":222.727,"p95_ms":224.981,"max_ms":225.145,"wall_s":4.460}
+{"provider":"Favre0.10.2","layout":"virtual","n":60,"p50_ms":316.136,"p95_ms":345.369,"max_ms":400.053,"wall_s":2.158}

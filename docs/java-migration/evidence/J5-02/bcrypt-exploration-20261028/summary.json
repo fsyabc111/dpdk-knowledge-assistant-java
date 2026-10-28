@@ -1,0 +1,45 @@
+{
+  "scope": "exploration_only_not_HTTP_or_capacity_acceptance",
+  "production_changes": false,
+  "pom_changes": false,
+  "bcrypt_cost": 12,
+  "java_version": "21.0.12.1",
+  "decision": "do_not_replace_password_library_or_add_JIT_flags_on_these_results",
+  "limitations": [
+    "first two-provider exploration measured hash body only, excluded VT scheduler queue, overlapped Maven artifact download; not a performance gate",
+    "three-provider r2 includes queue relative to ideal25ms arrival, separate sequential JVMs; same synthetic password/cost, separately generated random salts per JVM",
+    "JIT comparison uses30 warmup checks and fixed original5JVMflags plus one targeted inline option; no concurrent workload",
+    "not a cross-language or realHTTP comparison; diagnose_login evidence is authoritative for realHTTP symptoms",
+    "no long-password or complete historical-hash compatibility claim for unadopted providers"
+  ],
+  "files": [
+    {
+      "name": "artifact-manifest.json",
+      "sha256": "de086333422b77bfb156dbc276fa63dd15cb41e9938c273e7ee6053ad216d312"
+    },
+    {
+      "name": "results-spring-favre.jsonl",
+      "sha256": "a31b7e2377f133db34bcec735235e15897e22612c9701f3f3036b17c23acb136"
+    },
+    {
+      "name": "results-3providers-queue-inclusive-r2.jsonl",
+      "sha256": "2465b45f07cbc366083add12cfd6d988b7fb71feb34f92920cfe9117caa28331"
+    },
+    {
+      "name": "inline-variant-commands.json",
+      "sha256": "22ca49ee5b22837e110410d7d909b16436b04b03014b6f5d336cf41119ba1136"
+    },
+    {
+      "name": "results-jit-default.jsonl",
+      "sha256": "a4c20e10c045014449cf0871d14dbff2c330de57b9c8bb76bb50c9a586781861"
+    },
+    {
+      "name": "results-jit-inline_encipher.jsonl",
+      "sha256": "6c39ac37c5d33f9325ce44b858218f74724097d7fd136d983774ded47bc387e7"
+    },
+    {
+      "name": "results-jit-inline_all_bcrypt.jsonl",
+      "sha256": "8f9ec897cd57a78c2248adf6b3ece3c9ed04af621358b45d6590071055636e81"
+    }
+  ]
+}

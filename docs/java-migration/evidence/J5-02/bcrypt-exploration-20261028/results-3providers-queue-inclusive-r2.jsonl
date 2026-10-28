@@ -1,0 +1,9 @@
+{"java":"21.0.12.1","processors":10,"cost":12}
+{"provider":"Spring7.0.8","layout":"serial","n":20,"p50_ms":210.877,"p95_ms":214.899,"max_ms":216.087,"wall_s":4.229}
+{"provider":"Spring7.0.8","layout":"virtual","n":60,"p50_ms":421.938,"p95_ms":533.528,"max_ms":558.631,"wall_s":2.009}
+{"java":"21.0.12.1","processors":10,"cost":12}
+{"provider":"Password4j1.8.4","layout":"serial","n":20,"p50_ms":218.027,"p95_ms":220.457,"max_ms":220.545,"wall_s":4.361}
+{"provider":"Password4j1.8.4","layout":"virtual","n":60,"p50_ms":446.069,"p95_ms":570.797,"max_ms":586.332,"wall_s":2.046}
+{"java":"21.0.12.1","processors":10,"cost":12}
+{"provider":"Favre0.10.2","layout":"serial","n":20,"p50_ms":219.477,"p95_ms":222.838,"max_ms":222.868,"wall_s":4.400}
+{"provider":"Favre0.10.2","layout":"virtual","n":60,"p50_ms":400.616,"p95_ms":523.943,"max_ms":532.819,"wall_s":1.999}

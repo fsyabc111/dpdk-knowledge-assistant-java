@@ -1,0 +1,4 @@
+CompileCommand: inline org/springframework/security/crypto/bcrypt/BCrypt.encipher bool inline = true
+{"java":"21.0.12.1","processors":10,"cost":12}
+{"provider":"Spring7.0.8","layout":"serial","n":20,"p50_ms":225.237,"p95_ms":229.371,"max_ms":233.541,"wall_s":4.514}
+{"provider":"Spring7.0.8","layout":"virtual","n":60,"p50_ms":505.184,"p95_ms":697.906,"max_ms":721.655,"wall_s":2.162}
