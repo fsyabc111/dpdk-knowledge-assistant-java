@@ -40,6 +40,21 @@
     {
       "name": "results-jit-inline_all_bcrypt.jsonl",
       "sha256": "8f9ec897cd57a78c2248adf6b3ece3c9ed04af621358b45d6590071055636e81"
+    },
+    {
+      "name": "results-bouncycastle-r3.jsonl",
+      "sha256": "c1fa8f33802220f657371707fbf3ea3441f816cc7ca13751cd32f57b7e128141"
     }
-  ]
+  ],
+  "bouncycastle_followup": {
+    "version": "1.86",
+    "jar_sha256": "2af190b300cbb0b35e248ccf5f4a06b6072030aeb3da7a98ec73abe5b4cb371f",
+    "official_version_source": "https://www.bouncycastle.org/download/bouncy-castle-java/",
+    "api": "org.bouncycastle.crypto.generators.OpenBSDBCrypt.checkPassword(hash,char[])",
+    "source_of_method_signature": "javap actual artifact",
+    "serial_p95_ms": 223.281,
+    "queue_inclusive_micro_p95_ms": 597.103,
+    "adopted": false,
+    "complete_compatibility_qualification": false
+  }
 }

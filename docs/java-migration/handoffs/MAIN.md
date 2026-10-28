@@ -53,3 +53,13 @@ J5-01 metrics bounded policy最终证据→J5-02全部故障/Java资格+完整36
 - 0d2836e双端短资格已集成8132459：同protocol e50af779...，两端各2+15秒六组零错/9正确性/时钟全真，但Java login60样本p951000.737ms；资格true不等容量通过。新Java-only120秒预热+30秒诊断仍login p95900.224/p50767.325/max936.225，CPU860.956%短窗，RSS415.828MiB，其他组正常/零错/clock有效/其他DB活跃0，预热假设不足。所有原始超限保留，不降bcrypt12或放阈值。
 - capacity获窄真实HTTP串行60/25ms错峰无采样/同错峰有采样诊断窗口，未改生产/协议；正式72分钟未授权启动。model_adapter仅只读auth/官方primary来源调查性能选择，不构建/PG。root与reviewer只做轻量docs/静态，J5-03仍不启动VM。
 - README独立静态4组问题：备份活动目标、首次归档/P4登记、现场环境身份、滞后示例。root b55fa80文档修复；operations a4a9aa1→8ed2189窄工具修复（8新回归/全30纯过、无Docker实际），主文档含新--base与boundary补注待本片commit；reviewer静态复核中。真实独立复现仍pending。
+
+### 2026-10-28 17时优先恢复点
+
+- 最新main9471757已推，后有接口范围登记0e7cdb6；新source尚未cherry到root。CI40654639984在92bfc4b四job全success；随后40656367531/b55fa80 postgres失败1error（780发现/3skip）确认为RetrievalUsageTest失败立即retry仍拿同failedfuture，非基础设施。完整failed log已下载root .migration-artifacts/p5-ci-40656367531-postgres-failed.log。
+- model_adapter复用j5-usage-closure：4a6d6b2+8d9cc26已105纯绿，managedfuture确保onPopulated先于等待者终态；sync factory throw/null保持原失败传播且无dangling；root暂未cherry，要求另补冻结Python clear identity fence（Python成功值写入也在inflight==current task条件内，旧Javaclear后回填是迁移差异），独占扩修已登记interface-changes J5-CACHE。完后一起集成，root fresh fullverify/nativeCLI，再matrix full08/225，再必要故障/metrics最终绑定，不继承ff59旧绿。
+- 登录性能原Spring/cost12原5JVM参数保持。已拒采用替换：Password4j1.8.4、Favre0.10.2、BC1.86纯Java微基准相近；强制inline encipher/all BCrypt无显著收益。只探索、不同JVM随机salt，不是HTTP/正式pass；首micro没计VT排队且与Maven下载重叠，明确排除性能门禁。全部去敏结果evidence/J5-02/bcrypt-exploration-20261028，原scratch/下载失败保留。
+- capacity c20772c→9471757两调度真实HTTP诊断也无收益：VT错峰p951025/1073ms，Tomcatmax10为749/766ms，均cost12且实际线程布局/JFR确认，480请求0错、所有进程退出、库身份/连接0保留。原load/diagnose/protocol/prod未改。正式72分钟未启动，要先缓存source重新冻结。官方Graal21调查未推荐：当前维护Oracle21.0.13.0.3已OTN且客户补丁获取/SHA未公开核实，CE21仅旧21.0.2，不回退旧补丁；不改JVM/密码算法/阈值。
+- Root新java-u12 17:05恢复，operations完整P4实际archive record重验全过且原manifest bytes不变；7镜像1390许可原文本全部hash吻合、307去重对象约2.54MB，worker收口commit中。未启动应用/PG runtime/candidate构建，无业务场景。root17:09已发stop --profile java-u12(exec89971)，需确认Stopped。旧dpdk保持Stopped、全局colima-dpdk-ext未改。
+- acceptance_matrix已叫回准备full08，只做sync/计划，未授build/PG；等root最终source及fullverify/nativeCLI结束才跑fresh。operations结束后释放slot。当前root除了文件/源码集成不并行性能负载。
+- 仍必须：缓存修复fresh核心与场景验证→原冻结配置完整Python+Java各3×120+600同协议72分钟、原阈值严格配对（不能缩时/删错误/换阈值）→容量通过才J5-03候选不可变build及实际cold/0013/restore/rollback→P5最终报告/双轴/交付manifest/独立README复现/remoteSHA一致。若正式容量失败据真实证据阻止后续放行，不能以短资格/局部恢复代P5工程完成。

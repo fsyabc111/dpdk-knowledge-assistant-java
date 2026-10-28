@@ -7,3 +7,5 @@
 之后同Spring/30次warm、原5JVM参数，对default、只强制inline encipher、强制inline整个BCrypt类分别独立JVM顺序比较：串行p95约249/229/234ms；含VT等待p95约706/698/706ms，无足够收益支持新部署参数。实际参数和原始结果逐文件hash保留。
 
 裁定：不替换密码库、不添加JIT编译指令，避免无证据的兼容/维护成本。未降低cost12、未缓存成功口令、未变更dummy等价工作；也不宣称候选库完整历史hash/长口令兼容已验。后续仍用真实HTTP诊断验证部署调度变量，然后完整正式双端门禁独立决定。
+
+最后补官方当前成熟实现Bouncy Castle1.86同参数微基准：串行p95223.281ms，含调度等待597.103ms，无足够收益支持替换；仅用实际artifact API，未采用或完成全部历史hash兼容验证。官方版本出处https://www.bouncycastle.org/download/bouncy-castle-java/，artifact SHA见summary。
