@@ -68,10 +68,21 @@ public final class SingleFlightTtlCache<K, V> {
             }
             source = inflight.get(key);
             if (source == null) {
-                source = factory.apply(key);
-                CompletableFuture<V> shared = source;
+                CompletableFuture<V> raw = factory.apply(key);
+                CompletableFuture<V> shared = new CompletableFuture<>();
+                source = shared;
                 inflight.put(key, shared);
-                shared.whenComplete((value, error) -> onPopulated(key, shared, value, error));
+                // 视图只观察managed future，不直接挂在raw上：CF回调无先后契约，
+                // 必须先移除inflight/写入cache，再让失败重试或成功命中变得可见。
+                raw.whenComplete((value, error) -> {
+                    try { onPopulated(key, shared, value, error); }
+                    catch (Throwable populationFailure) {
+                        shared.completeExceptionally(populationFailure);
+                        return;
+                    }
+                    if (error != null) shared.completeExceptionally(error);
+                    else shared.complete(value);
+                });
             }
         }
         return shieldedView(source);
