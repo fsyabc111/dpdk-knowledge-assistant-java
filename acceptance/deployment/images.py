@@ -19,6 +19,64 @@ def digest(stream):
     return value.hexdigest()
 
 
+INDEX_TYPES={'application/vnd.oci.image.index.v1+json','application/vnd.docker.distribution.manifest.list.v2+json'}
+MANIFEST_TYPES={'application/vnd.oci.image.manifest.v1+json','application/vnd.docker.distribution.manifest.v2+json'}
+
+
+def archive_metadata(saved,info,descriptor):
+    """只读小metadata，绑定真实ID→目标平台manifest→config/layer描述；不重hash大层。"""
+    def member(path):
+        found=[item for item in saved.getmembers() if item.name==path]
+        if len(found)!=1 or not found[0].isfile():raise GuardError('archive引用不是唯一普通文件')
+        return found[0]
+    def read(path):
+        item=member(path)
+        if item.size>4*1024*1024:raise GuardError('archive metadata过大')
+        return saved.extractfile(item).read()
+    config_raw=read(descriptor['Config']);config_id='sha256:'+hashlib.sha256(config_raw).hexdigest()
+    if 'index.json' not in saved.getnames():
+        if config_id!=info['Id']:raise GuardError('legacy config与actual image ID不匹配')
+        return json.loads(config_raw),None
+    def descriptor_path(desc):
+        if not re.fullmatch('sha256:[a-f0-9]{64}',desc.get('digest','')) or type(desc.get('size')) is not int or desc['size']<0:raise GuardError('OCI descriptor摘要/大小非法')
+        path='blobs/sha256/'+desc['digest'][7:]
+        if member(path).size!=desc['size']:raise GuardError('OCI descriptor文件大小不匹配')
+        return path
+    def load(desc):
+        raw=read(descriptor_path(desc))
+        if 'sha256:'+hashlib.sha256(raw).hexdigest()!=desc['digest']:raise GuardError('OCI引用摘要不匹配')
+        obj=json.loads(raw)
+        if obj.get('schemaVersion')!=2 or obj.get('mediaType')!=desc.get('mediaType'):raise GuardError('OCI对象schema/mediaType不匹配')
+        return obj
+    roots=[d for d in json.loads(read('index.json')).get('manifests',[]) if d.get('digest')==info['Id']]
+    if len(roots)!=1:raise GuardError('OCI根descriptor与actual image ID不匹配')
+    target={'os':info.get('Os'),'architecture':info.get('Architecture')}
+    if not all(target.values()):raise GuardError('inspect缺少OCI目标平台')
+    candidates=[]
+    def walk(desc,depth=0):
+        if depth>8:raise GuardError('OCI索引层数过深')
+        platform=desc.get('platform',{})
+        if platform and any(platform.get(k)!=v for k,v in target.items()):return
+        if info.get('Variant') and platform.get('variant') and platform['variant']!=info['Variant']:return
+        obj=load(desc);kind=obj['mediaType']
+        if kind in INDEX_TYPES:
+            for child in obj.get('manifests',[]):walk(child,depth+1)
+        elif kind in MANIFEST_TYPES:
+            candidate_raw=read(descriptor_path(obj['config']))
+            if 'sha256:'+hashlib.sha256(candidate_raw).hexdigest()!=obj['config']['digest']:raise GuardError('OCI config摘要不匹配')
+            candidate=json.loads(candidate_raw)
+            if any(candidate.get(k)!=v for k,v in target.items()):raise GuardError('OCI config与目标平台不匹配')
+            candidates.append((obj,candidate_raw))
+        else:raise GuardError('不支持的OCI根/manifest类型')
+    walk(roots[0])
+    if len(candidates)!=1:raise GuardError('OCI目标平台manifest不唯一/缺失')
+    manifest,candidate_raw=candidates[0]
+    if descriptor['Config']!=descriptor_path(manifest['config']) or candidate_raw!=config_raw:raise GuardError('Docker manifest与OCI config链不匹配')
+    layers=manifest['layers']
+    if descriptor['Layers']!=[descriptor_path(layer) for layer in layers]:raise GuardError('Docker manifest与OCI layer链不匹配')
+    return json.loads(config_raw),layers
+
+
 def record(repo,role,image,source):
     repo=Path(repo).resolve();docker_identity();manifest=deployment_manifest(repo)
     if role not in ('p4-backend','p4-frontend','candidate-backend','candidate-frontend'):raise GuardError('image角色非法')
@@ -44,11 +102,13 @@ def record(repo,role,image,source):
     with tarfile.open(archive,'r') as saved:
         descriptor=json.load(saved.extractfile('manifest.json'))
         if len(descriptor)!=1:raise GuardError('归档不是唯一image')
-        config=saved.extractfile(descriptor[0]['Config']).read()
-        if 'sha256:'+hashlib.sha256(config).hexdigest()!=info['Id']:raise GuardError('归档config与actual image ID不匹配')
-        diff_ids=json.loads(config).get('rootfs',{}).get('diff_ids',[])
+        config,oci_layers=archive_metadata(saved,info,descriptor[0])
+        diff_ids=config.get('rootfs',{}).get('diff_ids',[])
         if len(diff_ids)!=len(descriptor[0]['Layers']):raise GuardError('归档layer清单与config不匹配')
-        for layer,expected in zip(descriptor[0]['Layers'],diff_ids):
+        for position,(layer,expected) in enumerate(zip(descriptor[0]['Layers'],diff_ids)):
+            if oci_layers is not None:
+                with saved.extractfile(layer) as raw:blob_hash=digest(raw)
+                if 'sha256:'+blob_hash!=oci_layers[position]['digest']:raise GuardError('OCI layer blob摘要不匹配')
             with saved.extractfile(layer) as raw:
                 magic=raw.read(2);raw.seek(0)
                 if magic==b'\x1f\x8b':
