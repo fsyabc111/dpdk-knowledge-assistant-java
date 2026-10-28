@@ -1,0 +1,81 @@
+{
+  "schema": "j5-02-controlled-default-boundaries-v1",
+  "source_sha": "00f265bba16fe8907b6ca24976284693f6a96546",
+  "integration_source": "9250d76",
+  "backend_tree": "38efd2a4d4ad284726989974bbb521ec4d4801dd",
+  "classpath_sha256": "54dd001fcd883665f5da3d7cd9df44805610c8fd736272cdcd7b17bc840a3a7e",
+  "started_at": "2026-10-28T07:56:58.724597+00:00",
+  "finished_at": "2026-10-28T07:57:03.588293+00:00",
+  "driver_pid": 40498,
+  "exit_code": 0,
+  "tests": 3,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "test_seconds": 0.801,
+  "controlled_clock": true,
+  "actual_600_second_wall_wait_claim": false,
+  "defaults": {
+    "execution_seconds": 600,
+    "input_ttl_hours": 24,
+    "terminal_registry_ttl_seconds": 300
+  },
+  "observations": {
+    "execution_pending_at_seconds": 599,
+    "execution_timeout_at_seconds": 600.5,
+    "late_finish_rejected": true,
+    "input_present_before_expiry_microseconds": 1,
+    "input_absent_at_expiry": true,
+    "expired_recovery": "system_error/interrupted",
+    "registry_present_at_seconds": 299,
+    "registry_absent_at_seconds": 300,
+    "persisted_replay": "replay",
+    "assistant_messages": 1,
+    "chat_charges": 1
+  },
+  "postflight": {
+    "checked_at": "2026-10-28T07:57:52.195378+00:00",
+    "verified_owned_identity": {
+      "user": "p1_java",
+      "database": "p5_resilience_4da4a807a7b105b0_clock_boundaries",
+      "data_dir": "/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/p1/pgdata"
+    },
+    "database_retained": true,
+    "database_connections_after_tests": 0,
+    "task_status_counts": [
+      [
+        "answered",
+        "supported",
+        1
+      ],
+      [
+        "system_error",
+        "interrupted",
+        1
+      ],
+      [
+        "system_error",
+        "timeout",
+        1
+      ]
+    ],
+    "remaining_inputs": 0,
+    "remaining_input_ttl_seconds": [],
+    "pg_version": [
+      "PostgreSQL 17.10 (Homebrew) on aarch64-apple-darwin25.4.0, compiled by Apple clang version 21.0.0 (clang-2100.0.123.102), 64-bit",
+      "17.10 (Homebrew)"
+    ],
+    "active_java_maven_caffeinate_processes": [],
+    "raw_sha256": {
+      "clock/boundary.log": "e52c7b6036702a8629122ee0b64d5c08cda2f9e02ce156dcc742c011ec8bc3da",
+      "clock/surefire.xml": "69bf21c294fccd4a381498fb96597bee7a3a43f61c068c8f6af53b55455b2ca2",
+      "clock/result.json": "8813edf1c974fbf1a5b50f0c20e9fcf66bb7a73a884424f5b25514b522aecdff",
+      "summary.json": "8a459ab30c2d6765ae8a82eea87a8f056f74b77850090b58096a0213454b976d",
+      "execution-manifest.json": "0885e554a87ba1663ed78cc4640bc537633946771a1b345c6781d9b814a1d070",
+      "ownership.json": "1810e2a80a87369ae62cbdcf106cc4baf21d4c1cecf5dc1aa96ac95755979fd5"
+    },
+    "process_filter": "exact executable basename (avoids java word in repository path)"
+  },
+  "raw_artifact_root": ".migration-artifacts/j5-02-clock-20261028-01",
+  "rto_fault_capacity_pass_claim": false
+}
