@@ -1,0 +1,622 @@
+{
+  "schema": "j5-02-both-qualification-v1",
+  "execution": {
+    "source_sha": "897813c29df89ae2a150cd218b615ddf52c38f2d",
+    "source_clean": true,
+    "command": [
+      "/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/p0/venv/bin/python",
+      "-B",
+      "acceptance/load/run.py",
+      "--runtime",
+      "both",
+      "--qualification",
+      "--rounds",
+      "1",
+      "--warmup",
+      "2",
+      "--measurement",
+      "15",
+      "--classpath",
+      "/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/worktrees/j5-02/.migration-artifacts/j5-02-clock-20261028-01-classpath.txt",
+      "--output",
+      "/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/worktrees/j5-02/.migration-artifacts/j5-02-both-qualification-20261028-01"
+    ],
+    "driver_pid": 46984,
+    "started_at": "2026-10-28T08:16:01.482097+00:00",
+    "finished_at": "2026-10-28T08:17:21.180837+00:00",
+    "exit_code": 0,
+    "classpath_sha256": "54dd001fcd883665f5da3d7cd9df44805610c8fd736272cdcd7b17bc840a3a7e",
+    "formal_pass_claim": false
+  },
+  "runtime_results": {
+    "python": {
+      "qualification_pass": true,
+      "candidate_capacity_pass": null,
+      "source_evidence": {
+        "frozen_python_commit": "80b29135faddd16d5e39fdbf0633291ea6a20489",
+        "python_backend_tree": "38efd2a4d4ad284726989974bbb521ec4d4801dd",
+        "java_source_tree": "e8ff677bf44780290c1892d4b27440b0399de7f6",
+        "source_commit": "897813c29df89ae2a150cd218b615ddf52c38f2d",
+        "dirty": false,
+        "protocol_sha256": "e50af779ff1855c540776ff9d6d9c68bef515b5f19b15f41ae51f4ade481ea0d"
+      },
+      "environment": {
+        "platform": "macOS-27.0.1-arm64-arm-64bit",
+        "python": "3.11.15 (main, Jul 23 2026, 14:34:23) [Clang 22.1.3 ]",
+        "cpu_count": 10,
+        "runner_sha256": "7f8eacf8d10cd7a9c1676682956108c074801e0f5e33c39cccfe27a66a707fdb",
+        "sleep_prevention": {
+          "tool": "not_required_for_qualification_or_non_macos"
+        },
+        "physical": {
+          "host_id_sha256": "1d4869f4869b072c110ba4c1ef1b9d5500b0278da7fe985aa094d71e8de00fe4",
+          "platform": "macOS-27.0.1-arm64-arm-64bit",
+          "machine": "arm64",
+          "cpu_model": "Apple M4",
+          "memory_bytes": 17179869184,
+          "cpu_count": 10,
+          "python": "3.11.15 (main, Jul 23 2026, 14:34:23) [Clang 22.1.3 ]"
+        },
+        "postgres": {
+          "version": "PostgreSQL 17.10 (Homebrew) on aarch64-apple-darwin25.4.0, compiled by Apple clang version 21.0.0 (clang-2100.0.123.102), 64-bit",
+          "data_directory": "/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/p1/pgdata",
+          "user": "p1_java",
+          "port": 55481,
+          "max_connections": "100",
+          "shared_buffers": "128MB",
+          "work_mem": "4MB",
+          "vector_version": "0.8.4",
+          "host": "127.0.0.1"
+        }
+      },
+      "postgres_environment": null,
+      "correctness": {
+        "no_unauthorized_access": true,
+        "all_accepted_terminal": true,
+        "one_chat_charge_per_task": true,
+        "no_duplicate_grade": true,
+        "terminal_inputs_deleted": true,
+        "formal_successes_equal_grades": true,
+        "mcp_formal_count_matches": true,
+        "no_grade_from_explanation": true,
+        "no_network_denial": true
+      },
+      "boundary_calls": {
+        "mcp:grade_plugin": 3,
+        "model": 184,
+        "embedding": 1
+      },
+      "final": {
+        "tasks": 92,
+        "pending": 0,
+        "answered": 92,
+        "inputs": 0,
+        "chat_charges": 92,
+        "grading_charges": 3,
+        "grades": 3,
+        "explain_tasks": 3,
+        "duplicate_grades": 0,
+        "usage_unknown_cost": 367
+      },
+      "phases": [
+        {
+          "phase": "warmup",
+          "round": 1,
+          "target_seconds": 2.0,
+          "elapsed_including_drain_seconds": 4.345152292007697,
+          "groups": {
+            "login": {
+              "n": 60,
+              "p50_ms": 237.0295000000624,
+              "p95_ms": 284.3825000018114,
+              "p99_ms": null,
+              "max_ms": 324.0149589983048,
+              "requests": 60,
+              "unexpected_errors": 0,
+              "statuses": {
+                "requests": 60,
+                "http_200": 60
+              }
+            },
+            "assignment_read": {
+              "n": 60,
+              "p50_ms": 7.7545839885715395,
+              "p95_ms": 33.26562499569263,
+              "p99_ms": null,
+              "max_ms": 46.11450000084005,
+              "requests": 60,
+              "unexpected_errors": 0,
+              "statuses": {
+                "requests": 60,
+                "http_200": 60
+              }
+            },
+            "chat": {
+              "n": 10,
+              "p50_ms": 2244.2676249920623,
+              "p95_ms": 2261.399958995753,
+              "p99_ms": null,
+              "max_ms": 2261.399958995753,
+              "requests": 10,
+              "unexpected_errors": 0,
+              "statuses": {
+                "requests": 10,
+                "http_200": 10
+              }
+            },
+            "formal_submit": {
+              "n": 1,
+              "p50_ms": 219.4669580057962,
+              "p95_ms": 219.4669580057962,
+              "p99_ms": null,
+              "max_ms": 219.4669580057962,
+              "requests": 1,
+              "unexpected_errors": 0,
+              "statuses": {
+                "requests": 1,
+                "http_200": 1
+              }
+            },
+            "explain_admission": {
+              "n": 1,
+              "p50_ms": 21.741082993685268,
+              "p95_ms": 21.741082993685268,
+              "p99_ms": null,
+              "max_ms": 21.741082993685268,
+              "requests": 1,
+              "unexpected_errors": 0,
+              "statuses": {
+                "requests": 1,
+                "http_200": 1
+              }
+            },
+            "explain_terminal": {
+              "n": 1,
+              "p50_ms": 2035.159166000085,
+              "p95_ms": 2035.159166000085,
+              "p99_ms": null,
+              "max_ms": 2035.159166000085,
+              "requests": 1,
+              "unexpected_errors": 0,
+              "statuses": {
+                "requests": 1,
+                "http_200": 1,
+                "polls": 122,
+                "unexpected_errors": 0
+              }
+            }
+          },
+          "resource_summary": {
+            "combined_cpu_p95_one_core_percent": 789.5423505755933,
+            "combined_rss_peak_mib": 334.859375,
+            "samples": 6
+          },
+          "validity": {
+            "valid": true,
+            "failures": [],
+            "sampler_gap_limit_seconds": 5,
+            "wall_monotonic_difference_limit_seconds": 2
+          }
+        },
+        {
+          "phase": "measurement",
+          "round": 1,
+          "target_seconds": 15.0,
+          "elapsed_including_drain_seconds": 18.61763116599468,
+          "groups": {
+            "login": {
+              "n": 60,
+              "p50_ms": 233.03429101360962,
+              "p95_ms": 291.7012079997221,
+              "p99_ms": null,
+              "max_ms": 335.8660840021912,
+              "requests": 60,
+              "unexpected_errors": 0,
+              "statuses": {
+                "requests": 60,
+                "http_200": 60
+              }
+            },
+            "assignment_read": {
+              "n": 180,
+              "p50_ms": 5.9844170027645305,
+              "p95_ms": 13.09204199060332,
+              "p99_ms": null,
+              "max_ms": 67.00874998932704,
+              "requests": 180,
+              "unexpected_errors": 0,
+              "statuses": {
+                "requests": 180,
+                "http_200": 180
+              }
+            },
+            "chat": {
+              "n": 79,
+              "p50_ms": 2056.0964999895077,
+              "p95_ms": 2165.774374996545,
+              "p99_ms": null,
+              "max_ms": 2167.028833006043,
+              "requests": 79,
+              "unexpected_errors": 0,
+              "statuses": {
+                "requests": 79,
+                "http_200": 79
+              }
+            },
+            "formal_submit": {
+              "n": 2,
+              "p50_ms": 215.6272499996703,
+              "p95_ms": 216.78179199807346,
+              "p99_ms": null,
+              "max_ms": 216.78179199807346,
+              "requests": 2,
+              "unexpected_errors": 0,
+              "statuses": {
+                "requests": 2,
+                "http_200": 2
+              }
+            },
+            "explain_admission": {
+              "n": 2,
+              "p50_ms": 18.25083399307914,
+              "p95_ms": 24.321332995896228,
+              "p99_ms": null,
+              "max_ms": 24.321332995896228,
+              "requests": 2,
+              "unexpected_errors": 0,
+              "statuses": {
+                "requests": 2,
+                "http_200": 2
+              }
+            },
+            "explain_terminal": {
+              "n": 2,
+              "p50_ms": 2051.718749993597,
+              "p95_ms": 2055.191624996951,
+              "p99_ms": null,
+              "max_ms": 2055.191624996951,
+              "requests": 2,
+              "unexpected_errors": 0,
+              "statuses": {
+                "requests": 2,
+                "http_200": 2,
+                "polls": 267,
+                "unexpected_errors": 0
+              }
+            }
+          },
+          "resource_summary": {
+            "combined_cpu_p95_one_core_percent": 782.0630736781459,
+            "combined_rss_peak_mib": 341.34375,
+            "samples": 19
+          },
+          "validity": {
+            "valid": true,
+            "failures": [],
+            "sampler_gap_limit_seconds": 5,
+            "wall_monotonic_difference_limit_seconds": 2
+          }
+        }
+      ]
+    },
+    "java": {
+      "qualification_pass": true,
+      "candidate_capacity_pass": null,
+      "source_evidence": {
+        "frozen_python_commit": "80b29135faddd16d5e39fdbf0633291ea6a20489",
+        "python_backend_tree": "38efd2a4d4ad284726989974bbb521ec4d4801dd",
+        "java_source_tree": "e8ff677bf44780290c1892d4b27440b0399de7f6",
+        "source_commit": "897813c29df89ae2a150cd218b615ddf52c38f2d",
+        "dirty": false,
+        "protocol_sha256": "e50af779ff1855c540776ff9d6d9c68bef515b5f19b15f41ae51f4ade481ea0d"
+      },
+      "environment": {
+        "platform": "macOS-27.0.1-arm64-arm-64bit",
+        "python": "3.11.15 (main, Jul 23 2026, 14:34:23) [Clang 22.1.3 ]",
+        "cpu_count": 10,
+        "runner_sha256": "7f8eacf8d10cd7a9c1676682956108c074801e0f5e33c39cccfe27a66a707fdb",
+        "sleep_prevention": {
+          "tool": "not_required_for_qualification_or_non_macos"
+        },
+        "physical": {
+          "host_id_sha256": "1d4869f4869b072c110ba4c1ef1b9d5500b0278da7fe985aa094d71e8de00fe4",
+          "platform": "macOS-27.0.1-arm64-arm-64bit",
+          "machine": "arm64",
+          "cpu_model": "Apple M4",
+          "memory_bytes": 17179869184,
+          "cpu_count": 10,
+          "python": "3.11.15 (main, Jul 23 2026, 14:34:23) [Clang 22.1.3 ]"
+        },
+        "postgres": {
+          "version": "PostgreSQL 17.10 (Homebrew) on aarch64-apple-darwin25.4.0, compiled by Apple clang version 21.0.0 (clang-2100.0.123.102), 64-bit",
+          "data_directory": "/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/p1/pgdata",
+          "user": "p1_java",
+          "port": 55481,
+          "max_connections": "100",
+          "shared_buffers": "128MB",
+          "work_mem": "4MB",
+          "vector_version": "0.8.4",
+          "host": "127.0.0.1"
+        }
+      },
+      "postgres_environment": null,
+      "correctness": {
+        "no_unauthorized_access": true,
+        "all_accepted_terminal": true,
+        "one_chat_charge_per_task": true,
+        "no_duplicate_grade": true,
+        "terminal_inputs_deleted": true,
+        "formal_successes_equal_grades": true,
+        "mcp_formal_count_matches": true,
+        "no_grade_from_explanation": true,
+        "no_network_denial": true
+      },
+      "boundary_calls": {
+        "embedding": 1,
+        "mcp:grade_plugin": 3,
+        "model": 184
+      },
+      "final": {
+        "tasks": 92,
+        "pending": 0,
+        "answered": 92,
+        "inputs": 0,
+        "chat_charges": 92,
+        "grading_charges": 3,
+        "grades": 3,
+        "explain_tasks": 3,
+        "duplicate_grades": 0,
+        "usage_unknown_cost": 367
+      },
+      "phases": [
+        {
+          "phase": "warmup",
+          "round": 1,
+          "target_seconds": 2.0,
+          "elapsed_including_drain_seconds": 4.298405124995043,
+          "groups": {
+            "login": {
+              "n": 60,
+              "p50_ms": 877.2674999927403,
+              "p95_ms": 1115.6477090116823,
+              "p99_ms": null,
+              "max_ms": 1208.2470840105088,
+              "requests": 60,
+              "unexpected_errors": 0,
+              "statuses": {
+                "requests": 60,
+                "http_200": 60
+              }
+            },
+            "assignment_read": {
+              "n": 40,
+              "p50_ms": 6.325499998638406,
+              "p95_ms": 37.52683399943635,
+              "p99_ms": null,
+              "max_ms": 55.67695799982175,
+              "requests": 40,
+              "unexpected_errors": 0,
+              "statuses": {
+                "requests": 40,
+                "http_200": 40
+              }
+            },
+            "chat": {
+              "n": 10,
+              "p50_ms": 2163.496541004861,
+              "p95_ms": 2164.7801250073826,
+              "p99_ms": null,
+              "max_ms": 2164.7801250073826,
+              "requests": 10,
+              "unexpected_errors": 0,
+              "statuses": {
+                "requests": 10,
+                "http_200": 10
+              }
+            },
+            "formal_submit": {
+              "n": 1,
+              "p50_ms": 257.27449999249075,
+              "p95_ms": 257.27449999249075,
+              "p99_ms": null,
+              "max_ms": 257.27449999249075,
+              "requests": 1,
+              "unexpected_errors": 0,
+              "statuses": {
+                "requests": 1,
+                "http_200": 1
+              }
+            },
+            "explain_admission": {
+              "n": 1,
+              "p50_ms": 11.128332989756018,
+              "p95_ms": 11.128332989756018,
+              "p99_ms": null,
+              "max_ms": 11.128332989756018,
+              "requests": 1,
+              "unexpected_errors": 0,
+              "statuses": {
+                "requests": 1,
+                "http_200": 1
+              }
+            },
+            "explain_terminal": {
+              "n": 1,
+              "p50_ms": 2062.565500003984,
+              "p95_ms": 2062.565500003984,
+              "p99_ms": null,
+              "max_ms": 2062.565500003984,
+              "requests": 1,
+              "unexpected_errors": 0,
+              "statuses": {
+                "requests": 1,
+                "http_200": 1,
+                "polls": 145,
+                "unexpected_errors": 0
+              }
+            }
+          },
+          "resource_summary": {
+            "combined_cpu_p95_one_core_percent": 928.770282734773,
+            "combined_rss_peak_mib": 385.46875,
+            "samples": 6
+          },
+          "validity": {
+            "valid": true,
+            "failures": [],
+            "sampler_gap_limit_seconds": 5,
+            "wall_monotonic_difference_limit_seconds": 2
+          }
+        },
+        {
+          "phase": "measurement",
+          "round": 1,
+          "target_seconds": 15.0,
+          "elapsed_including_drain_seconds": 18.473039874996175,
+          "groups": {
+            "login": {
+              "n": 60,
+              "p50_ms": 908.8702919980278,
+              "p95_ms": 1000.7373749976978,
+              "p99_ms": null,
+              "max_ms": 1038.377707998734,
+              "requests": 60,
+              "unexpected_errors": 0,
+              "statuses": {
+                "requests": 60,
+                "http_200": 60
+              }
+            },
+            "assignment_read": {
+              "n": 180,
+              "p50_ms": 3.969874989707023,
+              "p95_ms": 11.962666001636535,
+              "p99_ms": null,
+              "max_ms": 94.43116700276732,
+              "requests": 180,
+              "unexpected_errors": 0,
+              "statuses": {
+                "requests": 180,
+                "http_200": 180
+              }
+            },
+            "chat": {
+              "n": 79,
+              "p50_ms": 2045.3864169976441,
+              "p95_ms": 2057.6228340069065,
+              "p99_ms": null,
+              "max_ms": 2060.0363749981625,
+              "requests": 79,
+              "unexpected_errors": 0,
+              "statuses": {
+                "requests": 79,
+                "http_200": 79
+              }
+            },
+            "formal_submit": {
+              "n": 2,
+              "p50_ms": 218.870540993521,
+              "p95_ms": 221.3465829991037,
+              "p99_ms": null,
+              "max_ms": 221.3465829991037,
+              "requests": 2,
+              "unexpected_errors": 0,
+              "statuses": {
+                "requests": 2,
+                "http_200": 2
+              }
+            },
+            "explain_admission": {
+              "n": 2,
+              "p50_ms": 13.393999994150363,
+              "p95_ms": 18.38883399614133,
+              "p99_ms": null,
+              "max_ms": 18.38883399614133,
+              "requests": 2,
+              "unexpected_errors": 0,
+              "statuses": {
+                "requests": 2,
+                "http_200": 2
+              }
+            },
+            "explain_terminal": {
+              "n": 2,
+              "p50_ms": 2047.570166992955,
+              "p95_ms": 2049.778457992943,
+              "p99_ms": null,
+              "max_ms": 2049.778457992943,
+              "requests": 2,
+              "unexpected_errors": 0,
+              "statuses": {
+                "requests": 2,
+                "http_200": 2,
+                "polls": 293,
+                "unexpected_errors": 0
+              }
+            }
+          },
+          "resource_summary": {
+            "combined_cpu_p95_one_core_percent": 901.2404075204138,
+            "combined_rss_peak_mib": 395.125,
+            "samples": 19
+          },
+          "validity": {
+            "valid": true,
+            "failures": [],
+            "sampler_gap_limit_seconds": 5,
+            "wall_monotonic_difference_limit_seconds": 2
+          }
+        }
+      ]
+    }
+  },
+  "postflight": {
+    "checked_at": "2026-10-28T08:18:18.480670+00:00",
+    "owned_databases": [
+      {
+        "identity": {
+          "user": "p1_java",
+          "database": "p5_capacity_d4e546d0a4577923_python",
+          "data_dir": "/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/p1/pgdata"
+        },
+        "connections": 0,
+        "retained": true
+      },
+      {
+        "identity": {
+          "user": "p1_java",
+          "database": "p5_capacity_d4e546d0a4577923_java",
+          "data_dir": "/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/p1/pgdata"
+        },
+        "connections": 0,
+        "retained": true
+      }
+    ],
+    "active_java_maven_caffeinate": []
+  },
+  "raw_sha256": {
+    "pair-summary.json": "2ab67b37c3500f125d4baa67b27205189358caf47f701a1e189ac6c2f0da7ff5",
+    "ownership.json": "578ffea7ec1a445862ca24801d74ff00cf225bb40ef91a2e36c792aefffd6b78",
+    "postflight.json": "c241a7280d4b998f7a2b25ca1c1f368e8018922da34dfb13f21ea6a1d4ea746d",
+    "execution-manifest.json": "e179246f7ccfcd325fafde6c3ee199ab83c378605f5240cbee2b3d8a72ffc02a",
+    "run-manifest.json": "de30dc60e8b8ca0536b2d08e67cef3d5711165c7d0b53323025b796bfe7a4f7d",
+    "python/server-manifest.json": "3d213e0c0b39eff7deebc3b250c4b9fcdbce3d25b267693ed48049b542cdf894",
+    "python/summary.json": "ee9a9e45e394680bb9cac10f603d9c86e22a2ac251743f99c0c93b3ec140852f",
+    "python/round-1-warmup-latencies.json": "5cd254d474ccd330c0e93f3b5b2b02ae7170aa50f3c802388300ef36c1358f1d",
+    "python/round-1-warmup.json": "f3361b16943f13c3ed1d62b1f8262bfab6d96d937652ea244cc73acc45c6840f",
+    "python/server.log": "5c094b2e3f73a7acc7bc76f9ae77edb4f6fd102c153164ff277cc8ea93620756",
+    "python/round-1-measurement.json": "6a2b1c01721589a26d03b7d203e1b927777bd638c729996e07a027cb74355571",
+    "python/round-1-measurement-latencies.json": "a54931d6aa7657e65e611a855cfa296fc3a6d1e9e9f58dc46a4bd693bd320bb9",
+    "java/server-manifest.json": "74fe5e9a2897f92f5b281655ba1d2be2290963768080015a17f5c05d7d3d72b4",
+    "java/summary.json": "2af9f7e56ae4dff931a7ae66e1f59b68dc0b309b50c55971eeda7752285a3f1a",
+    "java/round-1-warmup-latencies.json": "f38038d3d63a82006051b38bb62d8f567d70cae847bfc48feafe1958d450a590",
+    "java/round-1-warmup.json": "c195b09ce85718364ccb09c850b28c7e7171af17d37fcca13f532f8e3eb6fb24",
+    "java/server.log": "8e0cb8ceb30c579aee11e182c9f23aa29a2a89469cb1220fd0f272599659f198",
+    "java/round-1-measurement.json": "619d8a65ae678c70e4d8fda002cab6ba06fe341f2d5f24b5e98be7786fc18c06",
+    "java/round-1-measurement-latencies.json": "3f0daa9e726ec89e3a88974561665c7d889e4797a3960d34e2b5b8ac01d2ad65"
+  },
+  "formal_capacity_pass_claim": false,
+  "thresholds_changed": false,
+  "old_baseline_retained": true,
+  "new_formal_pair_reason": "80c9 test helper corrected never-submitted job lifecycle; strict whole-protocol hash changed; no equivalence exception"
+}
