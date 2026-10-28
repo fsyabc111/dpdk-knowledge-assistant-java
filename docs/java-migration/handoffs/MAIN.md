@@ -39,3 +39,11 @@ worker source0f03c1495f638af293547b46fe21345d96461ffa，Python backend tree38efd
 J5-01 metrics bounded policy最终证据→J5-02全部故障/Java资格+完整36分钟/严格配对→最终源重点浏览器回归→候选不可变镜像与J5-03四实际场景→P5报告+独立双轴最终证据审查→J5-04最终manifest/许可/接手复现/11卡交接→小步push及remoteSHA一致/clean。
 
 继续独立可做项；只有全部外部硬阻塞才报告未完成。禁止live/合main/生产切换/Python退役/恢复资产删除；用户验收不代签。
+
+## 2026-10-28 16时最新执行点（优先）
+
+- J5-01工程核心已裁定通过bda7d77：full07原raw rc1只runtime4差异保留、唯一metrics政策后全trace相等、225扩展/17原候选反例/28policy反例/16域25实际因果全过，两轴政策固定a32d801零阻断。最终原前端ff59重点5场景ce9830c：62ms真实SSEheaders早于10s模型，取消及刷新持久/3引用通过；UIcontroller42703/Java42715/Chrome42704及其crashpad42707均退出，ownedUI库dropped。
+- all01失败原因是CapacityServer未提交新job误返回finished，生产安全预查询因此没submit；80c9bd1测试替身小修→main92bfc4b，仅helper/纯测试，prod未改。first失败全部保留。fresh mcp_before资格fa066a1→75f1b1e通过；fresh all02 worker897813c完整14/14，含11真SIGKILL跨JVM、clock/41queue/lifecycle全过，12组长期源码/log/实际备份扫描0，14库连接0/输入0/身份一致且保留，进程退出。
+- 重要容量决策：protocol_sha256包括修复后的CapacityServer，旧Python正式报告指纹不再与新Java一致。保持compare_pair严格，不改旧report/hash、不加事后等价例外、不抬阈值。保留旧Python36分钟完整资产，current同协议先--runtime both各2+15s短资格，成功后主Agent再放行Python+Java各3×120+600（合计72分钟）新完整双端重采。当前资格进行中、正式未开始。只读文档/审查可继续，禁止构建/UI/Docker/其他PG负载。
+- 许可片d9ee7eb→08e47df归档Maven156/npm162份原文、135去重对象；root437a886通过官方GitHub contents API成功补Node22.23.4与pgvector0.8.4原字节，Git blob SHA1/源commit/SHA256均校验，原TLS失败保留。其余缺项明确，不签法律兼容；最终candidate容器/许可文本实物核验待正式结束。
+- p3_review_standards正在独立静态README走查，仅文件读取；最终真实独立复现待正式容量结束。J5-03实际候选构建与四场景仍未执行。最新已push并待本片核验437a886，之后只证据/文档。
