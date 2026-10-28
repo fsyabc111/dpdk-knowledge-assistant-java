@@ -193,3 +193,9 @@ TaskExecutor新增default afterCompletion(context)，由TaskRunner在finish尝�
 请求RequestMetrics仅保存系统枚举/数值，累计多轮检索和rewrite/embedding阶段，在finish之后、usage刷账之后发布一次；工具和validation按源即时记录，重放不新发事件。RAG完成指标在实际持久化结论可用后记录，失败/取消不伪称完成。TaskExecutor保留旧afterCompletion(context)，增加带persisted结论的兼容重载，由Runner在终态闩锁前调用；无源码放入观测对象。UsageLedgerStore在实际事务commit后才向过程counter发UsageSample，rollback不发、后续留存删除不倒减。静态/纯构造用NONE，正式ObservabilityWiring唯一registry与所有consumer接线，默认/metrics导出进程counter/histogram。
 
 本片在Python正式容量CPU窗口内仅编写/提交，尚未执行新源码编译/测试；新增请求累计、真产品PG/重放、实际usage提交/回滚/留存回归待窗口结束运行，不能继承旧gauge诊断PASS。新JVM运行时映射及默认HTTP响应的真实验收同样pending。
+
+## J5-CACHE：缓存终态发布与clear栅栏对齐（2026-10-28，主集成裁定）
+
+- CI40656367531真实失败：RetrievalUsageTest失败后立即重试仍取同一failed inflight。SingleFlightTtlCache把raw future直接发布，CF视图回调可先于cache/inflight清理；冻结Python把bookkeeping置于共享task返回之前，因此等待者观察终态前状态必须已收口。定范围仅该cache与其model/retrieval/usage回归，不改公共方法、黄金、TTL/maxsize/账本/任务终态。
+- 主Agent另逐行核对冻结`backend/app/core/async_cache.py`：成功值也仅在inflight identity仍等于当前task时写_values；clear会清inflight，因此旧loader完成仍交付已有waiter，但不能回填cache、覆盖clear后的新值或删除新flight。旧Java无条件values.put是迁移差异，非源已知缺陷。独立登记并授权同owner最小identity成功写入栅栏及clear→旧完成/新完成的确定性回归。
+- model_adapter独占SingleFlightTtlCache与owned tests/handoff；主Agent集成、完整复验与阶段裁定。该修复保持冻结语义，未引入新产品/安全豁免；实现/自动验证/阶段验收分列，当前交付收口前不继承旧ff59绿灯。
