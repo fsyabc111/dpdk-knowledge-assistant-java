@@ -1,0 +1,180 @@
+{
+  "schema": "j5-02-all-attempt-v1",
+  "source": {
+    "source_sha": "b9816bb0ab423d3e286e93ae56f6fc1fc02750c1",
+    "source_clean": true,
+    "command": [
+      "/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/p0/venv/bin/python",
+      "-B",
+      "acceptance/resilience/run.py",
+      "--case",
+      "all",
+      "--classpath",
+      "/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/worktrees/j5-02/.migration-artifacts/j5-02-clock-20261028-01-classpath.txt",
+      "--pg-bin",
+      "/opt/homebrew/opt/postgresql@17/bin",
+      "--output",
+      "/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/worktrees/j5-02/.migration-artifacts/j5-02-all-20261028-01"
+    ],
+    "driver_pid": 41494,
+    "started_at": "2026-10-28T08:00:27.072964+00:00",
+    "finished_at": "2026-10-28T08:02:56.357574+00:00",
+    "exit_code": 1,
+    "classpath_sha256": "54dd001fcd883665f5da3d7cd9df44805610c8fd736272cdcd7b17bc840a3a7e"
+  },
+  "pass": false,
+  "planned_count": 14,
+  "executed_count": 6,
+  "cases": [
+    {
+      "case_id": "default-600s-24h-300s-controlled-clock",
+      "pass": true,
+      "checks": null,
+      "error_type": null,
+      "recovery": null,
+      "kill_to_ready_seconds": null
+    },
+    {
+      "case_id": "queue-20-20-10",
+      "pass": true,
+      "checks": {
+        "requests_41": true,
+        "peak_20_20": true,
+        "one_immediate_full": true,
+        "20_wait_timeouts": true,
+        "20_answered": true,
+        "quota_20": true,
+        "terminal_inputs_zero": true,
+        "slots_zero": true
+      },
+      "error_type": null,
+      "recovery": null,
+      "kill_to_ready_seconds": null
+    },
+    {
+      "case_id": "tcp-lifecycle-cancel-disable-replay",
+      "pass": true,
+      "checks": {
+        "before_admission_zero_side_effect": true,
+        "tcp_disconnect_not_cancelled": true,
+        "disconnected_task_commits": true,
+        "replay_no_model_mcp_or_charge": true,
+        "explicit_cancel_repeat_and_late_save": true,
+        "disable_cancels_and_revokes": true,
+        "no_incomplete_grades": true,
+        "terminal_source_clean_and_slots_zero": true
+      },
+      "error_type": null,
+      "recovery": null,
+      "kill_to_ready_seconds": null
+    },
+    {
+      "case_id": "accepted",
+      "pass": true,
+      "checks": {
+        "producer_sigkill": true,
+        "new_jvm": true,
+        "rpo_zero_committed_projection": true,
+        "same_identity": true,
+        "terminal": true,
+        "source_deleted": true,
+        "single_chat_charge": true,
+        "single_grade": true,
+        "no_mcp_resubmit": true,
+        "unknown_safety": true,
+        "rto_1s": true
+      },
+      "error_type": null,
+      "recovery": {
+        "execution_seconds": 0.078701792,
+        "status": "answered"
+      },
+      "kill_to_ready_seconds": 1.5822743330063531
+    },
+    {
+      "case_id": "model_after",
+      "pass": true,
+      "checks": {
+        "producer_sigkill": true,
+        "new_jvm": true,
+        "rpo_zero_committed_projection": true,
+        "same_identity": true,
+        "terminal": true,
+        "source_deleted": true,
+        "single_chat_charge": true,
+        "single_grade": true,
+        "no_mcp_resubmit": true,
+        "unknown_safety": true,
+        "rto_1s": true
+      },
+      "error_type": null,
+      "recovery": {
+        "execution_seconds": 0.078292791,
+        "status": "answered"
+      },
+      "kill_to_ready_seconds": 1.6764286250108853
+    },
+    {
+      "case_id": "mcp_before",
+      "pass": false,
+      "checks": null,
+      "error_type": "RuntimeError",
+      "recovery": null,
+      "kill_to_ready_seconds": null
+    }
+  ],
+  "failure": "mcp_before marker absent within 45s; fake returned finished to a never-submitted job on initial real production status query",
+  "production_changed": false,
+  "assets_retained": true,
+  "owned_database_cleanup": "no DROP; postflight PG read deferred while root owns UI window",
+  "raw_root": ".migration-artifacts/j5-02-all-20261028-01",
+  "raw_sha256": {
+    "failure.log": "fc93c7d80ad1500201d3b685fc9e39f7dc0c72b9a1d1c9cef909f41494ee59bc",
+    "summary.json": "1250745a77b46fb3b19483df747ff6ef123b526fb31bf4b75562672afa1b303e",
+    "ownership.json": "7d41467a51f69611531d12e122632fdc20ffeccb53dde20fade75e82ffc5f214",
+    "execution-manifest.json": "107dba5d4368b299c82d74fd3824ab77ac4496f210f56b1beb45b69fbfc17d24",
+    "mcp_before/result.json": "0ac2ea10931896a3cafcbe2ad09c152de8c5938281c10cd7544d9de87a36c90d",
+    "mcp_before/external-ledger.jsonl": "75fa80fe11ce061e44878d0774eb1a5fd9832c6fc8b41d0ba0bb7b5ed1f3fb00",
+    "mcp_before/producer/server-manifest.json": "16f70fe4a40fceb9133c1ac5eade75aad87645f74653c0cf20f1d6974f771ad6",
+    "mcp_before/producer/server.log": "6359a2d4612ff985e5b210313eea33093ba5b41de4dd7cd46197ed32c6af5bd7",
+    "lifecycle/result.json": "ab26d6dd4e872bf038173ad3abe41d4b43c731e76d9eed8abe5d6f4f3efd20a9",
+    "lifecycle/terminal-backup.sql": "20c49eccbfc69cb94baaf9110c5052b44a00ee00b957284545a5111aa21b440a",
+    "lifecycle/server/server-manifest.json": "25d7ae0507f8a59b988962a406455f318ea9a806f8631d1e8154638664df3e6b",
+    "lifecycle/server/server.log": "2201056336ab2a0a071c61429a68039558c1dc95505e142e6107fd6888ad310c",
+    "accepted/result.json": "47ad03a94bea76123a0a2a84e89726b23d5515cc280dc74f1c67783d19531c4d",
+    "accepted/producer-marker.json": "3c4243b612e03db6145899d18002d90f2bfbdcfc05654e9683382324b0d295d6",
+    "accepted/terminal-backup.sql": "6dff1d9f059ab01cc4c50e43bd1b9be6c37a818ec11903956ed5e3a2edf1b0e7",
+    "accepted/producer/server-manifest.json": "9d59634cb6b76c0dbb9e7e5edbee948790497f762608d7ee0d19740c6caf6bd1",
+    "accepted/producer/server.log": "caaa046e3e8a79bee67287866d031d3944f5278f52c5ca0c0647fd6e77558994",
+    "accepted/recoverer/server-manifest.json": "d72ff64d2a9db7c7f3f5fcf88f1a98e12fd910d2e53495c976c9cbbf4e47a22f",
+    "accepted/recoverer/server.log": "4fdcc9f94028fb54bddd023ce09c89837effe75593278ca2289e832246181cd2",
+    "queue/result.json": "e881c3dc46e536b1b7b5cfacc9e205d9b668ffd06f91b3e958a54283d58ca2b5",
+    "queue/server/server-manifest.json": "de1ba6668577429704184440583814a72f3b10a9527fea13a8fe0c654943afa9",
+    "queue/server/server.log": "30ff28b46c73dc13ad11cffa65fad318ff368f8bfe5c80f25bc940618e936fe4",
+    "model_after/result.json": "0f7e73baba1583b71c1464a173e4f3e02fbdfda2cbcb4b2de9cb3e3375cb15a7",
+    "model_after/producer-marker.json": "e4efa38e64b1debc62fa525843296bb58c7508cd8c546b6e43389df08b49a929",
+    "model_after/terminal-backup.sql": "fec49e7cace28c428f692e29f8f29fe369f24cbb7746f27cd9308f6a4a4b3f0a",
+    "model_after/producer/server-manifest.json": "3c491c8ffd8df5febe48e3dfcee541b251009ac5b52c48feb863a891591d3615",
+    "model_after/producer/server.log": "ad2cdb7bfcfc98598c68cf9d78bab8049f0585b13cb7c92a9ee583cc5a337ad6",
+    "model_after/recoverer/server-manifest.json": "797b1e80ac5ce849af2e1ba58aee25a8911c4b6013dc335aa5faea43ab37a566",
+    "model_after/recoverer/server.log": "614c4baec3edb9432c5b08f7d35c39456b788957b19d874d39171578c1b623a8",
+    "clock/result.json": "68b09cc94f3a07656577a7f8a9758fefafb778f6b812f3c1a8eca50d2aee8728",
+    "clock/boundary.log": "cb8cb1b1e7443156acfbe5ff3ea624b2a79679b78b9013b0cb03b8fbf3e67dc1"
+  },
+  "pure_causal_red": {
+    "tests": 1,
+    "failures": 1,
+    "expected": "unknown",
+    "actual": "finished",
+    "log": ".migration-artifacts/j5-02-harness-status-red-runtime.log"
+  },
+  "pure_green": {
+    "tests": 5,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "status_boundary_tests": 3,
+    "manual_scheduler_tests": 2,
+    "log": ".migration-artifacts/j5-02-harness-status-green-final.log"
+  }
+}

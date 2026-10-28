@@ -155,6 +155,24 @@ public final class CapacityServer {
 
     public static final class RuntimeState {
         public final ConcurrentMap<String, AtomicLong> calls = new ConcurrentHashMap<>();
+        private final Set<String> submittedJobs = ConcurrentHashMap.newKeySet();
+        private final Path externalLedger;
+        public RuntimeState() {
+            this(System.getenv("J5_EXTERNAL_LEDGER") == null ? null : Path.of(System.getenv("J5_EXTERNAL_LEDGER")));
+        }
+        /** 纯测试和新JVM共用同一真实外部替身账本；不读取业务PG。 */
+        public RuntimeState(Path externalLedger) { this.externalLedger = externalLedger; }
+        public synchronized boolean wasSubmitted(String job) {
+            if (submittedJobs.contains(job)) return true;
+            if (externalLedger == null || !Files.exists(externalLedger)) return false;
+            try {
+                for (String line : Files.readAllLines(externalLedger)) {
+                    Map<?, ?> event = JSON.readValue(line, Map.class);
+                    if ("grade_plugin".equals(event.get("tool")) && job.equals(event.get("job_id"))) return true;
+                }
+                return false;
+            } catch (Exception e) { throw new IllegalStateException("外部替身账本读取失败", e); }
+        }
         public volatile boolean hold;
         public volatile String status = System.getenv().getOrDefault("J5_STATUS", "finished");
         public volatile boolean ignoreModelInterrupt;
@@ -179,10 +197,12 @@ public final class CapacityServer {
             catch (Exception e) { throw new IllegalStateException("故障门栓失败", e); }
         }
         public synchronized void externalEvent(String tool, String job) {
-            String path = System.getenv("J5_EXTERNAL_LEDGER");
-            if (path == null) return;
+            if (externalLedger == null) {
+                if ("grade_plugin".equals(tool)) submittedJobs.add(job);
+                return;
+            }
             // 仅工具名/job身份，无源码/模型原文。fsync后才进入故障闩，跨SIGKILL留存。
-            try (var channel = FileChannel.open(Path.of(path), StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.APPEND)) {
+            try (var channel = FileChannel.open(externalLedger, StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.APPEND)) {
                 channel.write(StandardCharsets.UTF_8.encode(JSON.writeValueAsString(Map.of("tool", tool, "job_id", job)) + "\n"));
                 channel.force(true);
             } catch (Exception e) { throw new IllegalStateException(e); }
@@ -245,30 +265,33 @@ public final class CapacityServer {
                 return List.of(new Vector1024(values));
             };
         }
-        @Bean @Primary HarnessPort capacityHarness() {
-            return (tool, arguments, deadline) -> {
-                STATE.count("mcp:" + tool);
-                String job = String.valueOf(arguments.getOrDefault("job_id", "formal-without-id"));
-                if ("grade_plugin".equals(tool)) STATE.point("mcp_before", Map.of("job_id", job));
-                STATE.externalEvent(tool, job);
-                if ("grade_plugin".equals(tool)) STATE.point("mcp_submitted", Map.of("job_id", job));
-                STATE.pause(STATE.mcpDelay);
-                Map<String, Object> result;
-                if ("get_task_status".equals(tool)) {
-                    String mode = STATE.status;
-                    if ("query_failed".equals(mode)) throw new IllegalStateException("合成状态查询失败");
-                    result = "finished".equals(mode) ? Map.of("ok", true, "job_id", job, "status", mode, "result", grade())
-                            : Map.of("ok", true, "job_id", job, "status", mode);
-                } else if ("list_protocols".equals(tool)) {
-                    result = Map.of("ok", true, "protocols", List.of(Map.of("name", "dns", "cases", 2, "categories", Map.of("basic", 2))));
-                } else if ("get_reference_answer".equals(tool)) {
-                    result = Map.of("ok", false, "error", "no_reference_in_synthetic");
-                } else { result = grade(); }
-                if ("grade_plugin".equals(tool)) STATE.point("mcp_after", Map.of("job_id", job));
-                try { return new HarnessReply(HarnessReply.SubmissionPhase.SUBMITTED, JSON.writeValueAsString(result), null); }
-                catch (Exception e) { throw new IllegalStateException(e); }
-            };
-        }
+        @Bean @Primary HarnessPort capacityHarness() { return fixedHarness(STATE); }
+    }
+
+    /** 外部HarnessPort替身入口：新job未知，真实提交事件之后才可finished/running。 */
+    public static HarnessPort fixedHarness(RuntimeState state) {
+        return (tool, arguments, deadline) -> {
+            state.count("mcp:" + tool);
+            String job = String.valueOf(arguments.getOrDefault("job_id", "formal-without-id"));
+            if ("grade_plugin".equals(tool)) state.point("mcp_before", Map.of("job_id", job));
+            state.externalEvent(tool, job);
+            if ("grade_plugin".equals(tool)) state.point("mcp_submitted", Map.of("job_id", job));
+            state.pause(state.mcpDelay);
+            Map<String, Object> result;
+            if ("get_task_status".equals(tool)) {
+                String mode = state.wasSubmitted(job) ? state.status : "unknown";
+                if ("query_failed".equals(mode)) throw new IllegalStateException("合成状态查询失败");
+                result = "finished".equals(mode) ? Map.of("ok", true, "job_id", job, "status", mode, "result", grade())
+                        : Map.of("ok", true, "job_id", job, "status", mode);
+            } else if ("list_protocols".equals(tool)) {
+                result = Map.of("ok", true, "protocols", List.of(Map.of("name", "dns", "cases", 2, "categories", Map.of("basic", 2))));
+            } else if ("get_reference_answer".equals(tool)) {
+                result = Map.of("ok", false, "error", "no_reference_in_synthetic");
+            } else { result = grade(); }
+            if ("grade_plugin".equals(tool)) state.point("mcp_after", Map.of("job_id", job));
+            try { return new HarnessReply(HarnessReply.SubmissionPhase.SUBMITTED, JSON.writeValueAsString(result), null); }
+            catch (Exception e) { throw new IllegalStateException(e); }
+        };
     }
 
     /** 只在显式测试profile装配一次；控制key不入日志/可提交证据。 */
