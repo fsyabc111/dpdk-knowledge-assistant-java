@@ -47,3 +47,9 @@ J5-01 metrics bounded policy最终证据→J5-02全部故障/Java资格+完整36
 - 重要容量决策：protocol_sha256包括修复后的CapacityServer，旧Python正式报告指纹不再与新Java一致。保持compare_pair严格，不改旧report/hash、不加事后等价例外、不抬阈值。保留旧Python36分钟完整资产，current同协议先--runtime both各2+15s短资格，成功后主Agent再放行Python+Java各3×120+600（合计72分钟）新完整双端重采。当前资格进行中、正式未开始。只读文档/审查可继续，禁止构建/UI/Docker/其他PG负载。
 - 许可片d9ee7eb→08e47df归档Maven156/npm162份原文、135去重对象；root437a886通过官方GitHub contents API成功补Node22.23.4与pgvector0.8.4原字节，Git blob SHA1/源commit/SHA256均校验，原TLS失败保留。其余缺项明确，不签法律兼容；最终candidate容器/许可文本实物核验待正式结束。
 - p3_review_standards正在独立静态README走查，仅文件读取；最终真实独立复现待正式容量结束。J5-03实际候选构建与四场景仍未执行。最新已push并待本片核验437a886，之后只证据/文档。
+
+### 容量性能诊断（正式72分钟尚未开始）
+
+- 0d2836e双端短资格已集成8132459：同protocol e50af779...，两端各2+15秒六组零错/9正确性/时钟全真，但Java login60样本p951000.737ms；资格true不等容量通过。新Java-only120秒预热+30秒诊断仍login p95900.224/p50767.325/max936.225，CPU860.956%短窗，RSS415.828MiB，其他组正常/零错/clock有效/其他DB活跃0，预热假设不足。所有原始超限保留，不降bcrypt12或放阈值。
+- capacity获窄真实HTTP串行60/25ms错峰无采样/同错峰有采样诊断窗口，未改生产/协议；正式72分钟未授权启动。model_adapter仅只读auth/官方primary来源调查性能选择，不构建/PG。root与reviewer只做轻量docs/静态，J5-03仍不启动VM。
+- README独立静态4组问题：备份活动目标、首次归档/P4登记、现场环境身份、滞后示例。root b55fa80文档修复；operations a4a9aa1→8ed2189窄工具修复（8新回归/全30纯过、无Docker实际），主文档含新--base与boundary补注待本片commit；reviewer静态复核中。真实独立复现仍pending。

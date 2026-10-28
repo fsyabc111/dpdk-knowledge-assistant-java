@@ -62,3 +62,5 @@ FRONTEND_ORIGINS 与 frontend/vite.config.js 的 dev 端口 5174；`npm run dev`
 上文p1_java/55481/pgdata是本批次既有实例记录，不能作为新维护人默认数据库。首次完整验证前，环境owner须交付一个仅用于合成测试的PostgreSQL17.10实例，安装pgvector0.8.4并能CREATE EXTENSION vector，监听明确loopback端口、独立data_directory，专属角色有建删测试库与扩展权限；原业务库或旧.env不能借用。四项DPDK_TEST_PG_*逐项与该实例只读查询current_user/inet_server_port/current_setting('data_directory')一致后，TestPg才创建动态库并核验精确comment。口令经本地600文件或环境注入，不放shell历史/日志；缺该资产即报告PG未执行，不能把skip当完整验证。
 
 已有本轮资产的接手者应由owner恢复同一实例，禁止重新initdb覆盖目录；全新机器需要owner先按其平台PostgreSQL17安装/pgvector扩展流程建立全新目录和角色，记录版本与身份再移交。本仓库不自动搜索本机库或安装/启动未知PG。纯Java验证与完整PG验证分别记录。上文原生应用例子的p1_java_candidate也必须先由owner在此实例创建并写明库comment；例子不是自动创建库命令。隔离Docker部署路径由runbook自己创建新project/卷/owned库，不依赖这个native测试实例。
+
+全量verify中的DefaultBoundaryPgTest另需本轮owned `J5_BOUNDARY_DB_NAME/COMMENT`，普通四项环境不会自动收养其他库，因此该3项通常显式跳过。完整边界覆盖使用acceptance/resilience/README.md的`--case clock`入口创建新owned库后实际运行3项，保留verify实际skip数与附加clock实际3/3结果；不能把skip本身记通过。该入口推进受控Clock/调度器，默认600s/24h/300s配置保持，不声称等待真实24h墙钟。

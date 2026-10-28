@@ -124,7 +124,7 @@ python3 acceptance/deployment/rehearse.py --repo "$PWD" rollback --execute
 
 ## 手动维护的当前目标与内部观测
 
-执行器把当前应用overlay保存于本round600权限scenario-state.json，升级/恢复后shell不会自动继承它。手动备份必须选择并核验当前overlay，dry-run输出database应等于实际backend DB_NAME；不一致停止，不能因为BASE库身份也合法就备份旧库。backup包装器的当前目标守卫和实际base/upgrade/restore验证见J5-03最终报告；使用全新目标文件，不覆盖business-backup.dump。
+执行器把当前应用overlay保存于本round600权限scenario-state.json，升级/恢复后shell不会自动继承它。手动备份必须选择并核验当前overlay，dry-run输出database应等于实际backend DB_NAME；不一致停止，不能因为BASE库身份也合法就备份旧库。包装器从可信600/currentUID state选择overlay，拒绝显式过期overlay，apply再核对实际backend image及DB URL/name/comment；尚无state只允许显式`backup.sh --base <新绝对路径>`且无override，apply仍核对实际backend。dry-run输出actual_backend_verified=false，不可当作已连接验证。实际base/upgrade/restore验证见J5-03最终报告；使用全新目标文件，不覆盖business-backup.dump。
 
 内部指标仅在新project内获取，不向宿主开放后端metrics；日志只保留本地ignore，摘录前去敏：
 
