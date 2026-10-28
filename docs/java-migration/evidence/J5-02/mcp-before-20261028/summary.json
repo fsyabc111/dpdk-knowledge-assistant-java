@@ -1,0 +1,227 @@
+{
+  "execution": {
+    "source_sha": "80c9bd13a2dbb5bae29b3194d88ec3bd54556ba8",
+    "source_clean": true,
+    "command": [
+      "/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/p0/venv/bin/python",
+      "-B",
+      "acceptance/resilience/run.py",
+      "--case",
+      "mcp_before",
+      "--classpath",
+      "/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/worktrees/j5-02/.migration-artifacts/j5-02-clock-20261028-01-classpath.txt",
+      "--pg-bin",
+      "/opt/homebrew/opt/postgresql@17/bin",
+      "--output",
+      "/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/worktrees/j5-02/.migration-artifacts/j5-02-mcp-before-20261028-01"
+    ],
+    "driver_pid": 44488,
+    "started_at": "2026-10-28T08:08:37.405745+00:00",
+    "finished_at": "2026-10-28T08:08:54.863493+00:00",
+    "exit_code": 0,
+    "classpath_sha256": "54dd001fcd883665f5da3d7cd9df44805610c8fd736272cdcd7b17bc840a3a7e"
+  },
+  "result": {
+    "pass": true,
+    "cases": [
+      {
+        "case_id": "mcp_before",
+        "db": {
+          "name": "p5_resilience_a76f5492e0d286c6_mcp_before",
+          "url": "postgresql://127.0.0.1:55481/p5_resilience_a76f5492e0d286c6_mcp_before",
+          "comment": "p5-owned:a76f5492e0d286c6:p5_resilience_a76f5492e0d286c6_mcp_before",
+          "round_id": "a76f5492e0d286c6"
+        },
+        "point": "mcp_before",
+        "status_mode": "unknown",
+        "producer_pid": 44495,
+        "rto_scope": "恢复JVM已经ready、PG健康/槽位可用；ensureManaged到终态；排除启动/grace/扫描",
+        "before_kill": {
+          "task_count": 1,
+          "source_sha256": "57da569802d084126ee6a39b02a604edaddc0ef037207e3d9be3c32b126dfc37",
+          "source_present": true,
+          "jobs": [
+            [
+              "7d073fb90d4c4d5f82069ab70d06701d:dns:57da569802d08412",
+              "submitted",
+              0
+            ]
+          ],
+          "grades": [],
+          "charges": [
+            [
+              "chat",
+              1
+            ],
+            [
+              "grading",
+              1
+            ]
+          ]
+        },
+        "producer_exit": -9,
+        "after_kill": {
+          "task_count": 1,
+          "source_sha256": "57da569802d084126ee6a39b02a604edaddc0ef037207e3d9be3c32b126dfc37",
+          "source_present": true,
+          "jobs": [
+            [
+              "7d073fb90d4c4d5f82069ab70d06701d:dns:57da569802d08412",
+              "submitted",
+              0
+            ]
+          ],
+          "grades": [],
+          "charges": [
+            [
+              "chat",
+              1
+            ],
+            [
+              "grading",
+              1
+            ]
+          ]
+        },
+        "recovery_pid": 44551,
+        "kill_to_ready_seconds": 1.5843025420035701,
+        "recovery": {
+          "execution_seconds": 0.0602005,
+          "status": "system_error"
+        },
+        "checks": {
+          "producer_sigkill": true,
+          "new_jvm": true,
+          "rpo_zero_committed_projection": true,
+          "same_identity": true,
+          "terminal": true,
+          "source_deleted": true,
+          "single_chat_charge": true,
+          "single_grade": true,
+          "no_mcp_resubmit": true,
+          "unknown_safety": true,
+          "rto_1s": true
+        },
+        "external_call_counts": {
+          "before_kill_grade_submits": 0,
+          "after_ready_grade_submits": 0,
+          "after_ready_status_queries": 1
+        },
+        "after_recovery": {
+          "task_count": 1,
+          "source_sha256": null,
+          "source_present": false,
+          "jobs": [
+            [
+              "7d073fb90d4c4d5f82069ab70d06701d:dns:57da569802d08412",
+              "submitted",
+              0
+            ]
+          ],
+          "grades": [],
+          "charges": [
+            [
+              "chat",
+              1
+            ],
+            [
+              "grading",
+              1
+            ]
+          ]
+        },
+        "source_sentinel": {
+          "long_term_table_hits": {
+            "admin_audit_log": 0,
+            "api_tokens": 0,
+            "assignment_items": 0,
+            "assignments": 0,
+            "assistant_citations": 0,
+            "assistant_messages": 0,
+            "assistant_sessions": 0,
+            "data_li_knowledge_v1": 0,
+            "flyway_schema_history": 0,
+            "grading_submissions": 0,
+            "knowledge_chunks": 0,
+            "knowledge_documents": 0,
+            "knowledge_indexes": 0,
+            "knowledge_source_files": 0,
+            "password_reset_requests": 0,
+            "rag_index_state": 0,
+            "rag_issue_events": 0,
+            "rag_issues": 0,
+            "rag_knowledge": 0,
+            "rag_knowledge_revisions": 0,
+            "rag_release_nodes": 0,
+            "rag_releases": 0,
+            "rag_requests": 0,
+            "rag_task_jobs": 0,
+            "teaching_faqs": 0,
+            "upstream_usage_records": 0,
+            "usage_counters": 0,
+            "users": 0
+          },
+          "log_hits": 0,
+          "backup": {
+            "executed": true,
+            "exit_code": 0,
+            "source_hits": 0,
+            "pass": true
+          },
+          "pass": true
+        },
+        "pass": true
+      }
+    ],
+    "planned_count": 1,
+    "executed_count": 1,
+    "production_or_live_claim": false,
+    "assets_retained": true
+  },
+  "postflight": {
+    "checked_at": "2026-10-28T08:09:43.705070+00:00",
+    "owned_databases": [
+      {
+        "identity": {
+          "user": "p1_java",
+          "database": "p5_resilience_a76f5492e0d286c6_mcp_before",
+          "data_dir": "/Volumes/study/code/new_project/dpdk-knowledge-assistant-java/.migration-artifacts/p1/pgdata"
+        },
+        "retained": true,
+        "connections": 0,
+        "counts": {
+          "tasks": [
+            [
+              "system_error",
+              "harness_result_unknown",
+              1
+            ]
+          ],
+          "inputs": 0,
+          "jobs": [
+            [
+              "submitted",
+              1
+            ]
+          ]
+        }
+      }
+    ],
+    "active_java_maven_caffeinate": []
+  },
+  "raw_sha256": {
+    "summary.json": "c1768f994f75abca5db7616c1953f0ada44a1b9bbe76189f2ff094c5d0f75349",
+    "ownership.json": "0d4d07a3b96e9b10bdc569ca438dd42b793d49789c2cc759a75072eb875b3721",
+    "postflight-window-returned.json": "2bb4719b45491dcb3d466c74ee9db50b7b723450d549827529c53231f9ce77a6",
+    "execution-manifest.json": "8e996c22f29d2dcef9b19359700fd29fa6cd5c7d980c93f6a11b8c1895fbfd2c",
+    "mcp_before/result.json": "ac65b2453f6e4ba9d76fb1ef00661b31eda7a3cc441439e080e07874c795bd66",
+    "mcp_before/producer-marker.json": "61ef081c6f6a589635c1225e075f29e7f70da3a4bf233a1ff1d7ddaea73c1de8",
+    "mcp_before/external-ledger.jsonl": "c32ede29962480a9f32fa6f1c066f0cdf6625ed7d50c33e4ddae4a6a63b53181",
+    "mcp_before/terminal-backup.sql": "5f2105bbd25d4df05ac20f49ea5d44264338abf2b1a24fa4f92e263e1e8725ce",
+    "mcp_before/producer/server-manifest.json": "d8490ddfe5e18bbf5f440a8ac4091bd72dbfe10df3cb7eef808b28b0ce84894b",
+    "mcp_before/producer/server.log": "1565ff86868a36839ac36c1531657e9777bbf444f2ff9a6f2e5db88a0ab25358",
+    "mcp_before/recoverer/server-manifest.json": "6ccda28e8620366b189f7289748edeeffd5315921cf270e649837386b36f0192",
+    "mcp_before/recoverer/server.log": "b736c6153db1f37c5586b6be9de3de956085c9cd5f45666933739803b51628ab"
+  },
+  "full_matrix_pass_claim": false
+}
