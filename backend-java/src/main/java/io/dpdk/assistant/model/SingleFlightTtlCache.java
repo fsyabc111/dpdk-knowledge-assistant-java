@@ -90,9 +90,10 @@ public final class SingleFlightTtlCache<K, V> {
 
     private void onPopulated(K key, CompletableFuture<V> source, V value, Throwable error) {
         synchronized (this) {
-            if (inflight.get(key) == source) {
-                inflight.remove(key);
-            }
+            // 与Python populate身份闸一致：clear后旧loader仍完成原waiter，
+            // 但只有当前flight有缓存写权限，也不能移除后来的新flight。
+            if (inflight.get(key) != source) return;
+            inflight.remove(key);
             if (error == null) {
                 values.put(key, new Cached<>(clockNanos.get() + ttlNanos, value));
                 while (values.size() > maxsize) {
