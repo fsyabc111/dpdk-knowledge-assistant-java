@@ -116,3 +116,7 @@ P2登记的Spring CORS拒绝403不是已批准产品差异。P5全矩阵暴露�
 SP-P5-02按实际源入口关闭：产品trace没有rag_engine，LLM engine用unknown；agent_request_tokens只由独立Agent facade记录，产品raw graph不新增该hist事件。正常产品的事件增量与源对照。
 
 ST-P5-02另限定为真实失败归因：strict runProduct抛异常不能被Java局部result=null误记success，分error/cancelled，fallback仍按真实降级标记。冻结Python产品的部分图异常也可能经record_chat_trace缺fallback_reason落success；这个源观测缺陷单列，不反写黄金，不影响产品响应/业务状态，仅在补齐真实过程指标范围内修正错误分类；不得把此有意观测修正称为逐字源事件等价。正常/失败/取消/重放均需实际增量回归与独立复审。
+
+### P5-M01：metrics唯一case比较与J5-01工程裁定（2026-10-28）
+
+固定生产ff59，原黄金/原oracle CLI raw rc1原样保留。按Prometheus独立group顺序规范及已审查的真实runtime能力映射，仅GET /metrics::success body.families采用唯一name→TYPE政策：30共同descriptor精确，源runtime4与真实JVM4分列；重复/错TYPE/未知family/样本/桶错误拒绝，其他业务trace仍原compare。没有恢复12 unavailable/gauge豁免，也不宣布四项runtime对象量同义。两轴固定a32d801无阻断，完整候选28反例/正例验证及独立16域25项真实因果proof成立。主Agent裁定J5-01工程核心通过以推进J5-02；原CLI不改成pass，P5总门禁和用户验收另列。完整依据evidence/J5-01/phase-report.md。

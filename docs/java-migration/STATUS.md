@@ -8,7 +8,7 @@
 - P3、P4工程门禁已通过；P5场景验收进行中，总门禁未通过。实现、自动验证、场景验收与用户验收分开，Agent不代签用户验收。
 - 本批次禁止：真实模型/embedding/真实harness验收、合并main、生产切换、Python退役、删除恢复资产，原项目/部署/业务数据库写入。
 - 当前分支codex/p3-p5-longrun，origin为用户指定新仓库；生产源码冻结ff59cdab65c2c8977f3f9c45701b773ad9116ccd，之后仅验收物料/文档。推送与远程核验见MAIN。
-- 用户明确要求补齐源过程指标，不接受12 unavailable或持久gauge替代。16领域counter/histogram与真实业务hooks已补，正式Application实际因果验收16/16、25断言；独立runtime4映射与单case比较待矩阵收口。
+- 用户明确要求补齐源过程指标，不接受12 unavailable或持久gauge替代。16领域counter/histogram与真实业务hooks已补，正式Application实际因果验收16/16、25断言；独立runtime4映射与单case比较已获独立双轴复审并由主Agent按明确边界判定。
 
 ## 任务状态
 
@@ -18,7 +18,7 @@
 | J1-01～04、J2-01～05 | 已实现；R段8阻断关闭，纳入当前组合验证 | 用户未登记；evidence/U12-R-segment-20261025/ |
 | J3-01～04 | 已实现；P3源码5d0d6a3、591/591、两轴4阻断关闭 | 工程通过、用户未验；evidence/P3/与逐卡handoff |
 | J4-01～03 | 已实现；P4 f020efa、707/707、同jar CLI2/16 JVM、CI四job与两轴通过 | 工程通过、用户未验；evidence/P4/ |
-| J5-01 | full07 186观察/198步采集完成；raw CLI保留metrics差异，其余185对齐；扩展225/225；浏览器22保存场景；指标16域真实因果通过，单case policy最终收口中 | 用户未验；evidence/J5-01/ |
+| J5-01 | 工程通过：full07 186观察/198步；原raw CLI rc1保留，唯一metrics政策后全trace相等；225/225；原22+最终5浏览器保存场景；16域25实际因果；政策双轴无阻断 | 用户未验；evidence/J5-01/ |
 | J5-02 | Python正式3×(120+600)s有效；Java正式及双端判定未执行；默认clock3项已实际通过，故障/队列/lifecycle正在排独占窗口 | 用户未验；evidence/J5-02/ |
 | J5-03 | 执行器/守卫/备份完整row proof已交；P4不可变镜像与归档保留；候选构建和实际冷启/0013升级/恢复/应用回退未执行 | 用户未验；evidence/J5-03/ |
 | J5-04 | Maven100/npm213实际版本/许可声明，P4/base容器7份库存已交；候选manifest、缺失许可全文、接手复现收口中 | 仅交付准备；不含切换/退役/删除 |
@@ -33,7 +33,7 @@
 
 ## 下一动作与资源
 
-1. J5-01完成原raw失败保留+限定metrics policy+反例拒绝+实际16域因果proof闭环，不改黄金/核心比较器/业务数组。
+1. J5-01工程核心已过；保留原raw rc1、限定metrics政策和独立实际因果证据，不改黄金/核心比较器/业务数组。
 2. J5-02独占执行accepted资格→全11故障/41队列/lifecycle；通过后Java短资格→完整三轮36分钟→与已完成Python离线严格判定。冻结阈值不变，不缩时/隐藏失败。
 3. 最终源码重点浏览器回归；J5-03候选不可变构建后实际cold/0013/backup_restore/rollback与完整业务proof。
 4. P5阶段报告、最终独立双轴、交付manifest/许可/README接手复现、逐卡handoff、远程SHA相等及干净工作区。
