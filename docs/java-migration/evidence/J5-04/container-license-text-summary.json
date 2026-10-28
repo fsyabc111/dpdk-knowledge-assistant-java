@@ -1,0 +1,30 @@
+{
+  "version": "container-original-license-bytes-v1",
+  "identity": {
+    "context": "colima-java-u12",
+    "endpoint": "unix:///Users/fsy/.colima/java-u12/docker.sock",
+    "daemon_id": "8f66e5ea-9c07-4379-b27d-7a5759cc2cd3",
+    "daemon_name": "colima-java-u12"
+  },
+  "inventory_sha256": "bf15e996afbb673c20c7848010042c8345c66ce48ef961ac416093e8dfb67169",
+  "capture": "existing immutable allowlist only; /bin/tar entrypoint; no network; readonly; nobody; capdrop; no mounts/ports; no package execution",
+  "application_or_PG_runtime_started": false,
+  "final_P5_candidate": "pending",
+  "complete_notice_or_legal_signoff": false,
+  "captured_file_records": 1390,
+  "unique_container_text_objects": 307,
+  "unique_container_text_bytes": 2542341,
+  "limitations": [
+    "only existing inventoried paths; absence in image remains absence",
+    "license declarations and artifact provenance are not legal compatibility approval",
+    "final candidate image inventory and complete redistribution obligation review pending"
+  ],
+  "image_count": 7,
+  "index_sha256": "8b4a2aa26528a0a4fac5f7b6a317b8d92581c4d0ae34bc9d3b739dad2caf4258",
+  "collector_sha256": "28447379d912117ecbdc2eddb7259aba37a7b0f8f3566da30aaaffb2c5eba61a",
+  "all_archived_original_byte_hashes_reverified": true,
+  "query_containers_remaining": 0,
+  "global_context_unchanged": "colima-dpdk-ext",
+  "old_dpdk_profile": "Stopped",
+  "no_profile_lifecycle_action_by_worker": true
+}
