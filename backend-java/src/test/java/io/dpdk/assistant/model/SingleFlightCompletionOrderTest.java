@@ -97,6 +97,20 @@ class SingleFlightCompletionOrderTest {
                 .isEqualTo("shared result");
     }
 
+    @Test
+    void nullOrThrowingFactoryDoesNotLeaveAnUnfinishedManagedEntry() throws Exception {
+        var cache=new SingleFlightTtlCache<String,String>(Duration.ofMinutes(1).toNanos(),4);
+        org.assertj.core.api.Assertions.assertThatThrownBy(()->cache.getOrCreate("null",key->null))
+                .isInstanceOf(NullPointerException.class);
+        assertThat(cache.getOrCreate("null",key->CompletableFuture.completedFuture("recovered null")).get(2,TimeUnit.SECONDS))
+                .isEqualTo("recovered null");
+        org.assertj.core.api.Assertions.assertThatThrownBy(()->cache.getOrCreate("throw",key->{
+            throw new IllegalStateException("synthetic factory failure");
+        })).isInstanceOf(IllegalStateException.class);
+        assertThat(cache.getOrCreate("throw",key->CompletableFuture.completedFuture("recovered throw")).get(2,TimeUnit.SECONDS))
+                .isEqualTo("recovered throw");
+    }
+
     private static void awaitRelease(CountDownLatch release) {
         try {
             if(!release.await(5,TimeUnit.SECONDS))throw new IllegalStateException("test consumer gate timeout");

@@ -68,7 +68,7 @@ public final class SingleFlightTtlCache<K, V> {
             }
             source = inflight.get(key);
             if (source == null) {
-                CompletableFuture<V> raw = factory.apply(key);
+                CompletableFuture<V> raw = java.util.Objects.requireNonNull(factory.apply(key), "factory future");
                 CompletableFuture<V> shared = new CompletableFuture<>();
                 source = shared;
                 inflight.put(key, shared);
