@@ -12,8 +12,9 @@ python3 -m unittest discover -s acceptance/deployment -p 'test_*.py' -v
 python3 acceptance/deployment/prepare.py --repo "$PWD"
 export DPDK_JAVA_ENV_FILE="$PWD/.migration-artifacts/j5-03/runtime.env"
 export DPDK_JAVA_DOCKER_CONTEXT=colima-java-u12
-export DPDK_JAVA_DOCKER_ENDPOINT=unix:///Users/fsy/.colima/java-u12/docker.sock
-export DPDK_JAVA_DOCKER_DAEMON_ID=8f66e5ea-9c07-4379-b27d-7a5759cc2cd3
+export DPDK_JAVA_DOCKER_ENDPOINT="unix://$HOME/.colima/java-u12/docker.sock"
+# owner先核对该新profile的endpoint/Name/OSType与资产；首次建立/恢复见唯一runbook。
+export DPDK_JAVA_DOCKER_DAEMON_ID="$(docker --context colima-java-u12 info --format '{{.ID}}')"
 scripts-java/compose.sh                         # 静态配置展开，零daemon/PG操作
 python3 acceptance/deployment/rehearse.py --repo "$PWD" plan
 ```
@@ -37,6 +38,7 @@ python3 acceptance/deployment/rehearse.py --repo "$PWD" plan
 scripts-java/operations-compose.sh --help
 scripts-java/operations-compose.sh purge-sessions --retention-days 30
 scripts-java/operations-compose.sh purge-sessions --retention-days 30 --apply
+# 备份前核对当前scenario-state overlay与实际backend DB_NAME，dry-run.database必须一致。
 scripts-java/backup.sh "$PWD/.migration-artifacts/j5-03/manual-backup.dump"
 scripts-java/backup.sh --apply "$PWD/.migration-artifacts/j5-03/manual-backup.dump"
 ```

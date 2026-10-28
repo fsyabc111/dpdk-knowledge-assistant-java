@@ -34,9 +34,9 @@ scripts-java/operations-compose.sh retrieve --query 'dns' --top-k 5
 scripts-java/operations-compose.sh judge --cases /sources/cases.json
 ```
 
-retrieve/judge所需固定向量或离线fixture必须显式配置；未知/未配置即失败或skipped_live，不默认外发。judge固定样例不是live质量。索引必须提供完整合成快照及四个显式路径，不能把空索引视为成功。用户创建示例仅是合成账号，不能混入真实业务数据。
+上表retrieve/judge当前为配置缺失时的拒绝/skip示例：prepare不生成/sources/cases.json，Compose不默认注入固定查询向量。实际固定fixture正例见同jar CLI验收证据，不要直接把缺文件的示例当成功操作。retrieve/judge所需固定向量或离线fixture必须显式配置；未知/未配置即失败或skipped_live，不默认外发。judge固定样例不是live质量。索引必须提供完整合成快照及四个显式路径，不能把空索引视为成功。用户创建示例仅是合成账号，不能混入真实业务数据。
 
-备份入口默认dry-run：`scripts-java/backup.sh "$PWD/.migration-artifacts/j5-03/manual-backup.dump"`；实际备份追加`--apply`，先核对owned目标。只排rag_task_inputs数据、保留表结构，并检查dump TOC。恢复必须对另一owned空库，完整执行与断言见唯一runbook。不要手工给模板替换旧数据库URL。
+升级/恢复后先核对本round scenario-state当前overlay、实际backend DB_NAME与dry-run.database一致，不可默选cold/base库。备份入口默认dry-run：`scripts-java/backup.sh "$PWD/.migration-artifacts/j5-03/manual-backup.dump"`；实际备份追加`--apply`，先核对owned目标。只排rag_task_inputs数据、保留表结构，并检查dump TOC。恢复必须对另一owned空库，完整执行与断言见唯一runbook。不要手工给模板替换旧数据库URL。
 
 ## 恢复资产清单
 

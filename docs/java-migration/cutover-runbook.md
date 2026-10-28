@@ -1,6 +1,6 @@
 # Java 隔离部署、恢复与应用回退手册
 
-当前版本是 **J5-03 准备交付**。P4工程门禁通过；P5严格矩阵仍FAIL、正式容量未执行，J5-03实际运行窗口未开放。本手册的冷启、0013升级、恢复、回退均为pending，不能把镜像build或配置展开写成演练通过。真实上游、生产入口、合并main、Python退役及恢复资产删除不在本轮范围。
+当前版本用于 **J5-03 隔离工程交付**。实时门禁以STATUS.md为准：P4及J5-01核心已过（原metrics raw rc1与唯一政策后的相等结论分列），J5-02故障已过，双端正式容量与J5-03实际运行窗口待完成。本手册的冷启、0013升级、恢复、回退均为pending，不能把镜像build或配置展开写成演练通过。真实上游、生产入口、合并main、Python退役及恢复资产删除不在本轮范围。
 
 ## 版本与所有权
 
@@ -28,11 +28,18 @@ python3 -m unittest discover -s acceptance/deployment -p 'test_*.py' -v
 python3 acceptance/deployment/prepare.py --repo "$PWD"
 export DPDK_JAVA_ENV_FILE="$PWD/.migration-artifacts/j5-03/runtime.env"
 export DPDK_JAVA_DOCKER_CONTEXT=colima-java-u12
-export DPDK_JAVA_DOCKER_ENDPOINT=unix:///Users/fsy/.colima/java-u12/docker.sock
-export DPDK_JAVA_DOCKER_DAEMON_ID=8f66e5ea-9c07-4379-b27d-7a5759cc2cd3
+export DPDK_JAVA_DOCKER_ENDPOINT="unix://$HOME/.colima/java-u12/docker.sock"
+# 新profile已由owner建立/恢复后，只读取得现场身份；不得使用旧profile的值。
+export DPDK_JAVA_DOCKER_DAEMON_ID="$(docker --context colima-java-u12 info --format '{{.ID}}')"
+docker --context colima-java-u12 context inspect colima-java-u12 --format '{{json .Endpoints.docker}}'
+docker --context colima-java-u12 info --format 'ID={{.ID}} Name={{.Name}} OSType={{.OSType}}'
 scripts-java/compose.sh
 python3 acceptance/deployment/rehearse.py --repo "$PWD" plan
 ```
+
+首次接手Mac需先由owner核对`colima list`及仓库实际路径；只在授权的新环境准备窗口创建或恢复java-u12，不能在容量窗口启动VM。当前工具的首次命令为`colima start --profile java-u12 --cpus 4 --memory 4 --disk 20 --mount "$PWD:w"`；已有profile先核对其配置/持有资产，不覆盖或重建。禁止启动旧dpdk或切换全局context。上面的现场endpoint必须等于当前HOME下的新socket，Name必须colima-java-u12、OSType必须linux；daemon ID和该round资产由owner核对后固定。此项目守卫专门针对本批次Mac Colima，不宣称任意Docker环境通用。
+
+本轮历史daemon ID为8f66e5ea-9c07-4379-b27d-7a5759cc2cd3、endpoint位于/Users/fsy/.colima/java-u12/docker.sock；它们是当前机器资产记录，不是新维护人复制的默认值。旧DOCKER_HOST/TLS/DOCKER_CONTEXT环境必须在本终端显式排除；不修改用户全局配置。
 
 本卡当前已经准备过，接续时使用现有runtime.env与manifest，**不要重跑prepare**。口令随机生成，env与私钥均0600且Git忽略；禁止打印、提交或复用旧.env。生成器只读取知识源清单，绝不复制原项目源内容。TLS证书SAN包含localhost/127.0.0.1，HTTPS使用证书校验，不使用curl -k绕过校验。
 
@@ -43,6 +50,27 @@ python3 acceptance/deployment/rehearse.py --repo "$PWD" plan
 ## 构建与登记候选
 
 P4镜像已经真实构建，source label、image ID、归档摘要和jar摘要均已记录。只有P5候选冻结后才补候选构建；在冻结checkout核对应用路径无未提交源码变更，再从该checkout构建两个镜像。两个Dockerfile的base均已按主Agent已拉取digest锁定，不擅自升级。
+
+新round的manifest.images初始为空。先从owner取得P4两份归档（可从已有资产复制到新round，原资产保留）；逐项核对evidence/J5-03/p4-images.json的archive_sha256后才能load。归档目录必须是当前round的owned目录，文件不符则停止，不能从相同tag推断P4版本：
+
+```bash
+mkdir -p "$PWD/.migration-artifacts/j5-03/build"
+# p4_asset_dir为owner提供的既有归档绝对目录；先核对两份SHA，再load，不覆盖原归档。
+python3 - "$p4_asset_dir" <<'CHECK_P4'
+from pathlib import Path
+import hashlib,json,sys
+records=json.loads(Path('docs/java-migration/evidence/J5-03/p4-images.json').read_text())['images']
+for row in records.values():
+    p=Path(sys.argv[1])/row['archive_name']
+    assert p.is_file() and hashlib.sha256(p.read_bytes()).hexdigest()==row['archive_sha256'], 'P4 archive differs'
+CHECK_P4
+docker --context colima-java-u12 image load --input "$p4_asset_dir/p4-backend.image.tar"
+docker --context colima-java-u12 image load --input "$p4_asset_dir/p4-frontend.image.tar"
+python3 acceptance/deployment/images.py --repo "$PWD" --role p4-backend --image dpdk-java-isolated-backend:p4-f020efa --source f020efa
+python3 acceptance/deployment/images.py --repo "$PWD" --role p4-frontend --image dpdk-java-isolated-frontend:p4-f020efa --source f020efa
+```
+
+若新round与资产所在round相同，核对原manifest/image/save摘要即可，不重复登记或覆盖归档。P4源label必须f020efa完整SHA，新旧不能只改tag。新机器拿不到已记录P4归档时，先取得该源码与精确recipe/base重建并单独记录新的实物hash，不能宣称等于历史归档。
 
 ```bash
 # candidate_checkout由主Agent给出，必须是冻结的本仓库checkout绝对路径。
@@ -60,7 +88,7 @@ python3 acceptance/deployment/images.py --repo "$PWD" --role candidate-frontend 
   --image "dpdk-java-isolated-frontend:candidate-$candidate_revision" --source "$candidate_revision"
 ```
 
-images.py只做image inspect/save和离线归档摘要，不创建运行容器；真实source label不符时拒绝。归档保留实际jar/静态资源hash。回退执行器要求新旧image ID、源码revision与jar摘要全部不同，不能只给同一镜像换tag冒充回退。若候选尚未提供，plan明确pending，不运行后续场景。
+本地构建后的镜像引用必须来自实际`docker image inspect`，不能手写一个假registry digest。images.py只做image inspect/save和离线归档摘要，不创建运行容器；真实source label不符时拒绝。归档保留实际jar/静态资源hash。回退执行器要求新旧image ID、源码revision与jar摘要全部不同，不能只给同一镜像换tag冒充回退。若候选尚未提供，plan明确pending，不运行后续场景。
 
 ## 实际窗口内的顺序
 
@@ -93,3 +121,16 @@ python3 acceptance/deployment/rehearse.py --repo "$PWD" rollback --execute
 权限/身份/数据错误、ready失败、恢复不完整、源码哨兵泄漏、冻结容量门禁失败或超时未终态均阻止放行。先停止新写入并登记/排空活动任务，保存新数据与作业账本，确保旧/新后端不同时恢复同一任务。优先已实测的应用镜像回退；新schema或新增业务若旧应用不能读，保持写冻结并走已验证的前向修复或独立恢复路径。不得拿旧备份覆盖切换后的增量。
 
 本手册不授权改生产入口、停旧服务、删除原仓库/镜像/备份或退役Python。若未来另行授权真实切换，仍需当时精确目标、账户/预算/数据、单写owner、已实测备份恢复、观察窗口及用户确认的数据处理策略；本卡的隔离工程证据不能替代这些事项。
+
+## 手动维护的当前目标与内部观测
+
+执行器把当前应用overlay保存于本round600权限scenario-state.json，升级/恢复后shell不会自动继承它。手动备份必须选择并核验当前overlay，dry-run输出database应等于实际backend DB_NAME；不一致停止，不能因为BASE库身份也合法就备份旧库。backup包装器的当前目标守卫和实际base/upgrade/restore验证见J5-03最终报告；使用全新目标文件，不覆盖business-backup.dump。
+
+内部指标仅在新project内获取，不向宿主开放后端metrics；日志只保留本地ignore，摘录前去敏：
+
+```bash
+scripts-java/compose.sh --apply exec -T fake-upstream node -e "fetch('http://backend-java:18090/metrics').then(async r=>{if(!r.ok)process.exit(1);process.stdout.write(await r.text())})"
+scripts-java/compose.sh --apply logs --tail 100 backend-java
+```
+
+`retrieve`要求显式固定查询向量或真实embedding配置；`judge --cases`要求已存在且挂载的合成case文件，prepare默认只生成知识源，不生成cases.json。这两个OPERATIONS示例是配置缺失时的预期拒绝/skip检查，不是默认正例；同jar的固定fixture正例由evidence/P5/validation-code.json所绑定CLI验收覆盖。不得为让示例返回成功而默认外发。
