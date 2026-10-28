@@ -1,0 +1,81 @@
+{
+  "source_revision": "7a3e553ba70eb3d4af3fdd7070683ca868fb25fa",
+  "production_source": "ff59cdab65c2c8977f3f9c45701b773ad9116ccd",
+  "external_model_delay_seconds": 10,
+  "sse_headers_ms": 62.1000000089407,
+  "controller_pid": 42703,
+  "settled_after_cancel": true,
+  "fixed_upstream_counts": {
+    "llm": 3,
+    "tool_refs": 1
+  },
+  "cases": [
+    {
+      "case": "final-answered",
+      "assertions": {
+        "answer": true,
+        "three_citations": true
+      },
+      "json_sha256": "d84b1cc945a3a35052787eb0fac79da1db4d5c2b8e1756611d6c030350870c0a",
+      "png_sha256": "0a693f6f28faaac11381f18b2d280a4ded1791c4e2fa3aeb1ae46594ad81f5f4"
+    },
+    {
+      "case": "final-cancel",
+      "assertions": {
+        "cancelled": true,
+        "send_restored": true
+      },
+      "json_sha256": "f4684c85b7c2e6ccdd6897546f0f3ee2053445c0336903e32e1a48861477050a",
+      "png_sha256": "10af344f40d30790966d7114c6195d897e3b2b5bd1629c20cb0cd10ad799d154"
+    },
+    {
+      "case": "final-login",
+      "assertions": {
+        "student_account": true,
+        "no_login_dialog": true
+      },
+      "json_sha256": "c6573359b821951339d6d7bc2a76c9e1f2fade4e591ff662544c8915a146c178",
+      "png_sha256": "e7284bf0ed43b48ceebd94200bec3d74b31ddf50e36b8d39235fb2e8b2773567"
+    },
+    {
+      "case": "final-refresh-cancel",
+      "assertions": {
+        "cancelled_persisted": true,
+        "account_persisted": true
+      },
+      "json_sha256": "a302a7ff7156be232814951963ba5a189d89e46251b533ed776d05f39c753798",
+      "png_sha256": "64995e33b1206fe8a9c7884d3d9cc6798ea1cf827d27b5190b76d2516d71633e"
+    },
+    {
+      "case": "final-sse-start",
+      "assertions": {
+        "stop_visible": true,
+        "headers_before_model": true
+      },
+      "json_sha256": "257a0af9ec47183c875f906a3278f11ca5b95b7200edee8d460a7586902c2596",
+      "png_sha256": "70204a1ba5a41f0c1f624a0d17a0a524c0860b3e14b8503e2cd45975fb4f8021"
+    }
+  ],
+  "limits": "synthetic local external boundaries; actual browser/HTTP/PG; not user/live acceptance",
+  "probe_errors_preserved": [
+    "first expected display name studentA instead of account id",
+    "first wait used body text for icon-only aria-label stop button; corrected AX-node polling; no product change"
+  ],
+  "cleanup": {
+    "ui_controller_pid": 42703,
+    "java_pid": 42715,
+    "owned_chrome_pid": 42704,
+    "all_exited": true,
+    "owned_db_state": "dropped",
+    "isolation_manifest_sha256": "a23da9e95355a1dde60c5bbd39daae80dfc09514d9a838185cc200b46b190fc4",
+    "existing_other_databases_or_profiles_modified": false
+  },
+  "visual_inspection": {
+    "screenshot": "final-refresh-cancel.png",
+    "viewport": [
+      1440,
+      1000
+    ],
+    "result": "actual PNG viewed; original layout, three citation cards and persisted cancelled bubble visible"
+  }
+}
