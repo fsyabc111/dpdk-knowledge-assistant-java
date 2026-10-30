@@ -99,6 +99,19 @@ async def probe(manifest, isolation, db, *, stagger, sampling, output, profile=F
     return result
 
 
+def java_bcrypt_binding(server_dir):
+    """按服务端启动日志记录NativeBcrypt实际选择的实现与库哈希，不按源码假定。"""
+    lines = [line for line in (server_dir/"server.log").read_text(errors="replace").splitlines() if "bcrypt provider:" in line]
+    if len(lines) != 1:
+        raise RuntimeError("服务端日志须恰有一行bcrypt provider")
+    detail = lines[0].split("bcrypt provider:", 1)[1].strip()
+    binding = {"provider_log": detail}
+    if detail.startswith("native (classpath:"):
+        library = ROOT/"backend-java/target/classes"/detail[len("native (classpath:/"):-1]
+        binding["native_library"] = {"path": str(library.relative_to(ROOT)), "sha256": hashlib.sha256(library.read_bytes()).hexdigest()}
+    return binding
+
+
 async def main(args):
     if args.runtime != "java" and (args.profile or args.profile_only):
         raise ValueError("JFR探针只允许Java运行时")
@@ -133,9 +146,9 @@ async def main(args):
             result["login_signal_pass"] = result["login"]["p95_ms"] <= limit and result["unexpected_errors"] == 0
         crypto_jars = [Path(p) for p in Path(args.classpath).read_text().strip().split(os.pathsep) if "spring-security-crypto" in p]
         summary = {"source_evidence": source_evidence(args.runtime), "runtime": args.runtime,
-            "hasher_binding": {"active_implementation": "Spring BCrypt" if args.runtime == "java" else "Python bcrypt",
+            "hasher_binding": {"active_implementation": java_bcrypt_binding(output/"server") if args.runtime == "java" else "Python bcrypt",
                 "java_wrapper": "io.dpdk.assistant.auth.PasswordHasher.check",
-                "target": "org.springframework.security.crypto.bcrypt.BCrypt.checkpw",
+                "native_wrapper_sha256": hashlib.sha256((ROOT/"backend-java/src/main/java/io/dpdk/assistant/auth/NativeBcrypt.java").read_bytes()).hexdigest(),
                 "wrapper_sha256": hashlib.sha256((ROOT/"backend-java/src/main/java/io/dpdk/assistant/auth/PasswordHasher.java").read_bytes()).hexdigest(),
                 "classpath_jars": [{"name": p.name, "sha256": hashlib.sha256(p.read_bytes()).hexdigest()} for p in crypto_jars],
                 "python_source": "backend/app/services/user_service.py:_verify_credentials_sync -> bcrypt.checkpw",
