@@ -1,0 +1,635 @@
+{
+  "date": "2026-10-30",
+  "domain": "diagnostic_only_not_formal_capacity",
+  "formal_capacity_pass": null,
+  "toolchain": {
+    "rustc": "1.99.1 (58cf8f9c3 2026-10-13)",
+    "cargo": "1.99.1 (5f94df478 2026-08-27)",
+    "host": "aarch64-apple-darwin",
+    "isolated_root": ".migration-artifacts/rust-isolated-20261028",
+    "official_component_sha256_verified": true
+  },
+  "lock": {
+    "production_Cargo.lock_sha256": "3b6cc632359427e451cf2abce7c95c5e6827771c81ef572fd563e5feb10289f4",
+    "core_packages_equal_pyca_4.3.0_lock": true,
+    "only_difference_vs_proof_lock": "root package name/version"
+  },
+  "native_library": {
+    "path": "backend-java/native/bcrypt-jni/dist/native/darwin-aarch64/libdpdk_bcrypt_jni.dylib",
+    "sha256": "74e0c969b3d7d7d2636d25acc7747aacb4b63cc60b9c520887287e48b94e0b2d",
+    "built_by": "backend-java/native/bcrypt-jni/build.sh",
+    "jni_exports": [
+      "Java_io_dpdk_assistant_auth_NativeBcrypt_abiVersion0",
+      "Java_io_dpdk_assistant_auth_NativeBcrypt_checkpw0"
+    ]
+  },
+  "compatibility": {
+    "cases": 35,
+    "python_vs_native_category_differences": 0,
+    "python_vs_spring_category_differences": 2,
+    "jni_null_code": -2,
+    "panic_code": -3,
+    "rows": [
+      {
+        "id": "ascii-2a",
+        "python": "MATCH",
+        "python_error": "",
+        "native": "MATCH",
+        "native_error": "",
+        "spring": "MATCH",
+        "spring_error": ""
+      },
+      {
+        "id": "wrong-2a",
+        "python": "MISMATCH",
+        "python_error": "",
+        "native": "MISMATCH",
+        "native_error": "",
+        "spring": "MISMATCH",
+        "spring_error": ""
+      },
+      {
+        "id": "utf8-2a",
+        "python": "MATCH",
+        "python_error": "",
+        "native": "MATCH",
+        "native_error": "",
+        "spring": "MATCH",
+        "spring_error": ""
+      },
+      {
+        "id": "nul-2a",
+        "python": "MATCH",
+        "python_error": "",
+        "native": "MATCH",
+        "native_error": "",
+        "spring": "MATCH",
+        "spring_error": ""
+      },
+      {
+        "id": "72-byte-2a",
+        "python": "MATCH",
+        "python_error": "",
+        "native": "MATCH",
+        "native_error": "",
+        "spring": "MATCH",
+        "spring_error": ""
+      },
+      {
+        "id": "73-byte-2a",
+        "python": "MATCH",
+        "python_error": "",
+        "native": "MATCH",
+        "native_error": "",
+        "spring": "MATCH",
+        "spring_error": ""
+      },
+      {
+        "id": "utf8-cut-72-2a",
+        "python": "MATCH",
+        "python_error": "",
+        "native": "MATCH",
+        "native_error": "",
+        "spring": "MATCH",
+        "spring_error": ""
+      },
+      {
+        "id": "ascii-2b",
+        "python": "MATCH",
+        "python_error": "",
+        "native": "MATCH",
+        "native_error": "",
+        "spring": "MATCH",
+        "spring_error": ""
+      },
+      {
+        "id": "wrong-2b",
+        "python": "MISMATCH",
+        "python_error": "",
+        "native": "MISMATCH",
+        "native_error": "",
+        "spring": "MISMATCH",
+        "spring_error": ""
+      },
+      {
+        "id": "utf8-2b",
+        "python": "MATCH",
+        "python_error": "",
+        "native": "MATCH",
+        "native_error": "",
+        "spring": "MATCH",
+        "spring_error": ""
+      },
+      {
+        "id": "nul-2b",
+        "python": "MATCH",
+        "python_error": "",
+        "native": "MATCH",
+        "native_error": "",
+        "spring": "MATCH",
+        "spring_error": ""
+      },
+      {
+        "id": "72-byte-2b",
+        "python": "MATCH",
+        "python_error": "",
+        "native": "MATCH",
+        "native_error": "",
+        "spring": "MATCH",
+        "spring_error": ""
+      },
+      {
+        "id": "73-byte-2b",
+        "python": "MATCH",
+        "python_error": "",
+        "native": "MATCH",
+        "native_error": "",
+        "spring": "MATCH",
+        "spring_error": ""
+      },
+      {
+        "id": "utf8-cut-72-2b",
+        "python": "MATCH",
+        "python_error": "",
+        "native": "MATCH",
+        "native_error": "",
+        "spring": "MATCH",
+        "spring_error": ""
+      },
+      {
+        "id": "ascii-2y",
+        "python": "MATCH",
+        "python_error": "",
+        "native": "MATCH",
+        "native_error": "",
+        "spring": "MATCH",
+        "spring_error": ""
+      },
+      {
+        "id": "wrong-2y",
+        "python": "MISMATCH",
+        "python_error": "",
+        "native": "MISMATCH",
+        "native_error": "",
+        "spring": "MISMATCH",
+        "spring_error": ""
+      },
+      {
+        "id": "utf8-2y",
+        "python": "MATCH",
+        "python_error": "",
+        "native": "MATCH",
+        "native_error": "",
+        "spring": "MATCH",
+        "spring_error": ""
+      },
+      {
+        "id": "nul-2y",
+        "python": "MATCH",
+        "python_error": "",
+        "native": "MATCH",
+        "native_error": "",
+        "spring": "MATCH",
+        "spring_error": ""
+      },
+      {
+        "id": "72-byte-2y",
+        "python": "MATCH",
+        "python_error": "",
+        "native": "MATCH",
+        "native_error": "",
+        "spring": "MATCH",
+        "spring_error": ""
+      },
+      {
+        "id": "73-byte-2y",
+        "python": "MATCH",
+        "python_error": "",
+        "native": "MATCH",
+        "native_error": "",
+        "spring": "MATCH",
+        "spring_error": ""
+      },
+      {
+        "id": "utf8-cut-72-2y",
+        "python": "MATCH",
+        "python_error": "",
+        "native": "MATCH",
+        "native_error": "",
+        "spring": "MATCH",
+        "spring_error": ""
+      },
+      {
+        "id": "empty",
+        "python": "MATCH",
+        "python_error": "",
+        "native": "MATCH",
+        "native_error": "",
+        "spring": "MATCH",
+        "spring_error": ""
+      },
+      {
+        "id": "nul-different-tail",
+        "python": "MISMATCH",
+        "python_error": "",
+        "native": "MISMATCH",
+        "native_error": "",
+        "spring": "MISMATCH",
+        "spring_error": ""
+      },
+      {
+        "id": "cost12-frozen",
+        "python": "MATCH",
+        "python_error": "",
+        "native": "MATCH",
+        "native_error": "",
+        "spring": "MATCH",
+        "spring_error": ""
+      },
+      {
+        "id": "invalid-prefix",
+        "python": "ERROR",
+        "python_error": "ValueError",
+        "native": "ERROR",
+        "native_error": "NATIVE_-1",
+        "spring": "ERROR",
+        "spring_error": "IllegalArgumentException"
+      },
+      {
+        "id": "invalid-cost-low",
+        "python": "ERROR",
+        "python_error": "ValueError",
+        "native": "ERROR",
+        "native_error": "NATIVE_-1",
+        "spring": "ERROR",
+        "spring_error": "IllegalArgumentException"
+      },
+      {
+        "id": "invalid-cost-high",
+        "python": "ERROR",
+        "python_error": "ValueError",
+        "native": "ERROR",
+        "native_error": "NATIVE_-1",
+        "spring": "ERROR",
+        "spring_error": "IllegalArgumentException"
+      },
+      {
+        "id": "invalid-salt-alphabet",
+        "python": "ERROR",
+        "python_error": "ValueError",
+        "native": "ERROR",
+        "native_error": "NATIVE_-1",
+        "spring": "ERROR",
+        "spring_error": "IllegalArgumentException"
+      },
+      {
+        "id": "noncanonical-salt",
+        "python": "ERROR",
+        "python_error": "ValueError",
+        "native": "ERROR",
+        "native_error": "NATIVE_-1",
+        "spring": "MISMATCH",
+        "spring_error": ""
+      },
+      {
+        "id": "noncanonical-tail",
+        "python": "MISMATCH",
+        "python_error": "",
+        "native": "MISMATCH",
+        "native_error": "",
+        "spring": "MISMATCH",
+        "spring_error": ""
+      },
+      {
+        "id": "invalid-tail-alphabet",
+        "python": "MISMATCH",
+        "python_error": "",
+        "native": "MISMATCH",
+        "native_error": "",
+        "spring": "MISMATCH",
+        "spring_error": ""
+      },
+      {
+        "id": "truncated-hash",
+        "python": "MISMATCH",
+        "python_error": "",
+        "native": "MISMATCH",
+        "native_error": "",
+        "spring": "MISMATCH",
+        "spring_error": ""
+      },
+      {
+        "id": "extended-hash",
+        "python": "MISMATCH",
+        "python_error": "",
+        "native": "MISMATCH",
+        "native_error": "",
+        "spring": "MISMATCH",
+        "spring_error": ""
+      },
+      {
+        "id": "missing-hash-parts",
+        "python": "ERROR",
+        "python_error": "ValueError",
+        "native": "ERROR",
+        "native_error": "NATIVE_-1",
+        "spring": "ERROR",
+        "spring_error": "IllegalArgumentException"
+      },
+      {
+        "id": "legacy-2",
+        "python": "ERROR",
+        "python_error": "ValueError",
+        "native": "ERROR",
+        "native_error": "NATIVE_-1",
+        "spring": "MISMATCH",
+        "spring_error": ""
+      }
+    ],
+    "note": "proof库(相同适配逻辑、旧JNI类名)上测得；生产库由NativeBcryptTest按同类向量复验"
+  },
+  "microbenchmark_proof_lib": {
+    "native-serial": {
+      "p50_ms": 168.136291,
+      "p95_ms": 172.682208,
+      "max_ms": 193.329417,
+      "queue_p95_ms": 0.0,
+      "errors": 0,
+      "warmup_calls": 20,
+      "vm_args": "[-Xms64m, -Xmx256m, -XX:MaxMetaspaceSize=128m, -XX:ReservedCodeCacheSize=48m, -Xss512k]"
+    },
+    "native-stagger": {
+      "p50_ms": 219.197041,
+      "p95_ms": 236.098666,
+      "max_ms": 249.1365,
+      "queue_p95_ms": 2.098917,
+      "errors": 0,
+      "warmup_calls": 20,
+      "vm_args": "[-Xms64m, -Xmx256m, -XX:MaxMetaspaceSize=128m, -XX:ReservedCodeCacheSize=48m, -Xss512k]"
+    },
+    "spring-serial": {
+      "p50_ms": 214.718834,
+      "p95_ms": 232.388,
+      "max_ms": 235.500958,
+      "queue_p95_ms": 0.0,
+      "errors": 0,
+      "warmup_calls": 20,
+      "vm_args": "[-Xms64m, -Xmx256m, -XX:MaxMetaspaceSize=128m, -XX:ReservedCodeCacheSize=48m, -Xss512k]"
+    },
+    "spring-stagger": {
+      "p50_ms": 420.262042,
+      "p95_ms": 552.1105,
+      "max_ms": 560.399292,
+      "queue_p95_ms": 257.796875,
+      "errors": 0,
+      "warmup_calls": 20,
+      "vm_args": "[-Xms64m, -Xmx256m, -XX:MaxMetaspaceSize=128m, -XX:ReservedCodeCacheSize=48m, -Xss512k]"
+    }
+  },
+  "build_variant_microbenchmark": {
+    "aarch64-apple-darwin-serial": {
+      "p50_ms": 174.895625,
+      "p95_ms": 179.456125,
+      "max_ms": 202.564375,
+      "errors": 0
+    },
+    "aarch64-apple-darwin-stagger": {
+      "p50_ms": 227.760458,
+      "p95_ms": 251.354667,
+      "max_ms": 261.6175,
+      "errors": 0
+    },
+    "fat-serial": {
+      "p50_ms": 174.173459,
+      "p95_ms": 181.25525,
+      "max_ms": 187.040583,
+      "errors": 0
+    },
+    "fat-stagger": {
+      "p50_ms": 216.780709,
+      "p95_ms": 225.071167,
+      "max_ms": 242.098375,
+      "errors": 0
+    },
+    "native-cpu-serial": {
+      "p50_ms": 174.313166,
+      "p95_ms": 177.946,
+      "max_ms": 202.461708,
+      "errors": 0
+    },
+    "native-cpu-stagger": {
+      "p50_ms": 212.057042,
+      "p95_ms": 216.179875,
+      "max_ms": 217.47025,
+      "errors": 0
+    }
+  },
+  "http_login_diagnosis": {
+    "java01": {
+      "runtime": "java",
+      "source_commit": "2934de1adf315346a79e416a36330ffdc83afcaa",
+      "dirty": true,
+      "protocol_sha256": "e50af779ff1855c540776ff9d6d9c68bef515b5f19b15f41ae51f4ade481ea0d",
+      "server_provider_log": "native (classpath:/native/darwin-aarch64/libdpdk_bcrypt_jni.dylib)",
+      "frozen_effective_limit_ms": 312.44300000000004,
+      "probes": {
+        "serial60": {
+          "p50_ms": 171.27962500671856,
+          "p95_ms": 183.36112500401214,
+          "max_ms": 223.09441599645652,
+          "n": 60,
+          "errors": 0,
+          "cpu_mean_one_core_percent": 101.49577399590099,
+          "signal_pass": true
+        },
+        "stagger60_no_sampler": {
+          "p50_ms": 233.49633300676942,
+          "p95_ms": 264.8005840019323,
+          "max_ms": 276.46170801017433,
+          "n": 60,
+          "errors": 0,
+          "cpu_mean_one_core_percent": 789.4766193939174,
+          "signal_pass": true
+        },
+        "stagger60_sampler": {
+          "p50_ms": 253.84325001505204,
+          "p95_ms": 325.1171669980977,
+          "max_ms": 337.67562499269843,
+          "n": 60,
+          "errors": 0,
+          "cpu_mean_one_core_percent": 751.5014695508794,
+          "signal_pass": false
+        }
+      },
+      "summary_sha256": "f55d659f743ead323c81b445314df9372992f3347adb584dd42dc38a5b633f81"
+    },
+    "java02": {
+      "runtime": "java",
+      "source_commit": "2934de1adf315346a79e416a36330ffdc83afcaa",
+      "dirty": true,
+      "protocol_sha256": "e50af779ff1855c540776ff9d6d9c68bef515b5f19b15f41ae51f4ade481ea0d",
+      "server_provider_log": "native (classpath:/native/darwin-aarch64/libdpdk_bcrypt_jni.dylib)",
+      "frozen_effective_limit_ms": 312.44300000000004,
+      "probes": {
+        "serial60": {
+          "p50_ms": 173.27512498013675,
+          "p95_ms": 192.05699997837655,
+          "max_ms": 213.03600000101142,
+          "n": 60,
+          "errors": 0,
+          "cpu_mean_one_core_percent": 100.91672552224176,
+          "signal_pass": true
+        },
+        "stagger60_no_sampler": {
+          "p50_ms": 243.28175000846386,
+          "p95_ms": 266.8782919936348,
+          "max_ms": 295.38766702171415,
+          "n": 60,
+          "errors": 0,
+          "cpu_mean_one_core_percent": 765.7788617235376,
+          "signal_pass": true
+        },
+        "stagger60_sampler": {
+          "p50_ms": 253.08375002350658,
+          "p95_ms": 345.6901249883231,
+          "max_ms": 368.0733329965733,
+          "n": 60,
+          "errors": 0,
+          "cpu_mean_one_core_percent": 752.6734819736336,
+          "signal_pass": false
+        }
+      },
+      "summary_sha256": "a2aa283e9e15a73f3cc6f3aa99244f53120fa4aeacc7a8cdb5db2eaffe5d1ad9"
+    },
+    "java03": {
+      "runtime": "java",
+      "source_commit": "2934de1adf315346a79e416a36330ffdc83afcaa",
+      "dirty": true,
+      "protocol_sha256": "e50af779ff1855c540776ff9d6d9c68bef515b5f19b15f41ae51f4ade481ea0d",
+      "server_provider_log": "native (classpath:/native/darwin-aarch64/libdpdk_bcrypt_jni.dylib)",
+      "frozen_effective_limit_ms": 312.44300000000004,
+      "probes": {
+        "serial60": {
+          "p50_ms": 176.87345799640752,
+          "p95_ms": 181.53591701411642,
+          "max_ms": 221.52079100487754,
+          "n": 60,
+          "errors": 0,
+          "cpu_mean_one_core_percent": 101.19869181069785,
+          "signal_pass": true
+        },
+        "stagger60_no_sampler": {
+          "p50_ms": 237.87829099455848,
+          "p95_ms": 278.45087499008514,
+          "max_ms": 312.8049579972867,
+          "n": 60,
+          "errors": 0,
+          "cpu_mean_one_core_percent": 775.7474739904976,
+          "signal_pass": true
+        },
+        "stagger60_sampler": {
+          "p50_ms": 223.86779100634158,
+          "p95_ms": 315.3354169917293,
+          "max_ms": 354.91420901962556,
+          "n": 60,
+          "errors": 0,
+          "cpu_mean_one_core_percent": 745.2281700755366,
+          "signal_pass": false
+        }
+      },
+      "summary_sha256": "25b8484c3bd7d9eef9c8e5555bc7fafb7fe1913b7d3dff31b15df26ea6f6cb6d"
+    },
+    "python01": {
+      "runtime": "python",
+      "source_commit": "2934de1adf315346a79e416a36330ffdc83afcaa",
+      "dirty": false,
+      "protocol_sha256": "e50af779ff1855c540776ff9d6d9c68bef515b5f19b15f41ae51f4ade481ea0d",
+      "server_provider_log": "Python bcrypt 4.3.0",
+      "frozen_effective_limit_ms": 312.44300000000004,
+      "probes": {
+        "serial60": {
+          "p50_ms": 174.3510829983279,
+          "p95_ms": 180.59233398525976,
+          "max_ms": 185.163541988004,
+          "n": 60,
+          "errors": 0,
+          "cpu_mean_one_core_percent": 98.9439654248868,
+          "signal_pass": true
+        },
+        "stagger60_no_sampler": {
+          "p50_ms": 235.68091599736363,
+          "p95_ms": 266.9196250208188,
+          "max_ms": 278.55637500761077,
+          "n": 60,
+          "errors": 0,
+          "cpu_mean_one_core_percent": 754.8276044362572,
+          "signal_pass": true
+        },
+        "stagger60_sampler": {
+          "p50_ms": 222.9419999930542,
+          "p95_ms": 321.0672920104116,
+          "max_ms": 376.62245900719427,
+          "n": 60,
+          "errors": 0,
+          "cpu_mean_one_core_percent": 734.3914165729445,
+          "signal_pass": false
+        }
+      },
+      "summary_sha256": "12cf99d9cfe2d228e8ba2986f985e314330cd96783f28bc390399438117273cd"
+    },
+    "java04": {
+      "runtime": "java",
+      "source_commit": "2934de1adf315346a79e416a36330ffdc83afcaa",
+      "dirty": true,
+      "protocol_sha256": "e50af779ff1855c540776ff9d6d9c68bef515b5f19b15f41ae51f4ade481ea0d",
+      "server_provider_log": "native (classpath:/native/darwin-aarch64/libdpdk_bcrypt_jni.dylib)",
+      "native_library_sha256": "74e0c969b3d7d7d2636d25acc7747aacb4b63cc60b9c520887287e48b94e0b2d",
+      "frozen_effective_limit_ms": 312.44300000000004,
+      "probes": {
+        "serial60": {
+          "p50_ms": 178.30299999332055,
+          "p95_ms": 192.5849579856731,
+          "max_ms": 218.09375000884756,
+          "n": 60,
+          "errors": 0,
+          "cpu_mean_one_core_percent": 100.4014274582209,
+          "signal_pass": true
+        },
+        "stagger60_no_sampler": {
+          "p50_ms": 220.0240409874823,
+          "p95_ms": 231.1571250029374,
+          "max_ms": 238.97791700437665,
+          "n": 60,
+          "errors": 0,
+          "cpu_mean_one_core_percent": 781.0950397399307,
+          "signal_pass": true
+        },
+        "stagger60_sampler": {
+          "p50_ms": 222.48879200196825,
+          "p95_ms": 245.9367499977816,
+          "max_ms": 271.77987500908785,
+          "n": 60,
+          "errors": 0,
+          "cpu_mean_one_core_percent": 753.506440504784,
+          "signal_pass": true
+        }
+      },
+      "summary_sha256": "88b97f6f8d7792da9778948c0b48a9fd819e71871701877b59218638af5a0c04"
+    }
+  },
+  "full_verify": {
+    "command": "./mvnw -f backend-java/pom.xml -B verify（显式专属PG四项）",
+    "tests_run": 794,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 3,
+    "skipped_cases": "DefaultBoundaryPgTest 3项（既有，需owned clock入口）",
+    "provider_in_test_jvm": "native (classpath)",
+    "log": ".migration-artifacts/native-bcrypt-20261030-full-verify.log"
+  },
+  "spring_mode_check": {
+    "env": "BCRYPT_PROVIDER=spring",
+    "NativeBcryptTest": "5 run / 3 skipped by design",
+    "CredentialLifecycleTest": "14/14"
+  }
+}
