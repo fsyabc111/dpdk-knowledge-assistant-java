@@ -86,6 +86,29 @@
           <mainClass>io.dpdk.assistant.Application</mainClass>
         </configuration>
       </plugin>
+      <!-- native/bcrypt-jni/build.sh 产出的平台库（gitignored）存在时打入 classpath；不存在则不复制。 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>native-bcrypt-library</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>native/bcrypt-jni/dist</directory>
+                  <filtering>false</filtering>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 </project>

@@ -199,3 +199,12 @@ TaskExecutor新增default afterCompletion(context)，由TaskRunner在finish尝�
 - CI40656367531真实失败：RetrievalUsageTest失败后立即重试仍取同一failed inflight。SingleFlightTtlCache把raw future直接发布，CF视图回调可先于cache/inflight清理；冻结Python把bookkeeping置于共享task返回之前，因此等待者观察终态前状态必须已收口。定范围仅该cache与其model/retrieval/usage回归，不改公共方法、黄金、TTL/maxsize/账本/任务终态。
 - 主Agent另逐行核对冻结`backend/app/core/async_cache.py`：成功值也仅在inflight identity仍等于当前task时写_values；clear会清inflight，因此旧loader完成仍交付已有waiter，但不能回填cache、覆盖clear后的新值或删除新flight。旧Java无条件values.put是迁移差异，非源已知缺陷。独立登记并授权同owner最小identity成功写入栅栏及clear→旧完成/新完成的确定性回归。
 - model_adapter独占SingleFlightTtlCache与owned tests/handoff；主Agent集成、完整复验与阶段裁定。该修复保持冻结语义，未引入新产品/安全豁免；实现/自动验证/阶段验收分列，当前交付收口前不继承旧ff59绿灯。
+
+## J5-BCRYPT-NATIVE：口令校验改走pyca同源native实现（2026-10-30，用户直接授权）
+
+- 问题：冻结login并发门槛下Java Spring BCrypt单次cost12约220ms，错峰p95约850–998ms；Python基线bcrypt4.3.0的checkpw本身是Rust bcrypt0.17.0。用户2026-10-30授权继续JNI/Rust方案。
+- 变更：新增`auth.NativeBcrypt`（JNI→`backend-java/native/bcrypt-jni`，按pyca4.3.0 checkpw适配序列调用bcrypt0.17.0，核心依赖与pyca原Cargo.lock逐包一致）。`PasswordHasher.check`在native可用时走native；`hash`/dummy生成仍为Spring，未改cost12、dummy等价工作、缓存或阈值。
+- 新增Java专用环境变量（Python无对应项）：`BCRYPT_PROVIDER=auto|native|spring`（默认auto：显式路径或classpath有当前平台库则native，否则spring并WARN）；`BCRYPT_NATIVE_LIBRARY`=库绝对路径（容器/tmp为noexec，须用镜像内固定路径）。native/显式路径加载失败、ABI不符或Python向量自检失败一律拒绝启动，任何native错误码都不当作口令通过。
+- 行为差异（向冻结Python对齐）：非规范salt末字符、旧`$2$`前缀的畸形哈希，Python4.3.0抛ValueError，Spring返回false；native与Python一致抛IllegalArgumentException（与Spring对其他畸形哈希的异常类型相同）。35类向量Python/native分类0差异、Python/Spring 2差异。spring模式保留旧差异。正常bcrypt生成的哈希（$2a/$2b/$2y、72字节截断、NUL、UTF-8）三者一致。
+- 构建：`native/bcrypt-jni/build.sh`产出`dist/native/<os>-<arch>/`（gitignored），pom在process-resources把它复制进classpath；未构建时与旧行为相同。CI、Docker镜像（Linux .so构建阶段与`BCRYPT_PROVIDER=native`）、Rust依赖许可清单尚未接线，见J5-BCRYPT-NATIVE handoff。
+- 补验：NativeBcryptTest、完整verify、真实HTTP登录诊断；证据`docs/java-migration/evidence/J5-02/bcrypt-native-20261030/`。正式72分钟双端容量须另行授权，不以诊断代替。

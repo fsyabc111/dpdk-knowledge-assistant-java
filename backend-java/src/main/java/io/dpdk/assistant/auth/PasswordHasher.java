@@ -9,6 +9,8 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
  * 与 crypt_blowfish 同算法：`$2b$04$...` 前缀可直接 checkpw（$2a/$2y/$2b 对
  * &lt;255 字节口令互验等价，见 FIX/J2-01/bcrypt-compat.json 的 Python 生成向量）。
  * 用户不存在/停用时仍执行一次 dummy 比对（等价工作，防时序侧信道，验收 F）。
+ * 校验在 {@link NativeBcrypt} 可用时走 pyca/bcrypt 4.3.0 同源 native 实现（构造时解析，
+ * 配置为 native 但不可用即拒绝启动）；哈希生成始终用 Spring。
  */
 final class PasswordHasher {
 
@@ -16,10 +18,16 @@ final class PasswordHasher {
     private static final String DUMMY_SEED = "kimi-assistant-dummy";
 
     private final int rounds;
+    private final boolean nativeCheck;
     private volatile String dummyHash;
 
     PasswordHasher(int rounds) {
+        this(rounds, NativeBcrypt.active());
+    }
+
+    PasswordHasher(int rounds, boolean nativeCheck) {
         this.rounds = rounds;
+        this.nativeCheck = nativeCheck;
     }
 
     String hash(String password) {
@@ -27,7 +35,7 @@ final class PasswordHasher {
     }
 
     boolean check(String password, String hash) {
-        return BCrypt.checkpw(password, hash);
+        return nativeCheck ? NativeBcrypt.checkpw(password, hash) : BCrypt.checkpw(password, hash);
     }
 
     /**

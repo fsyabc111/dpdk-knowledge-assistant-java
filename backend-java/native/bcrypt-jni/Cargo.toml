@@ -1,0 +1,32 @@
+[package]
+name = "dpdk-bcrypt-jni"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.85"
+publish = false
+license = "Apache-2.0"
+
+[lib]
+name = "dpdk_bcrypt_jni"
+crate-type = ["cdylib"]
+
+[dependencies]
+bcrypt = "=0.17.0"
+base64 = "=0.22.1"
+subtle = "=2.6.1"
+zeroize = "=1.8.1"
+jni = { version = "=0.22.4", default-features = false }
+# 计算核心按 pyca/bcrypt 4.3.0 原 Cargo.lock 固定，不因 JNI 依赖解析静默漂移。
+blowfish = { version = "=0.9.1", features = ["bcrypt"] }
+cipher = "=0.4.4"
+getrandom = "=0.3.1"
+byteorder = "=1.5.0"
+crypto-common = "=0.1.6"
+inout = "=0.1.4"
+generic-array = "=0.14.7"
+typenum = "=1.18.0"
+version_check = "=0.9.5"
+
+[profile.release]
+lto = "thin"
+overflow-checks = true
